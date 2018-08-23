@@ -1,0 +1,34 @@
+{
+    "homepage": "https://github.com/Netmosfera/xxxxxxxxxxxxxxxxxxxxx",
+    "license": "MIT",
+    "authors": [{
+        "name": "Wes",
+        "homepage": "https://github.com/Netmosfera",
+        "role": "Smith"
+    }],
+    "require": {
+        "php": ">=7.2 <8",
+        "php-tool-bucket/compressed-int-set": ">=1 <2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=7 <8",
+        "php-tool-bucket/incload": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "Netmosfera\\PHPCSSAST\\": "src/"
+        },
+        "files": [
+            "composer-includes.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Netmosfera\\PHPCSSASTDev\\": "dev/",
+            "Netmosfera\\PHPCSSASTTests\\": "tests/"
+        },
+        "files": [
+            "composer-includes-dev.php"
+        ]
+    }
+}
