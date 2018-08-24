@@ -14,7 +14,7 @@ use Netmosfera\PHPCSSAST\Traverser;
 
 /** @return StringToken|BadStringToken|NULL */
 function eatStringToken(Traverser $t){
-    $delimiter = $t->eatExp("'|\"");
+    $delimiter = $t->eatExp('\'|"');
 
     if(hasNo($delimiter)){ return NULL; }
 

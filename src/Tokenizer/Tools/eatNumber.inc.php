@@ -5,7 +5,6 @@ namespace Netmosfera\PHPCSSAST\Tokenizer\Tools;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\Tokenizer\has;
-use function Netmosfera\PHPCSSAST\Tokenizer\hasNo;
 use function Netmosfera\PHPCSSAST\Tokenizer\mayHave;
 use Netmosfera\PHPCSSAST\Tokens\NumberToken;
 use Netmosfera\PHPCSSAST\Traverser;
@@ -15,9 +14,9 @@ use Netmosfera\PHPCSSAST\Traverser;
 function eatNumber(Traverser $t): NumberToken{
     assert(isNumberStart($t));
 
-    $sign = $t->eatExp("\+|-");
+    $sign = $t->eatExp('\+|-');
 
-    $wholes = $t->eatExp("[0-9]+");
+    $wholes = $t->eatExp('[0-9]+');
 
     $dt = $t->createBranch();
     if(
