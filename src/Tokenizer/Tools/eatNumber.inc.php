@@ -31,9 +31,9 @@ function eatNumber(Traverser $t): _Number{
 
     $et = $t->createBranch();
     if(
-        has($expLetter = $et->eatExp("e|E")) &&
-        mayHave($expSign = $et->eatExp("\+|-")) &&
-        has($exponent = $dt->eatStr("[0-9]+"))
+        has($expLetter = $et->eatExp('e|E')) &&
+        mayHave($expSign = $et->eatExp('\+|-')) &&
+        has($exponent = $et->eatExp('[0-9]+'))
     ){
         $t->importBranch($et);
     }else{

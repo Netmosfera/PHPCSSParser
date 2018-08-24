@@ -66,6 +66,7 @@ class _Number
     function equals($other): Bool{
         return
             $other instanceof self &&
+            $other->sign === $this->sign &&
             $other->wholes === $this->wholes &&
             $other->decimals === $this->decimals &&
             $other->eLetter === $this->eLetter &&

@@ -5,17 +5,19 @@ namespace Netmosfera\PHPCSSASTDev\Examples;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function getDigitSeqsSet(){
-    $digits = [0, 5, 9];
-    foreach($digits as $d0){
-        yield $d0;
-        foreach($digits as $d1){
-            yield $d0 . $d1;
-            foreach($digits as $d2){
-                yield $d0 . $d1 . $d2;
-                foreach($digits as $d3){
-                    yield $d0 . $d1 . $d2 . $d3;
-                }
-            }
-        }
+    $digits = ["0", "5", "9"];
+    foreach($digits as $digit){
+        yield $digit;
+        yield "1" . $digit;
+        yield "21" . $digit;
+        yield "321" . $digit;
+        yield "4321" . $digit;
+        yield "54321" . $digit;
     }
+    yield "000000";
+    yield "111111";
+    yield "555555";
+    yield "999999";
 }
+
+
