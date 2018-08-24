@@ -8,7 +8,7 @@ use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class Str
+class StringToken
 {
     public $pieces;
 

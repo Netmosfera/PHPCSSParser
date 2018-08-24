@@ -4,12 +4,12 @@ namespace Netmosfera\PHPCSSAST\Tokens;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class Whitespaces
+class WhitespaceToken
 {
     public $whitespaces;
 
-    function __construct(String $text){
-        $this->whitespaces = $text;
+    function __construct(String $whitespaces){
+        $this->whitespaces = $whitespaces;
     }
 
     function equals($other): Bool{

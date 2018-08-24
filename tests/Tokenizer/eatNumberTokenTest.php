@@ -13,7 +13,7 @@ use function Netmosfera\PHPCSSASTDev\Examples\OPTIONAL_NUMBER_SIGN;
 use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_E_PART;
 use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_INTEGER_PART;
 use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART;
-use Netmosfera\PHPCSSAST\Tokens\_Number;
+use Netmosfera\PHPCSSAST\Tokens\NumberToken;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
 
@@ -35,7 +35,7 @@ use PHPUnit\Framework\TestCase;
  * #5 | xxxxxxxxxxxx | DECIMAL_PART || E_PART
  * #6 | xxxxxxxxxxxx | DECIMAL_PART || xxxxxx + incomplete E_PART
   */
-class eatNumberTest extends TestCase
+class eatNumberTokenTest extends TestCase
 {
     function data_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART(){
         return cartesianProduct(
@@ -50,7 +50,7 @@ class eatNumberTest extends TestCase
 
     /** @dataProvider data_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART */
     function test_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART($prefix, $sign, $digits, $eLetter, $eSign, $rest){
-        $expected = new _Number($sign === "" ? NULL : $sign, $digits, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
+        $expected = new NumberToken($sign === "" ? NULL : $sign, $digits, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
         $t = new Traverser($prefix . $sign . $digits . "." . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatNumber($t), $expected));
@@ -70,7 +70,7 @@ class eatNumberTest extends TestCase
 
     /** @dataProvider data_2_INTEGER_PART_followed_by_DECIMAL_PART */
     function test_2_INTEGER_PART_followed_by_DECIMAL_PART($prefix, $sign, $digits, $rest){
-        $expected = new _Number($sign === "" ? NULL : $sign, $digits, $digits, NULL, NULL, NULL);
+        $expected = new NumberToken($sign === "" ? NULL : $sign, $digits, $digits, NULL, NULL, NULL);
         $t = new Traverser($prefix . $sign . $digits . "." . $digits . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatNumber($t), $expected));
@@ -92,7 +92,7 @@ class eatNumberTest extends TestCase
 
     /** @dataProvider data_3_INTEGER_PART_followed_by_E_PART */
     function test_3_INTEGER_PART_followed_by_E_PART($prefix, $sign, $digits, $eLetter, $eSign, $rest){
-        $expected = new _Number($sign === "" ? NULL : $sign, $digits, NULL, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
+        $expected = new NumberToken($sign === "" ? NULL : $sign, $digits, NULL, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
         $t = new Traverser($prefix . $sign . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatNumber($t), $expected));
@@ -112,7 +112,7 @@ class eatNumberTest extends TestCase
 
     /** @dataProvider data_4_INTEGER_PART */
     function test_4_INTEGER_PART($prefix, $sign, $intDigits, $rest){
-        $expected = new _Number($sign === "" ? NULL : $sign, $intDigits, NULL, NULL, NULL, NULL);
+        $expected = new NumberToken($sign === "" ? NULL : $sign, $intDigits, NULL, NULL, NULL, NULL);
         $t = new Traverser($prefix . $sign . $intDigits . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatNumber($t), $expected));
@@ -134,7 +134,7 @@ class eatNumberTest extends TestCase
 
     /** @dataProvider data_5_DECIMAL_PART_and_E_PART */
     function test_5_DECIMAL_PART_and_E_PART($prefix, $sign, $digits, $eLetter, $eSign, $rest){
-        $expected = new _Number($sign === "" ? NULL : $sign, NULL, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
+        $expected = new NumberToken($sign === "" ? NULL : $sign, NULL, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
         $t = new Traverser($prefix . $sign . "." . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatNumber($t), $expected));
@@ -154,7 +154,7 @@ class eatNumberTest extends TestCase
 
     /** @dataProvider data_6_DECIMAL_PART */
     function test_6_DECIMAL_PART($prefix, $sign, $decimalDigits, $rest){
-        $expected = new _Number($sign === "" ? NULL : $sign, NULL, $decimalDigits, NULL, NULL, NULL);
+        $expected = new NumberToken($sign === "" ? NULL : $sign, NULL, $decimalDigits, NULL, NULL, NULL);
         $t = new Traverser($prefix . $sign . "." . $decimalDigits . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatNumber($t), $expected));

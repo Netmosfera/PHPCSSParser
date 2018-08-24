@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSAST\Tokens;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class Comment
+class CommentToken
 {
     public $text;
     public $terminated;

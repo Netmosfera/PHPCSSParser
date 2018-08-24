@@ -7,20 +7,20 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 use function Netmosfera\PHPCSSAST\match;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatStr;
+use function Netmosfera\PHPCSSAST\Tokenizer\eatStringToken;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getStringDelimiterSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
 use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
 use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
-use Netmosfera\PHPCSSAST\Tokens\BadStr;
-use Netmosfera\PHPCSSAST\Tokens\Str;
+use Netmosfera\PHPCSSAST\Tokens\BadStringToken;
+use Netmosfera\PHPCSSAST\Tokens\StringToken;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class eatStrTest extends TestCase
+class eatStringTokenTest extends TestCase
 {
     function piecesToString(Array $pieces){
         // @TODO use an actual printer/formatter for this instead
@@ -94,7 +94,7 @@ class eatStrTest extends TestCase
 
         $t = new Traverser($prefix . $delimiter . $string . $delimiter . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatStr($t), new Str($pieces)));
+        self::assertTrue(match(eatStringToken($t), new StringToken($pieces)));
         self::assertTrue(match($t->eatAll(), $rest));
     }
 
@@ -112,7 +112,7 @@ class eatStrTest extends TestCase
     function test_unterminated_EOF($prefix, $delimiter, $string){
         $t = new Traverser($prefix . $delimiter . $string, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatStr($t), new Str($string === "" ? [] : [$string], TRUE)));
+        self::assertTrue(match(eatStringToken($t), new StringToken($string === "" ? [] : [$string], TRUE)));
         self::assertTrue(match($t->eatAll(), ""));
     }
 
@@ -132,7 +132,7 @@ class eatStrTest extends TestCase
     function test_unterminated_newline($prefix, $delimiter, $string, $newline, $rest){
         $t = new Traverser($prefix . $delimiter . $string . $newline . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatStr($t), new BadStr($string === "" ? [] : [$string])));
+        self::assertTrue(match(eatStringToken($t), new BadStringToken($string === "" ? [] : [$string])));
         self::assertTrue(match($t->eatAll(), $newline . $rest));
     }
 }

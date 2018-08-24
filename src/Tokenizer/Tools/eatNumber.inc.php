@@ -7,12 +7,12 @@ namespace Netmosfera\PHPCSSAST\Tokenizer\Tools;
 use function Netmosfera\PHPCSSAST\Tokenizer\has;
 use function Netmosfera\PHPCSSAST\Tokenizer\hasNo;
 use function Netmosfera\PHPCSSAST\Tokenizer\mayHave;
-use Netmosfera\PHPCSSAST\Tokens\_Number;
+use Netmosfera\PHPCSSAST\Tokens\NumberToken;
 use Netmosfera\PHPCSSAST\Traverser;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function eatNumber(Traverser $t): _Number{
+function eatNumber(Traverser $t): NumberToken{
     assert(isNumberStart($t));
 
     $sign = $t->eatExp("\+|-");
@@ -40,7 +40,7 @@ function eatNumber(Traverser $t): _Number{
         $expLetter = $expSign = $exponent = NULL;
     }
 
-    return new _Number(
+    return new NumberToken(
         $sign,
         $wholes,
         $decimals,

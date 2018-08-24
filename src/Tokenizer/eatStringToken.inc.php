@@ -1,18 +1,19 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSAST\Tokenizer\Tools;
+namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\Tokenizer\has;
-use function Netmosfera\PHPCSSAST\Tokenizer\hasNo;
-use Netmosfera\PHPCSSAST\Tokens\BadStr;
-use Netmosfera\PHPCSSAST\Tokens\Str;
+use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatEscape;
+use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNewline;
+use Netmosfera\PHPCSSAST\Tokens\BadStringToken;
+use Netmosfera\PHPCSSAST\Tokens\StringToken;
 use Netmosfera\PHPCSSAST\Traverser;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function eatStr(Traverser $t){
+/** @return StringToken|BadStringToken|NULL */
+function eatStringToken(Traverser $t){
     $delimiter = $t->eatExp("'|\"");
 
     if(hasNo($delimiter)){ return NULL; }
@@ -22,11 +23,11 @@ function eatStr(Traverser $t){
     EAT_PIECE:
 
     if($t->isEOF()){
-        return new Str($pieces, TRUE);
+        return new StringToken($pieces, TRUE);
     }elseif($t->eatStr($delimiter) === $delimiter){
-        return new Str($pieces);
+        return new StringToken($pieces);
     }elseif(has(eatNewline($t->createBranch()))){
-        return new BadStr($pieces);
+        return new BadStringToken($pieces);
     }elseif(has($t->eatStr("\\"))){
         $pieces[] = eatEscape($t);
     }else{

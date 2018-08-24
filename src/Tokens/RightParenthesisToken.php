@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSAST\Tokens;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class RightSquareBracket
+class RightParenthesisToken
 {
     function equals($other): Bool{
         return $other instanceof self;

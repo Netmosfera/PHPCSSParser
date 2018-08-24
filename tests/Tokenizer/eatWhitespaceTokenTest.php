@@ -5,18 +5,18 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use function Netmosfera\PHPCSSASTDev\Examples\NOT_STARTING_WITH_WHITESPACE;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatWhitespaces;
-use function Netmosfera\PHPCSSASTDev\Examples\WHITESPACES;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use Netmosfera\PHPCSSAST\Tokens\Whitespaces;
+use function Netmosfera\PHPCSSASTDev\Examples\WHITESPACES;
+use function Netmosfera\PHPCSSAST\Tokenizer\eatWhitespaceToken;
+use function Netmosfera\PHPCSSASTDev\Examples\NOT_STARTING_WITH_WHITESPACE;
+use Netmosfera\PHPCSSAST\Tokens\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class eatWhitespacesTest extends TestCase
+class eatWhitespaceTokenTest extends TestCase
 {
     function data_whitespaces(){
         return cartesianProduct(
@@ -30,7 +30,7 @@ class eatWhitespacesTest extends TestCase
     function test_whitespaces($prefix, $whitespaces, $rest){
         $t = new Traverser($prefix . $whitespaces . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatWhitespaces($t), new Whitespaces($whitespaces)));
+        self::assertTrue(match(eatWhitespaceToken($t), new WhitespaceToken($whitespaces)));
         self::assertTrue(match($t->eatAll(), $rest));
     }
 
@@ -47,7 +47,7 @@ class eatWhitespacesTest extends TestCase
     function test_no_whitespaces($prefix, $rest){
         $t = new Traverser($prefix . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatWhitespaces($t), NULL));
+        self::assertTrue(match(eatWhitespaceToken($t), NULL));
         self::assertTrue(match($t->eatAll(), $rest));
     }
 }
