@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTTests\Tokenizer;
+namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 

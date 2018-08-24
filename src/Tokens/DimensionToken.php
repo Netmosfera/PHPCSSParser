@@ -8,17 +8,21 @@ use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class PercentageToken
+class DimensionToken
 {
     public $number;
 
-    function __construct(NumberToken $number){
+    public $name;
+
+    function __construct(NumberToken $number, IdentifierToken $name){
         $this->number = $number;
+        $this->name = $name;
     }
 
     function equals($other): Bool{
         return
             $other instanceof self &&
-            match($other->number, $this->number);
+            match($other->number, $this->number) &&
+            match($other->name, $this->name);
     }
 }

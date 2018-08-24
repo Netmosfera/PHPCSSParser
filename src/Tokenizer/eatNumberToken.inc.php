@@ -1,17 +1,16 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSAST\Tokenizer\Tools;
+namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\Tokenizer\has;
-use function Netmosfera\PHPCSSAST\Tokenizer\mayHave;
+use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isNumberStart;
 use Netmosfera\PHPCSSAST\Tokens\NumberToken;
 use Netmosfera\PHPCSSAST\Traverser;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function eatNumber(Traverser $t): NumberToken{
+function eatNumberToken(Traverser $t): NumberToken{
     assert(isNumberStart($t));
 
     $sign = $t->eatExp('\+|-');

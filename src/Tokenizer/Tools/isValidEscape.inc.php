@@ -17,11 +17,11 @@ use Netmosfera\PHPCSSAST\Traverser;
  *
  * - `\6e` results in `n`
  * - `\x` results in `x`
+ * - `\Æ` results in `Æ`
  *
- * These are invalid escapes despite they are not a parse error - that is, they are
- * simply ignored in css strings:
- *
- * `"\\\n"`, `"\\\r"`, `"\\\r\n"`, `"\\\f"`
+ * The only exceptions are `\` followed by any newline sequence or `\` followed by EOF.
+ * These are not necessarily parse errors; for example `\` followed by newline in a CSS
+ * string is simply ignored.
  */
 function isValidEscape(Traverser $t): Bool{
     $t = $t->createBranch();

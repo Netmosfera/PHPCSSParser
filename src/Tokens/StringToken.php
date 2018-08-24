@@ -8,6 +8,8 @@ use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+// @TODO this should save the delimiter also
+
 class StringToken
 {
     public $pieces;

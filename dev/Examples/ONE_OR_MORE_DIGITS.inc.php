@@ -12,7 +12,6 @@ function ONE_OR_MORE_DIGITS(){
         yield "21" . $digit;
         yield "321" . $digit;
         yield "4321" . $digit;
-        yield "54321" . $digit;
     }
     yield "0000000000";
     yield "111111111";
