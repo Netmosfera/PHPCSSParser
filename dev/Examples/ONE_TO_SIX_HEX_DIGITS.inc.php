@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSASTDev\Examples;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getOneUpToSixHexDigitsSeqsSet(){
+function ONE_TO_SIX_HEX_DIGITS(){
     $digits = ["a", "f", "A", "F", "0", "9"];
     foreach($digits as $digit){
         yield $digit;

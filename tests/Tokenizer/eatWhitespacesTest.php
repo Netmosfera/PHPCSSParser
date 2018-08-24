@@ -7,8 +7,8 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 use function Netmosfera\PHPCSSAST\match;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatWhitespaces;
-use function Netmosfera\PHPCSSASTDev\Examples\getWhitespaceSeqsSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\WHITESPACES;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
 use Netmosfera\PHPCSSAST\Tokens\Whitespaces;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
@@ -26,8 +26,8 @@ class eatWhitespacesTest extends TestCase
 
     function data_whitespaces(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
-            getWhitespaceSeqsSet(),
+            ANY_STRING(),
+            WHITESPACES(),
             $this->getRestThatIsNotPrefixedWithWhitespace()
         );
     }
@@ -44,7 +44,7 @@ class eatWhitespacesTest extends TestCase
 
     function data_no_whitespaces(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             $this->getRestThatIsNotPrefixedWithWhitespace()
         );
     }

@@ -8,10 +8,9 @@ use function Netmosfera\PHPCSSAST\match;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatStr;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
-use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getStringDelimiterSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
 use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
 use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
 use Netmosfera\PHPCSSAST\Tokens\BadStr;
@@ -24,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 class eatStrTest extends TestCase
 {
     function piecesToString(Array $pieces){
-        // @TODO this
+        // @TODO use an actual printer/formatter for this instead
         $string = "";
         foreach($pieces as $piece){
             if($piece instanceof ActualEscape){
@@ -42,9 +41,9 @@ class eatStrTest extends TestCase
 
     function data_misc(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             getCodePointsFromRanges(getStringDelimiterSet()),
-            getAnyCodePointSeqsSet()
+            ANY_STRING()
         );
     }
 
@@ -103,7 +102,7 @@ class eatStrTest extends TestCase
 
     function data_unterminated_EOF(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             getCodePointsFromRanges(getStringDelimiterSet()),
             ["", "skip \u{2764} me"]
         );
@@ -121,11 +120,11 @@ class eatStrTest extends TestCase
 
     function data_unterminated_newline(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             getCodePointsFromRanges(getStringDelimiterSet()),
             ["", "skip \u{2764} me"],
             getNewlineSeqsSet(),
-            getAnyCodePointSeqsSet()
+            ANY_STRING()
         );
     }
 

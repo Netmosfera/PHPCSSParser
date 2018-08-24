@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Error;
+use function preg_last_error;
 use function preg_quote;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -89,6 +90,10 @@ class Traverser
             substr($this->data, $this->offset), // @TODO this allocates a new string every time, it should work with offsets, not on trimmed strings
             $matches
         );
+
+        if($result === FALSE){
+            throw new Error("PCRE ERROR: " . preg_last_error());
+        }
 
         if($result === 1){
             $this->setOffset($this->offset + strlen($matches[0]));

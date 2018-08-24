@@ -9,12 +9,27 @@ use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getAnyCodePointSeqsSet(){
+/**
+ * -
+ *
+ * Any CodePoint sequence:
+ *
+ * - not starting with a digit
+ * - not starting with "." and a digit
+ * - not starting with "e|E" and a digit
+ * - not starting with "e|E" and "+|-" and a digit
+ */
+function NOT_A_NUMBER_CONTINUATION_AFTER_INTEGER_PART(){
     $set = new CompressedCodePointSet();
     $set->selectAll();
     $sequences = getCodePointsFromRanges($set);
     $sequences[] = " \t \n \r \r\n \f ";
-    $sequences[] = "skip \u{2764} me";
+    $sequences[] = "sample \u{2764} string";
+    $sequences[] = ".a";
+    $sequences[] = "ea";
+    $sequences[] = "Ea";
+    $sequences[] = "e+a";
+    $sequences[] = "E+a";
     $sequences[] = "";
     return $sequences;
 }

@@ -1,11 +1,14 @@
 <?php
 
 require(__DIR__ . "/dev/cp.inc.php");
-require(__DIR__ . "/dev/Examples/getAnyCodePointSeqsSet.inc.php");
-require(__DIR__ . "/dev/Examples/getDigitSeqsSet.inc.php");
-require(__DIR__ . "/dev/Examples/getEitherEmptyOrNonEmptyAnyCodePointSeqsSet.inc.php");
-require(__DIR__ . "/dev/Examples/getOneUpToSixHexDigitsSeqsSet.inc.php");
-require(__DIR__ . "/dev/Examples/getWhitespaceSeqsSet.inc.php");
+require(__DIR__ . "/dev/Examples/ANY_STRING.inc.php");
+require(__DIR__ . "/dev/Examples/NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART.inc.php");
+require(__DIR__ . "/dev/Examples/NOT_A_NUMBER_CONTINUATION_AFTER_E_PART.inc.php");
+require(__DIR__ . "/dev/Examples/NOT_A_NUMBER_CONTINUATION_AFTER_INTEGER_PART.inc.php");
+require(__DIR__ . "/dev/Examples/ONE_OR_MORE_DIGITS.inc.php");
+require(__DIR__ . "/dev/Examples/ONE_TO_SIX_HEX_DIGITS.inc.php");
+require(__DIR__ . "/dev/Examples/OPTIONAL_NUMBER_SIGN.inc.php");
+require(__DIR__ . "/dev/Examples/WHITESPACES.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSeqsSets/getNewlineSeqsSet.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSeqsSets/getWhitespaceSeqsSet.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSets/getDigitsSet.inc.php");

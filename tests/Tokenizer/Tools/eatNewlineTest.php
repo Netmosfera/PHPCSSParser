@@ -7,10 +7,9 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNewlinesSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNewline;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -22,9 +21,9 @@ class eatNewlineTest extends TestCase
 {
     function data_returns_TRUE_if_the_next_code_point_is_a_newline(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             getNewlineSeqsSet(),
-            getAnyCodePointSeqsSet()
+            ANY_STRING()
         );
     }
 
@@ -43,9 +42,9 @@ class eatNewlineTest extends TestCase
         $codePoints->selectAll();
         $codePoints->removeAll(getNewlinesSet());
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             getCodePointsFromRanges($codePoints),
-            getAnyCodePointSeqsSet()
+            ANY_STRING()
         );
     }
 
@@ -61,7 +60,7 @@ class eatNewlineTest extends TestCase
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet()
+            ANY_STRING()
         );
     }
 

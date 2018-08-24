@@ -5,14 +5,14 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNumber;
-use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
-use function Netmosfera\PHPCSSASTDev\Examples\getDigitSeqsSet;
-use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getDigitsSet;
-use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
+use function Netmosfera\PHPCSSASTDev\Examples\ONE_OR_MORE_DIGITS;
+use function Netmosfera\PHPCSSASTDev\Examples\OPTIONAL_NUMBER_SIGN;
+use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_E_PART;
+use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_INTEGER_PART;
+use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART;
 use Netmosfera\PHPCSSAST\Tokens\_Number;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
@@ -22,59 +22,34 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests in this file:
  *
+ * INTEGER_PART = at least one digit
  * DECIMAL_PART = . and at least one digit
- * E_PART = e or E, optionally followed by a sign, followed by at least one digit
+ * E_PART       = e or E, optionally followed by a sign, followed by at least one digit
  *
- * #77 | integer digits followed by DECIMAL_PART and E_PART
+ * #1 | INTEGER_PART | DECIMAL_PART || E_PART
+ * #2 | INTEGER_PART | DECIMAL_PART || xxxxxx + incomplete E_PART
  *
+ * #3 | INTEGER_PART | xxxxxxxxxxxx || E_PART
+ * #4 | INTEGER_PART | xxxxxxxxxxxx || xxxxxx + incomplete DECIMAL_PART and E_PART
  *
- * #1  | only integer digits followed anything except DECIMAL_PART or E_PART
- * #2  | only integer digits followed by an incomplete DECIMAL_PART
- * #3  | only integer digits followed by an incomplete E_PART (E and optionally a sign without a digit)
- *
- * #4  | only decimal digits followed by anything except E_PART
- * #5  | only decimal digits followed by an incomplete E_PART
+ * #5 | xxxxxxxxxxxx | DECIMAL_PART || E_PART
+ * #6 | xxxxxxxxxxxx | DECIMAL_PART || xxxxxx + incomplete E_PART
   */
 class eatNumberTest extends TestCase
 {
-    function getOptionalSigns(){
-        return ["+", "-", ""];
-    }
-
-    function getSequencesNotStartingWithADigit(){
-        $codePoints = new CompressedCodePointSet();
-        $codePoints->removeAll(getDigitsSet());
-        $sequences = getCodePointsFromRanges($codePoints);
-        $sequences[] = "";
-        $sequences[] = "\u{2764}";
-        $sequences[] = "skip \u{2764} me";
-        return $sequences;
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    // # 77
-
-    function data_integer_digits_followed_by_DECIMAL_PART_and_E_PART(){
+    function data_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
-            $this->getOptionalSigns(),
-            getDigitSeqsSet(),
+            ANY_STRING(),
+            OPTIONAL_NUMBER_SIGN(),
+            ONE_OR_MORE_DIGITS(),
             ["e", "E"],
-            $this->getOptionalSigns(),
-            getAnyCodePointSeqsSet()
+            OPTIONAL_NUMBER_SIGN(),
+            NOT_A_NUMBER_CONTINUATION_AFTER_E_PART()
         );
     }
 
-    /** @dataProvider data_integer_digits_followed_by_DECIMAL_PART_and_E_PART */
-    function test_integer_digits_followed_by_DECIMAL_PART_and_E_PART(
-        String $prefix,
-        String $sign,
-        String $digits,
-        String $eLetter,
-        String $eSign,
-        String $rest
-    ){
+    /** @dataProvider data_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART */
+    function test_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART($prefix, $sign, $digits, $eLetter, $eSign, $rest){
         $expected = new _Number($sign === "" ? NULL : $sign, $digits, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
         $t = new Traverser($prefix . $sign . $digits . "." . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
         $t->eatStr($prefix);
@@ -82,27 +57,61 @@ class eatNumberTest extends TestCase
         self::assertTrue(match($t->eatAll(), $rest));
     }
 
-
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    // # 1
-
-    function data_integer_followed_by_anything_except_DECIMAL_PART_or_E_PART(){
+    function data_2_INTEGER_PART_followed_by_DECIMAL_PART(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
-            $this->getOptionalSigns(),
-            getDigitSeqsSet(),
-            $this->getSequencesNotStartingWithADigit()
+            ANY_STRING(),
+            OPTIONAL_NUMBER_SIGN(),
+            ONE_OR_MORE_DIGITS(),
+            NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART()
         );
     }
 
-    /** @dataProvider data_integer_followed_by_anything_except_DECIMAL_PART_or_E_PART */
-    function test_integer_followed_by_anything_except_DECIMAL_PART_or_E_PART(
-        String $prefix,
-        String $sign,
-        String $intDigits,
-        String $rest
-    ){
+    /** @dataProvider data_2_INTEGER_PART_followed_by_DECIMAL_PART */
+    function test_2_INTEGER_PART_followed_by_DECIMAL_PART($prefix, $sign, $digits, $rest){
+        $expected = new _Number($sign === "" ? NULL : $sign, $digits, $digits, NULL, NULL, NULL);
+        $t = new Traverser($prefix . $sign . $digits . "." . $digits . $rest, TRUE);
+        $t->eatStr($prefix);
+        self::assertTrue(match(eatNumber($t), $expected));
+        self::assertTrue(match($t->eatAll(), $rest));
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data_3_INTEGER_PART_followed_by_E_PART(){
+        return cartesianProduct(
+            ANY_STRING(),
+            OPTIONAL_NUMBER_SIGN(),
+            ONE_OR_MORE_DIGITS(),
+            ["e", "E"],
+            OPTIONAL_NUMBER_SIGN(),
+            NOT_A_NUMBER_CONTINUATION_AFTER_E_PART()
+        );
+    }
+
+    /** @dataProvider data_3_INTEGER_PART_followed_by_E_PART */
+    function test_3_INTEGER_PART_followed_by_E_PART($prefix, $sign, $digits, $eLetter, $eSign, $rest){
+        $expected = new _Number($sign === "" ? NULL : $sign, $digits, NULL, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
+        $t = new Traverser($prefix . $sign . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
+        $t->eatStr($prefix);
+        self::assertTrue(match(eatNumber($t), $expected));
+        self::assertTrue(match($t->eatAll(), $rest));
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data_4_INTEGER_PART(){
+        return cartesianProduct(
+            ANY_STRING(),
+            OPTIONAL_NUMBER_SIGN(),
+            ONE_OR_MORE_DIGITS(),
+            NOT_A_NUMBER_CONTINUATION_AFTER_INTEGER_PART()
+        );
+    }
+
+    /** @dataProvider data_4_INTEGER_PART */
+    function test_4_INTEGER_PART($prefix, $sign, $intDigits, $rest){
         $expected = new _Number($sign === "" ? NULL : $sign, $intDigits, NULL, NULL, NULL, NULL);
         $t = new Traverser($prefix . $sign . $intDigits . $rest, TRUE);
         $t->eatStr($prefix);
@@ -112,84 +121,21 @@ class eatNumberTest extends TestCase
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    // # 2
-
-    function data_integer_followed_by_an_incomplete_DECIMAL_PART(){
+    function data_5_DECIMAL_PART_and_E_PART(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
-            $this->getOptionalSigns(),
-            getDigitSeqsSet(),
-            $this->getSequencesNotStartingWithADigit()
-        );
-    }
-
-    /** @dataProvider data_integer_followed_by_an_incomplete_DECIMAL_PART */
-    function test_integer_followed_by_an_incomplete_DECIMAL_PART(
-        String $prefix,
-        String $sign,
-        String $intDigits,
-        String $rest
-    ){
-        $expected = new _Number($sign === "" ? NULL : $sign, $intDigits, NULL, NULL, NULL, NULL);
-        $t = new Traverser($prefix . $sign . $intDigits . "." . $rest, TRUE);
-        $t->eatStr($prefix);
-        self::assertTrue(match(eatNumber($t), $expected));
-        self::assertTrue(match($t->eatAll(), "." . $rest));
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    // # 3
-
-    function data_integer_followed_by_an_incomplete_E_PART(){
-        return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
-            $this->getOptionalSigns(),
-            getDigitSeqsSet(),
+            ANY_STRING(),
+            OPTIONAL_NUMBER_SIGN(),
+            ONE_OR_MORE_DIGITS(),
             ["e", "E"],
-            $this->getOptionalSigns(),
-            $this->getSequencesNotStartingWithADigit()
+            OPTIONAL_NUMBER_SIGN(),
+            NOT_A_NUMBER_CONTINUATION_AFTER_E_PART()
         );
     }
 
-    /** @dataProvider data_integer_followed_by_an_incomplete_E_PART */
-    function test_integer_followed_by_an_incomplete_E_PART(
-        String $prefix,
-        String $sign,
-        String $intDigits,
-        String $eLetter,
-        String $eSign,
-        String $rest
-    ){
-        $expected = new _Number($sign === "" ? NULL : $sign, $intDigits, NULL, NULL, NULL, NULL);
-        $t = new Traverser($prefix . $sign . $intDigits . $eLetter . $eSign . $rest, TRUE);
-        $t->eatStr($prefix);
-        self::assertTrue(match(eatNumber($t), $expected));
-        self::assertTrue(match($t->eatAll(), $eLetter . $eSign . $rest));
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    // # 4
-
-    function data_decimals_followed_by_anything_except_E_PART(){
-        return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
-            $this->getOptionalSigns(),
-            getDigitSeqsSet(),
-            $this->getSequencesNotStartingWithADigit()
-        );
-    }
-
-    /** @dataProvider data_decimals_followed_by_anything_except_E_PART */
-    function test_decimals_followed_by_anything_except_E_PART(
-        String $prefix,
-        String $sign,
-        String $decimalDigits,
-        String $rest
-    ){
-        $expected = new _Number($sign === "" ? NULL : $sign, NULL, $decimalDigits, NULL, NULL, NULL);
-        $t = new Traverser($prefix . $sign . "." . $decimalDigits . $rest, TRUE);
+    /** @dataProvider data_5_DECIMAL_PART_and_E_PART */
+    function test_5_DECIMAL_PART_and_E_PART($prefix, $sign, $digits, $eLetter, $eSign, $rest){
+        $expected = new _Number($sign === "" ? NULL : $sign, NULL, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
+        $t = new Traverser($prefix . $sign . "." . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatNumber($t), $expected));
         self::assertTrue(match($t->eatAll(), $rest));
@@ -197,32 +143,21 @@ class eatNumberTest extends TestCase
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    // #5
-
-    function data_decimals_followed_by_an_incomplete_E_PART(){
+    function data_6_DECIMAL_PART(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
-            $this->getOptionalSigns(),
-            getDigitSeqsSet(),
-            ["e", "E"],
-            $this->getOptionalSigns(),
-            $this->getSequencesNotStartingWithADigit()
+            ANY_STRING(),
+            OPTIONAL_NUMBER_SIGN(),
+            ONE_OR_MORE_DIGITS(),
+            NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART()
         );
     }
 
-    /** @dataProvider data_decimals_followed_by_an_incomplete_E_PART */
-    function test_decimals_followed_by_an_incomplete_E_PART(
-        String $prefix,
-        String $sign,
-        String $decimalDigits,
-        String $eLetter,
-        String $eSign,
-        String $rest
-    ){
+    /** @dataProvider data_6_DECIMAL_PART */
+    function test_6_DECIMAL_PART($prefix, $sign, $decimalDigits, $rest){
         $expected = new _Number($sign === "" ? NULL : $sign, NULL, $decimalDigits, NULL, NULL, NULL);
-        $t = new Traverser($prefix . $sign . "." . $decimalDigits . $eLetter . $eSign . $rest, TRUE);
+        $t = new Traverser($prefix . $sign . "." . $decimalDigits . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatNumber($t), $expected));
-        self::assertTrue(match($t->eatAll(), $eLetter . $eSign . $rest));
+        self::assertTrue(match($t->eatAll(), $rest));
     }
 }

@@ -4,9 +4,9 @@ namespace Netmosfera\PHPCSSASTDev\Examples;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(){
+function ANY_STRING(){
     return [
         "",
-        "skip \u{2764} me"
+        "sample \u{2764} string"
     ];
 }

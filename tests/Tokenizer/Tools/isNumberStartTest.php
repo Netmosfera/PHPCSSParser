@@ -7,8 +7,7 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getDigitsSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isNumberStart;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
@@ -48,7 +47,7 @@ class isNumberStartTest extends TestCase
     // #1
 
     function data_returns_TRUE_if_sign_and_full_stop_are_followed_by_a_digit(){
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns(), getCodePointsFromRanges(getDigitsSet()), getAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING(), $this->getSigns(), getCodePointsFromRanges(getDigitsSet()), ANY_STRING());
     }
 
     /** @dataProvider data_returns_TRUE_if_sign_and_full_stop_are_followed_by_a_digit */
@@ -67,7 +66,7 @@ class isNumberStartTest extends TestCase
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
         $codePoints->removeAll(getDigitsSet());
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING(), $this->getSigns(), getCodePointsFromRanges($codePoints), ANY_STRING());
     }
 
     /** @dataProvider data_returns_FALSE_if_sign_and_full_stop_are_followed_by_a_non_digit */
@@ -83,7 +82,7 @@ class isNumberStartTest extends TestCase
     // #3
 
     function data_returns_FALSE_if_sign_and_full_stop_are_followed_by_EOF(){
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns());
+        return cartesianProduct(ANY_STRING(), $this->getSigns());
     }
 
     /** @dataProvider data_returns_FALSE_if_sign_and_full_stop_are_followed_by_EOF */
@@ -100,7 +99,7 @@ class isNumberStartTest extends TestCase
 
     // Test that returns TRUE if sign is followed by a digit
     function data_returns_TRUE_if_sign_is_followed_by_a_digit(){
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns(), getCodePointsFromRanges(getDigitsSet()), getAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING(), $this->getSigns(), getCodePointsFromRanges(getDigitsSet()), ANY_STRING());
     }
 
     /** @dataProvider data_returns_TRUE_if_sign_is_followed_by_a_digit */
@@ -120,7 +119,7 @@ class isNumberStartTest extends TestCase
         $codePoints->selectAll();
         $codePoints->removeAll(getDigitsSet());
         $codePoints->remove(cp("."));
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING(), $this->getSigns(), getCodePointsFromRanges($codePoints), ANY_STRING());
     }
 
     /** @dataProvider data_returns_FALSE_if_sign_is_followed_by_a_non_digit */
@@ -136,7 +135,7 @@ class isNumberStartTest extends TestCase
     // #6
 
     function data_returns_FALSE_if_sign_is_followed_by_EOF(){
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns());
+        return cartesianProduct(ANY_STRING(), $this->getSigns());
     }
 
     /** @dataProvider data_returns_FALSE_if_sign_is_followed_by_EOF */
@@ -152,7 +151,7 @@ class isNumberStartTest extends TestCase
     // #7
 
     function data_returns_TRUE_if_full_stop_is_followed_by_a_digit(){
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges(getDigitsSet()), getAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING(), getCodePointsFromRanges(getDigitsSet()), ANY_STRING());
     }
 
     /** @dataProvider data_returns_TRUE_if_full_stop_is_followed_by_a_digit */
@@ -172,7 +171,7 @@ class isNumberStartTest extends TestCase
         $codePoints->selectAll();
         $codePoints->removeAll(getDigitsSet());
         $codePoints->remove(cp("."));
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING(), getCodePointsFromRanges($codePoints), ANY_STRING());
     }
 
     /** @dataProvider data_returns_FALSE_if_full_stop_is_followed_by_a_non_digit */
@@ -188,7 +187,7 @@ class isNumberStartTest extends TestCase
     // #9
 
     function data_returns_FALSE_if_full_stop_is_followed_by_EOF(){
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING());
     }
 
     /** @dataProvider data_returns_FALSE_if_full_stop_is_followed_by_EOF */
@@ -204,7 +203,7 @@ class isNumberStartTest extends TestCase
     // #10
 
     function data_returns_TRUE_if_the_next_code_point_is_a_digit(){
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges(getDigitsSet()), getAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING(), getCodePointsFromRanges(getDigitsSet()), ANY_STRING());
     }
 
     /** @dataProvider data_returns_TRUE_if_the_next_code_point_is_a_digit */
@@ -225,7 +224,7 @@ class isNumberStartTest extends TestCase
         $codePoints->remove(cp("."));
         $codePoints->removeAll($this->getSigns());
         $codePoints->removeAll(getDigitsSet());
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING(), getCodePointsFromRanges($codePoints), ANY_STRING());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_a_non_digit */
@@ -242,7 +241,7 @@ class isNumberStartTest extends TestCase
     // #12
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_EOF */

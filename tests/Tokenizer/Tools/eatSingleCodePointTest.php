@@ -8,8 +8,7 @@ use Closure;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\match;
@@ -26,18 +25,14 @@ abstract class eatSingleCodePointTest extends TestCase
 
     function data_returns_TRUE_if_the_next_code_point_is_the_expected_code_point(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             getCodePointsFromRanges($this->getExpectedCodePointSet()),
-            getAnyCodePointSeqsSet()
+            ANY_STRING()
         );
     }
 
     /** @dataProvider data_returns_TRUE_if_the_next_code_point_is_the_expected_code_point */
-    function test_returns_TRUE_if_the_next_code_point_is_the_expected_code_point(
-        String $prefix,
-        String $expectedCodePoint,
-        String $rest
-    ){
+    function test_returns_TRUE_if_the_next_code_point_is_the_expected_code_point(String $prefix, String $expectedCodePoint, String $rest ){
         $t = new Traverser($prefix . $expectedCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match($this->getEatFunction()($t), $expectedCodePoint));
@@ -50,15 +45,11 @@ abstract class eatSingleCodePointTest extends TestCase
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
         $codePoints->removeAll($this->getExpectedCodePointSet());
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING(), getCodePointsFromRanges($codePoints), ANY_STRING());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_not_the_expected_code_point */
-    function test_returns_FALSE_if_the_next_code_point_is_not_the_expected_code_point(
-        String $prefix,
-        String $unexpectedCodePoint,
-        String $rest
-    ){
+    function test_returns_FALSE_if_the_next_code_point_is_not_the_expected_code_point(String $prefix, String $unexpectedCodePoint, String $rest){
         $t = new Traverser($prefix . $unexpectedCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match($this->getEatFunction()($t), NULL));
@@ -68,7 +59,7 @@ abstract class eatSingleCodePointTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
-        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
+        return cartesianProduct(ANY_STRING());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_EOF */

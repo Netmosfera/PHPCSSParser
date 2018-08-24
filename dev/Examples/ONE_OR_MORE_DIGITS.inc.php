@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSASTDev\Examples;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getDigitSeqsSet(){
+function ONE_OR_MORE_DIGITS(){
     $digits = ["0", "5", "9"];
     foreach($digits as $digit){
         yield $digit;
@@ -14,9 +14,9 @@ function getDigitSeqsSet(){
         yield "4321" . $digit;
         yield "54321" . $digit;
     }
-    yield "000000";
-    yield "111111";
-    yield "555555";
+    yield "0000000000";
+    yield "111111111";
+    yield "55555555";
     yield "999999";
 }
 

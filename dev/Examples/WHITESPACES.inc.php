@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSASTDev\Examples;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getWhitespaceSeqsSet(){
+function WHITESPACES(){
     return [
         " ",
         "\t",

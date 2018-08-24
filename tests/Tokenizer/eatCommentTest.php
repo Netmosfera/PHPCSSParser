@@ -7,8 +7,7 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 use function Netmosfera\PHPCSSAST\match;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatComment;
-use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
-use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
 use Netmosfera\PHPCSSAST\Tokens\Comment;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
@@ -31,9 +30,9 @@ class isNumberStartTest extends TestCase
 
     function data_terminated(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             $this->getTexts(),
-            getAnyCodePointSeqsSet()
+            ANY_STRING()
         );
     }
 
@@ -49,7 +48,7 @@ class isNumberStartTest extends TestCase
 
     function data_unterminated(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             $this->getTexts()
         );
     }
@@ -66,7 +65,7 @@ class isNumberStartTest extends TestCase
 
     function data_not_a_comment(){
         return cartesianProduct(
-            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ANY_STRING(),
             ["not a comment", ""]
         );
     }
