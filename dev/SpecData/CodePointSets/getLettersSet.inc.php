@@ -1,18 +1,16 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTDev\Sets;
+namespace Netmosfera\PHPCSSASTDev\SpecData\CodePointSets;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\cp;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getNameCodePointSet(){
+function getLettersSet(): CompressedCodePointSet{
     $set = new CompressedCodePointSet();
-    $set->add(cp("-"));
-    $set->addAll(getNameStartCodePointSet());
-    $set->addAll(getDigitCodePointSet());
+    $set->addAll(getLCLettersSet());
+    $set->addAll(getUCLettersSet());
     return $set;
 }

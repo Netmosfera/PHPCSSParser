@@ -8,14 +8,14 @@ use Closure;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
 use Netmosfera\PHPCSSASTTests\Tokenizer\Tools\eatSingleCodePointTest;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNonASCIICodePoint;
-use function Netmosfera\PHPCSSASTDev\Sets\getNonASCIICodePointSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNonASCIIsSet;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 class eatNonASCIICodePointTest extends eatSingleCodePointTest
 {
     function getExpectedCodePointSet(): CompressedCodePointSet{
-        return getNonASCIICodePointSet();
+        return getNonASCIIsSet();
     }
 
     function getEatFunction(): Closure{

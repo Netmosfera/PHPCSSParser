@@ -7,10 +7,10 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getSeqOfAnyCodePoint;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getPrefixes;
-use function Netmosfera\PHPCSSASTDev\Sets\getWhitespaceCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Sets\getWhitespaceSequencesSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getWhitespaceSeqsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getWhitespacesSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatWhitespace;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -21,7 +21,7 @@ use function Netmosfera\PHPCSSAST\match;
 class eatWhitespaceTest extends TestCase
 {
     function data_returns_TRUE_if_the_next_code_point_is_a_whitespace(){
-        return cartesianProduct(getPrefixes(), getWhitespaceSequencesSet(), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getWhitespaceSeqsSet(), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_the_next_code_point_is_a_whitespace */
@@ -37,8 +37,8 @@ class eatWhitespaceTest extends TestCase
     function data_returns_FALSE_if_the_next_code_point_is_not_a_whitespace(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
-        $codePoints->removeAll(getWhitespaceCodePointSet());
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        $codePoints->removeAll(getWhitespacesSet());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_not_a_whitespace */
@@ -52,7 +52,7 @@ class eatWhitespaceTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
-        return cartesianProduct(getPrefixes());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_EOF */

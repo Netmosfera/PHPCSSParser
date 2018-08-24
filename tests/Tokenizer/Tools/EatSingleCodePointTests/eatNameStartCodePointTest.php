@@ -8,14 +8,14 @@ use Closure;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
 use Netmosfera\PHPCSSASTTests\Tokenizer\Tools\eatSingleCodePointTest;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNameStartCodePoint;
-use function Netmosfera\PHPCSSASTDev\Sets\getNameStartCodePointSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNameStartersSet;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 class eatNameStartCodePointTest extends eatSingleCodePointTest
 {
     function getExpectedCodePointSet(): CompressedCodePointSet{
-        return getNameStartCodePointSet();
+        return getNameStartersSet();
     }
 
     function getEatFunction(): Closure{

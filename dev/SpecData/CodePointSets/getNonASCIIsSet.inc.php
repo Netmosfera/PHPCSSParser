@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTDev\Sets;
+namespace Netmosfera\PHPCSSASTDev\SpecData\CodePointSets;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -10,8 +10,8 @@ use function Netmosfera\PHPCSSASTDev\cp;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getUCLetterCodePointSet(): CompressedCodePointSet{
+function getNonASCIIsSet(): CompressedCodePointSet{
     $set = new CompressedCodePointSet();
-    $set->addAll(new ContiguousCodePointsSet(cp("A"), cp("Z")));
+    $set->addAll(new ContiguousCodePointsSet(cp("\u{80}"), cp("\u{10FFFF}")));
     return $set;
 }

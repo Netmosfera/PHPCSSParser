@@ -5,12 +5,16 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\BadStr;
-use function Netmosfera\PHPCSSASTDev\Sets\getNewlineSequencesSet;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatStr;
+use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
+use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getStringDelimiterSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
 use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
 use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
+use Netmosfera\PHPCSSAST\Tokens\BadStr;
 use Netmosfera\PHPCSSAST\Tokens\Str;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +41,11 @@ class eatStrTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_misc(){
-        return cartesianProduct(getPrefixes(), ["\"", "'"], getSeqOfAnyCodePoint());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            getCodePointsFromRanges(getStringDelimiterSet()),
+            getAnyCodePointSeqsSet()
+        );
     }
 
     /** @dataProvider data_misc */
@@ -94,7 +102,11 @@ class eatStrTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_unterminated_EOF(){
-        return cartesianProduct(getPrefixes(), ["\"", "'"], ["", "skip \u{2764} me"]);
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            getCodePointsFromRanges(getStringDelimiterSet()),
+            ["", "skip \u{2764} me"]
+        );
     }
 
     /** @dataProvider data_unterminated_EOF */
@@ -108,7 +120,13 @@ class eatStrTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_unterminated_newline(){
-        return cartesianProduct(getPrefixes(), ["\"", "'"], ["", "skip \u{2764} me"], getNewlineSequencesSet(), getSeqOfAnyCodePoint());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            getCodePointsFromRanges(getStringDelimiterSet()),
+            ["", "skip \u{2764} me"],
+            getNewlineSeqsSet(),
+            getAnyCodePointSeqsSet()
+        );
     }
 
     /** @dataProvider data_unterminated_newline */

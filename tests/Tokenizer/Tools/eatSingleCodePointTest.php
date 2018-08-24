@@ -8,8 +8,8 @@ use Closure;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getSeqOfAnyCodePoint;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getPrefixes;
+use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\match;
@@ -26,9 +26,9 @@ abstract class eatSingleCodePointTest extends TestCase
 
     function data_returns_TRUE_if_the_next_code_point_is_the_expected_code_point(){
         return cartesianProduct(
-            getPrefixes(),
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
             getCodePointsFromRanges($this->getExpectedCodePointSet()),
-            getSeqOfAnyCodePoint()
+            getAnyCodePointSeqsSet()
         );
     }
 
@@ -50,7 +50,7 @@ abstract class eatSingleCodePointTest extends TestCase
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
         $codePoints->removeAll($this->getExpectedCodePointSet());
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_not_the_expected_code_point */
@@ -68,7 +68,7 @@ abstract class eatSingleCodePointTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
-        return cartesianProduct(getPrefixes());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_EOF */

@@ -7,7 +7,7 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools\EatSingleCodePointTests;
 use Closure;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
 use Netmosfera\PHPCSSASTTests\Tokenizer\Tools\eatSingleCodePointTest;
-use function Netmosfera\PHPCSSASTDev\Sets\getUCLetterCodePointSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getUCLettersSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatUCLetter;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -15,7 +15,7 @@ use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatUCLetter;
 class eatUCLetterTest extends eatSingleCodePointTest
 {
     function getExpectedCodePointSet(): CompressedCodePointSet{
-        return getUCLetterCodePointSet();
+        return getUCLettersSet();
     }
 
     function getEatFunction(): Closure{

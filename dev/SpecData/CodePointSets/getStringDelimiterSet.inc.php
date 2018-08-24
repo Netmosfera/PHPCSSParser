@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTDev\Sets;
+namespace Netmosfera\PHPCSSASTDev\SpecData\CodePointSets;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -9,10 +9,9 @@ use function Netmosfera\PHPCSSASTDev\cp;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getNewlineCodePointSet(){
+function getStringDelimiterSet(){
     $set = new CompressedCodePointSet();
-    $set->add(cp("\n"));
-    $set->add(cp("\r"));
-    $set->add(cp("\f"));
+    $set->add(cp("\""));
+    $set->add(cp("'"));
     return $set;
 }

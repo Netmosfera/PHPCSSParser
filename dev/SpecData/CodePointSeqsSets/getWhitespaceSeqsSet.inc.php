@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTDev\Sets;
+namespace Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getWhitespaceSequencesSet(){
+function getWhitespaceSeqsSet(){
     return [" ", "\t", "\n", "\r", "\r\n", "\f"];
 }

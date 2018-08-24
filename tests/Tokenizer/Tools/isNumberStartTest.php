@@ -7,11 +7,11 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getSeqOfAnyCodePoint;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getPrefixes;
+use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getDigitsSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isNumberStart;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
-use function Netmosfera\PHPCSSASTDev\Sets\getDigitCodePointSet;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\cp;
 use function Netmosfera\PHPCSSAST\match;
@@ -21,26 +21,26 @@ use function Netmosfera\PHPCSSAST\match;
 /**
  * Tests in this file:
  *
- * #1  | TRUE  if +. followed by digit     | Y
- * #2  | FALSE if +. followed by non-digit | Y
- * #3  | FALSE if +. followed by EOF       | Y
+ * #1  | TRUE  if +. followed by digit
+ * #2  | FALSE if +. followed by non-digit
+ * #3  | FALSE if +. followed by EOF
  *
- * #4  | TRUE  if +  followed by digit     | Y
- * #5  | FALSE if +  followed by non-digit | Y
- * #6  | FALSE if +  followed by EOF       | Y
+ * #4  | TRUE  if +  followed by digit
+ * #5  | FALSE if +  followed by non-digit
+ * #6  | FALSE if +  followed by EOF
  *
- * #7  | TRUE  if .  followed by digit     |
- * #8  | FALSE if .  followed by non-digit |
- * #9  | FALSE if .  followed by EOF       |
+ * #7  | TRUE  if .  followed by digit
+ * #8  | FALSE if .  followed by non-digit
+ * #9  | FALSE if .  followed by EOF
  *
- * #10 | TRUE  if    digit                 |
- * #11 | FALSE if    non-digit             |
- * #12 | FALSE if    EOF                   |
+ * #10 | TRUE  if    digit
+ * #11 | FALSE if    non-digit
+ * #12 | FALSE if    EOF
  */
 class isNumberStartTest extends TestCase
 {
     function getSigns(){
-        return ["+", "-"];
+        return ["+", "-"]; // @TODO if add "", can get rid of 3 tests here [?]
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -48,7 +48,7 @@ class isNumberStartTest extends TestCase
     // #1
 
     function data_returns_TRUE_if_sign_and_full_stop_are_followed_by_a_digit(){
-        return cartesianProduct(getPrefixes(), $this->getSigns(), getCodePointsFromRanges(getDigitCodePointSet()), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns(), getCodePointsFromRanges(getDigitsSet()), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_sign_and_full_stop_are_followed_by_a_digit */
@@ -66,8 +66,8 @@ class isNumberStartTest extends TestCase
     function data_returns_FALSE_if_sign_and_full_stop_are_followed_by_a_non_digit(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
-        $codePoints->removeAll(getDigitCodePointSet());
-        return cartesianProduct(getPrefixes(), $this->getSigns(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        $codePoints->removeAll(getDigitsSet());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_sign_and_full_stop_are_followed_by_a_non_digit */
@@ -83,7 +83,7 @@ class isNumberStartTest extends TestCase
     // #3
 
     function data_returns_FALSE_if_sign_and_full_stop_are_followed_by_EOF(){
-        return cartesianProduct(getPrefixes(), $this->getSigns());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns());
     }
 
     /** @dataProvider data_returns_FALSE_if_sign_and_full_stop_are_followed_by_EOF */
@@ -100,7 +100,7 @@ class isNumberStartTest extends TestCase
 
     // Test that returns TRUE if sign is followed by a digit
     function data_returns_TRUE_if_sign_is_followed_by_a_digit(){
-        return cartesianProduct(getPrefixes(), $this->getSigns(), getCodePointsFromRanges(getDigitCodePointSet()), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns(), getCodePointsFromRanges(getDigitsSet()), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_sign_is_followed_by_a_digit */
@@ -118,9 +118,9 @@ class isNumberStartTest extends TestCase
     function data_returns_FALSE_if_sign_is_followed_by_a_non_digit(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
-        $codePoints->removeAll(getDigitCodePointSet());
+        $codePoints->removeAll(getDigitsSet());
         $codePoints->remove(cp("."));
-        return cartesianProduct(getPrefixes(), $this->getSigns(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_sign_is_followed_by_a_non_digit */
@@ -136,7 +136,7 @@ class isNumberStartTest extends TestCase
     // #6
 
     function data_returns_FALSE_if_sign_is_followed_by_EOF(){
-        return cartesianProduct(getPrefixes(), $this->getSigns());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), $this->getSigns());
     }
 
     /** @dataProvider data_returns_FALSE_if_sign_is_followed_by_EOF */
@@ -152,7 +152,7 @@ class isNumberStartTest extends TestCase
     // #7
 
     function data_returns_TRUE_if_full_stop_is_followed_by_a_digit(){
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges(getDigitCodePointSet()), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges(getDigitsSet()), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_full_stop_is_followed_by_a_digit */
@@ -170,9 +170,9 @@ class isNumberStartTest extends TestCase
     function data_returns_FALSE_if_full_stop_is_followed_by_a_non_digit(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
-        $codePoints->removeAll(getDigitCodePointSet());
+        $codePoints->removeAll(getDigitsSet());
         $codePoints->remove(cp("."));
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_full_stop_is_followed_by_a_non_digit */
@@ -188,7 +188,7 @@ class isNumberStartTest extends TestCase
     // #9
 
     function data_returns_FALSE_if_full_stop_is_followed_by_EOF(){
-        return cartesianProduct(getPrefixes());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_full_stop_is_followed_by_EOF */
@@ -204,7 +204,7 @@ class isNumberStartTest extends TestCase
     // #10
 
     function data_returns_TRUE_if_the_next_code_point_is_a_digit(){
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges(getDigitCodePointSet()), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges(getDigitsSet()), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_the_next_code_point_is_a_digit */
@@ -224,8 +224,8 @@ class isNumberStartTest extends TestCase
         $codePoints->selectAll();
         $codePoints->remove(cp("."));
         $codePoints->removeAll($this->getSigns());
-        $codePoints->removeAll(getDigitCodePointSet());
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        $codePoints->removeAll(getDigitsSet());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_a_non_digit */
@@ -242,7 +242,7 @@ class isNumberStartTest extends TestCase
     // #12
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
-        return cartesianProduct(getPrefixes());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_EOF */

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTDev\Sets;
+namespace Netmosfera\PHPCSSASTDev\SpecData\CodePointSets;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -9,11 +9,10 @@ use function Netmosfera\PHPCSSASTDev\cp;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getValidEscapeCodePointSet(): CompressedCodePointSet{
+function getWhitespacesSet(){
     $set = new CompressedCodePointSet();
-    $set->selectAll();
-    $set->remove(cp("\n"));
-    $set->remove(cp("\f"));
-    $set->remove(cp("\r"));
+    $set->add(cp(" "));
+    $set->add(cp("\t"));
+    $set->addAll(getNewlinesSet());
     return $set;
 }

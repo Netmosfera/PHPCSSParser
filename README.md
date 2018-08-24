@@ -1,3 +1,3 @@
-# CSS-Syntax compliant CSS in PHP
+# CSS-Syntax compliant PHP CSS parser
 
 Nothing works yet.

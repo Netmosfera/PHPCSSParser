@@ -7,10 +7,10 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getSeqOfAnyCodePoint;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getPrefixes;
-use function Netmosfera\PHPCSSASTDev\Sets\getNewlineSequencesSet;
-use function Netmosfera\PHPCSSASTDev\Sets\getNewlineCodePointSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isValidEscape;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -25,7 +25,11 @@ class isValidEscapeTest extends TestCase
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
         $codePoints->remove(cp("\\"));
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            getCodePointsFromRanges($codePoints),
+            getAnyCodePointSeqsSet()
+        );
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_not_a_backslash */
@@ -39,7 +43,9 @@ class isValidEscapeTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
-        return cartesianProduct(getPrefixes());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet()
+        );
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_EOF */
@@ -53,7 +59,11 @@ class isValidEscapeTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_returns_FALSE_if_backslash_is_followed_by_newline(){
-        return cartesianProduct(getPrefixes(), getNewlineSequencesSet(), getSeqOfAnyCodePoint());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            getNewlineSeqsSet(),
+            getAnyCodePointSeqsSet()
+        );
     }
 
     /** @dataProvider data_returns_FALSE_if_backslash_is_followed_by_newline */
@@ -67,7 +77,9 @@ class isValidEscapeTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_returns_FALSE_if_backslash_is_followed_by_EOF(){
-        return cartesianProduct(getPrefixes());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet()
+        );
     }
 
     /** @dataProvider data_returns_FALSE_if_backslash_is_followed_by_EOF */
@@ -83,8 +95,12 @@ class isValidEscapeTest extends TestCase
     function data_returns_TRUE_if_backslash_is_not_followed_by_newline_or_EOF(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
-        $codePoints->removeAll(getNewlineCodePointSet());
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        $codePoints->removeAll(getNewlinesSet());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            getCodePointsFromRanges($codePoints),
+            getAnyCodePointSeqsSet()
+        );
     }
 
     /** @dataProvider data_returns_TRUE_if_backslash_is_not_followed_by_newline_or_EOF */

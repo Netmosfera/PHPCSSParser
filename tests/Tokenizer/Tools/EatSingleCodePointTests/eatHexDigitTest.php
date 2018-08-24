@@ -7,7 +7,7 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools\EatSingleCodePointTests;
 use Closure;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
 use Netmosfera\PHPCSSASTTests\Tokenizer\Tools\eatSingleCodePointTest;
-use function Netmosfera\PHPCSSASTDev\Sets\getHexDigitCodePointSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getHexDigitsSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatHexDigit;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -15,7 +15,7 @@ use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatHexDigit;
 class eatHexDigitTest extends eatSingleCodePointTest
 {
     function getExpectedCodePointSet(): CompressedCodePointSet{
-        return getHexDigitCodePointSet();
+        return getHexDigitsSet();
     }
 
     function getEatFunction(): Closure{

@@ -7,6 +7,8 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 use function Netmosfera\PHPCSSAST\match;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatWhitespaces;
+use function Netmosfera\PHPCSSASTDev\Examples\getWhitespaceSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
 use Netmosfera\PHPCSSAST\Tokens\Whitespaces;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
@@ -22,17 +24,12 @@ class eatWhitespacesTest extends TestCase
         ];
     }
 
-    function getWhitespaces(){
-        return [
-            " ", "\t", "\r", "\n", "\r\n", "\f", "\t\t\t", "     ",
-            "     \t       \r        \n      \f         \r\n     ",
-        ];
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
     function data_whitespaces(){
-        return cartesianProduct(getPrefixes(), $this->getWhitespaces(), $this->getRestThatIsNotPrefixedWithWhitespace());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            getWhitespaceSeqsSet(),
+            $this->getRestThatIsNotPrefixedWithWhitespace()
+        );
     }
 
     /** @dataProvider data_whitespaces */
@@ -46,7 +43,10 @@ class eatWhitespacesTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_no_whitespaces(){
-        return cartesianProduct(getPrefixes(), $this->getRestThatIsNotPrefixedWithWhitespace());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            $this->getRestThatIsNotPrefixedWithWhitespace()
+        );
     }
 
     /** @dataProvider data_no_whitespaces */

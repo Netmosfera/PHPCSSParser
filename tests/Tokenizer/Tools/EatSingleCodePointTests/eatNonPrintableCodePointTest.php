@@ -8,14 +8,14 @@ use Closure;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
 use Netmosfera\PHPCSSASTTests\Tokenizer\Tools\eatSingleCodePointTest;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNonPrintableCodePoint;
-use function Netmosfera\PHPCSSASTDev\Sets\getNonPrintableCodePointSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNonPrintablesSet;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 class eatNonPrintableCodePointTest extends eatSingleCodePointTest
 {
     function getExpectedCodePointSet(): CompressedCodePointSet{
-        return getNonPrintableCodePointSet();
+        return getNonPrintablesSet();
     }
 
     function getEatFunction(): Closure{

@@ -7,8 +7,8 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 use function Netmosfera\PHPCSSAST\match;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatComment;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getPrefixes;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getSeqOfAnyCodePoint;
+use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
 use Netmosfera\PHPCSSAST\Tokens\Comment;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +30,11 @@ class isNumberStartTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_terminated(){
-        return cartesianProduct(getPrefixes(), $this->getTexts(), getSeqOfAnyCodePoint());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            $this->getTexts(),
+            getAnyCodePointSeqsSet()
+        );
     }
 
     /** @dataProvider data_terminated */
@@ -44,7 +48,10 @@ class isNumberStartTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_unterminated(){
-        return cartesianProduct(getPrefixes(), $this->getTexts());
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            $this->getTexts()
+        );
     }
 
     /** @dataProvider data_unterminated */
@@ -58,7 +65,10 @@ class isNumberStartTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_not_a_comment(){
-        return cartesianProduct(getPrefixes(), ["not a comment", ""]);
+        return cartesianProduct(
+            getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(),
+            ["not a comment", ""]
+        );
     }
 
     /** @dataProvider data_not_a_comment */

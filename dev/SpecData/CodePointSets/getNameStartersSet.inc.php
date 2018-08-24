@@ -1,20 +1,18 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTDev\Sets;
+namespace Netmosfera\PHPCSSASTDev\SpecData\CodePointSets;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use Netmosfera\PHPCSSASTDev\ContiguousCodePointsSet;
 use function Netmosfera\PHPCSSASTDev\cp;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getNonPrintableCodePointSet(){
+function getNameStartersSet(){
     $set = new CompressedCodePointSet();
-    $set->addAll(new ContiguousCodePointsSet(cp("\u{0}"), cp("\u{8}")));
-    $set->add(cp("\u{B}"));
-    $set->addAll(new ContiguousCodePointsSet(cp("\u{E}"), cp("\u{1F}")));
-    $set->add(cp("\u{7F}"));
+    $set->add(cp("_"));
+    $set->addAll(getLettersSet());
+    $set->addAll(getNonASCIIsSet());
     return $set;
 }

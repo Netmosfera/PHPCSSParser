@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTDev\Sets;
+namespace Netmosfera\PHPCSSASTDev\SpecData\CodePointSets;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -10,10 +10,8 @@ use function Netmosfera\PHPCSSASTDev\cp;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getHexDigitCodePointSet(){
+function getDigitsSet(): CompressedCodePointSet{
     $set = new CompressedCodePointSet();
     $set->addAll(new ContiguousCodePointsSet(cp("0"), cp("9")));
-    $set->addAll(new ContiguousCodePointsSet(cp("a"), cp("f")));
-    $set->addAll(new ContiguousCodePointsSet(cp("A"), cp("F")));
     return $set;
 }

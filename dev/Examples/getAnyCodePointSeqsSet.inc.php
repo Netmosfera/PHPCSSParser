@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTTests\Tokenizer;
+namespace Netmosfera\PHPCSSASTDev\Examples;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -9,7 +9,7 @@ use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getSeqOfAnyCodePoint(){
+function getAnyCodePointSeqsSet(){
     $set = new CompressedCodePointSet();
     $set->selectAll();
     $sequences = getCodePointsFromRanges($set);

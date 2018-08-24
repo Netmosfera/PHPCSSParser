@@ -7,11 +7,11 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getSeqOfAnyCodePoint;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\getPrefixes;
-use function Netmosfera\PHPCSSASTDev\Sets\getValidEscapeCodePointSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\getEitherEmptyOrNonEmptyAnyCodePointSeqsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNameStartersSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getValidEscapesSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isIdentifierStart;
-use function Netmosfera\PHPCSSASTDev\Sets\getNameStartCodePointSet;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\cp;
@@ -48,7 +48,7 @@ class isIdentifierStartTest extends TestCase
     // #1
 
     function data_returns_TRUE_if_minus_and_backslash_are_followed_by_a_valid_escape_code_point(){
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges(getValidEscapeCodePointSet()), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges(getValidEscapesSet()), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_minus_and_backslash_are_followed_by_a_valid_escape_code_point */
@@ -66,8 +66,8 @@ class isIdentifierStartTest extends TestCase
     function data_returns_FALSE_if_minus_and_backslash_are_followed_by_an_invalid_escape_code_point(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
-        $codePoints->removeAll(getValidEscapeCodePointSet());
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        $codePoints->removeAll(getValidEscapesSet());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_minus_and_backslash_are_followed_by_an_invalid_escape_code_point */
@@ -85,8 +85,8 @@ class isIdentifierStartTest extends TestCase
     function data_returns_FALSE_if_minus_and_backslash_are_followed_by_EOF(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
-        $codePoints->removeAll(getValidEscapeCodePointSet());
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        $codePoints->removeAll(getValidEscapesSet());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_minus_and_backslash_are_followed_by_EOF */
@@ -102,7 +102,7 @@ class isIdentifierStartTest extends TestCase
     // #4
 
     function data_returns_TRUE_if_minus_is_followed_by_minus(){
-        return cartesianProduct(getPrefixes(), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_minus_is_followed_by_minus */
@@ -118,7 +118,7 @@ class isIdentifierStartTest extends TestCase
     // #5
 
     function data_returns_TRUE_if_minus_is_followed_by_a_name_start_code_point(){
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges(getNameStartCodePointSet()), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges(getNameStartersSet()), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_minus_is_followed_by_a_name_start_code_point */
@@ -138,8 +138,8 @@ class isIdentifierStartTest extends TestCase
         $codePoints->selectAll();
         $codePoints->remove(cp("-"));
         $codePoints->remove(cp("\\"));
-        $codePoints->removeAll(getNameStartCodePointSet());
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        $codePoints->removeAll(getNameStartersSet());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_minus_is_followed_by_none_of_a_minus_or_a_name_start_code_point */
@@ -155,7 +155,7 @@ class isIdentifierStartTest extends TestCase
     // #7
 
     function data_returns_FALSE_if_minus_is_followed_by_EOF(){
-        return cartesianProduct(getPrefixes());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_minus_is_followed_by_EOF */
@@ -171,7 +171,7 @@ class isIdentifierStartTest extends TestCase
     // #8
 
     function data_returns_TRUE_if_backslash_is_followed_by_a_valid_escape_code_point(){
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges(getValidEscapeCodePointSet()), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges(getValidEscapesSet()), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_backslash_is_followed_by_a_valid_escape_code_point */
@@ -189,8 +189,8 @@ class isIdentifierStartTest extends TestCase
     function data_returns_FALSE_if_backslash_is_followed_by_an_invalid_escape_code_point(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
-        $codePoints->removeAll(getValidEscapeCodePointSet());
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        $codePoints->removeAll(getValidEscapesSet());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_backslash_is_followed_by_an_invalid_escape_code_point */
@@ -205,7 +205,7 @@ class isIdentifierStartTest extends TestCase
     // #10
 
     function data_returns_FALSE_if_backslash_is_followed_by_EOF(){
-        return cartesianProduct(getPrefixes());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_backslash_is_followed_by_EOF */
@@ -221,7 +221,7 @@ class isIdentifierStartTest extends TestCase
     // #11
 
     function data_returns_TRUE_if_the_next_code_point_is_a_name_start_code_point(){
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges(getNameStartCodePointSet()), getSeqOfAnyCodePoint());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges(getNameStartersSet()), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_TRUE_if_the_next_code_point_is_a_name_start_code_point */
@@ -241,8 +241,8 @@ class isIdentifierStartTest extends TestCase
         $codePoints->selectAll();
         $codePoints->remove(cp("-"));
         $codePoints->remove(cp("\\"));
-        $codePoints->removeAll(getNameStartCodePointSet());
-        return cartesianProduct(getPrefixes(), getCodePointsFromRanges($codePoints), getSeqOfAnyCodePoint());
+        $codePoints->removeAll(getNameStartersSet());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet(), getCodePointsFromRanges($codePoints), getAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_none_of_a_name_start_code_point_a_backslash_or_a_minus */
@@ -257,7 +257,7 @@ class isIdentifierStartTest extends TestCase
     // #13
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
-        return cartesianProduct(getPrefixes());
+        return cartesianProduct(getEitherEmptyOrNonEmptyAnyCodePointSeqsSet());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_EOF */

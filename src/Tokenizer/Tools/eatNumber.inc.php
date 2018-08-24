@@ -22,7 +22,7 @@ function eatNumber(Traverser $t): _Number{
     $dt = $t->createBranch();
     if(
         has($dt->eatStr(".")) &&
-        has($decimals = $dt->eatStr("[0-9]+"))
+        has($decimals = $dt->eatExp('[0-9]+'))
     ){
         $t->importBranch($dt);
     }else{

@@ -7,15 +7,15 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools\EatSingleCodePointTests;
 use Closure;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
 use Netmosfera\PHPCSSASTTests\Tokenizer\Tools\eatSingleCodePointTest;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNameItemsSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNameCodePoint;
-use function Netmosfera\PHPCSSASTDev\Sets\getNameCodePointSet;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 class eatNameCodePointTest extends eatSingleCodePointTest
 {
     function getExpectedCodePointSet(): CompressedCodePointSet{
-        return getNameCodePointSet();
+        return getNameItemsSet();
     }
 
     function getEatFunction(): Closure{
