@@ -5,9 +5,11 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTDev\Examples\COMMENT_TEXTS;
+use function Netmosfera\PHPCSSASTDev\Examples\NOT_STARTING_WITH_COMMENT_START;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatComment;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use Netmosfera\PHPCSSAST\Tokens\Comment;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
@@ -16,23 +18,11 @@ use PHPUnit\Framework\TestCase;
 
 class isNumberStartTest extends TestCase
 {
-    function getTexts(){
-        return [
-            "",
-            "   ",
-            "trap *",
-            " hello ",
-            "\u{2764}\u{2764}\u{2764}",
-        ];
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
     function data_terminated(){
         return cartesianProduct(
-            ANY_STRING(),
-            $this->getTexts(),
-            ANY_STRING()
+            ANY_UTF8(),
+            COMMENT_TEXTS(),
+            ANY_UTF8()
         );
     }
 
@@ -48,8 +38,8 @@ class isNumberStartTest extends TestCase
 
     function data_unterminated(){
         return cartesianProduct(
-            ANY_STRING(),
-            $this->getTexts()
+            ANY_UTF8(),
+            COMMENT_TEXTS()
         );
     }
 
@@ -65,8 +55,8 @@ class isNumberStartTest extends TestCase
 
     function data_not_a_comment(){
         return cartesianProduct(
-            ANY_STRING(),
-            ["not a comment", ""]
+            ANY_UTF8(),
+            NOT_STARTING_WITH_COMMENT_START()
         );
     }
 

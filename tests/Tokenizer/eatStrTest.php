@@ -5,10 +5,10 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatStr;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getStringDelimiterSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
 use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
@@ -41,14 +41,14 @@ class eatStrTest extends TestCase
 
     function data_misc(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             getCodePointsFromRanges(getStringDelimiterSet()),
-            ANY_STRING()
+            ANY_UTF8()
         );
     }
 
     /** @dataProvider data_misc */
-    function test_misc(String $prefix, String $delimiter, String $rest){
+    function test_misc($prefix, $delimiter, $rest){
         // Test simple string with a non-ASCII character in it.
         $pieces[] = " hello \u{2764} world ";
 
@@ -102,14 +102,14 @@ class eatStrTest extends TestCase
 
     function data_unterminated_EOF(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             getCodePointsFromRanges(getStringDelimiterSet()),
             ["", "skip \u{2764} me"]
         );
     }
 
     /** @dataProvider data_unterminated_EOF */
-    function test_unterminated_EOF(String $prefix, String $delimiter, String $string){
+    function test_unterminated_EOF($prefix, $delimiter, $string){
         $t = new Traverser($prefix . $delimiter . $string, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatStr($t), new Str($string === "" ? [] : [$string], TRUE)));
@@ -120,16 +120,16 @@ class eatStrTest extends TestCase
 
     function data_unterminated_newline(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             getCodePointsFromRanges(getStringDelimiterSet()),
             ["", "skip \u{2764} me"],
             getNewlineSeqsSet(),
-            ANY_STRING()
+            ANY_UTF8()
         );
     }
 
     /** @dataProvider data_unterminated_newline */
-    function test_unterminated_newline(String $prefix, String $delimiter, String $string, String $newline, String $rest){
+    function test_unterminated_newline($prefix, $delimiter, $string, $newline, $rest){
         $t = new Traverser($prefix . $delimiter . $string . $newline . $rest, TRUE);
         $t->eatStr($prefix);
         self::assertTrue(match(eatStr($t), new BadStr($string === "" ? [] : [$string])));

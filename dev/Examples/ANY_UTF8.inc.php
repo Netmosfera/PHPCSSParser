@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSASTDev\Examples;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function ANY_STRING(){
+function ANY_UTF8(){
     return [
         "",
         "sample \u{2764} string"

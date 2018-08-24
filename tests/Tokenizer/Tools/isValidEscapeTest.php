@@ -7,7 +7,7 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isValidEscape;
@@ -25,9 +25,9 @@ class isValidEscapeTest extends TestCase
         $codePoints->selectAll();
         $codePoints->remove(cp("\\"));
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             getCodePointsFromRanges($codePoints),
-            ANY_STRING()
+            ANY_UTF8()
         );
     }
 
@@ -43,7 +43,7 @@ class isValidEscapeTest extends TestCase
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
         return cartesianProduct(
-            ANY_STRING()
+            ANY_UTF8()
         );
     }
 
@@ -59,9 +59,9 @@ class isValidEscapeTest extends TestCase
 
     function data_returns_FALSE_if_backslash_is_followed_by_newline(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             getNewlineSeqsSet(),
-            ANY_STRING()
+            ANY_UTF8()
         );
     }
 
@@ -77,7 +77,7 @@ class isValidEscapeTest extends TestCase
 
     function data_returns_FALSE_if_backslash_is_followed_by_EOF(){
         return cartesianProduct(
-            ANY_STRING()
+            ANY_UTF8()
         );
     }
 
@@ -96,9 +96,9 @@ class isValidEscapeTest extends TestCase
         $codePoints->selectAll();
         $codePoints->removeAll(getNewlinesSet());
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             getCodePointsFromRanges($codePoints),
-            ANY_STRING()
+            ANY_UTF8()
         );
     }
 

@@ -6,7 +6,7 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 use function Netmosfera\PHPCSSAST\match;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNumber;
 use function Netmosfera\PHPCSSASTDev\Examples\ONE_OR_MORE_DIGITS;
 use function Netmosfera\PHPCSSASTDev\Examples\OPTIONAL_NUMBER_SIGN;
@@ -39,7 +39,7 @@ class eatNumberTest extends TestCase
 {
     function data_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             OPTIONAL_NUMBER_SIGN(),
             ONE_OR_MORE_DIGITS(),
             ["e", "E"],
@@ -61,7 +61,7 @@ class eatNumberTest extends TestCase
 
     function data_2_INTEGER_PART_followed_by_DECIMAL_PART(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             OPTIONAL_NUMBER_SIGN(),
             ONE_OR_MORE_DIGITS(),
             NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART()
@@ -81,7 +81,7 @@ class eatNumberTest extends TestCase
 
     function data_3_INTEGER_PART_followed_by_E_PART(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             OPTIONAL_NUMBER_SIGN(),
             ONE_OR_MORE_DIGITS(),
             ["e", "E"],
@@ -103,7 +103,7 @@ class eatNumberTest extends TestCase
 
     function data_4_INTEGER_PART(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             OPTIONAL_NUMBER_SIGN(),
             ONE_OR_MORE_DIGITS(),
             NOT_A_NUMBER_CONTINUATION_AFTER_INTEGER_PART()
@@ -123,7 +123,7 @@ class eatNumberTest extends TestCase
 
     function data_5_DECIMAL_PART_and_E_PART(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             OPTIONAL_NUMBER_SIGN(),
             ONE_OR_MORE_DIGITS(),
             ["e", "E"],
@@ -145,7 +145,7 @@ class eatNumberTest extends TestCase
 
     function data_6_DECIMAL_PART(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             OPTIONAL_NUMBER_SIGN(),
             ONE_OR_MORE_DIGITS(),
             NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART()

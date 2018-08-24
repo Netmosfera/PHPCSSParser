@@ -4,19 +4,19 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Strings\EOFEscape;
-use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
-use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
-use function Netmosfera\PHPCSSASTDev\Examples\ONE_TO_SIX_HEX_DIGITS;
-use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getHexDigitsSet;
-use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
+use Netmosfera\PHPCSSAST\Tokens\Strings\EOFEscape;
+use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
+use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
 use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getWhitespaceSeqsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getHexDigitsSet;
+use function Netmosfera\PHPCSSASTDev\Examples\ONE_TO_SIX_HEX_DIGITS;
+use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatEscape;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -25,7 +25,7 @@ class eatEscapeTest extends TestCase
 {
     function data_actual(){
         return cartesianProduct(
-            ANY_STRING(),
+            ANY_UTF8(),
             ONE_TO_SIX_HEX_DIGITS(),
             ["", "skip \u{2764} me"]
         );
@@ -42,7 +42,7 @@ class eatEscapeTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_actual_with_whitespace(){
-        return cartesianProduct(ANY_STRING(), ONE_TO_SIX_HEX_DIGITS(), getWhitespaceSeqsSet(), ANY_STRING());
+        return cartesianProduct(ANY_UTF8(), ONE_TO_SIX_HEX_DIGITS(), getWhitespaceSeqsSet(), ANY_UTF8());
     }
 
     /** @dataProvider data_actual_with_whitespace */
@@ -56,7 +56,7 @@ class eatEscapeTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_EOF(){
-        return cartesianProduct(ANY_STRING());
+        return cartesianProduct(ANY_UTF8());
     }
 
     /** @dataProvider data_EOF */
@@ -75,7 +75,7 @@ class eatEscapeTest extends TestCase
         $codePoints->removeAll(getHexDigitsSet());
         $seqSet = getCodePointsFromRanges($codePoints);
         $seqSet[] = "\r\n";
-        return cartesianProduct(ANY_STRING(), $seqSet, ANY_STRING());
+        return cartesianProduct(ANY_UTF8(), $seqSet, ANY_UTF8());
     }
 
     /** @dataProvider data_plain */

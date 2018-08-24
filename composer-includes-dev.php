@@ -1,10 +1,13 @@
 <?php
 
 require(__DIR__ . "/dev/cp.inc.php");
-require(__DIR__ . "/dev/Examples/ANY_STRING.inc.php");
+require(__DIR__ . "/dev/Examples/ANY_UTF8.inc.php");
+require(__DIR__ . "/dev/Examples/COMMENT_TEXTS.inc.php");
 require(__DIR__ . "/dev/Examples/NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART.inc.php");
 require(__DIR__ . "/dev/Examples/NOT_A_NUMBER_CONTINUATION_AFTER_E_PART.inc.php");
 require(__DIR__ . "/dev/Examples/NOT_A_NUMBER_CONTINUATION_AFTER_INTEGER_PART.inc.php");
+require(__DIR__ . "/dev/Examples/NOT_STARTING_WITH_COMMENT_START.inc.php");
+require(__DIR__ . "/dev/Examples/NOT_STARTING_WITH_WHITESPACE.inc.php");
 require(__DIR__ . "/dev/Examples/ONE_OR_MORE_DIGITS.inc.php");
 require(__DIR__ . "/dev/Examples/ONE_TO_SIX_HEX_DIGITS.inc.php");
 require(__DIR__ . "/dev/Examples/OPTIONAL_NUMBER_SIGN.inc.php");

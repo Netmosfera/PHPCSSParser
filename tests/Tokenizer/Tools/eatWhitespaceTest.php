@@ -7,7 +7,7 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_STRING;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getWhitespaceSeqsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getWhitespacesSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatWhitespace;
@@ -20,7 +20,7 @@ use function Netmosfera\PHPCSSAST\match;
 class eatWhitespaceTest extends TestCase
 {
     function data_returns_TRUE_if_the_next_code_point_is_a_whitespace(){
-        return cartesianProduct(ANY_STRING(), getWhitespaceSeqsSet(), ANY_STRING());
+        return cartesianProduct(ANY_UTF8(), getWhitespaceSeqsSet(), ANY_UTF8());
     }
 
     /** @dataProvider data_returns_TRUE_if_the_next_code_point_is_a_whitespace */
@@ -37,7 +37,7 @@ class eatWhitespaceTest extends TestCase
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
         $codePoints->removeAll(getWhitespacesSet());
-        return cartesianProduct(ANY_STRING(), getCodePointsFromRanges($codePoints), ANY_STRING());
+        return cartesianProduct(ANY_UTF8(), getCodePointsFromRanges($codePoints), ANY_UTF8());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_not_a_whitespace */
@@ -51,7 +51,7 @@ class eatWhitespaceTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function data_returns_FALSE_if_the_next_code_point_is_EOF(){
-        return cartesianProduct(ANY_STRING());
+        return cartesianProduct(ANY_UTF8());
     }
 
     /** @dataProvider data_returns_FALSE_if_the_next_code_point_is_EOF */
