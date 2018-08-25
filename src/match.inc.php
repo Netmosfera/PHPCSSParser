@@ -31,28 +31,25 @@ function match($a, $b){
 
         if(array_keys($a) !== array_keys($b)){ return FALSE; }
 
-        $aIterator = new ArrayIterator($a);
-        $bIterator = new ArrayIterator($b);
-
-        $aIterator->rewind();
-        $bIterator->rewind();
+        reset($a);
+        reset($b);
 
         CHECK_ENTRY:
 
-        if($aIterator->valid() === FALSE){
+        if(key($a) === NULL){
             return TRUE;
         }
 
-        if(match($aIterator->key(), $bIterator->key()) === FALSE){
+        if(match(key($a), key($b)) === FALSE){
             return FALSE;
         }
 
-        if(match($aIterator->current(), $bIterator->current()) === FALSE){
+        if(match(current($a), current($b)) === FALSE){
             return FALSE;
         }
 
-        $aIterator->next();
-        $bIterator->next();
+        next($a);
+        next($b);
 
         goto CHECK_ENTRY;
 
