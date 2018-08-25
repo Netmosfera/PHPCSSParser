@@ -11,8 +11,8 @@ use function Netmosfera\PHPCSSAST\Tokenizer\eatStringToken;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getStringDelimiterSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
-use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
-use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\ActualEscape;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\PlainEscape;
 use Netmosfera\PHPCSSAST\Tokens\BadStringToken;
 use Netmosfera\PHPCSSAST\Tokens\StringToken;
 use Netmosfera\PHPCSSAST\Traverser;
@@ -94,7 +94,7 @@ class eatStringTokenTest extends TestCase
 
         $t = new Traverser($prefix . $delimiter . $string . $delimiter . $rest, TRUE);
         $t->eatStr($prefix);
-        assertMatch(eatStringToken($t), new StringToken($pieces));
+        assertMatch(eatStringToken($t), new StringToken($delimiter, $pieces));
         assertMatch($t->eatAll(), $rest);
     }
 
@@ -112,7 +112,7 @@ class eatStringTokenTest extends TestCase
     function test_unterminated_EOF($prefix, $delimiter, $string){
         $t = new Traverser($prefix . $delimiter . $string, TRUE);
         $t->eatStr($prefix);
-        assertMatch(eatStringToken($t), new StringToken($string === "" ? [] : [$string], TRUE));
+        assertMatch(eatStringToken($t), new StringToken($delimiter, $string === "" ? [] : [$string], TRUE));
         assertMatch($t->eatAll(), "");
     }
 
@@ -132,7 +132,7 @@ class eatStringTokenTest extends TestCase
     function test_unterminated_newline($prefix, $delimiter, $string, $newline, $rest){
         $t = new Traverser($prefix . $delimiter . $string . $newline . $rest, TRUE);
         $t->eatStr($prefix);
-        assertMatch(eatStringToken($t), new BadStringToken($string === "" ? [] : [$string]));
+        assertMatch(eatStringToken($t), new BadStringToken($delimiter, $string === "" ? [] : [$string]));
         assertMatch($t->eatAll(), $newline . $rest);
     }
 }

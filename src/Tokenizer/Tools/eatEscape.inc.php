@@ -5,10 +5,10 @@ namespace Netmosfera\PHPCSSAST\Tokenizer\Tools;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\Tokenizer\has;
-use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
-use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
-use Netmosfera\PHPCSSAST\Tokens\Strings\EOFEscape;
-use Netmosfera\PHPCSSAST\Tokens\Strings\Escape;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\ActualEscape;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\PlainEscape;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\EOFEscape;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\Escape;
 use Netmosfera\PHPCSSAST\Traverser;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]

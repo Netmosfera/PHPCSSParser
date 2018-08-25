@@ -7,8 +7,8 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\IdentifierToken;
-use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
-use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\PlainEscape;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\ActualEscape;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatIdentifierToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 

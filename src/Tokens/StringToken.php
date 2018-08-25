@@ -12,11 +12,14 @@ use function Netmosfera\PHPCSSAST\match;
 
 class StringToken
 {
+    public $delimiter;
+
     public $pieces;
 
     public $terminatedWithEOF;
 
-    function __construct(Array $pieces, Bool $terminatedWithEOF = FALSE){
+    function __construct(String $delimiter, Array $pieces, Bool $terminatedWithEOF = FALSE){
+        $this->delimiter = $delimiter;
         $this->pieces = $pieces;
         $this->terminatedWithEOF = $terminatedWithEOF;
     }
@@ -24,6 +27,8 @@ class StringToken
     function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->pieces, $other->pieces);
+            match($this->delimiter, $other->delimiter) &&
+            match($this->pieces, $other->pieces) &&
+            match($this->terminatedWithEOF, $other->terminatedWithEOF);
     }
 }

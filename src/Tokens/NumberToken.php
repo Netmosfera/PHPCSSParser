@@ -4,6 +4,8 @@ namespace Netmosfera\PHPCSSAST\Tokens;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use function Netmosfera\PHPCSSAST\match;
+
 class NumberToken
 {
     public $sign;
@@ -66,11 +68,11 @@ class NumberToken
     function equals($other): Bool{
         return
             $other instanceof self &&
-            $other->sign === $this->sign &&
-            $other->wholes === $this->wholes &&
-            $other->decimals === $this->decimals &&
-            $other->eLetter === $this->eLetter &&
-            $other->eSign === $this->eSign &&
-            $other->eExponent === $this->eExponent;
+            match($other->sign, $this->sign) &&
+            match($other->wholes, $this->wholes) &&
+            match($other->decimals, $this->decimals) &&
+            match($other->eLetter, $this->eLetter) &&
+            match($other->eSign, $this->eSign) &&
+            match($other->eExponent, $this->eExponent);
     }
 }

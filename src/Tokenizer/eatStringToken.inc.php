@@ -23,11 +23,11 @@ function eatStringToken(Traverser $t){
     EAT_PIECE:
 
     if($t->isEOF()){
-        return new StringToken($pieces, TRUE);
+        return new StringToken($delimiter, $pieces, TRUE);
     }elseif($t->eatStr($delimiter) === $delimiter){
-        return new StringToken($pieces);
+        return new StringToken($delimiter, $pieces);
     }elseif(has(eatNewline($t->createBranch()))){
-        return new BadStringToken($pieces);
+        return new BadStringToken($delimiter, $pieces);
     }elseif(has($t->eatStr("\\"))){
         $pieces[] = eatEscape($t);
     }else{

@@ -4,6 +4,8 @@ namespace Netmosfera\PHPCSSAST\Tokens;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use function Netmosfera\PHPCSSAST\match;
+
 class CommentToken
 {
     public $text;
@@ -17,7 +19,7 @@ class CommentToken
     function equals($other): Bool{
         return
             $other instanceof self &&
-            $other->text === $this->text &&
-            $other->terminated === $this->terminated;
+            match($other->text, $this->text) &&
+            match($other->terminated, $this->terminated);
     }
 }
