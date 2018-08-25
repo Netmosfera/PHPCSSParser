@@ -4,13 +4,13 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\match;
-use function Netmosfera\PHPCSSAST\Tokenizer\eatIdentifierToken;
-use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
-use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
-use Netmosfera\PHPCSSAST\Tokens\IdentifierToken;
-use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\Traverser;
+use Netmosfera\PHPCSSAST\Tokens\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\PlainEscape;
+use Netmosfera\PHPCSSAST\Tokens\Strings\ActualEscape;
+use function Netmosfera\PHPCSSAST\Tokenizer\eatIdentifierToken;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -44,7 +44,7 @@ class eatIdentifierTokenTest extends TestCase
 
         $t = new Traverser($prefix . $name . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatIdentifierToken($t), $expected));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatIdentifierToken($t), $expected);
+        assertMatch($t->eatAll(), $rest);
     }
 }

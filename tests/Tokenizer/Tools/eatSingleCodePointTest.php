@@ -8,10 +8,10 @@ use Closure;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSAST\match;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -35,8 +35,8 @@ abstract class eatSingleCodePointTest extends TestCase
     function test_returns_TRUE_if_the_next_code_point_is_the_expected_code_point(String $prefix, String $expectedCodePoint, String $rest ){
         $t = new Traverser($prefix . $expectedCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match($this->getEatFunction()($t), $expectedCodePoint));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch($this->getEatFunction()($t), $expectedCodePoint);
+        assertMatch($t->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -52,8 +52,8 @@ abstract class eatSingleCodePointTest extends TestCase
     function test_returns_FALSE_if_the_next_code_point_is_not_the_expected_code_point(String $prefix, String $unexpectedCodePoint, String $rest){
         $t = new Traverser($prefix . $unexpectedCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match($this->getEatFunction()($t), NULL));
-        self::assertTrue(match($t->eatAll(), $unexpectedCodePoint . $rest));
+        assertMatch($this->getEatFunction()($t), NULL);
+        assertMatch($t->eatAll(), $unexpectedCodePoint . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -66,7 +66,7 @@ abstract class eatSingleCodePointTest extends TestCase
     function test_returns_FALSE_if_the_next_code_point_is_EOF(String $prefix){
         $t = new Traverser($prefix, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match($this->getEatFunction()($t), NULL));
-        self::assertTrue(match($t->eatAll(), ""));
+        assertMatch($this->getEatFunction()($t), NULL);
+        assertMatch($t->eatAll(), "");
     }
 }

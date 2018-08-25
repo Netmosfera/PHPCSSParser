@@ -7,14 +7,14 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isValidEscape;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\cp;
-use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -35,8 +35,8 @@ class isValidEscapeTest extends TestCase
     function test_returns_FALSE_if_the_next_code_point_is_not_a_backslash(String $prefix, String $noBackslashCodePoint, String $rest){
         $t = new Traverser($prefix . $noBackslashCodePoint . "a" . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isValidEscape($t), FALSE));
-        self::assertTrue(match($t->eatAll(), $noBackslashCodePoint . "a" . $rest));
+        assertMatch(isValidEscape($t), FALSE);
+        assertMatch($t->eatAll(), $noBackslashCodePoint . "a" . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -51,8 +51,8 @@ class isValidEscapeTest extends TestCase
     function test_returns_FALSE_if_the_next_code_point_is_EOF(String $prefix){
         $t = new Traverser($prefix, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isValidEscape($t), FALSE));
-        self::assertTrue(match($t->eatAll(), ""));
+        assertMatch(isValidEscape($t), FALSE);
+        assertMatch($t->eatAll(), "");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -69,8 +69,8 @@ class isValidEscapeTest extends TestCase
     function test_returns_FALSE_if_backslash_is_followed_by_newline(String $prefix, String $invalidEscape, String $rest){
         $t = new Traverser($prefix . "\\" . $invalidEscape . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isValidEscape($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "\\" . $invalidEscape . $rest));
+        assertMatch(isValidEscape($t), FALSE);
+        assertMatch($t->eatAll(), "\\" . $invalidEscape . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -85,8 +85,8 @@ class isValidEscapeTest extends TestCase
     function test_returns_FALSE_if_backslash_is_followed_by_EOF(String $prefix){
         $t = new Traverser($prefix . "\\", TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isValidEscape($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "\\"));
+        assertMatch(isValidEscape($t), FALSE);
+        assertMatch($t->eatAll(), "\\");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -106,7 +106,7 @@ class isValidEscapeTest extends TestCase
     function test_returns_TRUE_if_backslash_is_not_followed_by_newline_or_EOF(String $prefix, String $notNewlineCodePoint, String $rest){
         $t = new Traverser($prefix . "\\" . $notNewlineCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isValidEscape($t), TRUE));
-        self::assertTrue(match($t->eatAll(), "\\" . $notNewlineCodePoint . $rest));
+        assertMatch(isValidEscape($t), TRUE);
+        assertMatch($t->eatAll(), "\\" . $notNewlineCodePoint . $rest);
     }
 }

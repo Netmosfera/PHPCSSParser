@@ -7,14 +7,14 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNameStartersSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getValidEscapesSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isIdentifierStart;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\cp;
-use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -54,8 +54,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_TRUE_if_minus_and_backslash_are_followed_by_a_valid_escape_code_point(String $prefix, String $escapeCodePoint, String $rest){
         $t = new Traverser($prefix . "-\\" . $escapeCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), TRUE));
-        self::assertTrue(match($t->eatAll(), "-\\" . $escapeCodePoint . $rest));
+        assertMatch(isIdentifierStart($t), TRUE);
+        assertMatch($t->eatAll(), "-\\" . $escapeCodePoint . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -73,8 +73,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_FALSE_if_minus_and_backslash_are_followed_by_an_invalid_escape_code_point(String $prefix, String $nonEscapeCodePoint, String $rest){
         $t = new Traverser($prefix . "-\\" . $nonEscapeCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "-\\" . $nonEscapeCodePoint . $rest));
+        assertMatch(isIdentifierStart($t), FALSE);
+        assertMatch($t->eatAll(), "-\\" . $nonEscapeCodePoint . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -92,8 +92,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_FALSE_if_minus_and_backslash_are_followed_by_EOF(String $prefix){
         $t = new Traverser($prefix . "-\\", TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "-\\"));
+        assertMatch(isIdentifierStart($t), FALSE);
+        assertMatch($t->eatAll(), "-\\");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -108,8 +108,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_TRUE_if_minus_is_followed_by_minus(String $prefix, String $rest){
         $t = new Traverser($prefix . "--" . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), TRUE));
-        self::assertTrue(match($t->eatAll(), "--" . $rest));
+        assertMatch(isIdentifierStart($t), TRUE);
+        assertMatch($t->eatAll(), "--" . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -124,8 +124,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_TRUE_if_minus_is_followed_by_a_name_start_code_point(String $prefix, String $nameStartCodePoint, String $rest){
         $t = new Traverser($prefix . "-" . $nameStartCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), TRUE));
-        self::assertTrue(match($t->eatAll(), "-" . $nameStartCodePoint . $rest));
+        assertMatch(isIdentifierStart($t), TRUE);
+        assertMatch($t->eatAll(), "-" . $nameStartCodePoint . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -145,8 +145,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_FALSE_if_minus_is_followed_by_none_of_a_minus_or_a_name_start_code_point(String $prefix, String $nonMinusNonNameStartCodePoint, String $rest){
         $t = new Traverser($prefix . "-" . $nonMinusNonNameStartCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "-" . $nonMinusNonNameStartCodePoint . $rest));
+        assertMatch(isIdentifierStart($t), FALSE);
+        assertMatch($t->eatAll(), "-" . $nonMinusNonNameStartCodePoint . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -161,8 +161,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_FALSE_if_minus_is_followed_by_EOF(String $prefix){
         $t = new Traverser($prefix . "-", TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "-"));
+        assertMatch(isIdentifierStart($t), FALSE);
+        assertMatch($t->eatAll(), "-");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -177,8 +177,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_TRUE_if_backslash_is_followed_by_a_valid_escape_code_point(String $prefix, String $validEscapeCodePoint, String $rest){
         $t = new Traverser($prefix . "\\" . $validEscapeCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), TRUE));
-        self::assertTrue(match($t->eatAll(), "\\" . $validEscapeCodePoint . $rest));
+        assertMatch(isIdentifierStart($t), TRUE);
+        assertMatch($t->eatAll(), "\\" . $validEscapeCodePoint . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -196,8 +196,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_FALSE_if_backslash_is_followed_by_an_invalid_escape_code_point(String $prefix, String $invalidEscapeCodePoint, String $rest){
         $t = new Traverser($prefix . "\\" . $invalidEscapeCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "\\" . $invalidEscapeCodePoint . $rest));
+        assertMatch(isIdentifierStart($t), FALSE);
+        assertMatch($t->eatAll(), "\\" . $invalidEscapeCodePoint . $rest);
     }
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -211,8 +211,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_FALSE_if_backslash_is_followed_by_EOF(String $prefix){
         $t = new Traverser($prefix . "\\", TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "\\"));
+        assertMatch(isIdentifierStart($t), FALSE);
+        assertMatch($t->eatAll(), "\\");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -227,8 +227,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_TRUE_if_the_next_code_point_is_a_name_start_code_point(String $prefix, String $nameStartCodePoint, String $rest){
         $t = new Traverser($prefix . $nameStartCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), TRUE));
-        self::assertTrue(match($t->eatAll(), $nameStartCodePoint . $rest));
+        assertMatch(isIdentifierStart($t), TRUE);
+        assertMatch($t->eatAll(), $nameStartCodePoint . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -248,8 +248,8 @@ class isIdentifierStartTest extends TestCase
     function test_returns_FALSE_if_the_next_code_point_is_none_of_a_name_start_code_point_a_backslash_or_a_minus(String $prefix, String $invalidCodePoint, String $rest){
         $t = new Traverser($prefix . $invalidCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), $invalidCodePoint . $rest));
+        assertMatch(isIdentifierStart($t), FALSE);
+        assertMatch($t->eatAll(), $invalidCodePoint . $rest);
     }
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -263,7 +263,7 @@ class isIdentifierStartTest extends TestCase
     function test_returns_FALSE_if_the_next_code_point_is_EOF(String $prefix){
         $t = new Traverser($prefix, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isIdentifierStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), ""));
+        assertMatch(isIdentifierStart($t), FALSE);
+        assertMatch($t->eatAll(), "");
     }
 }

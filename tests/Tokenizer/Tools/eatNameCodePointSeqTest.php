@@ -7,7 +7,7 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNameCodePointSeq;
-use function Netmosfera\PHPCSSAST\match;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -20,7 +20,7 @@ class eatNameCodePointSeqTest extends TestCase
         $name = "abc-def\u{2764}123";
         $t = new Traverser($prefix . $name . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNameCodePointSeq($t), $name));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatNameCodePointSeq($t), $name);
+        assertMatch($t->eatAll(), $rest);
     }
 }

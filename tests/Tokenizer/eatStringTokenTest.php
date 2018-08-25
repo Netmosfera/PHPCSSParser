@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\match;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatStringToken;
@@ -94,8 +94,8 @@ class eatStringTokenTest extends TestCase
 
         $t = new Traverser($prefix . $delimiter . $string . $delimiter . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatStringToken($t), new StringToken($pieces)));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatStringToken($t), new StringToken($pieces));
+        assertMatch($t->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -112,8 +112,8 @@ class eatStringTokenTest extends TestCase
     function test_unterminated_EOF($prefix, $delimiter, $string){
         $t = new Traverser($prefix . $delimiter . $string, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatStringToken($t), new StringToken($string === "" ? [] : [$string], TRUE)));
-        self::assertTrue(match($t->eatAll(), ""));
+        assertMatch(eatStringToken($t), new StringToken($string === "" ? [] : [$string], TRUE));
+        assertMatch($t->eatAll(), "");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -132,7 +132,7 @@ class eatStringTokenTest extends TestCase
     function test_unterminated_newline($prefix, $delimiter, $string, $newline, $rest){
         $t = new Traverser($prefix . $delimiter . $string . $newline . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatStringToken($t), new BadStringToken($string === "" ? [] : [$string])));
-        self::assertTrue(match($t->eatAll(), $newline . $rest));
+        assertMatch(eatStringToken($t), new BadStringToken($string === "" ? [] : [$string]));
+        assertMatch($t->eatAll(), $newline . $rest);
     }
 }

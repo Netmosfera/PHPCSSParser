@@ -4,13 +4,13 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\match;
-use function Netmosfera\PHPCSSAST\Tokenizer\eatNumericToken;
+use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\Traverser;
+use Netmosfera\PHPCSSAST\Tokens\NumberToken;
 use Netmosfera\PHPCSSAST\Tokens\DimensionToken;
 use Netmosfera\PHPCSSAST\Tokens\IdentifierToken;
-use Netmosfera\PHPCSSAST\Tokens\NumberToken;
-use Netmosfera\PHPCSSAST\Traverser;
-use PHPUnit\Framework\TestCase;
+use function Netmosfera\PHPCSSAST\Tokenizer\eatNumericToken;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -37,7 +37,7 @@ class eatNumericTokenTest extends TestCase
         $unit = new IdentifierToken([$unitString]);
         $t = new Traverser($prefix . $number . $unitString . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNumericToken($t), new DimensionToken($expectedNumber, $unit)));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatNumericToken($t), new DimensionToken($expectedNumber, $unit));
+        assertMatch($t->eatAll(), $rest);
     }
 }

@@ -12,8 +12,8 @@ use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isNumberStart;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\cp;
-use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -54,8 +54,8 @@ class isNumberStartTest extends TestCase
     function test_returns_TRUE_if_sign_and_full_stop_are_followed_by_a_digit(String $prefix, String $sign, String $digit, String $rest){
         $t = new Traverser($prefix . $sign . "." . $digit . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), TRUE));
-        self::assertTrue(match($t->eatAll(), $sign . "." . $digit . $rest));
+        assertMatch(isNumberStart($t), TRUE);
+        assertMatch($t->eatAll(), $sign . "." . $digit . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -73,8 +73,8 @@ class isNumberStartTest extends TestCase
     function test_returns_FALSE_if_sign_and_full_stop_are_followed_by_a_non_digit(String $prefix, String $sign, String $nonDigit, String $rest){
         $t = new Traverser($prefix . $sign . "." . $nonDigit . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), $sign . "." . $nonDigit . $rest));
+        assertMatch(isNumberStart($t), FALSE);
+        assertMatch($t->eatAll(), $sign . "." . $nonDigit . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -89,8 +89,8 @@ class isNumberStartTest extends TestCase
     function test_returns_FALSE_if_sign_and_full_stop_are_followed_by_EOF(String $prefix, String $sign){
         $t = new Traverser($prefix . $sign . ".", TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), $sign . "."));
+        assertMatch(isNumberStart($t), FALSE);
+        assertMatch($t->eatAll(), $sign . ".");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -106,8 +106,8 @@ class isNumberStartTest extends TestCase
     function test_returns_TRUE_if_sign_is_followed_by_a_digit(String $prefix, String $sign, String $digit, String $rest){
         $t = new Traverser($prefix . $sign . $digit . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), TRUE));
-        self::assertTrue(match($t->eatAll(), $sign . $digit . $rest));
+        assertMatch(isNumberStart($t), TRUE);
+        assertMatch($t->eatAll(), $sign . $digit . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -126,8 +126,8 @@ class isNumberStartTest extends TestCase
     function test_returns_FALSE_if_sign_is_followed_by_a_non_digit(String $prefix, String $sign, String $nonDigit, String $rest){
         $t = new Traverser($prefix . $sign . $nonDigit . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), $sign . $nonDigit . $rest));
+        assertMatch(isNumberStart($t), FALSE);
+        assertMatch($t->eatAll(), $sign . $nonDigit . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -142,8 +142,8 @@ class isNumberStartTest extends TestCase
     function test_returns_FALSE_if_sign_is_followed_by_EOF(String $prefix, String $sign){
         $t = new Traverser($prefix . $sign, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), $sign));
+        assertMatch(isNumberStart($t), FALSE);
+        assertMatch($t->eatAll(), $sign);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -158,8 +158,8 @@ class isNumberStartTest extends TestCase
     function test_returns_TRUE_if_full_stop_is_followed_by_a_digit(String $prefix, String $digit, String $rest){
         $t = new Traverser($prefix . "." . $digit . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), TRUE));
-        self::assertTrue(match($t->eatAll(), "." . $digit . $rest));
+        assertMatch(isNumberStart($t), TRUE);
+        assertMatch($t->eatAll(), "." . $digit . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -178,8 +178,8 @@ class isNumberStartTest extends TestCase
     function test_returns_FALSE_if_full_stop_is_followed_by_a_non_digit(String $prefix, String $nonDigit, String $rest){
         $t = new Traverser($prefix . "." . $nonDigit . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "." . $nonDigit . $rest));
+        assertMatch(isNumberStart($t), FALSE);
+        assertMatch($t->eatAll(), "." . $nonDigit . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -194,8 +194,8 @@ class isNumberStartTest extends TestCase
     function test_returns_FALSE_if_full_stop_is_followed_by_EOF(String $prefix){
         $t = new Traverser($prefix . ".", TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), FALSE));
-        self::assertTrue(match($t->eatAll(), "."));
+        assertMatch(isNumberStart($t), FALSE);
+        assertMatch($t->eatAll(), ".");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -210,8 +210,8 @@ class isNumberStartTest extends TestCase
     function test_returns_TRUE_if_the_next_code_point_is_a_digit(String $prefix, String $digit, String $rest){
         $t = new Traverser($prefix . $digit . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(isNumberStart($t), TRUE));
-        self::assertTrue(match($t->eatAll(), $digit . $rest));
+        assertMatch(isNumberStart($t), TRUE);
+        assertMatch($t->eatAll(), $digit . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -232,8 +232,8 @@ class isNumberStartTest extends TestCase
         $t = new Traverser($prefix . $nonDigit . $rest, TRUE);
         $t->eatStr($prefix);
         $actual = isNumberStart($t);
-        self::assertTrue(match($actual, FALSE));
-        self::assertTrue(match($t->eatAll(), $nonDigit . $rest));
+        assertMatch($actual, FALSE);
+        assertMatch($t->eatAll(), $nonDigit . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -249,7 +249,7 @@ class isNumberStartTest extends TestCase
         $t = new Traverser($prefix, TRUE);
         $t->eatStr($prefix);
         $actual = isNumberStart($t);
-        self::assertTrue(match($actual, FALSE));
-        self::assertTrue(match($t->eatAll(), ""));
+        assertMatch($actual, FALSE);
+        assertMatch($t->eatAll(), "");
     }
 }

@@ -27,7 +27,7 @@ require(__DIR__ . "/dev/SpecData/CodePointSets/getStringDelimiterSet.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSets/getUCLettersSet.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSets/getValidEscapesSet.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSets/getWhitespacesSet.inc.php");
-require(__DIR__ . "/tests/assertTokensMatch.inc.php");
+require(__DIR__ . "/tests/assertMatch.inc.php");
 require(__DIR__ . "/tests/cartesianProduct.inc.php");
 require(__DIR__ . "/tests/getBoundariesCount.inc.php");
 require(__DIR__ . "/tests/getBoundariesRange.inc.php");

@@ -13,7 +13,7 @@ use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNewline;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
-use function Netmosfera\PHPCSSAST\match;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -31,8 +31,8 @@ class eatNewlineTest extends TestCase
     function test_returns_TRUE_if_the_next_code_point_is_a_newline(String $prefix, String $newline, String $rest){
         $t = new Traverser($prefix . $newline . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNewline($t), $newline));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatNewline($t), $newline);
+        assertMatch($t->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -52,8 +52,8 @@ class eatNewlineTest extends TestCase
     function test_returns_FALSE_if_the_next_code_point_is_not_a_newline(String $prefix, String $nonNewline, String $rest){
         $t = new Traverser($prefix . $nonNewline . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNewline($t), NULL));
-        self::assertTrue(match($t->eatAll(), $nonNewline . $rest));
+        assertMatch(eatNewline($t), NULL);
+        assertMatch($t->eatAll(), $nonNewline . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -68,7 +68,7 @@ class eatNewlineTest extends TestCase
     function test_returns_FALSE_if_the_next_code_point_is_EOF(String $prefix){
         $t = new Traverser($prefix, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNewline($t), NULL));
-        self::assertTrue(match($t->eatAll(), ""));
+        assertMatch(eatNewline($t), NULL);
+        assertMatch($t->eatAll(), "");
     }
 }

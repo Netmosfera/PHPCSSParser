@@ -4,10 +4,10 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\match;
-use function Netmosfera\PHPCSSAST\Tokenizer\eatNumberToken;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSAST\Tokenizer\eatNumberToken;
 use function Netmosfera\PHPCSSASTDev\Examples\ONE_OR_MORE_DIGITS;
 use function Netmosfera\PHPCSSASTDev\Examples\OPTIONAL_NUMBER_SIGN;
 use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_E_PART;
@@ -53,8 +53,8 @@ class eatNumberTokenTest extends TestCase
         $expected = new NumberToken($sign === "" ? NULL : $sign, $digits, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
         $t = new Traverser($prefix . $sign . $digits . "." . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNumberToken($t), $expected));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatNumberToken($t), $expected);
+        assertMatch($t->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -73,8 +73,8 @@ class eatNumberTokenTest extends TestCase
         $expected = new NumberToken($sign === "" ? NULL : $sign, $digits, $digits, NULL, NULL, NULL);
         $t = new Traverser($prefix . $sign . $digits . "." . $digits . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNumberToken($t), $expected));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatNumberToken($t), $expected);
+        assertMatch($t->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -95,8 +95,8 @@ class eatNumberTokenTest extends TestCase
         $expected = new NumberToken($sign === "" ? NULL : $sign, $digits, NULL, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
         $t = new Traverser($prefix . $sign . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNumberToken($t), $expected));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatNumberToken($t), $expected);
+        assertMatch($t->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -115,8 +115,8 @@ class eatNumberTokenTest extends TestCase
         $expected = new NumberToken($sign === "" ? NULL : $sign, $intDigits, NULL, NULL, NULL, NULL);
         $t = new Traverser($prefix . $sign . $intDigits . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNumberToken($t), $expected));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatNumberToken($t), $expected);
+        assertMatch($t->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -137,8 +137,8 @@ class eatNumberTokenTest extends TestCase
         $expected = new NumberToken($sign === "" ? NULL : $sign, NULL, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
         $t = new Traverser($prefix . $sign . "." . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNumberToken($t), $expected));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatNumberToken($t), $expected);
+        assertMatch($t->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -157,7 +157,7 @@ class eatNumberTokenTest extends TestCase
         $expected = new NumberToken($sign === "" ? NULL : $sign, NULL, $decimalDigits, NULL, NULL, NULL);
         $t = new Traverser($prefix . $sign . "." . $decimalDigits . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatNumberToken($t), $expected));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatNumberToken($t), $expected);
+        assertMatch($t->eatAll(), $rest);
     }
 }

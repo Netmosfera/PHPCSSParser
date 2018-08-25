@@ -4,12 +4,12 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\match;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSAST\Tokenizer\eatCommentToken;
 use function Netmosfera\PHPCSSASTDev\Examples\COMMENT_TEXTS;
 use function Netmosfera\PHPCSSASTDev\Examples\NOT_STARTING_WITH_COMMENT_START;
-use function Netmosfera\PHPCSSAST\Tokenizer\eatCommentToken;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use Netmosfera\PHPCSSAST\Tokens\CommentToken;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
@@ -30,8 +30,8 @@ class eatCommentTokenTest extends TestCase
     function test_terminated(String $prefix, String $text, String $rest){
         $t = new Traverser($prefix . "/*" . $text . "*/" . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatCommentToken($t), new CommentToken($text)));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatCommentToken($t), new CommentToken($text));
+        assertMatch($t->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -47,8 +47,8 @@ class eatCommentTokenTest extends TestCase
     function test_unterminated(String $prefix, String $text){
         $t = new Traverser($prefix . "/*" . $text, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatCommentToken($t), new CommentToken($text, FALSE)));
-        self::assertTrue(match($t->eatAll(), ""));
+        assertMatch(eatCommentToken($t), new CommentToken($text, FALSE));
+        assertMatch($t->eatAll(), "");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -64,7 +64,7 @@ class eatCommentTokenTest extends TestCase
     function test_not_a_comment(String $prefix, String $rest){
         $t = new Traverser($prefix . $rest, TRUE);
         $t->eatStr($prefix);
-        self::assertTrue(match(eatCommentToken($t), NULL));
-        self::assertTrue(match($t->eatAll(), $rest));
+        assertMatch(eatCommentToken($t), NULL);
+        assertMatch($t->eatAll(), $rest);
     }
 }

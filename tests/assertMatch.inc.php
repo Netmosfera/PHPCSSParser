@@ -4,11 +4,11 @@ namespace Netmosfera\PHPCSSASTTests;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use function Netmosfera\PHPCSSAST\match;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function assertTokensMatch(Token $a, Token $b){
-    TestCase::assertTrue($a->equalsExactly($b));
+function assertMatch($a, $b){
+    TestCase::assertTrue(match($a, $b));
 }
