@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use ArrayIterator;
+use Generator;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -31,8 +32,10 @@ function match($a, $b){
 
         if(array_keys($a) !== array_keys($b)){ return FALSE; }
 
-        $aIterator = new ArrayIterator($a);
-        $bIterator = new ArrayIterator($b);
+        $aIterator = (function() use($a){ yield from $a; })();
+        $bIterator = (function() use($b){ yield from $b; })();
+        /** @var Generator $aIterator */
+        /** @var Generator $bIterator */
 
         $aIterator->rewind();
         $bIterator->rewind();
