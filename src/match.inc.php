@@ -9,6 +9,10 @@ use ArrayIterator;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function match($a, $b){
+    if($a === $b){
+        return TRUE;
+    }
+
     if(
         $a === NULL ||
         $b === NULL ||
@@ -20,34 +24,39 @@ function match($a, $b){
 
     $aIsArray = is_array($a);
     $bIsArray = is_array($b);
-    if($aIsArray || $bIsArray){
-        if($aIsArray && $bIsArray){
-            if(count($a) !== count($b)){
-                return FALSE;
-            }
+    if($aIsArray && $bIsArray){
+        if(count($a) !== count($b)){
+            return FALSE;
+        }
 
-            $aKeys = array_keys($a);
-            $bKeys = array_keys($b);
-            foreach($aKeys as $o => $_){
-                $aKey = $aKeys[$o];
-                $bKey = $bKeys[$o];
-                if(match($aKey, $bKey) === FALSE){
-                    return FALSE;
-                }
-            }
+        if(array_keys($a) !== array_keys($b)){ return FALSE; }
 
-            $aValues = array_values($a);
-            $bValues = array_values($b);
-            foreach($aValues as $o => $_){
-                $aValue = $aValues[$o];
-                $bValue = $bValues[$o];
-                if(match($aValue, $bValue) === FALSE){
-                    return FALSE;
-                }
-            }
+        $aIterator = new ArrayIterator($a);
+        $bIterator = new ArrayIterator($b);
 
+        $aIterator->rewind();
+        $bIterator->rewind();
+
+        CHECK_ENTRY:
+
+        if($aIterator->valid() === FALSE){
             return TRUE;
         }
+
+        if(match($aIterator->key(), $bIterator->key()) === FALSE){
+            return FALSE;
+        }
+
+        if(match($aIterator->current(), $bIterator->current()) === FALSE){
+            return FALSE;
+        }
+
+        $aIterator->next();
+        $bIterator->next();
+
+        goto CHECK_ENTRY;
+
+    }elseif($aIsArray || $bIsArray){
         return FALSE;
     }
 
