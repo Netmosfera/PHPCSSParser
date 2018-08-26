@@ -6,8 +6,8 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
-use Netmosfera\PHPCSSAST\Tokens\SubTokens\EOFEscape;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\EOFEscape;
 use Netmosfera\PHPCSSAST\Tokens\SubTokens\PlainEscape;
 use Netmosfera\PHPCSSAST\Tokens\SubTokens\ActualEscape;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getWhitespaceSeqsSet;

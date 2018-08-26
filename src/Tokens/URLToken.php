@@ -8,25 +8,34 @@ use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class StringToken
+class URLToken
 {
-    public $delimiter;
+    public $whitespaceBefore;
 
     public $pieces;
 
     public $terminatedWithEOF;
 
-    function __construct(String $delimiter, Array $pieces, Bool $terminatedWithEOF = FALSE){
-        $this->delimiter = $delimiter;
+    public $whitespaceAfter;
+
+    function __construct(
+        ?WhitespaceToken $whitespaceBefore,
+        Array $pieces,
+        Bool $terminatedWithEOF,
+        ?WhitespaceToken $whitespaceAfter
+    ){
+        $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;
         $this->terminatedWithEOF = $terminatedWithEOF;
+        $this->whitespaceAfter = $whitespaceAfter;
     }
 
     function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->delimiter, $other->delimiter) &&
+            match($this->whitespaceBefore, $other->whitespaceBefore) &&
             match($this->pieces, $other->pieces) &&
-            match($this->terminatedWithEOF, $other->terminatedWithEOF);
+            match($this->terminatedWithEOF, $other->terminatedWithEOF) &&
+            match($this->whitespaceAfter, $other->whitespaceAfter);
     }
 }

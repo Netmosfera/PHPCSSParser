@@ -10,6 +10,7 @@ require(__DIR__ . "/src/Tokenizer/eatNumberToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatNumericToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatStringToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatToken.inc.php");
+require(__DIR__ . "/src/Tokenizer/eatURLToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatWhitespaceToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/Tools/eatDigit.inc.php");
 require(__DIR__ . "/src/Tokenizer/Tools/eatEscape.inc.php");

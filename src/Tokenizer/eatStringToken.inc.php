@@ -16,7 +16,9 @@ use Netmosfera\PHPCSSAST\Traverser;
 function eatStringToken(Traverser $t){
     $delimiter = $t->eatExp('\'|"');
 
-    if(hasNo($delimiter)){ return NULL; }
+    if(hasNo($delimiter)){
+        return NULL;
+    }
 
     $pieces = [];
 
