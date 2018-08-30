@@ -8,7 +8,7 @@ use Netmosfera\PHPCSSAST\Tokens\IdentifierToken;
 use Netmosfera\PHPCSSAST\Traverser;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNameCodePointSeq;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isIdentifierStart;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\isBackslashAndValidEscape;
+use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\isBSValidEscape;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\eatAnyEscape;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -20,7 +20,7 @@ function eatIdentifierToken(Traverser $t){
 
     EAT_PIECE:
 
-    if(isBackslashAndValidEscape($t)){
+    if(isBSValidEscape($t)){
         $t->eatStr("\\");
         $pieces[] = eatAnyEscape($t);
     }elseif(has($plainCPs = eatNameCodePointSeq($t))){

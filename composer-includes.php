@@ -28,5 +28,5 @@ require(__DIR__ . "/src/Tokenizer/Tools/isIdentifierStart.inc.php");
 require(__DIR__ . "/src/Tokenizer/Tools/isNumberStart.inc.php");
 require(__DIR__ . "/src/Tokenizer/Tools/Escapes/eatAnyEscape.inc.php");
 require(__DIR__ . "/src/Tokenizer/Tools/Escapes/eatValidEscape.inc.php");
-require(__DIR__ . "/src/Tokenizer/Tools/Escapes/isBackslashAndValidEscape.inc.php");
+require(__DIR__ . "/src/Tokenizer/Tools/Escapes/isBSValidEscape.inc.php");
 require(__DIR__ . "/src/Tokenizer/Tools/Escapes/isValidEscape.inc.php");

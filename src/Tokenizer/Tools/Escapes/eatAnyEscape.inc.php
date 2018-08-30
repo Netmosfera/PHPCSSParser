@@ -14,11 +14,13 @@ use Netmosfera\PHPCSSAST\Traverser;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * Eats a string escape sequence.
+ * Eats any escape sequence.
  *
- * Assumes that the `\` code point has been consumed already.
+ * Assumes that `\` has been consumed already.
+ *
+ * Works like {@see eatValidEscape} but also includes newline escape, or EOF.
  */
-function eatAnyEscape(Traverser $t): Escape{
+function eatAnyEscape(Traverser $t): ?Escape{
     if($t->isEOF()){
         return new EOFEscape();
     }

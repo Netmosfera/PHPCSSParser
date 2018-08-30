@@ -4,18 +4,15 @@ namespace Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\Tokenizer\hasNo;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNewline;
+use function Netmosfera\PHPCSSAST\Tokenizer\has;
 use Netmosfera\PHPCSSAST\Traverser;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * Checks weather the stream starts with a valid escape.
- *
- * Assumes that `\` has been consumed already.
+ * Checks weather the stream starts with `\` followed by a valid escape.
  */
-function isValidEscape(Traverser $t): Bool{
+function isBSValidEscape(Traverser $t): Bool{
     $t = $t->createBranch();
-    return $t->isNotEOF() && hasNo(eatNewline($t));
+    return has($t->eatStr("\\")) && isValidEscape($t);
 }

@@ -14,9 +14,9 @@ use Netmosfera\PHPCSSAST\Traverser;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * Eats a string escape sequence.
+ * Consumes valid escape sequences.
  *
- * Assumes that the `\` code point has been consumed already.
+ * Assumes that `\` has been consumed already.
  */
 function eatValidEscape(Traverser $t): Escape{
     if(isValidEscape($t)){
