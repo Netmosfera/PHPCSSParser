@@ -1,12 +1,11 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools\EatSingleCodePointTests;
+namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
 use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
-use Netmosfera\PHPCSSASTTests\Tokenizer\Tools\eatSingleCodePointTest;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getDigitsSet;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatDigit;
 

@@ -106,7 +106,7 @@ class eatURLTokenTest extends TestCase
             getWhitespacesSet()->getRegExp(),
             getNonPrintablesSet()->getRegExp(),
             $eatRemnants,
-            Closure::fromCallable("Netmosfera\\PHPCSSAST\\Tokenizer\\Tools\\eatEscape")
+            Closure::fromCallable("Netmosfera\\PHPCSSAST\\Tokenizer\\Tools\\Escapes\\eatAnyEscape")
         );
 
         assertMatch($actual, $expected);

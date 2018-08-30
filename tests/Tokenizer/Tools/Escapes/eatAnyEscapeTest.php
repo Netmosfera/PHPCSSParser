@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools;
+namespace Netmosfera\PHPCSSASTTests\Tokenizer\Tools\Escapes;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -12,16 +12,16 @@ use Netmosfera\PHPCSSAST\Tokens\SubTokens\PlainEscape;
 use Netmosfera\PHPCSSAST\Tokens\SubTokens\ActualEscape;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getWhitespaceSeqsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getHexDigitsSet;
+use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\eatAnyEscape;
 use function Netmosfera\PHPCSSASTDev\Examples\ONE_TO_SIX_HEX_DIGITS;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatEscape;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class eatEscapeTest extends TestCase
+class eatAnyEscapeTest extends TestCase
 {
     function data_actual(){
         return cartesianProduct(
@@ -35,7 +35,7 @@ class eatEscapeTest extends TestCase
     function test_actual(String $prefix, String $hexDigits, String $rest){
         $t = new Traverser($prefix . $hexDigits . $rest, TRUE);
         $t->eatStr($prefix);
-        assertMatch(eatEscape($t), new ActualEscape($hexDigits, NULL));
+        assertMatch(eatAnyEscape($t), new ActualEscape($hexDigits, NULL));
         assertMatch($t->eatAll(), $rest);
     }
 
@@ -49,7 +49,7 @@ class eatEscapeTest extends TestCase
     function test_actual_with_whitespace(String $prefix, String $hexDigits, String $whitespace, String $rest){
         $t = new Traverser($prefix . $hexDigits . $whitespace . $rest, TRUE);
         $t->eatStr($prefix);
-        assertMatch(eatEscape($t), new ActualEscape($hexDigits, $whitespace));
+        assertMatch(eatAnyEscape($t), new ActualEscape($hexDigits, $whitespace));
         assertMatch($t->eatAll(), $rest);
     }
 
@@ -63,7 +63,7 @@ class eatEscapeTest extends TestCase
     function test_EOF(String $prefix){
         $t = new Traverser($prefix, TRUE);
         $t->eatStr($prefix);
-        assertMatch(eatEscape($t), new EOFEscape());
+        assertMatch(eatAnyEscape($t), new EOFEscape());
         assertMatch($t->eatAll(), "");
     }
 
@@ -82,7 +82,7 @@ class eatEscapeTest extends TestCase
     function test_plain(String $prefix, String $plainCodePoint, String $rest){
         $t = new Traverser($prefix . $plainCodePoint . $rest, TRUE);
         $t->eatStr($prefix);
-        assertMatch(eatEscape($t), new PlainEscape($plainCodePoint));
+        assertMatch(eatAnyEscape($t), new PlainEscape($plainCodePoint));
         assertMatch($t->eatAll(), $rest);
     }
 }

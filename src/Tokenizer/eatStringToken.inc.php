@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatEscape;
+use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\eatAnyEscape;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNewline;
 use Netmosfera\PHPCSSAST\Tokens\BadStringToken;
 use Netmosfera\PHPCSSAST\Tokens\StringToken;
@@ -31,7 +31,7 @@ function eatStringToken(Traverser $t){
     }elseif(has(eatNewline($t->createBranch()))){
         return new BadStringToken($delimiter, $pieces);
     }elseif(has($t->eatStr("\\"))){
-        $pieces[] = eatEscape($t);
+        $pieces[] = eatAnyEscape($t);
     }else{
         $stringPiece = $t->eatExp('[^' . $t->escapeRegexp("\r\n\f\\" . $delimiter) . ']+');
         if(has($stringPiece)){

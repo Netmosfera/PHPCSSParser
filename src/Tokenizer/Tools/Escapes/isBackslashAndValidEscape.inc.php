@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSAST\Tokenizer\Tools;
+namespace Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -23,7 +23,7 @@ use Netmosfera\PHPCSSAST\Traverser;
  * These are not necessarily parse errors; for example `\` followed by newline in a CSS
  * string is simply ignored.
  */
-function isValidEscape(Traverser $t): Bool{
+function isBackslashAndValidEscape(Traverser $t): Bool{
     $t = $t->createBranch();
-    return has($t->eatStr("\\")) && isValidEscapeCodePoint($t);
+    return has($t->eatStr("\\")) && isValidEscape($t);
 }
