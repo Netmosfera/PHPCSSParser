@@ -4,13 +4,10 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Closure;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatEscape;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNonPrintableCodePoint;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isValidEscape;
 use Netmosfera\PHPCSSAST\Tokens\BadURLToken;
 use Netmosfera\PHPCSSAST\Tokens\URLToken;
 use Netmosfera\PHPCSSAST\Traverser;
+use Closure;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -18,66 +15,69 @@ use Netmosfera\PHPCSSAST\Traverser;
  * -
  *
  * Assumes that the initial `url(` has already been consumed.
+ *
+ * @TODO cannot use eatEscape() in $eatEscapeFunction as that allows \EOF and \newline
  */
-function eatURLToken(Traverser $t, Closure $eatBadURLRemnants){
+function eatURLToken(
+    Traverser $t,
+    String $eatWhitespaceRegexSet,
+    String $blacklistCPsRegexSet,
+    Closure $eatBadURLRemnantsFunction,
+    Closure $eatEscapeFunction
+){
+    // var_export(preg_quote("\"'\\()"));
+    // These CPs must appear as escape sequences if needed
+    $excludeCPs = '"\'\\\\\\(\\)';
 
-    $wsBefore = eatWhitespaceToken($t);
+    $wsBefore = $t->eatExp('[' . $eatWhitespaceRegexSet . ']*');
 
     $pieces = [];
 
     LOOP:
 
     if($t->isEOF()){
-        return new URLToken($wsBefore, $pieces, TRUE, NULL);
+        return new URLToken($wsBefore, $pieces, TRUE, "");
     }
 
     if(has($t->eatStr(")"))){
-        return new URLToken($wsBefore, $pieces, FALSE, NULL);
+        return new URLToken($wsBefore, $pieces, FALSE, "");
     }
 
     $wt = $t->createBranch();
-    $wsAfter = eatWhitespaceToken($wt);
-    if(has($wsAfter)){
-
+    $wsAfter = $wt->eatExp('[' . $eatWhitespaceRegexSet . ']*');
+    if($wsAfter !== ""){
         if($wt->isEOF()){
             $t->importBranch($wt);
             return new URLToken($wsBefore, $pieces, TRUE, $wsAfter);
-        }
-
-        if(has($wt->eatStr(")"))){
+        }elseif(has($wt->eatStr(")"))){
             $t->importBranch($wt);
             return new URLToken($wsBefore, $pieces, FALSE, $wsAfter);
         }
-
-        $remnants = $eatBadURLRemnants($t);
-        return new BadURLToken($wsBefore, $pieces, $remnants);
-    }
-
-    $bt = $t->createBranch();
-    if(
-        has($bt->eatExp('[\'"(]')) ||
-        has(eatNonPrintableCodePoint($bt))
-    ){
-        // Branch was created because we want the remnants to contain
-        // the code points that were consumed for the test.
-        $remnants = $eatBadURLRemnants($t);
+        $remnants = $eatBadURLRemnantsFunction($t);
         return new BadURLToken($wsBefore, $pieces, $remnants);
     }
 
     $bt = $t->createBranch();
     if(has($bt->eatStr("\\"))){
-        if(isValidEscape($bt)){
-            $pieces[] = eatEscape($bt);
+        if(has($escape = $eatEscapeFunction($bt))){
+            $pieces[] = $escape;
             $t->importBranch($bt);
+            goto LOOP;
         }else{
-            $remnants = $eatBadURLRemnants($t);
+            $remnants = $eatBadURLRemnantsFunction($t);
             return new BadURLToken($wsBefore, $pieces, $remnants);
         }
     }
 
-    $miscCharacters = $t->escapeRegexp("\"'()\\");
-    $nonPrintableExp = '\x{0}-\x{8}\x{E}-\x{1F}\x{B}\x{7F}';
-    $piece = $t->eatExp('[^' . $miscCharacters . $nonPrintableExp . ']+');
+    $bt = $t->createBranch();
+    if(has($bt->eatExp('[' . $excludeCPs . $blacklistCPsRegexSet . ']'))){
+        $remnants = $eatBadURLRemnantsFunction($t);
+        return new BadURLToken($wsBefore, $pieces, $remnants);
+    }
+
+    $piece = $t->eatExp('[^' . $eatWhitespaceRegexSet . $excludeCPs . $blacklistCPsRegexSet . ']+');
+    // This must include everything but the CPs already handled
+    // in the previous steps, therefore it can never be empty
     assert($piece !== NULL);
     $pieces[] = $piece;
 

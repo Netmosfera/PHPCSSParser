@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTDev;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use function dechex;
 use PHPToolBucket\CompressedIntSet\CompressedIntSet;
 use IteratorAggregate;
 use Iterator;
@@ -23,6 +24,14 @@ class CompressedCodePointSet implements IteratorAggregate
         return
             $other instanceof CompressedCodePointSet &&
             $this->data->equals($other->data);
+    }
+
+    function getRegExp(): String{
+        $b = "";
+        foreach($this->data->ranges as $start => $end){
+            $b .= sprintf('\x{%s}-\x{%s}', dechex($start), dechex($end));
+        }
+        return $b;
     }
 
     function getIterator(): Iterator{

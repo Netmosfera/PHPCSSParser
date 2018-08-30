@@ -4,6 +4,6 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function has(?String $result): Bool{
+function has($result): Bool{
     return $result !== NULL;
 }

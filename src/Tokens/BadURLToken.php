@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Tokens\SubTokens\BadURLRemnants;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -17,9 +18,9 @@ class BadURLToken
     public $badURLRemnants;
 
     function __construct(
-        ?WhitespaceToken $whitespaceBefore,
+        String $whitespaceBefore,
         Array $pieces,
-        $badURLRemnants  // @TODO add type
+        BadURLRemnants $badURLRemnants
     ){
         $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;

@@ -19,10 +19,10 @@ class URLToken
     public $whitespaceAfter;
 
     function __construct(
-        ?WhitespaceToken $whitespaceBefore,
+        String $whitespaceBefore,
         Array $pieces,
         Bool $terminatedWithEOF,
-        ?WhitespaceToken $whitespaceAfter
+        String $whitespaceAfter
     ){
         $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;
