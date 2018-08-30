@@ -4,12 +4,12 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\IdentifierToken;
 use Netmosfera\PHPCSSAST\Traverser;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNameCodePointSeq;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isIdentifierStart;
+use Netmosfera\PHPCSSAST\Tokens\IdentifierToken;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\isBSValidEscape;
 use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\eatAnyEscape;
+use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNameCodePointSeq;
+use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isIdentifierStart;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 

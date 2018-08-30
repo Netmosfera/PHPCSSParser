@@ -4,6 +4,10 @@ namespace Netmosfera\PHPCSSAST\Tokens\SubTokens;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use function Netmosfera\PHPCSSAST\match;
+
+//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
 /**
  * A backslash followed by a unicode code point in hex digits.
  */
@@ -21,7 +25,7 @@ class ActualEscape implements Escape
     function equals($other): Bool{
         return
             $other instanceof self &&
-            $this->hexDigits === $other->hexDigits &&
-            $this->whitespace === $other->whitespace;
+            match($this->hexDigits, $other->hexDigits) &&
+            match($this->whitespace, $other->whitespace);
     }
 }

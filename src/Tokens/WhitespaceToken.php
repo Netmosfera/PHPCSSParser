@@ -4,6 +4,10 @@ namespace Netmosfera\PHPCSSAST\Tokens;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use function Netmosfera\PHPCSSAST\match;
+
+//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
 class WhitespaceToken
 {
     public $whitespaces;
@@ -15,6 +19,6 @@ class WhitespaceToken
     function equals($other): Bool{
         return
             $other instanceof self &&
-            $other->whitespaces === $this->whitespaces;
+            match($other->whitespaces, $this->whitespaces);
     }
 }
