@@ -4,47 +4,212 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Traverser;
-use Netmosfera\PHPCSSAST\Tokens\IdentifierToken;
-use Netmosfera\PHPCSSAST\Tokens\SubTokens\PlainEscape;
-use Netmosfera\PHPCSSAST\Tokens\SubTokens\ActualEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatIdentifierToken;
-use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTDev\cartesianProduct;
+use function Netmosfera\PHPCSSASTDev\assertMatch;
+use function array_unshift;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+/**
+ * Tests in this file:
+ *
+ * E = valid escape
+ * N = name code point
+ * S = name start code point
+ * T = any sequence of zero or more name code points or valid escapes
+ *
+ *    |  REQUIRED  |
+ * -----------------------------------------------------------
+ * #1 |     --     | [T] | [^NE]... | RETURNS --[T]
+ *
+ * #2 |  - |       |     | [^SE]... | RETURNS NULL
+ * #3 |  - | [S]   | [T] | [^NE]... | RETURNS -[S][T]
+ * #4 |  - | [E]   | [T] | [^NE]... | RETURNS -[E][T]
+ *
+ * #5 |    |       |     | [^SE]... | RETURNS NULL
+ * #6 |    | [S]   | [T] | [^NE]... | RETURNS [S][T]
+ * #7 |    | [E]   | [T] | [^NE]... | RETURNS [E][T]
+ */
 class eatIdentifierTokenTest extends TestCase
 {
-    // @TODO improve these tests
-    function test(){
-        $prefix = "SKIPME";
-        $rest = "@ <- end";
+    function data1(){
+        return cartesianProduct(
+            ANY_UTF8(),
+            makePiecesSample(Closure::fromCallable([$this, "getPieces"])),
+            ["", "XXXX"]
+        );
+    }
 
-        $pieces[] = "plain-string-\u{2764}-with-non-ASCII__12345";
-        $pieces[] = new PlainEscape("x");
-        $pieces[] = new ActualEscape("ffa1", "\n");
-        $pieces[] = new PlainEscape("u");
-        $pieces[] = new ActualEscape("CcCcCc", "\f");
-        $pieces[] = new ActualEscape("23c4aD", "\r\n");
-        $pieces[] = "plain-string";
+    /** @dataProvider data1 */
+    function test1(String $prefix, Array $pieces, String $rest){
+        if($pieces === []){ $pieces = ["--"]; }
+        elseif(is_string($pieces[0])){ $pieces[0] = "--" . $pieces[0]; }
+        else{ array_unshift($pieces, "--"); }
+        $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
+        $expected = new IdentifierToken(new NameToken($pieces));
+        $eatEscape = function(Traverser $traverser): ?Escape{
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CodePointEscape("@");
+        };
+        $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
 
-        $name = "";
-        foreach($pieces as $piece){
-            if(is_string($piece)){
-                $name .= $piece;
-            }elseif($piece instanceof PlainEscape){
-                $name .= "\\" . $piece->codePoint;
-            }elseif($piece instanceof ActualEscape){
-                $name .= "\\" . $piece->hexDigits . $piece->whitespace;
-            }
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data2(){
+        return cartesianProduct(ANY_UTF8(), ["", "XXXX"]);
+    }
+
+    /** @dataProvider data2 */
+    function test2(String $prefix, String $rest){
+        $traverser = getTraverser($prefix, "-" . $rest);
+        $expected = NULL;
+        $eatEscape = function(Traverser $traverser): ?Escape{ return NULL; };
+        $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), "-" . $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data3(){
+        return cartesianProduct(
+            ANY_UTF8(),
+            makePiecesSample(Closure::fromCallable([$this, "getPieces"])),
+            ["", "XXXX"]);
+    }
+
+    /** @dataProvider data3 */
+    function test3(String $prefix, Array $pieces, String $rest){
+        if($pieces === []){
+            $pieces = ["-S"];
+        }elseif(is_string($pieces[0])){
+            $pieces[0] = "-S" . $pieces[0];
         }
+        else{
+            array_unshift($pieces, "-S");
+        }
+        $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
+        $expected = new IdentifierToken(new NameToken($pieces));
+        $eatEscape = function(Traverser $traverser): ?Escape{
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CodePointEscape("@");
+        };
+        $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
 
-        $expected = new IdentifierToken($pieces);
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-        $t = new Traverser($prefix . $name . $rest, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatIdentifierToken($t), $expected);
-        assertMatch($t->eatAll(), $rest);
+    function data4(){
+        return cartesianProduct(
+            ANY_UTF8(),
+            makePiecesSample(Closure::fromCallable([$this, "getPieces"])),
+            ["", "XXXX"]
+        );
+    }
+
+    /** @dataProvider data4 */
+    function test4(String $prefix, Array $pieces, String $rest){
+        array_unshift($pieces, "-", new CodePointEscape("@"));
+        $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
+        $expected = new IdentifierToken(new NameToken($pieces));
+        $eatEscape = function(Traverser $traverser): ?Escape{
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CodePointEscape("@");
+        };
+        $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data5(){
+        return cartesianProduct(ANY_UTF8(), ["", "XXXX"]);
+    }
+
+    /** @dataProvider data5 */
+    function test5(String $prefix, String $rest){
+        $traverser = getTraverser($prefix, $rest);
+        $expected = NULL;
+        $eatEscape = function(Traverser $traverser): ?Escape{ return NULL; };
+        $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data6(){
+        return cartesianProduct(
+            ANY_UTF8(),
+            makePiecesSample(Closure::fromCallable([$this, "getPieces"])),
+            ["", "XXXX"]
+        );
+    }
+
+    /** @dataProvider data6 */
+    function test6(String $prefix, Array $pieces, String $rest){
+        if($pieces === []){
+            $pieces = ["S"];
+        }elseif(is_string($pieces[0])){
+            $pieces[0] = "S" . $pieces[0];
+        }
+        else{
+            array_unshift($pieces, "S");
+        }
+        $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
+        $expected = new IdentifierToken(new NameToken($pieces));
+        $eatEscape = function(Traverser $traverser): ?Escape{
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CodePointEscape("@");
+        };
+        $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data7(){
+        return cartesianProduct(
+            ANY_UTF8(),
+            makePiecesSample(Closure::fromCallable([$this, "getPieces"])),
+            ["", "XXXX"]
+        );
+    }
+
+    /** @dataProvider data7 */
+    function test7(String $prefix, Array $pieces, String $rest){
+        array_unshift($pieces, new CodePointEscape("@"));
+        $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
+        $expected = new IdentifierToken(new NameToken($pieces));
+        $eatEscape = function(Traverser $traverser): ?Escape{
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CodePointEscape("@");
+        };
+        $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function getPieces($afterPiece){
+        if(!is_string($afterPiece)){
+            $data[] = "N";
+            $data[] = "NN";
+            $data[] = "NNN";
+        }
+        $data[] = new CodePointEscape("@");
+        return $data;
     }
 }

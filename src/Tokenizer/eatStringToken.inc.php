@@ -4,40 +4,54 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\eatAnyEscape;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNewline;
-use Netmosfera\PHPCSSAST\Tokens\BadStringToken;
-use Netmosfera\PHPCSSAST\Tokens\StringToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Netmosfera\PHPCSSAST\Traverser;
+use Closure;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-/** @return StringToken|BadStringToken|NULL */
-function eatStringToken(Traverser $t){
-    $delimiter = $t->eatExp('\'|"');
+/**
+ * Consumes a {@see StringToken}, if any.
+ */
+function eatStringToken(
+    Traverser $traverser,
+    String $newlineRegExpSet,
+    Closure $eatEscape
+): ?AnyStringToken{
+    $delimiter = $traverser->eatExp('\'|"');
 
-    if(hasNo($delimiter)){
+    if($delimiter === NULL){
         return NULL;
     }
 
+    $eDelimiter = $traverser->escapeRegexp($delimiter);
+
     $pieces = [];
 
-    EAT_PIECE:
+    for(;;){
+        if($traverser->isEOF()){
+            return new StringToken($delimiter, $pieces, TRUE);
+        }
 
-    if($t->isEOF()){
-        return new StringToken($delimiter, $pieces, TRUE);
-    }elseif($t->eatStr($delimiter) === $delimiter){
-        return new StringToken($delimiter, $pieces);
-    }elseif(has(eatNewline($t->createBranch()))){
-        return new BadStringToken($delimiter, $pieces);
-    }elseif(has($t->eatStr("\\"))){
-        $pieces[] = eatAnyEscape($t);
-    }else{
-        $stringPiece = $t->eatExp('[^' . $t->escapeRegexp("\r\n\f\\" . $delimiter) . ']+');
-        if(has($stringPiece)){
+        if($traverser->eatStr($delimiter) === $delimiter){
+            return new StringToken($delimiter, $pieces);
+        }
+
+        if($traverser->createBranch()->eatExp('[' . $newlineRegExpSet . ']')){
+            return new BadStringToken($delimiter, $pieces);
+        }
+
+        $stringPiece = $traverser->eatExp('[^' . $newlineRegExpSet . $eDelimiter . '\\\\]+');
+        if($stringPiece !== NULL){
             $pieces[] = $stringPiece;
+            continue;
+        }
+
+        $escape = $eatEscape($traverser);
+        if($escape !== NULL){
+            $pieces[] = $escape;
         }
     }
-
-    goto EAT_PIECE;
 }

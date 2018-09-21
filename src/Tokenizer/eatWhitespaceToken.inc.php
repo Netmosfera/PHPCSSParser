@@ -4,12 +4,20 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\WhitespaceToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Traverser;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function eatWhitespaceToken(Traverser $t): ?WhitespaceToken{
-    $whitespaces = $t->eatExp('[\r\n\f\t ]+');
-    return has($whitespaces) ? new WhitespaceToken($whitespaces) : NULL;
+/**
+ * Consumes a {@see WhitespaceToken}, if any.
+ */
+function eatWhitespaceToken(
+    Traverser $traverser,
+    String $whitespaceRegExpSet
+): ?WhitespaceToken{
+
+    $whitespaces = $traverser->eatExp('[' . $whitespaceRegExpSet . ']+');
+
+    return $whitespaces === NULL ? NULL : new WhitespaceToken($whitespaces);
 }

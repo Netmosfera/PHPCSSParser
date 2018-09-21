@@ -4,24 +4,36 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isIdentifierStart;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isNumberStart;
-use Netmosfera\PHPCSSAST\Tokens\DimensionToken;
-use Netmosfera\PHPCSSAST\Tokens\PercentageToken;
+use Closure;
 use Netmosfera\PHPCSSAST\Traverser;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\NumericToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\DimensionToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\PercentageToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function eatNumericToken(Traverser $t){
-    assert(isNumberStart($t));
+/**
+ * Consumes a {@see NumericToken}, if any.
+ */
+function eatNumericToken(
+    Traverser $traverser,
+    Closure $eatNumberTokenFunction,
+    Closure $eatIdentifierTokenFunction
+): ?NumericToken{
 
-    $number = eatNumberToken($t);
+    $number = $eatNumberTokenFunction($traverser);
 
-    if(has($t->eatStr("%"))){
+    if($number === NULL){
+        return NULL;
+    }
+
+    if($traverser->eatStr("%") !== NULL){
         return new PercentageToken($number);
-    }elseif(isIdentifierStart($t)){
-        $name = eatIdentifierToken($t);
-        return new DimensionToken($number, $name);
+    }
+
+    $identifier = $eatIdentifierTokenFunction($traverser);
+    if($identifier !== NULL){
+        return new DimensionToken($number, $identifier);
     }
 
     return $number;

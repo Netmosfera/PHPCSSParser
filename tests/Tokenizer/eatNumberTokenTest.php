@@ -4,17 +4,14 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTDev\cp;
+use function Netmosfera\PHPCSSASTDev\assertMatch;
+use function Netmosfera\PHPCSSASTDev\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatNumberToken;
-use function Netmosfera\PHPCSSASTDev\Examples\ONE_OR_MORE_DIGITS;
-use function Netmosfera\PHPCSSASTDev\Examples\OPTIONAL_NUMBER_SIGN;
-use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_E_PART;
-use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_INTEGER_PART;
-use function Netmosfera\PHPCSSASTDev\Examples\NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART;
-use Netmosfera\PHPCSSAST\Tokens\NumberToken;
-use Netmosfera\PHPCSSAST\Traverser;
+use function Netmosfera\PHPCSSASTDev\getCodePointsFromRanges;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
+use Netmosfera\PHPCSSASTDev\CompressedCodePointSet;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -26,138 +23,283 @@ use PHPUnit\Framework\TestCase;
  * DECIMAL_PART = . and at least one digit
  * E_PART       = e or E, optionally followed by a sign, followed by at least one digit
  *
- * #1 | INTEGER_PART | DECIMAL_PART || E_PART
- * #2 | INTEGER_PART | DECIMAL_PART || xxxxxx + incomplete E_PART
+ * #1  | FALSE if .  followed by non-digit
+ * #2  | FALSE if .  followed by EOF
  *
- * #3 | INTEGER_PART | xxxxxxxxxxxx || E_PART
- * #4 | INTEGER_PART | xxxxxxxxxxxx || xxxxxx + incomplete DECIMAL_PART and E_PART
+ * #3  | FALSE if    non-digit
+ * #4  | FALSE if    EOF
  *
- * #5 | xxxxxxxxxxxx | DECIMAL_PART || E_PART
- * #6 | xxxxxxxxxxxx | DECIMAL_PART || xxxxxx + incomplete E_PART
+ * #5  | INTEGER_PART | DECIMAL_PART || E_PART
+ * #6  | INTEGER_PART | DECIMAL_PART || ------ + incomplete E_PART
+ *
+ * #7  | INTEGER_PART | ------------ || E_PART
+ * #8  | INTEGER_PART | ------------ || ------ + incomplete DECIMAL_PART and E_PART
+ *
+ * #9  | ------------ | DECIMAL_PART || E_PART
+ * #10 | ------------ | DECIMAL_PART || ------ + incomplete E_PART
   */
 class eatNumberTokenTest extends TestCase
 {
-    function data_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART(){
-        return cartesianProduct(
-            ANY_UTF8(),
-            OPTIONAL_NUMBER_SIGN(),
-            ONE_OR_MORE_DIGITS(),
-            ["e", "E"],
-            OPTIONAL_NUMBER_SIGN(),
-            NOT_A_NUMBER_CONTINUATION_AFTER_E_PART()
-        );
+    function data1(){
+        $codePoints = new CompressedCodePointSet();
+        $codePoints->selectAll();
+        $codePoints->remove(cp("5"));
+        return cartesianProduct(ANY_UTF8(), $this->optionalSign(), getCodePointsFromRanges($codePoints), ANY_UTF8());
     }
 
-    /** @dataProvider data_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART */
-    function test_1_INTEGER_PART_followed_by_DECIMAL_PART_and_E_PART($prefix, $sign, $digits, $eLetter, $eSign, $rest){
-        $expected = new NumberToken($sign === "" ? NULL : $sign, $digits, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
-        $t = new Traverser($prefix . $sign . $digits . "." . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatNumberToken($t), $expected);
-        assertMatch($t->eatAll(), $rest);
+    /** @dataProvider data1 */
+    function test1(String $prefix, String $sign, String $nonDigit, String $rest){
+        $traverser = getTraverser($prefix, $sign . "." . $nonDigit . $rest);
+        $expected = NULL;
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $sign . "." . $nonDigit . $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    function data_2_INTEGER_PART_followed_by_DECIMAL_PART(){
-        return cartesianProduct(
-            ANY_UTF8(),
-            OPTIONAL_NUMBER_SIGN(),
-            ONE_OR_MORE_DIGITS(),
-            NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART()
-        );
+    function data2(){
+        return cartesianProduct(ANY_UTF8(), $this->optionalSign());
     }
 
-    /** @dataProvider data_2_INTEGER_PART_followed_by_DECIMAL_PART */
-    function test_2_INTEGER_PART_followed_by_DECIMAL_PART($prefix, $sign, $digits, $rest){
-        $expected = new NumberToken($sign === "" ? NULL : $sign, $digits, $digits, NULL, NULL, NULL);
-        $t = new Traverser($prefix . $sign . $digits . "." . $digits . $rest, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatNumberToken($t), $expected);
-        assertMatch($t->eatAll(), $rest);
+    /** @dataProvider data2 */
+    function test2(String $prefix, String $sign){
+        $traverser = getTraverser($prefix, $sign . ".");
+        $expected = NULL;
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $sign . ".");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    function data_3_INTEGER_PART_followed_by_E_PART(){
+    function data3(){
+        $codePoints = new CompressedCodePointSet();
+        $codePoints->selectAll();
+        $codePoints->remove(cp("5"));
+        $codePoints->remove(cp("."));
+        return cartesianProduct(ANY_UTF8(), $this->optionalSign(), getCodePointsFromRanges($codePoints), ANY_UTF8());
+    }
+
+    /** @dataProvider data3 */
+    function test3(String $prefix, String $sign, String $nonDigit, String $rest){
+        $traverser = getTraverser($prefix, $sign . $nonDigit . $rest);
+        $expected = NULL;
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $sign . $nonDigit . $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data4(){
+        return cartesianProduct(ANY_UTF8(), $this->optionalSign());
+    }
+
+    /** @dataProvider data4 */
+    function test4(String $prefix, String $sign){
+        $traverser = getTraverser($prefix, $sign);
+        $expected = NULL;
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $sign);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data5(){
         return cartesianProduct(
             ANY_UTF8(),
-            OPTIONAL_NUMBER_SIGN(),
-            ONE_OR_MORE_DIGITS(),
+            $this->optionalSign(),
+            ["5", "55", "555", "5555"],
             ["e", "E"],
-            OPTIONAL_NUMBER_SIGN(),
-            NOT_A_NUMBER_CONTINUATION_AFTER_E_PART()
+            $this->optionalSign(),
+            $this->notNumberContinuationAfterEPart()
         );
     }
 
-    /** @dataProvider data_3_INTEGER_PART_followed_by_E_PART */
-    function test_3_INTEGER_PART_followed_by_E_PART($prefix, $sign, $digits, $eLetter, $eSign, $rest){
-        $expected = new NumberToken($sign === "" ? NULL : $sign, $digits, NULL, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
-        $t = new Traverser($prefix . $sign . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatNumberToken($t), $expected);
-        assertMatch($t->eatAll(), $rest);
+    /** @dataProvider data5 */
+    function test5(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $rest){
+        $traverser = getTraverser($prefix, $sign . $digits . "." . $digits . $eLetter . $eSign . $digits . $rest);
+        $expected = new NumberToken($sign, $digits, $digits, $eLetter, $eSign, $digits);
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data6(){
+        return cartesianProduct(
+            ANY_UTF8(),
+            $this->optionalSign(),
+            ["5", "55", "555", "5555"],
+            $this->notNumberContinuationAfterDecimalPart()
+        );
+    }
+
+    /** @dataProvider data6 */
+    function test6(String $prefix, String $sign, String $digits, String $rest){
+        $traverser = getTraverser($prefix, $sign . $digits . "." . $digits . $rest);
+        $expected = new NumberToken($sign, $digits, $digits, "", "", "");
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data7(){
+        return cartesianProduct(
+            ANY_UTF8(),
+            $this->optionalSign(),
+            ["5", "55", "555", "5555"],
+            ["e", "E"],
+            $this->optionalSign(),
+            $this->notNumberContinuationAfterEPart()
+        );
+    }
+
+    /** @dataProvider data7 */
+    function test7(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $rest){
+        $traverser = getTraverser($prefix, $sign . $digits . $eLetter . $eSign . $digits . $rest);
+        $expected = new NumberToken($sign, $digits, "", $eLetter, $eSign, $digits);
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    function data_4_INTEGER_PART(){
+    function data8(){
         return cartesianProduct(
             ANY_UTF8(),
-            OPTIONAL_NUMBER_SIGN(),
-            ONE_OR_MORE_DIGITS(),
-            NOT_A_NUMBER_CONTINUATION_AFTER_INTEGER_PART()
+            $this->optionalSign(),
+            ["5", "55", "555", "5555"],
+            $this->notNumberContinuationAfterIntegerPart()
         );
     }
 
-    /** @dataProvider data_4_INTEGER_PART */
-    function test_4_INTEGER_PART($prefix, $sign, $intDigits, $rest){
-        $expected = new NumberToken($sign === "" ? NULL : $sign, $intDigits, NULL, NULL, NULL, NULL);
-        $t = new Traverser($prefix . $sign . $intDigits . $rest, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatNumberToken($t), $expected);
-        assertMatch($t->eatAll(), $rest);
+    /** @dataProvider data8 */
+    function test8(String $prefix, String $sign, String $digits, String $rest){
+        $traverser = getTraverser($prefix, $sign . $digits . $rest);
+        $expected = new NumberToken($sign, $digits, "", "", "", "");
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    function data_5_DECIMAL_PART_and_E_PART(){
+    function data9(){
         return cartesianProduct(
             ANY_UTF8(),
-            OPTIONAL_NUMBER_SIGN(),
-            ONE_OR_MORE_DIGITS(),
+            $this->optionalSign(),
+            ["5", "55", "555", "5555"],
             ["e", "E"],
-            OPTIONAL_NUMBER_SIGN(),
-            NOT_A_NUMBER_CONTINUATION_AFTER_E_PART()
+            $this->optionalSign(),
+            $this->notNumberContinuationAfterEPart()
         );
     }
 
-    /** @dataProvider data_5_DECIMAL_PART_and_E_PART */
-    function test_5_DECIMAL_PART_and_E_PART($prefix, $sign, $digits, $eLetter, $eSign, $rest){
-        $expected = new NumberToken($sign === "" ? NULL : $sign, NULL, $digits, $eLetter, $eSign === "" ? NULL : $eSign, $digits);
-        $t = new Traverser($prefix . $sign . "." . $digits . $eLetter . $eSign . $digits . $rest, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatNumberToken($t), $expected);
-        assertMatch($t->eatAll(), $rest);
+    /** @dataProvider data9 */
+    function test9(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $rest){
+        $traverser = getTraverser($prefix, $sign . "." . $digits . $eLetter . $eSign . $digits . $rest);
+        $expected = new NumberToken($sign, "", $digits, $eLetter, $eSign, $digits);
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    function data_6_DECIMAL_PART(){
+    function data10(){
         return cartesianProduct(
             ANY_UTF8(),
-            OPTIONAL_NUMBER_SIGN(),
-            ONE_OR_MORE_DIGITS(),
-            NOT_A_NUMBER_CONTINUATION_AFTER_DECIMAL_PART()
+            $this->optionalSign(),
+            ["5", "55", "555", "5555"],
+            $this->notNumberContinuationAfterDecimalPart()
         );
     }
 
-    /** @dataProvider data_6_DECIMAL_PART */
-    function test_6_DECIMAL_PART($prefix, $sign, $decimalDigits, $rest){
-        $expected = new NumberToken($sign === "" ? NULL : $sign, NULL, $decimalDigits, NULL, NULL, NULL);
-        $t = new Traverser($prefix . $sign . "." . $decimalDigits . $rest, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatNumberToken($t), $expected);
-        assertMatch($t->eatAll(), $rest);
+    /** @dataProvider data10 */
+    function test10(String $prefix, String $sign, String $digits, String $rest){
+        $traverser = getTraverser($prefix, $sign . "." . $digits . $rest);
+        $expected = new NumberToken($sign, "", $digits, "", "", "");
+        $actual = eatNumberToken($traverser, "5");
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function optionalSign(){
+        return ["+", "-", ""];
+    }
+
+    /**
+     * -
+     *
+     * Any CodePoint sequence:
+     *
+     * - not starting with a digit
+     * - not starting with "e|E" and a digit
+     * - not starting with "e|E" and "+|-" and a digit
+     */
+    function notNumberContinuationAfterDecimalPart(){
+        $set = new CompressedCodePointSet();
+        $set->selectAll();
+        $sequences = getCodePointsFromRanges($set);
+        $sequences[] = "sample \u{2764} string";
+        $sequences[] = " \t \n \r \r\n \f "; // makes sure it doesn't touch whitespace
+        $sequences[] = ".42"; // makes sure it doesn't eat decimals twice (?)
+        $sequences[] = "ea"; // makes sure it doesn't eat an incomplete E_PART
+        $sequences[] = "Ea"; // makes sure it doesn't eat an incomplete E_PART
+        $sequences[] = "e+a"; // makes sure it doesn't eat an incomplete E_PART
+        $sequences[] = "E+a"; // makes sure it doesn't eat an incomplete E_PART
+        $sequences[] = ""; // makes sure it deals with EOF correctly
+        return $sequences;
+    }
+
+    /**
+     * -
+     *
+     * Any CodePoint sequence:
+     *
+     * - not starting with a digit
+     */
+    function notNumberContinuationAfterEPart(){
+        $set = new CompressedCodePointSet();
+        $set->selectAll();
+        $sequences = getCodePointsFromRanges($set);
+        $sequences[] = "sample \u{2764} string";
+        $sequences[] = " \t \n \r \r\n \f "; // makes sure it doesn't touch whitespace
+        $sequences[] = ""; // makes sure it deals with EOF correctly
+        return $sequences;
+    }
+
+    /**
+     * -
+     *
+     * Any CodePoint sequence:
+     *
+     * - not starting with a digit
+     * - not starting with "." and a digit
+     * - not starting with "e|E" and a digit
+     * - not starting with "e|E" and "+|-" and a digit
+     */
+    function notNumberContinuationAfterIntegerPart(){
+        $set = new CompressedCodePointSet();
+        $set->selectAll();
+        $sequences = getCodePointsFromRanges($set);
+        $sequences[] = " \t \n \r \r\n \f ";
+        $sequences[] = "sample \u{2764} string";
+        $sequences[] = ".a";
+        $sequences[] = "ea";
+        $sequences[] = "Ea";
+        $sequences[] = "e+a";
+        $sequences[] = "E+a";
+        $sequences[] = "";
+        return $sequences;
     }
 }

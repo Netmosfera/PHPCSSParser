@@ -4,19 +4,33 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\CommentToken;
+use function mb_substr;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Traverser;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function eatCommentToken(Traverser $t){
-    $ct = $t->createBranch();
-    if(has($ct->eatStr("/*"))){
-        $text = $ct->eatExp('.*(?=[*][\/])|.*'); // @TODO this is probably slow
-        $terminated = has($ct->eatStr("*/"));
-        $comment = new CommentToken($text, $terminated);
-        $t->importBranch($ct);
-        return $comment;
+/**
+ * Consumes a {@see CommentToken}, if any.
+ */
+function eatCommentToken(Traverser $traverser): ?CommentToken{
+    $inCommentTraverser = $traverser->createBranch();
+
+    if($inCommentTraverser->eatStr("/*") === NULL){
+        return NULL;
     }
-    return NULL;
+
+    $text = $inCommentTraverser->eatExp('.*?[*][\/]|.*');
+
+    $EOFTerminated = TRUE;
+    if(mb_substr($text, -2) === "*/"){
+        $EOFTerminated = FALSE;
+        $text = mb_substr($text, 0, -2);
+    }
+
+    $comment = new CommentToken($text, $EOFTerminated);
+
+    $traverser->importBranch($inCommentTraverser);
+
+    return $comment;
 }

@@ -4,135 +4,120 @@ namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSASTTests\assertMatch;
+use Closure;
+use function Netmosfera\PHPCSSASTDev\assertMatch;
+use function Netmosfera\PHPCSSASTDev\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatStringToken;
-use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
-use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getStringDelimiterSet;
-use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
-use Netmosfera\PHPCSSAST\Tokens\SubTokens\ActualEscape;
-use Netmosfera\PHPCSSAST\Tokens\SubTokens\PlainEscape;
-use Netmosfera\PHPCSSAST\Tokens\BadStringToken;
-use Netmosfera\PHPCSSAST\Tokens\StringToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
+use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
 use Netmosfera\PHPCSSAST\Traverser;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+/**
+ * Tests in this file:
+ *
+ * #1 | NULL if no string delimiter
+ * #2 | StringToken if string is terminated with EOF
+ * #3 | Returns BadStringToken if string is interrupted by a newline
+ * #4 | test loop @TODO repeat the test with EOF and bad string token
+ */
 class eatStringTokenTest extends TestCase
 {
-    function piecesToString(Array $pieces){
-        // @TODO use an actual printer/formatter for this instead
-        $string = "";
-        foreach($pieces as $piece){
-            if($piece instanceof ActualEscape){
-                $string .= "\\" . $piece->hexDigits . ($piece->whitespace ?? "");
-            }elseif($piece instanceof PlainEscape){
-                $string .= "\\" . $piece->codePoint;
-            }else{
-                $string .= $piece;
-            }
-        }
-        return $string;
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data_misc(){
+    function data1(){
         return cartesianProduct(
             ANY_UTF8(),
-            getCodePointsFromRanges(getStringDelimiterSet()),
-            ANY_UTF8()
+            ["", "not a \u{2764} CSS string"]
         );
     }
 
-    /** @dataProvider data_misc */
-    function test_misc($prefix, $delimiter, $rest){
-        // Test simple string with a non-ASCII character in it.
-        $pieces[] = " hello \u{2764} world ";
-
-        // The whitespace is a terminator only after a unicode code point:
-        $pieces[] = new ActualEscape("abCdEf", "\r");
-        $pieces[] = new ActualEscape("12345",  "\n");
-        $pieces[] = new ActualEscape("bCdEf",  "\r\n");
-        $pieces[] = new ActualEscape("1234",   "\f");
-        $pieces[] = new ActualEscape("dEf",    "\t");
-        $pieces[] = new ActualEscape("Ef",     " ");
-
-        $pieces[] = " hello \u{2764} world ";
-
-        // It is optional however:
-        $pieces[] = new ActualEscape("abCdEf", NULL);
-        $pieces[] = new ActualEscape("12345",  NULL);
-        $pieces[] = new ActualEscape("bCdEf",  NULL);
-        $pieces[] = new ActualEscape("1234",   NULL);
-        $pieces[] = new ActualEscape("dEf",    NULL);
-        $pieces[] = new ActualEscape("Ef",     NULL);
-        $pieces[] = "<- does not start with a whitespace; otherwise it will get eaten by the previous piece";
-
-        // The whitespace is not a terminator in plain escapes
-        $pieces[] = new PlainEscape("x"); $pieces[] = " ";
-        $pieces[] = new PlainEscape("y"); $pieces[] = "\t";
-        $pieces[] = new PlainEscape("z"); $pieces[] = " ";
-
-        // The plain escapes can be adjacent
-        $pieces[] = new PlainEscape("x");
-        $pieces[] = new PlainEscape("y");
-        $pieces[] = new PlainEscape("z");
-
-        // The plain escapes may be used to insert characters normally not allowed in strings
-        $pieces[] = new PlainEscape("\r");
-        $pieces[] = new PlainEscape("\n");
-        $pieces[] = new PlainEscape("\r\n");
-        $pieces[] = new PlainEscape("\f");
-        $pieces[] = new PlainEscape("\\");
-        $pieces[] = new PlainEscape("\"");
-        $pieces[] = new PlainEscape("'");
-
-        $string = $this->piecesToString($pieces);
-
-        $t = new Traverser($prefix . $delimiter . $string . $delimiter . $rest, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatStringToken($t), new StringToken($delimiter, $pieces));
-        assertMatch($t->eatAll(), $rest);
+    /** @dataProvider data1 */
+    function test1($prefix, $rest){
+        $traverser = getTraverser($prefix, $rest);
+        $expected = NULL;
+        $eatEscape = function(Traverser $t): ?Escape{ self::fail(); };
+        $actual = eatStringToken($traverser, "\f", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    function data_unterminated_EOF(){
+    function data2(){
         return cartesianProduct(
             ANY_UTF8(),
-            getCodePointsFromRanges(getStringDelimiterSet()),
+            ["\"", "'"],
             ["", "skip \u{2764} me"]
         );
     }
 
-    /** @dataProvider data_unterminated_EOF */
-    function test_unterminated_EOF($prefix, $delimiter, $string){
-        $t = new Traverser($prefix . $delimiter . $string, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatStringToken($t), new StringToken($delimiter, $string === "" ? [] : [$string], TRUE));
-        assertMatch($t->eatAll(), "");
+    /** @dataProvider data2 */
+    function test2($prefix, $delimiter, $string){
+        $traverser = getTraverser($prefix, $delimiter . $string);
+        $expected = new StringToken($delimiter, $string === "" ? [] : [$string], TRUE);
+        $eatEscape = function(Traverser $t): ?Escape{ self::fail(); };
+        $actual = eatStringToken($traverser, "\f", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), "");
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-    function data_unterminated_newline(){
+    function data3(){
         return cartesianProduct(
             ANY_UTF8(),
-            getCodePointsFromRanges(getStringDelimiterSet()),
+            ["\"", "'"],
             ["", "skip \u{2764} me"],
-            getNewlineSeqsSet(),
             ANY_UTF8()
         );
     }
 
-    /** @dataProvider data_unterminated_newline */
-    function test_unterminated_newline($prefix, $delimiter, $string, $newline, $rest){
-        $t = new Traverser($prefix . $delimiter . $string . $newline . $rest, TRUE);
-        $t->eatStr($prefix);
-        assertMatch(eatStringToken($t), new BadStringToken($delimiter, $string === "" ? [] : [$string]));
-        assertMatch($t->eatAll(), $newline . $rest);
+    /** @dataProvider data3 */
+    function test3($prefix, $delimiter, $string, $rest){
+        $traverser = getTraverser($prefix, $delimiter . $string . "\f" . $rest);
+        $expected = new BadStringToken($delimiter, $string === "" ? [] : [$string]);
+        $eatEscape = function(Traverser $t): ?Escape{ self::fail(); };
+        $actual = eatStringToken($traverser, "\f", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), "\f" . $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data4(){
+        return cartesianProduct(
+            ANY_UTF8(),
+            ["\"", "'"],
+            makePiecesSample(Closure::fromCallable([$this, "getPieces"])),
+            ANY_UTF8()
+        );
+    }
+
+    /** @dataProvider data4 */
+    function test4(String $prefix, String $delimiter, Array $pieces, String $rest){
+        $traverser = getTraverser($prefix, $delimiter . implode("", $pieces) . $delimiter . $rest);
+        $expected = new StringToken($delimiter, $pieces);
+        $eatEscape = function(Traverser $traverser): ?Escape{
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CodePointEscape("@");
+        };
+        $actual = eatStringToken($traverser, "\f", $eatEscape);
+        assertMatch($actual, $expected);
+        assertMatch($traverser->eatAll(), $rest);
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function getPieces($afterPiece){
+        if(!is_string($afterPiece)){
+            $data[] = "s";
+            $data[] = "st";
+            $data[] = "str";
+        }
+        $data[] = new CodePointEscape("@");
+        return $data;
     }
 }

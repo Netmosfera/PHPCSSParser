@@ -4,78 +4,79 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\BadURLToken;
-use Netmosfera\PHPCSSAST\Tokens\URLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\AnyURLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\BadURLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLToken;
 use Netmosfera\PHPCSSAST\Traverser;
 use Closure;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * -
+ * Consumes an {@see URLToken}, if any.
  *
- * Assumes that the initial `url(` has already been consumed.
- *
- * @TODO cannot use eatEscape() in $eatEscapeFunction as that allows \EOF and \newline
+ * Assumes that `url(` has been consumed already.
  */
 function eatURLToken(
-    Traverser $t,
-    String $eatWhitespaceRegexSet,
+    Traverser $traverser,
+    String $whitespaceRegexSet,
     String $blacklistCPsRegexSet,
-    Closure $eatBadURLRemnantsFunction,
+    Closure $eatBadURLRemnantsFunction,   /* @TODO invert order of arguments with next one */
     Closure $eatEscapeFunction
-){
-    // var_export(preg_quote("\"'\\()"));
-    // These CPs must appear as escape sequences if needed
-    $excludeCPs = '"\'\\\\\\(\\)';
+): ?AnyURLToken{
 
-    $wsBefore = $t->eatExp('[' . $eatWhitespaceRegexSet . ']*');
+    $wsBefore = $traverser->eatExp('[' . $whitespaceRegexSet . ']*+(?!["\'])');
+    if($wsBefore === NULL){
+        return NULL;
+    }
+
+    // var_export(preg_quote("\\)"));
+    // These CPs must appear as escape sequences if actually needed in a URL
+    $excludeCPs = '\\\\\\)';
 
     $pieces = [];
 
     LOOP:
 
-    if($t->isEOF()){
+    if($traverser->isEOF()){
         return new URLToken($wsBefore, $pieces, TRUE, "");
     }
 
-    if(has($t->eatStr(")"))){
+    if($traverser->eatStr(")") !== NULL){
         return new URLToken($wsBefore, $pieces, FALSE, "");
     }
 
-    $wt = $t->createBranch();
-    $wsAfter = $wt->eatExp('[' . $eatWhitespaceRegexSet . ']*');
+    $finishTraverser = $traverser->createBranch();
+    $wsAfter = $finishTraverser->eatExp('[' . $whitespaceRegexSet . ']*');
     if($wsAfter !== ""){
-        if($wt->isEOF()){
-            $t->importBranch($wt);
+        if($finishTraverser->isEOF()){
+            $traverser->importBranch($finishTraverser);
             return new URLToken($wsBefore, $pieces, TRUE, $wsAfter);
-        }elseif(has($wt->eatStr(")"))){
-            $t->importBranch($wt);
+        }elseif($finishTraverser->eatStr(")") !== NULL){
+            $traverser->importBranch($finishTraverser);
             return new URLToken($wsBefore, $pieces, FALSE, $wsAfter);
         }
-        $remnants = $eatBadURLRemnantsFunction($t);
+        $remnants = $eatBadURLRemnantsFunction($traverser);
         return new BadURLToken($wsBefore, $pieces, $remnants);
     }
 
-    $bt = $t->createBranch();
-    if(has($bt->eatStr("\\"))){
-        if(has($escape = $eatEscapeFunction($bt))){
+    if($traverser->createBranch()->eatStr("\\") !== NULL){
+        $escape = $eatEscapeFunction($traverser);
+        if($escape !== NULL){
             $pieces[] = $escape;
-            $t->importBranch($bt);
             goto LOOP;
         }else{
-            $remnants = $eatBadURLRemnantsFunction($t);
+            $remnants = $eatBadURLRemnantsFunction($traverser);
             return new BadURLToken($wsBefore, $pieces, $remnants);
         }
     }
 
-    $bt = $t->createBranch();
-    if(has($bt->eatExp('[' . $excludeCPs . $blacklistCPsRegexSet . ']'))){
-        $remnants = $eatBadURLRemnantsFunction($t);
+    if($traverser->createBranch()->eatExp('[' . $excludeCPs . $blacklistCPsRegexSet . ']') !== NULL){
+        $remnants = $eatBadURLRemnantsFunction($traverser);
         return new BadURLToken($wsBefore, $pieces, $remnants);
     }
 
-    $piece = $t->eatExp('[^' . $eatWhitespaceRegexSet . $excludeCPs . $blacklistCPsRegexSet . ']+');
+    $piece = $traverser->eatExp('[^' . $whitespaceRegexSet . $excludeCPs . $blacklistCPsRegexSet . ']+');
     // This must include everything but the CPs already handled
     // in the previous steps, therefore it can never be empty
     assert($piece !== NULL);

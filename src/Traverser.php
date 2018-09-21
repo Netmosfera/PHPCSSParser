@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Error;
+use function mb_substr;
 use function preg_last_error;
 use function preg_quote;
 
@@ -74,10 +75,6 @@ class Traverser
         return $this->offset === strlen($this->data);
     }
 
-    public function isNotEOF(): Bool{
-        return $this->isEOF() === FALSE;
-    }
-
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     public function escapeRegexp(String $string): String{
@@ -109,6 +106,15 @@ class Traverser
 
     public function eatStr(String $string): ?String{
         return $this->eatExp($this->escapeRegexp($string));
+    }
+
+    public function eatLength(Int $length): ?String{
+        if($length < 0){ throw new Error("Invalid length"); }
+        if($length === 0){ return ""; }
+        $string = mb_substr($this->data, $this->offset, $length);
+        if(mb_strlen($string) !== $length){ return NULL; }
+        $this->offset += $length;
+        return $string;
     }
 
     public function eatAll(): String{

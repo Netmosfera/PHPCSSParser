@@ -4,38 +4,70 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isNumberStart;
-use Netmosfera\PHPCSSAST\Tokens\NumberToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSAST\Traverser;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function eatNumberToken(Traverser $t): NumberToken{
-    assert(isNumberStart($t));
+/**
+ * Consumes a {@see NumberToken}, if any.
+ */
+function eatNumberToken(
+    Traverser $traverser,
+    String $digitRegExpSet
+): ?NumberToken{
 
-    $sign = $t->eatExp('\+|-');
+    $xx = $traverser->createBranch();
 
-    $wholes = $t->eatExp('[0-9]+');
+    if($xx->eatExp('\+|-') !== NULL){
+        if($xx->eatExp('[' . $digitRegExpSet . ']') !== NULL){
+            goto EAT_NUMBER;
+        }
+        if(
+            ($xx->eatStr(".")) !== NULL &&
+            ($xx->eatExp('[' . $digitRegExpSet . ']')) !== NULL
+        ){
+            goto EAT_NUMBER;
+        }
+    }elseif($xx->eatStr(".") !== NULL){
+        if($xx->eatExp('[' . $digitRegExpSet . ']') !== NULL){
+            goto EAT_NUMBER;
+        }
+    }elseif($xx->eatExp('[' . $digitRegExpSet . ']') !== NULL){
+        goto EAT_NUMBER;
+    }
+    return NULL;
 
-    $dt = $t->createBranch();
-    if(
-        has($dt->eatStr(".")) &&
-        has($decimals = $dt->eatExp('[0-9]+'))
-    ){
-        $t->importBranch($dt);
+
+
+
+
+
+
+
+
+    EAT_NUMBER:
+
+    $sign = $traverser->eatExp('\+|-') ?? "";
+
+    $wholes = $traverser->eatExp('[' . $digitRegExpSet . ']+') ?? "";
+
+    $dt = $traverser->createBranch();
+    if($dt->eatStr(".") !== NULL){
+        $decimals = $dt->eatExp('[' . $digitRegExpSet . ']+') ?? "";
+        if($decimals !== ""){ $traverser->importBranch($dt); }
     }else{
-        $decimals = NULL;
+        $decimals = "";
     }
 
-    $et = $t->createBranch();
-    if(
-        has($expLetter = $et->eatExp('e|E')) &&
-        mayHave($expSign = $et->eatExp('\+|-')) &&
-        has($exponent = $et->eatExp('[0-9]+'))
-    ){
-        $t->importBranch($et);
+    $et = $traverser->createBranch();
+    $expLetter = $et->eatExp('e|E') ?? "";
+    $expSign = $et->eatExp('\+|-') ?? "";
+    $exponent = $et->eatExp('[' . $digitRegExpSet . ']+') ?? "";
+    if($expLetter !== "" && $exponent !== ""){
+        $traverser->importBranch($et);
     }else{
-        $expLetter = $expSign = $exponent = NULL;
+        $expLetter = $expSign = $exponent = "";
     }
 
     return new NumberToken(

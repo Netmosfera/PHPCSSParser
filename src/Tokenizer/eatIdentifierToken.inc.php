@@ -4,30 +4,59 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Traverser;
-use Netmosfera\PHPCSSAST\Tokens\IdentifierToken;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\isBSValidEscape;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\Escapes\eatAnyEscape;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\eatNameCodePointSeq;
-use function Netmosfera\PHPCSSAST\Tokenizer\Tools\isIdentifierStart;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function eatIdentifierToken(Traverser $t){
-    assert(isIdentifierStart($t));
+function eatIdentifierToken(
+    Traverser $traverser,
+    String $nameStartRegExpSet,
+    String $nameRegExpSet,
+    Closure $eatEscapeFunction
+): ?IdentifierToken{
+    $nscp = $nameStartRegExpSet;
+    $ncp = $nameRegExpSet;
 
-    $pieces = [];
+    // (namestartcp|escape)
+    // -(namestartcp|escape)
+    // --(namecp|escape)
 
-    EAT_PIECE:
+    $identifierStart = $traverser->eatExp('-?[' . $nscp . '][' . $ncp . ']*|--[' . $ncp . ']*');
 
-    if(isBSValidEscape($t)){
-        $t->eatStr("\\");
-        $pieces[] = eatAnyEscape($t);
-    }elseif(has($plainCPs = eatNameCodePointSeq($t))){
-        $pieces[] = $plainCPs;
+    if($identifierStart !== NULL){
+        $pieces = [$identifierStart];
     }else{
-        return new IdentifierToken($pieces);
+        $tt = $traverser->createBranch();
+
+        $pieces = [];
+
+        if($tt->eatStr("-") !== NULL){
+            $pieces[] = "-";
+        }
+
+        $escape = $eatEscapeFunction($tt);
+
+        if($escape === NULL){
+            return NULL;
+        }
+
+        $pieces[] = $escape;
+
+        $traverser->importBranch($tt);
     }
 
-    goto EAT_PIECE;
+    LOOP:
+
+    $piece = $traverser->eatExp('[' . $ncp . ']+') ?? $eatEscapeFunction($traverser);
+
+    if($piece === NULL){
+        return new IdentifierToken(new NameToken($pieces));
+    }
+
+    $pieces[] = $piece;
+
+    goto LOOP;
 }
