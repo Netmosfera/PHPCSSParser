@@ -31,6 +31,8 @@ use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
 use function Netmosfera\PHPCSSASTDev\cp;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getWhitespaceSeqsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getASCIINameItemsSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getASCIINameStartersSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getDigitsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNonPrintablesSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNameStartersSet;
@@ -43,6 +45,8 @@ use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNewlinesSet;
 
 class StandardTokenizer
 {
+    private $unicode;
+
     private $eatIdentifierToken;
     private $eatIdentifierLikeToken;
     private $eatWhitespaceToken;
@@ -61,9 +65,15 @@ class StandardTokenizer
     private $newlineRegExpSet;
     private $digitRegExpSet;
 
-    function __construct(){
-        $this->nameStartRegExpSet = getNameStartersSet()->getRegExp();
-        $this->nameRegExpSet = getNameItemsSet()->getRegExp();
+    function __construct(Bool $unicode = TRUE){
+        $this->unicode = $unicode;
+        if($unicode){
+            $this->nameStartRegExpSet = getNameStartersSet()->getRegExp();
+            $this->nameRegExpSet = getNameItemsSet()->getRegExp();
+        }else{
+            $this->nameStartRegExpSet = getASCIINameStartersSet()->getRegExp();
+            $this->nameRegExpSet = getASCIINameItemsSet()->getRegExp();
+        }
         $this->hexDigitRegExpSet = getHexDigitsSet()->getRegExp();
         $this->whitespaceRegExp = implode("|", getWhitespaceSeqsSet());
         $this->whitespaceRegexSet = getWhitespacesSet()->getRegExp();
@@ -141,7 +151,7 @@ class StandardTokenizer
     }
 
     function tokenize(String $CSSCode): array{
-        $traverser = new Traverser($CSSCode);
+        $traverser = new Traverser($CSSCode, $this->unicode);
 
         $tokens = [];
 

@@ -6,37 +6,28 @@ namespace Netmosfera\PHPCSSAST;
 
 use Error;
 use function mb_substr;
-use function preg_last_error;
 use function preg_quote;
+use function preg_last_error;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 class Traverser
 {
+    private $unicode;
+
     private $originator;
 
-    private $data;
+    private $wholeData;
 
     private $offset;
 
-    private $showPreview;
+    private $remainingData;
 
-    private $preview;
-
-    /**
-     * @param       String                                  $data
-     * {@TODOC}
-     *
-     * @param       Bool                                    $showPreview
-     * If set to `TRUE` will preview the result of `substr($data, $offset)` in `$preview`.
-     * Enabling this has no purpose except for debugging. Keeping it enabled will slow down
-     * the operations, so it must be enabled only if needed.
-     */
-    public function __construct(String $data, Bool $showPreview = FALSE){
+    public function __construct(String $wholeData, Bool $unicode = TRUE){
+        $this->unicode = $unicode;
         $this->originator = $this;
-        $this->data = $data;
-        $this->showPreview = $showPreview;
-        $this->preview = NULL;
+        $this->wholeData = $wholeData;
+        $this->remainingData = $wholeData;
         $this->setOffset(0);
     }
 
@@ -55,7 +46,7 @@ class Traverser
             throw new Error("Branch can be imported only from a traverser with the same origin");
         }
         $this->offset = $traverser->offset;
-        $this->preview = $traverser->preview;
+        $this->remainingData = $traverser->remainingData;
     }
 
     public function createBranch(): Traverser{
@@ -66,13 +57,18 @@ class Traverser
 
     private function setOffset(Int $offset){
         $this->offset = $offset;
-        if($this->showPreview){
-            $this->preview = substr($this->data, $this->offset);
-        }
+        $this->remainingData = substr($this->wholeData, $this->offset);
+    }
+
+    private function advanceOffset(Int $length){
+        if($length < 0){ throw new Error(); }
+        if($length === 0){ return; }
+        $this->offset += $length;
+        $this->remainingData = substr($this->remainingData, $length);
     }
 
     public function isEOF(): Bool{
-        return $this->offset === strlen($this->data);
+        return $this->remainingData === "";
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -82,19 +78,14 @@ class Traverser
     }
 
     private function execRegexp(String $regexp): ?String{
-
-        // For some reason this is faster:
-        $result = preg_match("/^(" . $regexp . ")/su", substr($this->data, $this->offset), $matches);
-
-        // This is slower... WAT? probably because it must validate against UTF-8 much more data
-        // $result = preg_match("/\G(" . $regexp . ")/su", $this->data, $matches, 0, $this->offset);
+        $result = preg_match("/^(" . $regexp . ")/s" . ($this->unicode? "u" : ""), $this->remainingData, $matches);
 
         if($result === FALSE){
             throw new Error("PCRE ERROR: " . preg_last_error());
         }
 
         if($result === 1){
-            $this->setOffset($this->offset + strlen($matches[0]));
+            $this->advanceOffset(strlen($matches[0]));
             return $matches[0];
         }
 
@@ -106,20 +97,28 @@ class Traverser
     }
 
     public function eatStr(String $string): ?String{
-        if(substr($this->data, $this->offset, strlen($string)) === $string){
-            $this->offset += strlen($string);
+        $length = strlen($string);
+        if(substr($this->remainingData, 0, $length) === $string){
+            $this->advanceOffset($length);
             return $string;
         }
         return NULL;
     }
 
     public function eatLength(Int $length): ?String{
-        if($length < 0){ throw new Error("Invalid length"); }
-        if($length === 0){ return ""; }
-        $string = mb_substr($this->data, $this->offset, $length);
-        if(mb_strlen($string) !== $length){ return NULL; }
-        $this->offset += $length;
-        return $string;
+        if($length < 0){
+            throw new Error("Invalid length");
+        }
+        if($length === 0){
+            return "";
+        }
+        $string = mb_substr($this->remainingData, 0, $length);
+        if(mb_strlen($string) === $length){
+            $this->advanceOffset(strlen($string));
+            return $string;
+        }else{
+            return NULL;
+        }
     }
 
     public function eatAll(): String{

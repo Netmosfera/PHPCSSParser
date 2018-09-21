@@ -48,15 +48,13 @@ function eatIdentifierToken(
         $traverser->importBranch($tt);
     }
 
-    LOOP:
+    for(;;){
+        $piece = $traverser->eatExp('[' . $ncp . ']+') ?? $eatEscapeFunction($traverser);
 
-    $piece = $traverser->eatExp('[' . $ncp . ']+') ?? $eatEscapeFunction($traverser);
+        if($piece === NULL){
+            return new IdentifierToken(new NameToken($pieces));
+        }
 
-    if($piece === NULL){
-        return new IdentifierToken(new NameToken($pieces));
+        $pieces[] = $piece;
     }
-
-    $pieces[] = $piece;
-
-    goto LOOP;
 }

@@ -10,6 +10,8 @@ require(__DIR__ . "/dev/getCodePointsFromRanges.inc.php");
 require(__DIR__ . "/dev/Examples/ANY_UTF8.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSeqsSets/getNewlineSeqsSet.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSeqsSets/getWhitespaceSeqsSet.inc.php");
+require(__DIR__ . "/dev/SpecData/CodePointSets/getASCIINameItemsSet.inc.php");
+require(__DIR__ . "/dev/SpecData/CodePointSets/getASCIINameStartersSet.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSets/getDigitsSet.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSets/getHexDigitsSet.inc.php");
 require(__DIR__ . "/dev/SpecData/CodePointSets/getLCLettersSet.inc.php");
