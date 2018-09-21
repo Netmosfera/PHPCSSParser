@@ -5,10 +5,11 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Tokens\Token;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class HashToken
+class HashToken implements Token
 {
     private $name;
 

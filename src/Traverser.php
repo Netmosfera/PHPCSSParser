@@ -82,11 +82,12 @@ class Traverser
     }
 
     private function execRegexp(String $regexp): ?String{
-        $result = preg_match(
-            "/^(" . $regexp . ")/su",
-            substr($this->data, $this->offset), // @TODO this allocates a new string every time, it should work with offsets, not on trimmed strings
-            $matches
-        );
+
+        // For some reason this is faster:
+        $result = preg_match("/^(" . $regexp . ")/su", substr($this->data, $this->offset), $matches);
+
+        // This is slower... WAT? probably because it must validate against UTF-8 much more data
+        // $result = preg_match("/\G(" . $regexp . ")/su", $this->data, $matches, 0, $this->offset);
 
         if($result === FALSE){
             throw new Error("PCRE ERROR: " . preg_last_error());
@@ -105,7 +106,11 @@ class Traverser
     }
 
     public function eatStr(String $string): ?String{
-        return $this->eatExp($this->escapeRegexp($string));
+        if(substr($this->data, $this->offset, strlen($string)) === $string){
+            $this->offset += strlen($string);
+            return $string;
+        }
+        return NULL;
     }
 
     public function eatLength(Int $length): ?String{

@@ -30,7 +30,16 @@ function eatToken(
     Closure $eatHashToken,
     Closure $eatStringToken,
     Closure $eatAtKeywordToken,
-    Closure $eatCommentToken
+    Closure $eatCommentToken,
+    ColonToken $colonToken,
+    CommaToken $commaToken,
+    LeftCurlyBracketToken $leftCurlyBracketToken,
+    LeftParenthesisToken $leftParenthesisToken,
+    LeftSquareBracketToken $leftSquareBracketToken,
+    RightCurlyBracketToken $rightCurlyBracketToken,
+    RightParenthesisToken $rightParenthesisToken,
+    RightSquareBracketToken $rightSquareBracketToken,
+    SemicolonToken $semicolonToken
 ): ?Token{
 
     if($traverser->isEOF()){
@@ -39,15 +48,15 @@ function eatToken(
 
     $savePoint = $traverser->savepoint();
     $codePoint = $traverser->eatLength(1);
-    if($codePoint === ":"){ return new ColonToken(); }
-    if($codePoint === ","){ return new CommaToken(); }
-    if($codePoint === "{"){ return new LeftCurlyBracketToken(); }
-    if($codePoint === "("){ return new LeftParenthesisToken(); }
-    if($codePoint === "["){ return new LeftSquareBracketToken(); }
-    if($codePoint === "}"){ return new RightCurlyBracketToken(); }
-    if($codePoint === ")"){ return new RightParenthesisToken(); }
-    if($codePoint === "]"){ return new RightSquareBracketToken(); }
-    if($codePoint === ";"){ return new SemicolonToken(); }
+    if($codePoint === ":"){ return $colonToken; }
+    if($codePoint === ","){ return $commaToken; }
+    if($codePoint === "{"){ return $leftCurlyBracketToken; }
+    if($codePoint === "("){ return $leftParenthesisToken; }
+    if($codePoint === "["){ return $leftSquareBracketToken; }
+    if($codePoint === "}"){ return $rightCurlyBracketToken; }
+    if($codePoint === ")"){ return $rightParenthesisToken; }
+    if($codePoint === "]"){ return $rightSquareBracketToken; }
+    if($codePoint === ";"){ return $semicolonToken; }
     $traverser->rollback($savePoint);
 
     if($traverser->eatStr("<!--") !== NULL){
