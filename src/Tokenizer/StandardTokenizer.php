@@ -4,42 +4,42 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\BadURLRemnantsToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
-use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\CommaToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AnyURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\CommaToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumericToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\BadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
-use function Netmosfera\PHPCSSASTDev\cp;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getWhitespaceSeqsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSeqsSets\getNewlineSeqsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getASCIINameItemsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getASCIINameStartersSet;
-use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getDigitsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNonPrintablesSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNameStartersSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getWhitespacesSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNameItemsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getHexDigitsSet;
 use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getNewlinesSet;
+use function Netmosfera\PHPCSSASTDev\SpecData\CodePointSets\getDigitsSet;
+use function Netmosfera\PHPCSSASTDev\cp;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
