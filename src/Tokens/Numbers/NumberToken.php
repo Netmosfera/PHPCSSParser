@@ -44,7 +44,8 @@ class NumberToken implements NumericToken
     }
 
     function __toString(): String{
-        $number = $this->wholes;
+        $number  = $this->sign;
+        $number .= $this->wholes;
 
         if($this->decimals !== ""){
             $number .= "." . $this->decimals;

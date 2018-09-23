@@ -67,18 +67,26 @@ function eatToken(
         return new CDCToken();
     }
 
-    $token =
-        $eatIdentifierLikeToken($traverser) ??
-        $eatWhitespaceToken($traverser) ??
-        $eatNumericToken($traverser) ??
-        $eatHashToken($traverser) ??
-        $eatStringToken($traverser) ??
-        $eatAtKeywordToken($traverser) ??
-        $eatCommentToken($traverser);
+    $token = $eatIdentifierLikeToken($traverser);
+    if($token !== NULL){ return $token; }
 
-    if($token !== NULL){
-        return $token;
-    }
+    $token = $eatWhitespaceToken($traverser);
+    if($token !== NULL){ return $token; }
+
+    $token = $eatNumericToken($traverser);
+    if($token !== NULL){ return $token; }
+
+    $token = $eatHashToken($traverser);
+    if($token !== NULL){ return $token; }
+
+    $token = $eatStringToken($traverser);
+    if($token !== NULL){ return $token; }
+
+    $token = $eatAtKeywordToken($traverser);
+    if($token !== NULL){ return $token; }
+
+    $token = $eatCommentToken($traverser);
+    if($token !== NULL){ return $token; }
 
     return new DelimiterToken($traverser->eatLength(1));
 }
