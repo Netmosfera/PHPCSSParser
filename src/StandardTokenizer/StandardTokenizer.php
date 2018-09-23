@@ -32,9 +32,7 @@ use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSeqsSets\getNe
 use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getASCIINameItemsSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getASCIINameStartersSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getNonPrintablesSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getNameStartersSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getWhitespacesSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getNameItemsSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getHexDigitsSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getDigitsSet;
@@ -44,8 +42,6 @@ use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\cp;
 
 class StandardTokenizer
 {
-    private $unicode;
-
     private $eatIdentifierToken;
     private $eatIdentifierLikeToken;
     private $eatWhitespaceToken;
@@ -64,15 +60,9 @@ class StandardTokenizer
     private $newlineRegExpSet;
     private $digitRegExpSet;
 
-    function __construct(Bool $unicode = TRUE){
-        $this->unicode = $unicode;
-        if($unicode){
-            $this->nameStartRegExpSet = getNameStartersSet()->getRegExp();
-            $this->nameRegExpSet = getNameItemsSet()->getRegExp();
-        }else{
-            $this->nameStartRegExpSet = getASCIINameStartersSet()->getRegExp();
-            $this->nameRegExpSet = getASCIINameItemsSet()->getRegExp();
-        }
+    function __construct(){
+        $this->nameStartRegExpSet = getASCIINameStartersSet()->getRegExp();
+        $this->nameRegExpSet = getASCIINameItemsSet()->getRegExp();
         $this->hexDigitRegExpSet = getHexDigitsSet()->getRegExp();
         $this->whitespaceRegExp = implode("|", getWhitespaceSeqsSet());
         $this->whitespaceRegexSet = getWhitespacesSet()->getRegExp();
@@ -150,7 +140,7 @@ class StandardTokenizer
     }
 
     function tokenize(String $CSSCode): array{
-        $traverser = new Traverser($CSSCode, $this->unicode);
+        $traverser = new Traverser($CSSCode);
 
         $tokens = [];
 

@@ -82,7 +82,7 @@ class Traverser
     }
 
     private function execRegexp(String $regexp): ?String{
-        $result = preg_match("/\G(" . $regexp . ")/su", $this->data, $matches, 0, $this->offset);
+        $result = preg_match("/\G(" . $regexp . ")/s", $this->data, $matches, 0, $this->offset);
 
         if($result === FALSE){
             throw new Error("PCRE ERROR: " . preg_last_error());
