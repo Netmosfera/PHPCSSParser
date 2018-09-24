@@ -17,7 +17,7 @@ class EOFEscape implements NullEscape
         return "\\";
     }
 
-    function evaluate(): String{
+    function getValue(): String{
         return "";
     }
 }

@@ -125,7 +125,7 @@ class eatURLTokenTest extends TestCase
     function test4($prefix, $startWS, $rest){
         $ve = "\\66ff";
         $traverser = getTraverser($prefix, $startWS . $ve . ")" . $rest);
-        $escape = new HexEscape($ve, "");
+        $escape = new HexEscape($ve, NULL);
         $expected = new URLToken($startWS, [$escape], FALSE, "");
         $eatRemnants = function(Traverser $traverser){ self::fail(); };
         $eatEscape = function(Traverser $traverser) use($escape, $ve){
@@ -250,7 +250,7 @@ class eatURLTokenTest extends TestCase
         $vs = "valid sequence";
         $ve = "\\66ff";
         $traverser = getTraverser($prefix, $startWS . $vs . $ve . ")" . $rest);
-        $escape = new HexEscape("FFaaCC", "");
+        $escape = new HexEscape("FFaaCC", NULL);
         $expected = new URLToken($startWS, [$vs, $escape], FALSE, "");
         $eatRemnants = function(Traverser $traverser){ self::fail(); };
         $eatEscape = function(Traverser $traverser) use($escape, $ve){

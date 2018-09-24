@@ -86,10 +86,10 @@ class eatBadURLRemnantsTokenTest extends TestCase
     /** @dataProvider data4 */
     function test4(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "\\FFAACC" . ")" . $rest);
-        $expected = new BadURLRemnantsToken([new HexEscape("FFAACC", "\n")], FALSE);
+        $expected = new BadURLRemnantsToken([new HexEscape("FFAACC", NULL)], FALSE);
         $eatEscape = function(Traverser $traverser): ?Escape{
             assertNotMatch($traverser->eatStr("\\FFAACC"), NULL);
-            return new HexEscape("FFAACC", "\n");
+            return new HexEscape("FFAACC", NULL);
         };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);

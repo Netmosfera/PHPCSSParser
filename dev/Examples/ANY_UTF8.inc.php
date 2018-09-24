@@ -7,6 +7,6 @@ namespace Netmosfera\PHPCSSASTDev\Examples;
 function ANY_UTF8(){
     return [
         "",
-        "sample \u{2764} string"
+        "sample string"
     ];
 }

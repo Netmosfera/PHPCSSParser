@@ -4,8 +4,10 @@ namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Token;
+use function Netmosfera\PHPCSSAST\match;
+use function preg_replace;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -25,5 +27,14 @@ class WhitespaceToken implements Token
         return
             $other instanceof self &&
             match($other->whitespaces, $this->whitespaces);
+    }
+
+    private $value;
+
+    function getValue(): String{
+        if($this->value === NULL){
+            $this->value = preg_replace("/" . SpecData::WHITESPACES_SEQS_SET . "/", "\n", $this->whitespaces);
+        }
+        return $this->value;
     }
 }

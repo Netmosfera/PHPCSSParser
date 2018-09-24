@@ -1,18 +1,18 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets;
+namespace Netmosfera\PHPCSSASTDev\Data\CodePointSets;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\StandardTokenizer\Data\CompressedCodePointSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\cp;
+use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
+use function Netmosfera\PHPCSSASTDev\Data\cp;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getASCIINameItemsSet(){
+function getNameItemsSet(){
     $set = new CompressedCodePointSet();
     $set->add(cp("-"));
-    $set->addAll(getASCIINameStartersSet());
+    $set->addAll(getNameStartersSet());
     $set->addAll(getDigitsSet());
     return $set;
 }

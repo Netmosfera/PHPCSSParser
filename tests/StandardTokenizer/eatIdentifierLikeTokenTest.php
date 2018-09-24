@@ -144,7 +144,7 @@ class eatIdentifierLikeTokenTest extends TestCase
         $x = function(String $cp){
             $dec = IntlChar::ord($cp);
             $hex = dechex($dec);
-            return new HexEscape($hex, "\n");
+            return new HexEscape($hex, NULL);
         };
 
         $urls[] = new IdentifierToken(new NameToken(["url"]));

@@ -33,7 +33,7 @@ class ContinuationEscape implements NullEscape
         return "\\" . $this->codePoint;
     }
 
-    function evaluate(): String{
+    function getValue(): String{
         return "";
     }
 

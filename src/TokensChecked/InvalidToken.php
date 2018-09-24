@@ -1,17 +1,12 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
+namespace Netmosfera\PHPCSSAST\TokensChecked;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Exception;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-/**
- * @TODOC
- */
-interface Escape extends Token
-{
-    function getValue(): String;
-}
+class InvalidToken extends Exception
+{}

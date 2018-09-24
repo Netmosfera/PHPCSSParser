@@ -7,10 +7,10 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\cp;
+use function Netmosfera\PHPCSSASTDev\Data\cp;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatNumberToken;
-use Netmosfera\PHPCSSAST\StandardTokenizer\Data\CompressedCodePointSet;
+use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use PHPUnit\Framework\TestCase;
 

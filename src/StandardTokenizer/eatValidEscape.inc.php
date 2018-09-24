@@ -7,6 +7,7 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -34,7 +35,7 @@ function eatValidEscape(
     $hexDigits = $traverser->eatExp('[' . $hexDigitRegExpSet . ']{1,6}');
     if($hexDigits !== NULL){
         $whitespace = $traverser->eatExp($whitespaceRegExp) ?? "";
-        return new HexEscape($hexDigits, $whitespace);
+        return new HexEscape($hexDigits, new WhitespaceToken($whitespace));
     }
 
     $codePoint = $traverser->eatExp('[^' . $newlineRegExpSet . ']');

@@ -39,7 +39,7 @@ class NameToken implements IdentifierLikeToken
             $this->evaluated = "";
             foreach($this->pieces as $piece){
                 if($piece instanceof ValidEscape){
-                    $this->evaluated .= $piece->evaluate();
+                    $this->evaluated .= $piece->getValue();
                 }elseif(is_string($piece)){
                     $this->evaluated .= $piece;
                 }else{

@@ -23,7 +23,7 @@ class CodePointEscape implements ValidEscape
         return "\\" . $this->codePoint;
     }
 
-    function evaluate(): String{
+    function getValue(): String{
         return $this->codePoint;
     }
 

@@ -4,12 +4,13 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
-use Netmosfera\PHPCSSAST\StandardTokenizer\Data\CompressedCodePointSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getHexDigitsSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getNewlinesSet;
+use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getHexDigitsSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatValidEscape;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -71,7 +72,7 @@ class eatValidEscapeTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $prefix, String $hexDigits, String $whitespace, String $rest){
         $traverser = getTraverser($prefix, "\\" . $hexDigits . $whitespace . $rest);
-        $expected = new HexEscape($hexDigits, $whitespace);
+        $expected = new HexEscape($hexDigits, new WhitespaceToken($whitespace));
         $actual = eatValidEscape($traverser, "D", "\t", "\n");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);

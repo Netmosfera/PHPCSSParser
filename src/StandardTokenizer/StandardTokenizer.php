@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
@@ -27,16 +28,6 @@ use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSeqsSets\getNewlineSeqsSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getASCIINameItemsSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getASCIINameStartersSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getNonPrintablesSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getWhitespacesSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getHexDigitsSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getNewlinesSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\CodePointSets\getDigitsSet;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\Data\cp;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -61,20 +52,17 @@ class StandardTokenizer
     private $digitRegExpSet;
 
     function __construct(){
-        $this->nameStartRegExpSet = getASCIINameStartersSet()->getRegExp();
-        $this->nameRegExpSet = getASCIINameItemsSet()->getRegExp();
-        $this->hexDigitRegExpSet = getHexDigitsSet()->getRegExp();
-        $this->whitespaceRegExp = implode("|", getWhitespaceSeqsSet());
-        $this->whitespaceRegexSet = getWhitespacesSet()->getRegExp();
-        $this->newlineRegExp = implode("|", getNewlineSeqsSet());
-        $this->newlineRegExpSet = getNewlinesSet()->getRegExp();
-        $this->digitRegExpSet = getDigitsSet()->getRegExp();
-
-        $set = getNonPrintablesSet();
-        $set->addAll([cp('"'), cp("'"), cp("(")]);
+        $this->nameStartRegExpSet = SpecData::NAME_STARTERS_SET;
+        $this->nameRegExpSet = SpecData::NAME_ITEMS_SET;
+        $this->hexDigitRegExpSet = SpecData::HEX_DIGITS_SET;
+        $this->whitespaceRegExp = SpecData::WHITESPACES_SEQS_SET;
+        $this->whitespaceRegexSet = SpecData::WHITESPACES_SET;
+        $this->newlineRegExp = SpecData::NEWLINES_SEQS_SET;
+        $this->newlineRegExpSet = SpecData::NEWLINES_SET;
+        $this->digitRegExpSet = SpecData::DIGITS_SET;
         // string delimiters are disallowed anywhere in a URLToken
-        // also ( is disallowed in a URLToken, not sure the reason
-        $this->URLTokenBlacklistedCodePointsRegExpSet = $set->getRegExp();
+        // also ( is disallowed, not sure the reason
+        $this->URLTokenBlacklistedCodePointsRegExpSet = SpecData::NON_PRINTABLES_SET . "\"'(";
 
         //----------------------------------------------------------------------------------
 

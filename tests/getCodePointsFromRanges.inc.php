@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSASTTests;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use IntlChar;
-use Netmosfera\PHPCSSAST\StandardTokenizer\Data\CompressedCodePointSet;
+use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
