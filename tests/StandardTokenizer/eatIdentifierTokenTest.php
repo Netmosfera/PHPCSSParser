@@ -51,9 +51,13 @@ class eatIdentifierTokenTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $prefix, Array $pieces, String $rest){
-        if($pieces === []){ $pieces = ["--"]; }
-        elseif(is_string($pieces[0])){ $pieces[0] = "--" . $pieces[0]; }
-        else{ array_unshift($pieces, "--"); }
+        if($pieces === []){
+            $pieces = ["--"];
+        }elseif(is_string($pieces[0])){
+            $pieces[0] = "--" . $pieces[0];
+        }else{
+            array_unshift($pieces, "--");
+        }
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
         $expected = new IdentifierToken(new NameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?Escape{
@@ -95,8 +99,7 @@ class eatIdentifierTokenTest extends TestCase
             $pieces = ["-S"];
         }elseif(is_string($pieces[0])){
             $pieces[0] = "-S" . $pieces[0];
-        }
-        else{
+        }else{
             array_unshift($pieces, "-S");
         }
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
