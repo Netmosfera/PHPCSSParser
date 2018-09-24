@@ -36,14 +36,14 @@ class ContinuationEscapeTest extends TestCase
 
         assertMatch($object1, $object2);
 
+        assertMatch("\\" . $newline, (String)$object1);
+        assertMatch((String)$object1, (String)$object2);
+
         assertMatch($newline, $object1->getCodePoint());
         assertMatch($object1->getCodePoint(), $object2->getCodePoint());
 
         assertMatch("", $object1->getValue());
         assertMatch($object1->getValue(), $object2->getValue());
-
-        assertMatch("\\" . $newline, (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]

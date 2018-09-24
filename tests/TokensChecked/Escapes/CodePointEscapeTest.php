@@ -6,8 +6,8 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscape;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscape;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getEncodedEscapeSet;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\assertThrowsType;
@@ -36,14 +36,14 @@ class CodePointEscapeTest extends TestCase
 
         assertMatch($object1, $object2);
 
+        assertMatch("\\" . $codePoint, (String)$object1);
+        assertMatch((String)$object1, (String)$object2);
+
         assertMatch($codePoint, $object1->getCodePoint());
         assertMatch($object1->getCodePoint(), $object2->getCodePoint());
 
         assertMatch($codePoint, $object1->getValue());
         assertMatch($object1->getValue(), $object2->getValue());
-
-        assertMatch("\\" . $codePoint, (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]

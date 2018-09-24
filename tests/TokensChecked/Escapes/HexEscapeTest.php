@@ -5,16 +5,16 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function array_shift;
-use IntlChar;
 use function iterator_to_array;
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedHexEscape;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use PHPUnit\Framework\TestCase;
+use IntlChar;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -23,6 +23,7 @@ use PHPUnit\Framework\TestCase;
  *
  * #1 | test getters
  * #2 | test invalid hex digits
+ * #3 | test invalid whitespace token length
  */
 class HexEscapeTest extends TestCase
 {
@@ -54,6 +55,9 @@ class HexEscapeTest extends TestCase
 
         assertMatch($object1, $object2);
 
+        assertMatch("\\" . $hexDigits . $whitespace, (String)$object1);
+        assertMatch((String)$object1, (String)$object2);
+
         assertMatch($hexDigits, $object1->getHexDigits());
         assertMatch($object1->getHexDigits(), $object2->getHexDigits());
 
@@ -70,9 +74,6 @@ class HexEscapeTest extends TestCase
 
         assertMatch($codePoint !== NULL, $object1->isValidCodePoint());
         assertMatch($object1->isValidCodePoint(), $object2->isValidCodePoint());
-
-        assertMatch("\\" . $hexDigits . $whitespace, (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -93,6 +94,22 @@ class HexEscapeTest extends TestCase
     function test2(String $hexDigits){
         assertThrowsType(InvalidToken::CLASS, function() use($hexDigits){
             new CheckedHexEscape($hexDigits, NULL);
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data3(){
+        return cartesianProduct(getWhitespaceSeqsSet(), getWhitespaceSeqsSet());
+    }
+
+    /** @dataProvider data3 */
+    function test3(String $whitespace1, String $whitespace2){
+        $ws = $whitespace1 . $whitespace2;
+        if($ws === "\r\n"){ $ws = $ws . $ws; }
+        $whitespace = new WhitespaceToken($ws);
+        assertThrowsType(InvalidToken::CLASS, function() use($whitespace){
+            new CheckedHexEscape("FF", $whitespace);
         });
     }
 }
