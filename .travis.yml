@@ -28,7 +28,9 @@ matrix:
 
 install:
 - wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.0.0/php-coveralls.phar
-- chmod +x php-coveralls.phar
+- chmod 777 php-coveralls.phar
+- mkdir build/logs
+- chmod 777 build/logs
 
 before_script:
   - travis_retry composer self-update
@@ -37,7 +39,7 @@ before_script:
   - if [ "$dependencies" = "highest" ]; then travis_retry composer update -n; fi;
 
 script:
-  - phpdbg -qrr vendor/bin/phpunit --configuration phpunit.xml --coverage-text --coverage-clover /build/logs/clover.xml
+  - phpdbg -qrr vendor/bin/phpunit --configuration phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml
 
 after_success:
   - travis_retry php php-coveralls.phar
