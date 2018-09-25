@@ -5,8 +5,10 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -14,11 +16,21 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 /**
  * Tests in this file:
  *
- * #1 | test getters only wholes
- * #2 | test getters only decimals
- * #3 | test getters wholes and decimals
- * #4 | test getters only wholes and e-part
- * #5 | test getters only decimals and e-part
+ * #1  | test getters only wholes
+ * #2  | test getters only decimals
+ * #3  | test getters wholes and decimals
+ * #4  | test getters only wholes and e-part
+ * #5  | test getters only decimals and e-part
+ * #6  | test getters wholes and decimals and e-part
+ *
+ *     | number | e-letter | e-sign | e-exponent
+ *  #7 |   no   |   ?      |    ?   |     ?
+ *  #8 |    ?   |  yes     |    ?   |    no
+ *  #9 |    ?   |   no     |    ?   |    yes
+ * #10 |    ?   |   no     |    ?   |    yes
+ * #11 |    ?   |   ?      |  yes   |    no
+ * #12 |    ?   |   no     |  yes   |    ?
+ * #13 |    ?   |   no     |  yes   |    no
  */
 class NumberTokenTest extends TestCase
 {
@@ -53,6 +65,10 @@ class NumberTokenTest extends TestCase
 
         assertMatch("", $object1->getEExponent());
         assertMatch($object1->getEExponent(), $object2->getEExponent());
+
+        assertMatch($object1->toFloat(), $object2->toFloat());
+
+        assertMatch($object1->toNumber(), $object2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -88,6 +104,10 @@ class NumberTokenTest extends TestCase
 
         assertMatch("", $object1->getEExponent());
         assertMatch($object1->getEExponent(), $object2->getEExponent());
+
+        assertMatch($object1->toFloat(), $object2->toFloat());
+
+        assertMatch($object1->toNumber(), $object2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -123,6 +143,10 @@ class NumberTokenTest extends TestCase
 
         assertMatch("", $object1->getEExponent());
         assertMatch($object1->getEExponent(), $object2->getEExponent());
+
+        assertMatch($object1->toFloat(), $object2->toFloat());
+
+        assertMatch($object1->toNumber(), $object2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -133,12 +157,12 @@ class NumberTokenTest extends TestCase
 
     /** @dataProvider data4 */
     function test4(String $sign, String $e, String $eSign){
-        $object1 = new CheckedNumberToken($sign, "123", "", $e, $eSign, "789");
-        $object2 = new CheckedNumberToken($sign, "123", "", $e, $eSign, "789");
+        $object1 = new CheckedNumberToken($sign, "123", "", $e, $eSign, "7");
+        $object2 = new CheckedNumberToken($sign, "123", "", $e, $eSign, "7");
 
         assertMatch($object1, $object2);
 
-        assertMatch($sign . "123" . $e . $eSign . "789", (String)$object1);
+        assertMatch($sign . "123" . $e . $eSign . "7", (String)$object1);
         assertMatch((String)$object1, (String)$object2);
 
         assertMatch($sign, $object1->getSign());
@@ -156,8 +180,12 @@ class NumberTokenTest extends TestCase
         assertMatch($eSign, $object1->getESign());
         assertMatch($object1->getESign(), $object2->getESign());
 
-        assertMatch("789", $object1->getEExponent());
+        assertMatch("7", $object1->getEExponent());
         assertMatch($object1->getEExponent(), $object2->getEExponent());
+
+        assertMatch($object1->toFloat(), $object2->toFloat());
+
+        assertMatch($object1->toNumber(), $object2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -193,6 +221,10 @@ class NumberTokenTest extends TestCase
 
         assertMatch("789", $object1->getEExponent());
         assertMatch($object1->getEExponent(), $object2->getEExponent());
+
+        assertMatch($object1->toFloat(), $object2->toFloat());
+
+        assertMatch($object1->toNumber(), $object2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -228,5 +260,100 @@ class NumberTokenTest extends TestCase
 
         assertMatch("789", $object1->getEExponent());
         assertMatch($object1->getEExponent(), $object2->getEExponent());
+
+        assertMatch($object1->toFloat(), $object2->toFloat());
+
+        assertMatch($object1->toNumber(), $object2->toNumber());
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data7(){
+        return cartesianProduct(["+", "-", ""], ["e", "E"], ["+", "-", ""]);
+    }
+
+    /** @dataProvider data7 */
+    function test7(String $sign, String $eLetter, String $eSign){
+        assertThrowsType(InvalidToken::CLASS, function() use($sign, $eLetter, $eSign){
+            new CheckedNumberToken($sign, "", "", $eLetter, $eSign, "5");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data8(){
+        return cartesianProduct(["+", "-", ""], ["e", "E"], ["+", "-", ""]);
+    }
+
+    /** @dataProvider data8 */
+    function test8(String $sign, String $eLetter, String $eSign){
+        assertThrowsType(InvalidToken::CLASS, function() use($sign, $eLetter, $eSign){
+            new CheckedNumberToken($sign, "11", "22", $eLetter, $eSign, "");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data9(){
+        return cartesianProduct(["+", "-", ""], ["+", "-", ""]);
+    }
+
+    /** @dataProvider data9 */
+    function test9(String $sign, String $eSign){
+        assertThrowsType(InvalidToken::CLASS, function() use($sign, $eSign){
+            new CheckedNumberToken($sign, "11", "22", "", $eSign, "4");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data10(){
+        return cartesianProduct(["+", "-", ""], ["+", "-"]);
+    }
+
+    /** @dataProvider data10 */
+    function test10(String $sign, String $eSign){
+        assertThrowsType(InvalidToken::CLASS, function() use($sign, $eSign){
+            new CheckedNumberToken($sign, "123", "", "", $eSign, "5");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data11(){
+        return cartesianProduct(["+", "-", ""], ["e", "E"], ["+", "-"]);
+    }
+
+    /** @dataProvider data11 */
+    function test11(String $sign, String $eLetter, String $eSign){
+        assertThrowsType(InvalidToken::CLASS, function() use($sign, $eLetter, $eSign){
+            new CheckedNumberToken($sign, "123", "", $eLetter, $eSign, "");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data12(){
+        return cartesianProduct(["+", "-", ""], ["+", "-"]);
+    }
+
+    /** @dataProvider data12 */
+    function test12(String $sign, String $eSign){
+        assertThrowsType(InvalidToken::CLASS, function() use($sign, $eSign){
+            new CheckedNumberToken($sign, "123", "", "", $eSign, "5");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data13(){
+        return cartesianProduct(["+", "-", ""], ["+", "-"]);
+    }
+
+    /** @dataProvider data13 */
+    function test13(String $sign, String $eSign){
+        assertThrowsType(InvalidToken::CLASS, function() use($sign, $eSign){
+            new CheckedNumberToken($sign, "123", "", "", $eSign, "");
+        });
     }
 }

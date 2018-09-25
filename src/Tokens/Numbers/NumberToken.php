@@ -22,6 +22,12 @@ class NumberToken implements NumericToken
 
     private $EExponent;
 
+    private $stringified;
+
+    private $floatified;
+
+    private $numberified;
+
     function __construct(
         String $sign,
         String $wholes,
@@ -31,42 +37,36 @@ class NumberToken implements NumericToken
         String $EExponent
     ){
         $this->sign = $sign;
-
-        assert($wholes !== "" || $decimals !== "");
         $this->wholes = $wholes;
         $this->decimals = $decimals;
-
-        assert(($ELetter === "") === ($EExponent === ""));
-        assert($ESign === "" || $ELetter !== "");
         $this->ELetter = $ELetter;
         $this->ESign = $ESign;
         $this->EExponent = $EExponent;
     }
 
     function __toString(): String{
-        $number  = $this->sign;
-        $number .= $this->wholes;
-
-        if($this->decimals !== ""){
-            $number .= "." . $this->decimals;
+        if($this->stringified === NULL){
+            $number  = $this->sign;
+            $number .= $this->wholes;
+            $number .= $this->decimals === "" ? "" : "." . $this->decimals;
+            $number .= $this->ELetter;
+            $number .= $this->ESign;
+            $number .= $this->EExponent;
+            $this->stringified = $number;
         }
-
-        $number .= $this->ELetter;
-        $number .= $this->ESign;
-        $number .= $this->EExponent;
-
-        return $number;
+        return $this->stringified;
     }
 
     function equals($other): Bool{
         return
             $other instanceof self &&
             match($other->sign, $this->sign) &&
+            match($other->ESign, $this->ESign) &&
+            match($other->ELetter, $this->ELetter) &&
             match($other->wholes, $this->wholes) &&
             match($other->decimals, $this->decimals) &&
-            match($other->ELetter, $this->ELetter) &&
-            match($other->ESign, $this->ESign) &&
-            match($other->EExponent, $this->EExponent);
+            match($other->EExponent, $this->EExponent) &&
+            TRUE;
     }
 
     function getSign(): String{
@@ -94,13 +94,19 @@ class NumberToken implements NumericToken
     }
 
     function toFloat(): Float{
-        return (Float)(String)$this;
+        if($this->floatified === NULL){
+            $this->floatified = (Float)(String)$this;
+        }
+        return $this->floatified;
     }
 
     function toNumber(){
-        $float = (Float)(String)$this;
-        $floatAsInt = (int)$float;
-        $isInt = (float)$floatAsInt === $float;
-        return $isInt ? $floatAsInt : $float;
+        if($this->numberified === NULL){
+            $float = $this->toFloat();
+            $floatAsInt = (int)$float;
+            $isInt = (float)$floatAsInt === $float;
+            $this->numberified = $isInt ? $floatAsInt : $float;
+        }
+        return $this->numberified;
     }
 }
