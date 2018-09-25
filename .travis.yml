@@ -29,7 +29,7 @@ matrix:
 install:
 - wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.0.0/php-coveralls.phar
 - chmod 777 php-coveralls.phar
-- mkdir build/logs
+- mkdir -p build/logs
 - chmod 777 build/logs
 
 before_script:
