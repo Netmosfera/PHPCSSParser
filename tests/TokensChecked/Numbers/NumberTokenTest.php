@@ -17,7 +17,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class NumberTokenTest extends TestCase
 {
-    function test1(String $sign, String $wholes, String $decimals, String $e){
+    function xtest1(String $sign, String $wholes, String $decimals, String $e){
         $object1 = new NumberToken("-", "123", "456", "e", "-", "3");
         $object2 = new NumberToken("-", "123", "456", "e", "-", "3");
 
