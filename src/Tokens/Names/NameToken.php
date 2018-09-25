@@ -14,7 +14,7 @@ class NameToken implements IdentifierLikeToken
 {
     private $pieces;
 
-    private $evaluated;
+    private $value;
 
     function __construct(Array $pieces){
         $this->pieces = $pieces;
@@ -34,19 +34,19 @@ class NameToken implements IdentifierLikeToken
         return $this->pieces;
     }
 
-    function evaluate(): String{
-        if($this->evaluated === NULL){
-            $this->evaluated = "";
+    function getValue(): String{
+        if($this->value === NULL){
+            $this->value = "";
             foreach($this->pieces as $piece){
                 if($piece instanceof ValidEscape){
-                    $this->evaluated .= $piece->getValue();
+                    $this->value .= $piece->getValue();
                 }elseif(is_string($piece)){
-                    $this->evaluated .= $piece;
+                    $this->value .= $piece;
                 }else{
                     throw new Error();
                 }
             }
         }
-        return $this->evaluated;
+        return $this->value;
     }
 }

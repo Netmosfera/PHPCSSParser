@@ -15,6 +15,8 @@ class WhitespaceToken implements Token
 {
     private $whitespaces;
 
+    private $value;
+
     function __construct(String $whitespaces){
         $this->whitespaces = $whitespaces;
     }
@@ -29,11 +31,13 @@ class WhitespaceToken implements Token
             match($other->whitespaces, $this->whitespaces);
     }
 
-    private $value;
-
     function getValue(): String{
         if($this->value === NULL){
-            $this->value = preg_replace("/" . SpecData::WHITESPACES_SEQS_SET . "/", "\n", $this->whitespaces);
+            $this->value = preg_replace(
+                "/" . SpecData::WHITESPACES_SEQS_SET . "/usD",
+                "\n",
+                $this->whitespaces
+            );
         }
         return $this->value;
     }

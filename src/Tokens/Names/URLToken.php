@@ -21,13 +21,11 @@ class URLToken implements AnyURLToken
 
     private $terminatedWithEOF;
 
-    private $evaluated;
-
     function __construct(
         String $whitespaceBefore,
         Array $pieces,
-        Bool $terminatedWithEOF, // @TODO invert the order of these two parameters
-        String $whitespaceAfter  // @TODO invert the order of these two parameters
+        String $whitespaceAfter,
+        Bool $terminatedWithEOF
     ){
         $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;

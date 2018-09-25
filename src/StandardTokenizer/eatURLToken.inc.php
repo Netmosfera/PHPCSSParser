@@ -20,8 +20,8 @@ function eatURLToken(
     Traverser $traverser,
     String $whitespaceRegexSet,
     String $blacklistCPsRegexSet,
-    Closure $eatBadURLRemnantsFunction,   /* @TODO invert order of arguments with next one */
-    Closure $eatEscapeFunction
+    Closure $eatEscapeFunction,
+    Closure $eatBadURLRemnantsFunction
 ): ?AnyURLToken{
 
     $wsBefore = $traverser->eatExp('[' . $whitespaceRegexSet . ']*+(?!["\'])');
@@ -38,11 +38,11 @@ function eatURLToken(
     for(;;){
 
         if($traverser->isEOF()){
-            return new URLToken($wsBefore, $pieces, TRUE, "");
+            return new URLToken($wsBefore, $pieces, "", TRUE);
         }
 
         if($traverser->eatStr(")") !== NULL){
-            return new URLToken($wsBefore, $pieces, FALSE, "");
+            return new URLToken($wsBefore, $pieces, "", FALSE);
         }
 
         $finishTraverser = $traverser->createBranch();
@@ -50,10 +50,10 @@ function eatURLToken(
         if($wsAfter !== ""){
             if($finishTraverser->isEOF()){
                 $traverser->importBranch($finishTraverser);
-                return new URLToken($wsBefore, $pieces, TRUE, $wsAfter);
+                return new URLToken($wsBefore, $pieces, $wsAfter, TRUE);
             }elseif($finishTraverser->eatStr(")") !== NULL){
                 $traverser->importBranch($finishTraverser);
-                return new URLToken($wsBefore, $pieces, FALSE, $wsAfter);
+                return new URLToken($wsBefore, $pieces, $wsAfter, FALSE);
             }
             $remnants = $eatBadURLRemnantsFunction($traverser);
             return new BadURLToken($wsBefore, $pieces, $remnants);

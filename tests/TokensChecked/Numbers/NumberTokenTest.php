@@ -32,93 +32,15 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  * #12 |    ?   |   no     |  yes   |    ?
  * #13 |    ?   |   no     |  yes   |    no
  *
- * #13b invalid sign
- * #14 invalid wholes
- * #15 invalid decimals
- * #16 invalid e-letter
- * #17 invalid e-sign
- * #18 invalid e-exponent
+ * #14 invalid sign
+ * #15 invalid wholes
+ * #16 invalid decimals
+ * #17 invalid e-letter
+ * #18 invalid e-sign
+ * #19 invalid e-exponent
  */
 class NumberTokenTest extends TestCase
 {
-    function data13b(){
-        return cartesianProduct(["++", "--", "*"]);
-    }
-
-    /** @dataProvider data13b */
-    function test13b(String $sign){
-        assertThrowsType(InvalidToken::CLASS, function() use($sign){
-            new CheckedNumberToken($sign, "123", "", "", "", "");
-        });
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data14(){
-        return cartesianProduct(["", "123a", "a123", "aaa"]);
-    }
-
-    /** @dataProvider data14 */
-    function test14(String $wholes){
-        assertThrowsType(InvalidToken::CLASS, function() use($wholes){
-            new CheckedNumberToken("", $wholes, "", "", "", "");
-        });
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data15(){
-        return cartesianProduct(["", "123a", "a123", "aaa"]);
-    }
-
-    /** @dataProvider data15 */
-    function test15(String $decimals){
-        assertThrowsType(InvalidToken::CLASS, function() use($decimals){
-            new CheckedNumberToken("", "", $decimals, "", "", "");
-        });
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data16(){
-        return cartesianProduct(["ee", "EE", "eE", "Ee", "a", "0"]);
-    }
-
-    /** @dataProvider data16 */
-    function test16(String $eLetter){
-        assertThrowsType(InvalidToken::CLASS, function() use($eLetter){
-            new CheckedNumberToken("", "123", "", $eLetter, "", "");
-        });
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data17(){
-        return cartesianProduct(["++", "--", "*"]);
-    }
-
-    /** @dataProvider data17 */
-    function test17(String $eSign){
-        assertThrowsType(InvalidToken::CLASS, function() use($eSign){
-            new CheckedNumberToken("", "123", "", "e", $eSign, "123");
-        });
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data18(){
-        return cartesianProduct(["", "123a", "a123", "aaa"]);
-    }
-
-    /** @dataProvider data18 */
-    function test18(String $eExponent){
-        assertThrowsType(InvalidToken::CLASS, function() use($eExponent){
-            new CheckedNumberToken("", "123", "", "e", "", $eExponent);
-        });
-    }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
     function data1(){
         return cartesianProduct(["-", "+", ""]);
     }
@@ -439,6 +361,82 @@ class NumberTokenTest extends TestCase
     function test13(String $sign, String $eSign){
         assertThrowsType(InvalidToken::CLASS, function() use($sign, $eSign){
             new CheckedNumberToken($sign, "123", "", "", $eSign, "");
+        });
+    }
+
+    function data14(){
+        return cartesianProduct(["++", "--", "*"]);
+    }
+
+    /** @dataProvider data14 */
+    function test14(String $sign){
+        assertThrowsType(InvalidToken::CLASS, function() use($sign){
+            new CheckedNumberToken($sign, "123", "", "", "", "");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data15(){
+        return cartesianProduct(["", "123a", "a123", "aaa"]);
+    }
+
+    /** @dataProvider data15 */
+    function test15(String $wholes){
+        assertThrowsType(InvalidToken::CLASS, function() use($wholes){
+            new CheckedNumberToken("", $wholes, "", "", "", "");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data16(){
+        return cartesianProduct(["", "123a", "a123", "aaa"]);
+    }
+
+    /** @dataProvider data16 */
+    function test16(String $decimals){
+        assertThrowsType(InvalidToken::CLASS, function() use($decimals){
+            new CheckedNumberToken("", "", $decimals, "", "", "");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data17(){
+        return cartesianProduct(["ee", "EE", "eE", "Ee", "a", "0"]);
+    }
+
+    /** @dataProvider data17 */
+    function test17(String $eLetter){
+        assertThrowsType(InvalidToken::CLASS, function() use($eLetter){
+            new CheckedNumberToken("", "123", "", $eLetter, "", "");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data18(){
+        return cartesianProduct(["++", "--", "*"]);
+    }
+
+    /** @dataProvider data18 */
+    function test18(String $eSign){
+        assertThrowsType(InvalidToken::CLASS, function() use($eSign){
+            new CheckedNumberToken("", "123", "", "e", $eSign, "123");
+        });
+    }
+
+    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+
+    function data19(){
+        return cartesianProduct(["", "123a", "a123", "aaa"]);
+    }
+
+    /** @dataProvider data19 */
+    function test19(String $eExponent){
+        assertThrowsType(InvalidToken::CLASS, function() use($eExponent){
+            new CheckedNumberToken("", "123", "", "e", "", $eExponent);
         });
     }
 }
