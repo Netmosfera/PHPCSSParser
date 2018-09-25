@@ -38,7 +38,7 @@ use PHPUnit\Framework\TestCase;
  * #9  | ------------ | DECIMAL_PART || E_PART
  * #10 | ------------ | DECIMAL_PART || ------ + incomplete E_PART
   */
-class eatNumberToken
+class eatNumberTokenTest extends TestCase
 {
     function data1(){
         $codePoints = new CompressedCodePointSet();

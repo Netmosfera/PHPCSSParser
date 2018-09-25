@@ -209,7 +209,8 @@ class eatIdentifierTokenTest extends TestCase
     function getPieces($afterPiece){
         if(!is_string($afterPiece)){
             $data[] = "N";
-            $data[] = "NNNN";
+            $data[] = "NN";
+            $data[] = "NNN";
         }
         $data[] = new CodePointEscape("@");
         return $data;
