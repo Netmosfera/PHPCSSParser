@@ -37,7 +37,7 @@ before_script:
   - if [ "$dependencies" = "highest" ]; then travis_retry composer update -n; fi;
 
 script:
-  - phpdbg -qrr vendor/bin/phpunit phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml; fi;
+  - phpdbg -qrr vendor/bin/phpunit phpunit.xml --coverage-text --coverage-clover build/logs/clover.xml
 
 after_success:
   - travis_retry php php-coveralls.phar
