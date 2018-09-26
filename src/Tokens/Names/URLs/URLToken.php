@@ -24,41 +24,50 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 class URLToken implements AnyURLToken
 {
     /**
-     * @var         WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @var         WhitespaceToken|NULL
+     * `WhitespaceToken|NULL`
      */
     private $whitespaceBefore;
 
     /**
-     * @var         URLBitToken[]|ValidEscapeToken[]                                             `Array<Int, URLBitToken|ValidEscape>`
+     * @var         URLBitToken[]|ValidEscapeToken[]
+     * `Array<Int, URLBitToken|ValidEscape>`
      */
     private $pieces;
 
     /**
-     * @var         WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @var         WhitespaceToken|NULL
+     * `WhitespaceToken|NULL`
      */
     private $whitespaceAfter;
 
     /**
-     * @var         Bool                                                                    `Bool`
+     * @var         Bool
+     * `Bool`
      */
     private $terminatedWithEOF;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $stringified;
 
     /**
-     * @param       WhitespaceToken|NULL                    $whitespaceBefore               `WhitespaceToken|NULL`
+     * @param       WhitespaceToken|NULL                    $whitespaceBefore
+     * `WhitespaceToken|NULL`
      * @TODOC
      *
-     * @param       URLBitToken[]|ValidEscapeToken[]             $pieces                         `Array<Int, URLBitToken|ValidEscape>`
+     * @param       URLBitToken[]|ValidEscapeToken[]        $pieces
+     * `Array<Int, URLBitToken|ValidEscape>`
      * @TODOC
      *
-     * @param       WhitespaceToken|NULL                    $whitespaceAfter                `WhitespaceToken|NULL`
+     * @param       WhitespaceToken|NULL                    $whitespaceAfter
+     * `WhitespaceToken|NULL`
      * @TODOC
      *
-     * @param       Bool                                    $terminatedWithEOF              `Bool`
+     * @param       Bool                                    $terminatedWithEOF
+     * `Bool`
      * @TODOC
      */
     function __construct(
@@ -101,7 +110,8 @@ class URLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @returns     WhitespaceToken|NULL
+     * `WhitespaceToken|NULL`
      * @TODOC
      */
     function getWhitespaceBefore(): ?WhitespaceToken{
@@ -111,7 +121,8 @@ class URLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     URLBitToken[]|ValidEscapeToken[]                                             `Array<Int, URLBitToken|ValidEscape>`
+     * @returns     URLBitToken[]|ValidEscapeToken[]
+     * `Array<Int, URLBitToken|ValidEscape>`
      * @TODOC
      */
     function getPieces(): Array{
@@ -121,7 +132,8 @@ class URLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @returns     WhitespaceToken|NULL
+     * `WhitespaceToken|NULL`
      * @TODOC
      */
     function getWhitespaceAfter(): ?WhitespaceToken{
@@ -131,7 +143,8 @@ class URLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     Bool                                                                    `Bool`
+     * @returns     Bool
+     * `Bool`
      * @TODOC
      */
     function isTerminatedWithEOF(): Bool{

@@ -25,12 +25,14 @@ class BadURLRemnantsToken implements Token
         $this->terminatedWithEOF = $terminatedWithEOF;
     }
 
+    /** @inheritDoc */
     function __toString(): String{
         return
             implode("", $this->pieces) .
             ($this->terminatedWithEOF ? "" : ")");
     }
 
+    /** @inheritDoc */
     function equals($other): Bool{
         return
             $other instanceof self &&

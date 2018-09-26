@@ -14,67 +14,82 @@ use function Netmosfera\PHPCSSAST\match;
 class NumberToken implements NumericToken
 {
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $sign;
 
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $wholes;
 
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $decimals;
 
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $EIndicator;
 
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $ESign;
 
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $EExponent;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $stringified;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $floatified;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $numberified;
 
     /**
-     * @param       String                                  $sign                           `String`
+     * @param       String                                  $sign
+     * `String`
      * The number's sign; it is `"+"`, `"-"` or an empty string.
      *
-     * @param       String                                  $wholes                         `String`
+     * @param       String                                  $wholes
+     * `String`
      * The number's whole part; it is any sequence of digits or an empty string.
      *
-     * @param       String                                  $decimals                       `String`
+     * @param       String                                  $decimals
+     * `String`
      * The number's decimal part; it is any sequence of digits or an empty string.
      *
-     * @param       String                                  $EIndicator                     `String`
+     * @param       String                                  $EIndicator
+     * `String`
      * The "E" indicator; it is `"E"`, `"e"` or an empty string.
      *
-     * @param       String                                  $ESign                          `String`
+     * @param       String                                  $ESign
+     * `String`
      * The E-notation's exponent's sign; it is `"+"`, `"-"` or an empty string.
      *
-     * @param       String                                  $EExponent                      `String`
+     * @param       String                                  $EExponent
+     * `String`
      * The E-notation's exponent; it is any sequence of digits or an empty string.
      */
     function __construct(
@@ -123,7 +138,8 @@ class NumberToken implements NumericToken
     /**
      * Returns the number's sign; it is `"+"`, `"-"` or an empty string.
      *
-     * @returns     String                                                                  `String`
+     * @returns     String
+     * `String`
      * Returns the number's sign; it is `"+"`, `"-"` or an empty string.
      */
     function getSign(): String{
@@ -133,7 +149,8 @@ class NumberToken implements NumericToken
     /**
      * Returns the number's whole part; it is any sequence of digits or an empty string.
      *
-     * @returns     String                                                                  `String`
+     * @returns     String
+     * `String`
      * Returns the number's whole part; it is any sequence of digits or an empty string.
      */
     function getWholes(): String{
@@ -143,7 +160,8 @@ class NumberToken implements NumericToken
     /**
      * Returns the number's decimal part; it is any sequence of digits or an empty string.
      *
-     * @returns     String                                                                  `String`
+     * @returns     String
+     * `String`
      * Returns the number's decimal part; it is any sequence of digits or an empty string.
      */
     function getDecimals(): String{
@@ -153,7 +171,8 @@ class NumberToken implements NumericToken
     /**
      * Returns the "E" indicator; it is `"E"`, `"e"` or an empty string.
      *
-     * @returns     String                                                                  `String`
+     * @returns     String
+     * `String`
      * Returns the "E" indicator; it is `"E"`, `"e"` or an empty string.
      */
     function getEIndicator(): String{
@@ -163,7 +182,8 @@ class NumberToken implements NumericToken
     /**
      * Returns the E-notation's exponent's sign; it is `"+"`, `"-"` or an empty string.
      *
-     * @returns     String                                                                  `String`
+     * @returns     String
+     * `String`
      * Returns the E-notation's exponent's sign; it is `"+"`, `"-"` or an empty string.
      */
     function getESign(): String{
@@ -173,7 +193,8 @@ class NumberToken implements NumericToken
     /**
      * Returns the E-notation's exponent; it is any sequence of digits or an empty string.
      *
-     * @returns     String                                                                  `String`
+     * @returns     String
+     * `String`
      * Returns the E-notation's exponent; it is any sequence of digits or an empty string.
      */
     function getEExponent(): String{
@@ -183,7 +204,8 @@ class NumberToken implements NumericToken
     /**
      * Returns the number as {@see Float}
      *
-     * @returns     Float                                                                   `Float`
+     * @returns     Float
+     * `Float`
      * Returns the number as {@see Float}
      */
     function toFloat(): Float{
@@ -196,7 +218,8 @@ class NumberToken implements NumericToken
     /**
      * Returns the number as {@see Int} if possible, otherwise returns it as {@see Float}.
      *
-     * @returns     Int|Float                                                               `Int|Float`
+     * @returns     Int|Float
+     * `Int|Float`
      * Returns the number as {@see Int} if possible, otherwise returns it as {@see Float}.
      */
     function toNumber(){

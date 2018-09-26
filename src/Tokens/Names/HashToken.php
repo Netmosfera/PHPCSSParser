@@ -15,13 +15,15 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
 class HashToken implements Token
 {
     /**
-     * @var         NameToken                                                               `NameToken`
+     * @var         NameToken
+     * `NameToken`
      */
     private $name;
 
     /**
-     * @param       NameToken                               $name                           `NameToken`
-     * The {@see NameToken} that is to become a {@see HashToken}.
+     * @param       NameToken                               $name
+     * `NameToken`
+     * The {@see NameToken} to become a {@see HashToken}.
      */
     function __construct(NameToken $name){
         $this->name = $name;
@@ -42,7 +44,8 @@ class HashToken implements Token
     /**
      * Returns the {@see NameToken} for this {@see HashToken}.
      *
-     * @returns     NameToken                                                               `NameToken`
+     * @returns     NameToken
+     * `NameToken`
      * Returns the {@see NameToken} for this {@see HashToken}.
      */
     function getName(): NameToken{

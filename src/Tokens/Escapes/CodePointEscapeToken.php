@@ -22,22 +22,26 @@ use IntlChar;
 class CodePointEscapeToken implements ValidEscapeToken
 {
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $hexDigits;
 
     /**
-     * @var         WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @var         WhitespaceToken|NULL
+     * `WhitespaceToken|NULL`
      */
     private $terminator;
 
     /**
-     * @var         Int|NULL                                                                `Int|NULL`
+     * @var         Int|NULL
+     * `Int|NULL`
      */
     private $intValue;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $value;
 
@@ -77,7 +81,8 @@ class CodePointEscapeToken implements ValidEscapeToken
      * When the code point is invalid, {@see self::getValue()} will return the
      * `U+FFFD` replacement character.
      *
-     * @returns     Bool                                                                    `Bool`
+     * @returns     Bool
+     * `Bool`
      * Tells whether this code point is valid.
      */
     function isValidCodePoint(): Bool{
@@ -87,7 +92,8 @@ class CodePointEscapeToken implements ValidEscapeToken
     /**
      * Returns the {@see Int} value of the hexadecimal digits.
      *
-     * @returns     Int                                                                     `Int`
+     * @returns     Int
+     * `Int`
      * Returns the code point.
      */
     function getIntValue(): Int{
@@ -100,7 +106,8 @@ class CodePointEscapeToken implements ValidEscapeToken
     /**
      * Returns the hexadecimal digits as they were originally specified.
      *
-     * @returns     String                                                                  `String`
+     * @returns     String
+     * `String`
      * Returns the hexadecimal digits as they were originally specified.
      */
     function getHexDigits(): String{
@@ -118,7 +125,8 @@ class CodePointEscapeToken implements ValidEscapeToken
      *
      * If any, the returned token has always a computed length of 1.
      *
-     * @returns     WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @returns     WhitespaceToken|NULL
+     * `WhitespaceToken|NULL`
      * Returns the whitespace terminator of the escape sequence.
      */
     function getTerminator(): ?WhitespaceToken{

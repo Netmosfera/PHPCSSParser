@@ -18,13 +18,15 @@ use function Netmosfera\PHPCSSAST\match;
 class IdentifierToken implements IdentifierLikeToken
 {
     /**
-     * @var         NameToken                                                               `NameToken`
+     * @var         NameToken
+     * `NameToken`
      */
     private $name;
 
     /**
-     * @param       NameToken                               $name                           `NameToken`
-     * The {@see NameToken} that is to become a {@see IdentifierToken}.
+     * @param       NameToken                               $name
+     * `NameToken`
+     * The {@see NameToken} to become a {@see IdentifierToken}.
      */
     function __construct(NameToken $name){
         $this->name = $name;
@@ -45,7 +47,8 @@ class IdentifierToken implements IdentifierLikeToken
     /**
      * Returns the {@see NameToken} for this {@see IdentifierToken}.
      *
-     * @returns     NameToken                                                               `NameToken`
+     * @returns     NameToken
+     * `NameToken`
      * Returns the {@see NameToken} for this {@see IdentifierToken}.
      */
     function getName(): NameToken{

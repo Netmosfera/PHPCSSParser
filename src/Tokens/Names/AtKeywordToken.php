@@ -15,13 +15,15 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
 class AtKeywordToken implements Token
 {
     /**
-     * @var         IdentifierToken                                                         `IdentifierToken`
+     * @var         IdentifierToken
+     * `IdentifierToken`
      */
     private $identifier;
 
     /**
-     * @param       IdentifierToken                         $identifier                     `IdentifierToken`
-     * The {@see IdentifierToken} that is to become a {@see AtKeywordToken}.
+     * @param       IdentifierToken                         $identifier
+     * `IdentifierToken`
+     * The {@see IdentifierToken} to become a {@see AtKeywordToken}.
      */
     function __construct(IdentifierToken $identifier){
         $this->identifier = $identifier;
@@ -42,7 +44,8 @@ class AtKeywordToken implements Token
     /**
      * Returns the {@see IdentifierToken} for this {@see AtKeywordToken}.
      *
-     * @returns     IdentifierToken                                                         `IdentifierToken`
+     * @returns     IdentifierToken
+     * `IdentifierToken`
      * Returns the {@see IdentifierToken} for this {@see AtKeywordToken}.
      */
     function getIdentifier(): IdentifierToken{

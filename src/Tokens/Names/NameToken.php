@@ -19,22 +19,26 @@ use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 class NameToken implements EvaluableToken
 {
     /**
-     * @var         NameBitToken[]|ValidEscapeToken[]                                            `Array<Int, NameBitToken|ValidEscape>`
+     * @var         NameBitToken[]|ValidEscapeToken[]
+     * `Array<Int, NameBitToken|ValidEscape>`
      */
     private $pieces;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $value;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $stringified;
 
     /**
-     * @param       NameBitToken[]|ValidEscapeToken[]            $pieces                         `Array<Int, NameBitToken|ValidEscape>`
+     * @param       NameBitToken[]|ValidEscapeToken[]       $pieces
+     * `Array<Int, NameBitToken|ValidEscape>`
      * The {@see NameToken}'s components.
      */
     function __construct(Array $pieces){
@@ -73,7 +77,8 @@ class NameToken implements EvaluableToken
     /**
      * Returns the {@see NameToken}'s components.
      *
-     * @returns     NameBitToken[]|ValidEscapeToken[]                                            `Array<Int, NameBitToken|ValidEscape>`
+     * @returns     NameBitToken[]|ValidEscapeToken[]
+     * `Array<Int, NameBitToken|ValidEscape>`
      * Returns the {@see NameToken}'s components.
      */
     function getPieces(): Array{

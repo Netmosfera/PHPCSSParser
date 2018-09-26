@@ -15,17 +15,19 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
  * Common occurrences of this class in CSS are the `.`, the prefix of class names, the math
  * operators like `*` `+` `/`, etc.
  *
- * N.B. That a delimiter token of value `\` represents a parse-error.
+ * N.B. a delimiter token of value `\` represents a parse-error.
  */
 class DelimiterToken implements Token
 {
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $delimiter;
 
     /**
-     * @param       String                                  $delimiter                      `String`
+     * @param       String                                  $delimiter
+     * `String`
      * The delimiter code point.
      */
     function __construct(String $delimiter){

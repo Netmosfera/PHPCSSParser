@@ -29,14 +29,17 @@ class ContinuationEscapeToken implements NullEscapeToken
         $this->codePoint = $codePoint;
     }
 
+    /** @inheritDoc */
     function __toString(): String{
         return "\\" . $this->codePoint;
     }
 
+    /** @inheritDoc */
     function getValue(): String{
         return "";
     }
 
+    /** @inheritDoc */
     function equals($other): Bool{
         return
             $other instanceof self &&

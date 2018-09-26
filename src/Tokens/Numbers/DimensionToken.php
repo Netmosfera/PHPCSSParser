@@ -15,20 +15,24 @@ use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 class DimensionToken implements NumericToken
 {
     /**
-     * @var         NumberToken                                                             `NumberToken`
+     * @var         NumberToken
+     * `NumberToken`
      */
     private $number;
 
     /**
-     * @var         IdentifierToken                                                         `IdentifierToken`
+     * @var         IdentifierToken
+     * `IdentifierToken`
      */
     private $unit;
 
     /**
-     * @param       NumberToken                             $number                         `NumberToken`
+     * @param       NumberToken                             $number
+     * `NumberToken`
      * The number.
      *
-     * @param       IdentifierToken                         $unit                           `IdentifierToken`
+     * @param       IdentifierToken                         $unit
+     * `IdentifierToken`
      * The unit of measurement.
      */
     function __construct(NumberToken $number, IdentifierToken $unit){
@@ -52,7 +56,8 @@ class DimensionToken implements NumericToken
     /**
      * Returns the number.
      *
-     * @returns     NumberToken                                                             `NumberToken`
+     * @returns     NumberToken
+     * `NumberToken`
      * Returns the number.
      */
     function getNumber(): NumberToken{
@@ -62,7 +67,8 @@ class DimensionToken implements NumericToken
     /**
      * Returns the unit of measurement.
      *
-     * @returns     IdentifierToken                                                         `IdentifierToken`
+     * @returns     IdentifierToken
+     * `IdentifierToken`
      * Returns the unit of measurement.
      */
     function getUnit(): IdentifierToken{

@@ -20,17 +20,20 @@ class WhitespaceToken implements Token
 {
 
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $whitespaces;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $normalizedObject;
 
     /**
-     * @param       String                                  $whitespaces                    `String`
+     * @param       String                                  $whitespaces
+     * `String`
      * The whitespace sequence.
      */
     function __construct(String $whitespaces){

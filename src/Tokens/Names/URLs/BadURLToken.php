@@ -16,33 +16,40 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 class BadURLToken implements AnyURLToken
 {
     /**
-     * @var         WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @var         WhitespaceToken|NULL
+     * `WhitespaceToken|NULL`
      */
     private $whitespaceBefore;
 
     /**
-     * @var         URLBitToken[]|ValidEscapeToken[]                                             `Array<Int, URLBitToken|ValidEscape>`
+     * @var         URLBitToken[]|ValidEscapeToken[]
+     * `Array<Int, URLBitToken|ValidEscape>`
      */
     private $pieces;
 
     /**
-     * @var         BadURLRemnantsToken                                                     `BadURLRemnantsToken`
+     * @var         BadURLRemnantsToken
+     * `BadURLRemnantsToken`
      */
     private $badURLRemnants;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $stringified;
 
     /**
-     * @param       WhitespaceToken|NULL                    $whitespaceBefore               `WhitespaceToken|NULL`
+     * @param       WhitespaceToken|NULL                    $whitespaceBefore
+     * `WhitespaceToken|NULL`
      * @TODOC
      *
-     * @param       URLBitToken[]|ValidEscapeToken[]             $pieces                         `Array<Int, URLBitToken|ValidEscape>`
+     * @param       URLBitToken[]|ValidEscapeToken[]        $pieces
+     * `Array<Int, URLBitToken|ValidEscape>`
      * @TODOC
      *
-     * @param       BadURLRemnantsToken                     $badURLRemnants                 `BadURLRemnantsToken`
+     * @param       BadURLRemnantsToken                     $badURLRemnants
+     * `BadURLRemnantsToken`
      * @TODOC
      */
     function __construct(
@@ -82,7 +89,8 @@ class BadURLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @returns     WhitespaceToken|NULL
+     * `WhitespaceToken|NULL`
      * @TODOC
      */
     function getWhitespaceBefore(): ?WhitespaceToken{
@@ -92,7 +100,8 @@ class BadURLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     URLBitToken[]|ValidEscapeToken[]                                             `Array<Int, URLBitToken|ValidEscape>`
+     * @returns     URLBitToken[]|ValidEscapeToken[]
+     * `Array<Int, URLBitToken|ValidEscape>`
      * @TODOC
      */
     function getPieces(): Array{
@@ -102,7 +111,8 @@ class BadURLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     BadURLRemnantsToken                                                     `BadURLRemnantsToken`
+     * @returns     BadURLRemnantsToken
+     * `BadURLRemnantsToken`
      * @TODOC
      */
     function getRemnants(): BadURLRemnantsToken{

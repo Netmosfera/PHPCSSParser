@@ -17,26 +17,30 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
 class CommentToken implements Token
 {
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $text;
 
     /**
-     * @var         Bool                                                                    `Bool`
+     * @var         Bool
+     * `Bool`
      */
     private $terminatedWithEOF;
 
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $stringified;
 
     /**
-     * CommentToken constructor.
-     * @param       String                                  $text                           `String`
+     * @param       String                                  $text
+     * `String`
      * The comment's text.
      *
-     * @param       Bool                                    $terminatedWithEOF              `Bool`
+     * @param       Bool                                    $terminatedWithEOF
+     * `Bool`
      * Whether the comment is unterminated.
      */
     function __construct(String $text, Bool $terminatedWithEOF){
@@ -64,7 +68,8 @@ class CommentToken implements Token
     /**
      * Returns the comment's text.
      *
-     * @returns     String                                                                  `String`
+     * @returns     String
+     * `String`
      * Returns the comment's text.
      */
     function getText(): String{
@@ -74,7 +79,8 @@ class CommentToken implements Token
     /**
      * Returns {@see TRUE} if the comment is unterminated.
      *
-     * @returns     Bool                                                                    `Bool`
+     * @returns     Bool
+     * `Bool`
      * Returns {@see TRUE} if the comment is unterminated.
      */
     function isTerminatedWithEOF(): Bool{

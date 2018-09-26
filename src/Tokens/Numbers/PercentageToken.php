@@ -14,12 +14,14 @@ use function Netmosfera\PHPCSSAST\match;
 class PercentageToken implements NumericToken
 {
     /**
-     * @var         NumberToken                                                             `NumberToken`
+     * @var         NumberToken
+     * `NumberToken`
      */
     private $number;
 
     /**
-     * @param       NumberToken                             $number                         `NumberToken`
+     * @param       NumberToken                             $number
+     * `NumberToken`
      * The {@see NumberToken} that is to represent a percentage.
      */
     function __construct(NumberToken $number){
@@ -41,7 +43,8 @@ class PercentageToken implements NumericToken
     /**
      * Returns the {@see NumberToken} represents the percentage.
      *
-     * @returns     NumberToken                                                             `NumberToken`
+     * @returns     NumberToken
+     * `NumberToken`
      * Returns the {@see NumberToken} represents the percentage.
      */
     function getNumber(): NumberToken{

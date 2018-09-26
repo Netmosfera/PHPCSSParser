@@ -16,17 +16,20 @@ use Netmosfera\PHPCSSAST\SpecData;
 class NameBitToken implements EvaluableToken
 {
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $text;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $value;
 
     /**
-     * @param       String                                  $text                           `String`
+     * @param       String                                  $text
+     * `String`
      * The sequence of {@see SpecData::NAME_ITEMS_SET} code points.
      */
     function __construct(String $text){

@@ -14,13 +14,15 @@ use function Netmosfera\PHPCSSAST\match;
 class FunctionToken implements IdentifierLikeToken
 {
     /**
-     * @var         IdentifierToken                                                         `IdentifierToken`
+     * @var         IdentifierToken
+     * `IdentifierToken`
      */
     private $identifier;
 
     /**
-     * @param       IdentifierToken                         $identifier                     `IdentifierToken`
-     * The {@see IdentifierToken} that is to become a {@see FunctionToken}.
+     * @param       IdentifierToken                         $identifier
+     * `IdentifierToken`
+     * The {@see IdentifierToken} to become a {@see FunctionToken}.
      */
     function __construct(IdentifierToken $identifier){
         $this->identifier = $identifier;
@@ -41,7 +43,8 @@ class FunctionToken implements IdentifierLikeToken
     /**
      * Returns the {@see IdentifierToken} for this {@see FunctionToken}.
      *
-     * @returns     IdentifierToken                                                         `IdentifierToken`
+     * @returns     IdentifierToken
+     * `IdentifierToken`
      * Returns the {@see IdentifierToken} for this {@see FunctionToken}.
      */
     function getIdentifier(): IdentifierToken{

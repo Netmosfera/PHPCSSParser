@@ -16,17 +16,20 @@ use Netmosfera\PHPCSSAST\SpecData;
 class URLBitToken implements EvaluableToken
 {
     /**
-     * @var         String                                                                  `String`
+     * @var         String
+     * `String`
      */
     private $text;
 
     /**
-     * @var         String|NULL                                                             `String|NULL`
+     * @var         String|NULL
+     * `String|NULL`
      */
     private $value;
 
     /**
-     * @param       String                                  $text                           `String`
+     * @param       String                                  $text
+     * `String`
      * @TODOC
      */
     function __construct(String $text){
