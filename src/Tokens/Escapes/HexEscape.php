@@ -6,6 +6,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 
 use function hexdec;
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use IntlChar;
 
@@ -63,7 +64,7 @@ class HexEscape implements ValidEscape
     /** @inheritDoc */
     function getValue(): String{
         if($this->value === NULL){
-            $this->value = IntlChar::chr($this->getIntValue()) ?? "\u{FFFD}";
+            $this->value = IntlChar::chr($this->getIntValue()) ?? SpecData::REPLACEMENT_CHARACTER;
         }
         return $this->value;
     }

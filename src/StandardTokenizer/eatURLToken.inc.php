@@ -4,9 +4,9 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\AnyURLToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\BadURLToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use Closure;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]

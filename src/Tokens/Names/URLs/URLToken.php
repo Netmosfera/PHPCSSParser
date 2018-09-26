@@ -1,29 +1,34 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSAST\Tokens\Names;
+namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use function implode;
 use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class BadURLToken implements AnyURLToken
+class URLToken implements AnyURLToken
 {
     private $whitespaceBefore;
 
     private $pieces;
 
-    private $badURLRemnants;
+    private $whitespaceAfter;
+
+    private $terminatedWithEOF;
 
     function __construct(
         String $whitespaceBefore,
         Array $pieces,
-        BadURLRemnantsToken $badURLRemnants
+        String $whitespaceAfter,
+        Bool $terminatedWithEOF
     ){
         $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;
-        $this->badURLRemnants = $badURLRemnants;
+        $this->whitespaceAfter = $whitespaceAfter;
+        $this->terminatedWithEOF = $terminatedWithEOF;
     }
 
     function __toString(): String{
@@ -31,7 +36,8 @@ class BadURLToken implements AnyURLToken
             "url(" .
             $this->whitespaceBefore .
             implode("", $this->pieces) .
-            $this->badURLRemnants;
+            $this->whitespaceAfter .
+            ($this->terminatedWithEOF ? "" : ")");
     }
 
     function equals($other): Bool{
@@ -39,7 +45,8 @@ class BadURLToken implements AnyURLToken
             $other instanceof self &&
             match($this->whitespaceBefore, $other->whitespaceBefore) &&
             match($this->pieces, $other->pieces) &&
-            match($this->badURLRemnants, $other->badURLRemnants);
+            match($this->whitespaceAfter, $other->whitespaceAfter) &&
+            match($this->terminatedWithEOF, $other->terminatedWithEOF);
     }
 
     function getWhitespaceBefore(): String{
@@ -50,7 +57,11 @@ class BadURLToken implements AnyURLToken
         return $this->pieces;
     }
 
-    function getRemnants(): BadURLRemnantsToken{
-        return $this->badURLRemnants;
+    function getWhitespaceAfter(): String{
+        return $this->whitespaceAfter;
+    }
+
+    function isTerminatedWithEOF(): Bool{
+        return $this->terminatedWithEOF;
     }
 }

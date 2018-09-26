@@ -72,6 +72,9 @@ $source  = "<?php declare(strict_types = 1); // atom\n\n";
 $source .= "namespace Netmosfera\\PHPCSSAST;\n\n";
 $source .= "//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]\n\n";
 $source .= "class SpecData\n";
-$source .= "{\n" . implode("\n", $fields) . "\n}\n";
+$source .= "{\n";
+$source .= implode("\n", $fields) . "\n";
+$source .= "    public const REPLACEMENT_CHARACTER = \"\\u{FFFD}\"; \n";
+$source .= "}\n";
 
 file_put_contents(__DIR__ . "/../../src/SpecData.php", $source);

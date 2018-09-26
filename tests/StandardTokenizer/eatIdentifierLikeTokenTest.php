@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function dechex;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -16,7 +17,7 @@ use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use PHPUnit\Framework\TestCase;
 use IntlChar;
 
@@ -57,7 +58,7 @@ class eatIdentifierLikeTokenTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "identifier_name" . $rest);
-        $expected = new IdentifierToken(new NameToken(["identifier_name"]));
+        $expected = new IdentifierToken(new NameToken([new NameBitToken("identifier_name")]));
         $eatIdentifierToken = function(Traverser $traverser) use($expected){
             assertNotMatch($traverser->eatStr("identifier_name"), NULL);
             return $expected;
@@ -123,10 +124,10 @@ class eatIdentifierLikeTokenTest extends TestCase
     /** @dataProvider data5 */
     function test5(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "func_name(" . $rest);
-        $expected = new FunctionToken(new IdentifierToken(new NameToken(["func_name"])));
+        $expected = new FunctionToken(new IdentifierToken(new NameToken([new NameBitToken("func_name")])));
         $eatIdentifierToken = function(Traverser $t){
             assertMatch($t->eatStr("func_name"), "func_name");
-            return new IdentifierToken(new NameToken(["func_name"]));
+            return new IdentifierToken(new NameToken([new NameBitToken("func_name")]));
         };
         $eatURLToken = function(Traverser $t){ self::fail(); };
         $actual = eatIdentifierLikeToken($traverser, $eatIdentifierToken, "\f", $eatURLToken);
@@ -137,6 +138,10 @@ class eatIdentifierLikeTokenTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function URLIdentifiers(){
+        $b = function(String $bit){
+            return new NameBitToken($bit);
+        };
+
         $c = function(String $cp){
             return new CodePointEscape($cp);
         };
@@ -147,12 +152,12 @@ class eatIdentifierLikeTokenTest extends TestCase
             return new HexEscape($hex, NULL);
         };
 
-        $urls[] = new IdentifierToken(new NameToken(["url"]));
+        $urls[] = new IdentifierToken(new NameToken([$b("url")]));
 
-        $urls[] = new IdentifierToken(new NameToken(["u", $c("r"), "l"]));
+        $urls[] = new IdentifierToken(new NameToken([$b("u"), $c("r"), $b("l")]));
         $urls[] = new IdentifierToken(new NameToken([$c("u"), $c("r"), $c("l")]));
 
-        $urls[] = new IdentifierToken(new NameToken(["u", $x("r"), "l"]));
+        $urls[] = new IdentifierToken(new NameToken([$b("u"), $x("r"), $b("l")]));
         $urls[] = new IdentifierToken(new NameToken([$x("u"), $x("r"), $x("l")]));
 
         return $urls;

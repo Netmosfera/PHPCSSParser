@@ -5,12 +5,12 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\BadURLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
-use Netmosfera\PHPCSSAST\Tokens\Names\BadURLRemnantsToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatURLToken;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;

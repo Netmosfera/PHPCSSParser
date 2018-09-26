@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
-namespace Netmosfera\PHPCSSAST\Tokens\Names;
+namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 

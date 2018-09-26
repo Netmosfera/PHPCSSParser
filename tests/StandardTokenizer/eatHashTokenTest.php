@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
@@ -63,7 +64,7 @@ class eatHashTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "#hash" . $rest);
-        $name = new NameToken(["hash"]);
+        $name = new NameToken([new NameBitToken("hash")]);
         $expected = new HashToken($name);
         $eatName = function(Traverser $traverser) use($name): ?NameToken{
             return $traverser->eatStr("hash") === NULL ? NULL : $name;

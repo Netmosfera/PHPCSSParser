@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
@@ -26,14 +27,14 @@ function eatIdentifierToken(
     $identifierStart = $traverser->eatExp('-?[' . $nscp . '][' . $ncp . ']*|--[' . $ncp . ']*');
 
     if($identifierStart !== NULL){
-        $pieces = [$identifierStart];
+        $pieces = [new NameBitToken($identifierStart)];
     }else{
         $tt = $traverser->createBranch();
 
         $pieces = [];
 
         if($tt->eatStr("-") !== NULL){
-            $pieces[] = "-";
+            $pieces[] = new NameBitToken("-");
         }
 
         $escape = $eatEscapeFunction($tt);
@@ -52,6 +53,10 @@ function eatIdentifierToken(
 
         if($piece === NULL){
             return new IdentifierToken(new NameToken($pieces));
+        }
+
+        if(is_string($piece)){
+            $piece = new NameBitToken($piece);
         }
 
         $pieces[] = $piece;

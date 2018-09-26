@@ -12,40 +12,33 @@ use Error;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class NameToken implements Token
+class NameBitToken implements Token
 {
-    /** @var NameBitToken[]|ValidEscape[] */
-    private $pieces;
+    private $text;
 
     private $value;
 
-    function __construct(Array $pieces){
-        foreach($pieces as $piece){
-            assert($piece instanceof NameBitToken || $piece instanceof ValidEscape);
-        }
-        $this->pieces = $pieces;
+    function __construct(String $text){
+        $this->text = $text;
     }
 
     function __toString(): String{
-        return implode("", $this->pieces);
+        return $this->text;
     }
 
     function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->pieces, $other->pieces);
+            match($this->text, $this->text);
     }
 
-    function getPieces(): array{
-        return $this->pieces;
+    function getText(): String{
+        return $this->text;
     }
 
     function getValue(): String{
         if($this->value === NULL){
-            $this->value = "";
-            foreach($this->pieces as $piece){
-                $this->value .= $piece->getValue();
-            }
+            $this->value = str_replace("\0", SpecData::REPLACEMENT_CHARACTER, $this->text);
         }
         return $this->value;
     }

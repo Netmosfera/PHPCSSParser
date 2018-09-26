@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
@@ -68,7 +69,7 @@ class eatAtKeywordTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "@the-identifier" . $rest);
-        $identifier = new IdentifierToken(new NameToken(["the-identifier"]));
+        $identifier = new IdentifierToken(new NameToken([new NameBitToken("the-identifier")]));
         $expected = new AtKeywordToken($identifier);
         $eatIdentifier = function(Traverser $traverser) use($identifier): ?IdentifierToken{
             return $traverser->eatStr("the-identifier") === NULL ? NULL : $identifier;

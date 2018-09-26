@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
@@ -21,8 +22,8 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class DimensionTokenTest extends TestCase
 {
     function test1(){
-        $dimension1 = new IdentifierToken(new NameToken(["poo"]));
-        $dimension2 = new IdentifierToken(new NameToken(["poo"]));
+        $dimension1 = new IdentifierToken(new NameToken([new NameBitToken("poo")]));
+        $dimension2 = new IdentifierToken(new NameToken([new NameBitToken("poo")]));
         $number1 = new NumberToken("-", "123", "456", "e", "", "3");
         $number2 = new NumberToken("-", "123", "456", "e", "", "3");
         $object1 = new DimensionToken($number1, $dimension1);

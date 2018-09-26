@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
@@ -19,8 +20,8 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class HashTokenTest extends TestCase
 {
     function test1(){
-        $name1 = new NameToken(["BADA55"]);
-        $name2 = new NameToken(["BADA55"]);
+        $name1 = new NameToken([new NameBitToken("BADA55")]);
+        $name2 = new NameToken([new NameBitToken("BADA55")]);
         $object1 = new HashToken($name1);
         $object2 = new HashToken($name2);
 

@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
@@ -20,8 +21,8 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class AtKeywordTokenTest extends TestCase
 {
     function test1(){
-        $identifier1 = new IdentifierToken(new NameToken(["import"]));
-        $identifier2 = new IdentifierToken(new NameToken(["import"]));
+        $identifier1 = new IdentifierToken(new NameToken([new NameBitToken("import")]));
+        $identifier2 = new IdentifierToken(new NameToken([new NameBitToken("import")]));
         $object1 = new AtKeywordToken($identifier1);
         $object2 = new AtKeywordToken($identifier2);
 

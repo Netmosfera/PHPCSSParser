@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
@@ -77,7 +78,7 @@ class eatNumericTokenTest extends TestCase
     function test3(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "abcdef" . $rest);
         $number = new NumberToken("+", "2398", "42", "", "", "");
-        $unit = new IdentifierToken(new NameToken(["attoparsec"]));
+        $unit = new IdentifierToken(new NameToken([new NameBitToken("attoparsec")]));
         $expected = new DimensionToken($number, $unit);
         $eatNumberToken = function(Traverser $traverser) use($number){
             assertNotMatch($traverser->eatStr("abc"), NULL);

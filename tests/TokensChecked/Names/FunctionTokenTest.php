@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
@@ -20,8 +21,8 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class FunctionTokenTest extends TestCase
 {
     function test1(){
-        $identifier1 = new IdentifierToken(new NameToken(["linear-gradient"]));
-        $identifier2 = new IdentifierToken(new NameToken(["linear-gradient"]));
+        $identifier1 = new IdentifierToken(new NameToken([new NameBitToken("linear-gradient")]));
+        $identifier2 = new IdentifierToken(new NameToken([new NameBitToken("linear-gradient")]));
         $object1 = new FunctionToken($identifier1);
         $object2 = new FunctionToken($identifier2);
 

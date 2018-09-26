@@ -8,6 +8,7 @@ use Closure;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
@@ -52,11 +53,11 @@ class eatIdentifierTokenTest extends TestCase
     /** @dataProvider data1 */
     function test1(String $prefix, Array $pieces, String $rest){
         if($pieces === []){
-            $pieces = ["--"];
-        }elseif(is_string($pieces[0])){
-            $pieces[0] = "--" . $pieces[0];
+            $pieces = [new NameBitToken("--")];
+        }elseif($pieces[0] instanceof NameBitToken){
+            $pieces[0] = new NameBitToken("--" . $pieces[0]);
         }else{
-            array_unshift($pieces, "--");
+            array_unshift($pieces, new NameBitToken("--"));
         }
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
         $expected = new IdentifierToken(new NameToken($pieces));
@@ -96,11 +97,11 @@ class eatIdentifierTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, Array $pieces, String $rest){
         if($pieces === []){
-            $pieces = ["-S"];
-        }elseif(is_string($pieces[0])){
-            $pieces[0] = "-S" . $pieces[0];
+            $pieces = [new NameBitToken("-S")];
+        }elseif($pieces[0] instanceof NameBitToken){
+            $pieces[0] = new NameBitToken("-S" . $pieces[0]);
         }else{
-            array_unshift($pieces, "-S");
+            array_unshift($pieces, new NameBitToken("-S"));
         }
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
         $expected = new IdentifierToken(new NameToken($pieces));
@@ -124,7 +125,7 @@ class eatIdentifierTokenTest extends TestCase
 
     /** @dataProvider data4 */
     function test4(String $prefix, Array $pieces, String $rest){
-        array_unshift($pieces, "-", new CodePointEscape("@"));
+        array_unshift($pieces, new NameBitToken("-"), new CodePointEscape("@"));
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
         $expected = new IdentifierToken(new NameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?Escape{
@@ -164,12 +165,12 @@ class eatIdentifierTokenTest extends TestCase
     /** @dataProvider data6 */
     function test6(String $prefix, Array $pieces, String $rest){
         if($pieces === []){
-            $pieces = ["S"];
-        }elseif(is_string($pieces[0])){
-            $pieces[0] = "S" . $pieces[0];
+            $pieces = [new NameBitToken("S")];
+        }elseif($pieces[0] instanceof NameBitToken){
+            $pieces[0] = new NameBitToken("S" . $pieces[0]);
         }
         else{
-            array_unshift($pieces, "S");
+            array_unshift($pieces, new NameBitToken("S"));
         }
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
         $expected = new IdentifierToken(new NameToken($pieces));
@@ -207,10 +208,10 @@ class eatIdentifierTokenTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function getPieces($afterPiece){
-        if(!is_string($afterPiece)){
-            $data[] = "N";
-            $data[] = "NN";
-            $data[] = "NNN";
+        if(!$afterPiece instanceof NameBitToken){
+            $data[] = new NameBitToken("N");
+            $data[] = new NameBitToken("NN");
+            $data[] = new NameBitToken("NNN");
         }
         $data[] = new CodePointEscape("@");
         return $data;

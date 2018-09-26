@@ -10,7 +10,7 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
-use Netmosfera\PHPCSSAST\Tokens\Names\BadURLRemnantsToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatBadURLRemnantsToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;

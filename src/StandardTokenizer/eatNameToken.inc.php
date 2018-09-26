@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -18,7 +19,7 @@ function eatNameToken(
     $nameStart = $traverser->eatExp('[' . $nameRegExpSet . ']+');
 
     if($nameStart !== NULL){
-        $pieces = [$nameStart];
+        $pieces = [new NameBitToken($nameStart)];
     }else{
         $escape = $eatEscapeFunction($traverser);
 
@@ -35,6 +36,10 @@ function eatNameToken(
 
     if($piece === NULL){
         return new NameToken($pieces);
+    }
+
+    if(is_string($piece)){
+        $piece = new NameBitToken($piece);
     }
 
     $pieces[] = $piece;

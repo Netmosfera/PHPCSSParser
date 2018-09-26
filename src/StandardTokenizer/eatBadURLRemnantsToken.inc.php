@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
-use Netmosfera\PHPCSSAST\Tokens\Names\BadURLRemnantsToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
