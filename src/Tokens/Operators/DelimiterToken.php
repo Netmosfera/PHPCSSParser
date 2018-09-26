@@ -26,9 +26,9 @@ class DelimiterToken implements Token
 
     /**
      * @param       String                                  $delimiter                      `String`
+     * The delimiter code point.
      */
     function __construct(String $delimiter){
-        // @TODO make CheckedDelimiterToken
         $this->delimiter = $delimiter;
     }
 

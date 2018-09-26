@@ -14,7 +14,7 @@ use function preg_replace;
 /**
  * A {@see WhitespaceToken} is a sequence of one or more whitespace code points.
  *
- * The following code points are considered whitespace: SPACE, TAB, CR, LF, FF.
+ * The whitespace code points are defined in {@see SpecData::WHITESPACES_SET}.
  */
 class WhitespaceToken implements EvaluableToken
 {
@@ -31,6 +31,7 @@ class WhitespaceToken implements EvaluableToken
 
     /**
      * @param       String                                  $whitespaces                    `String`
+     * The whitespace sequence.
      */
     function __construct(String $whitespaces){
         $this->whitespaces = $whitespaces;

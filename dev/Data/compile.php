@@ -64,7 +64,7 @@ $fields = [];
 foreach($data as $name => $value){
     $field  = "    public const ";
     $field .= str_pad($name, $keyLength, " ", STR_PAD_RIGHT);
-    $field .= " = " . var_export($value, TRUE) . ";";
+    $field .= " = \"" . $value . "\";";
     $fields[] = $field;
 }
 

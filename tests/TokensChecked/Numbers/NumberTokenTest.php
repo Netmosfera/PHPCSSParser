@@ -64,8 +64,8 @@ class NumberTokenTest extends TestCase
         assertMatch("", $object1->getDecimals());
         assertMatch($object1->getDecimals(), $object2->getDecimals());
 
-        assertMatch("", $object1->getELetter());
-        assertMatch($object1->getELetter(), $object2->getELetter());
+        assertMatch("", $object1->getEIndicator());
+        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
 
         assertMatch("", $object1->getESign());
         assertMatch($object1->getESign(), $object2->getESign());
@@ -103,8 +103,8 @@ class NumberTokenTest extends TestCase
         assertMatch("456", $object1->getDecimals());
         assertMatch($object1->getDecimals(), $object2->getDecimals());
 
-        assertMatch("", $object1->getELetter());
-        assertMatch($object1->getELetter(), $object2->getELetter());
+        assertMatch("", $object1->getEIndicator());
+        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
 
         assertMatch("", $object1->getESign());
         assertMatch($object1->getESign(), $object2->getESign());
@@ -142,8 +142,8 @@ class NumberTokenTest extends TestCase
         assertMatch("456", $object1->getDecimals());
         assertMatch($object1->getDecimals(), $object2->getDecimals());
 
-        assertMatch("", $object1->getELetter());
-        assertMatch($object1->getELetter(), $object2->getELetter());
+        assertMatch("", $object1->getEIndicator());
+        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
 
         assertMatch("", $object1->getESign());
         assertMatch($object1->getESign(), $object2->getESign());
@@ -181,8 +181,8 @@ class NumberTokenTest extends TestCase
         assertMatch("", $object1->getDecimals());
         assertMatch($object1->getDecimals(), $object2->getDecimals());
 
-        assertMatch($e, $object1->getELetter());
-        assertMatch($object1->getELetter(), $object2->getELetter());
+        assertMatch($e, $object1->getEIndicator());
+        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
 
         assertMatch($eSign, $object1->getESign());
         assertMatch($object1->getESign(), $object2->getESign());
@@ -220,8 +220,8 @@ class NumberTokenTest extends TestCase
         assertMatch("456", $object1->getDecimals());
         assertMatch($object1->getDecimals(), $object2->getDecimals());
 
-        assertMatch($e, $object1->getELetter());
-        assertMatch($object1->getELetter(), $object2->getELetter());
+        assertMatch($e, $object1->getEIndicator());
+        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
 
         assertMatch($eSign, $object1->getESign());
         assertMatch($object1->getESign(), $object2->getESign());
@@ -259,8 +259,8 @@ class NumberTokenTest extends TestCase
         assertMatch("456", $object1->getDecimals());
         assertMatch($object1->getDecimals(), $object2->getDecimals());
 
-        assertMatch($e, $object1->getELetter());
-        assertMatch($object1->getELetter(), $object2->getELetter());
+        assertMatch($e, $object1->getEIndicator());
+        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
 
         assertMatch($eSign, $object1->getESign());
         assertMatch($object1->getESign(), $object2->getESign());
