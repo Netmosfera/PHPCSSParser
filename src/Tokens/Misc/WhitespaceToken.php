@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
+use Netmosfera\PHPCSSAST\Tokens\Token;
 use function Netmosfera\PHPCSSAST\match;
 use function preg_replace;
 
@@ -16,7 +16,7 @@ use function preg_replace;
  *
  * The whitespace code points are defined in {@see SpecData::WHITESPACES_SET}.
  */
-class WhitespaceToken implements EvaluableToken
+class WhitespaceToken implements Token
 {
 
     /**
@@ -27,7 +27,7 @@ class WhitespaceToken implements EvaluableToken
     /**
      * @var         String|NULL                                                             `String|NULL`
      */
-    private $value;
+    private $normalizedObject;
 
     /**
      * @param       String                                  $whitespaces                    `String`
@@ -50,14 +50,16 @@ class WhitespaceToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    function getValue(): String{
-        if($this->value === NULL){
-            $this->value = preg_replace(
-                "/" . SpecData::WHITESPACES_SEQS_SET . "/usD",
-                "\n",
-                $this->whitespaces
+    function normalize(): WhitespaceToken{
+        if($this->normalizedObject === NULL){
+            $this->normalizedObject = new WhitespaceToken(
+                preg_replace(
+                    "/" . SpecData::WHITESPACES_SEQS_SET . "/usD",
+                    SpecData::WHITESPACE,
+                    $this->whitespaces
+                )
             );
         }
-        return $this->value;
+        return $this->normalizedObject;
     }
 }

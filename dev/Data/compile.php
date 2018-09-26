@@ -75,6 +75,7 @@ $source .= "class SpecData\n";
 $source .= "{\n";
 $source .= implode("\n", $fields) . "\n";
 $source .= "    public const REPLACEMENT_CHARACTER = \"\\u{FFFD}\"; \n";
+$source .= "    public const WHITESPACE = \" \"; \n";
 $source .= "}\n";
 
 file_put_contents(__DIR__ . "/../../src/SpecData.php", $source);

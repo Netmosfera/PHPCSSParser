@@ -16,7 +16,7 @@ class CheckedHexEscape extends HexEscape
     function __construct(String $hexDigits, ?WhitespaceToken $terminator){
         if(
             preg_match('/^[' . SpecData::HEX_DIGITS_SET . ')]{1,6}$/usD', $hexDigits) === 0 ||
-            ($terminator !== NULL && mb_strlen($terminator->getValue()) != 1)
+            ($terminator !== NULL && mb_strlen((String)$terminator->normalize()) != 1)
         ){
             throw new InvalidToken();
         }

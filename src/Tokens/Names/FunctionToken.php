@@ -20,7 +20,7 @@ class FunctionToken implements IdentifierLikeToken
 
     /**
      * @param       IdentifierToken                         $identifier                     `IdentifierToken`
-     * The raw {@see IdentifierToken} that is to be considered a {@see FunctionToken}.
+     * The {@see IdentifierToken} that is to become a {@see FunctionToken}.
      */
     function __construct(IdentifierToken $identifier){
         $this->identifier = $identifier;
@@ -39,10 +39,10 @@ class FunctionToken implements IdentifierLikeToken
     }
 
     /**
-     * Returns the {@see IdentifierToken}.
+     * Returns the {@see IdentifierToken} for this {@see FunctionToken}.
      *
      * @returns     IdentifierToken                                                         `IdentifierToken`
-     * Returns the {@see IdentifierToken}.
+     * Returns the {@see IdentifierToken} for this {@see FunctionToken}.
      */
     function getIdentifier(): IdentifierToken{
         return $this->identifier;

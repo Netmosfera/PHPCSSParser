@@ -10,13 +10,33 @@ use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+/**
+ * An {@see NameToken} is a "word" in the CSS language.
+ *
+ * It is any sequence of readable characters that is not a number, an escape sequence, an
+ * operator or a generic delimiter.
+ */
 class NameToken implements EvaluableToken
 {
-    /** @var NameBitToken[]|ValidEscape[] */
+    /**
+     * @var         NameBitToken[]|ValidEscape[]                                            `Array<Int, NameBitToken|ValidEscape>`
+     */
     private $pieces;
 
+    /**
+     * @var         String|NULL                                                             `String|NULL`
+     */
     private $value;
 
+    /**
+     * @var         String|NULL                                                             `String|NULL`
+     */
+    private $stringified;
+
+    /**
+     * @param       NameBitToken[]|ValidEscape[]            $pieces                         `Array<Int, NameBitToken|ValidEscape>`
+     * The {@see NameToken}'s components.
+     */
     function __construct(Array $pieces){
         foreach($pieces as $piece){ // @TODO move this assertion to CheckedNameToken
             assert($piece instanceof NameBitToken || $piece instanceof ValidEscape);
@@ -24,18 +44,19 @@ class NameToken implements EvaluableToken
         $this->pieces = $pieces;
     }
 
+    /** @inheritDoc */
     function __toString(): String{
-        return implode("", $this->pieces);
+        if($this->stringified === NULL){
+            $this->stringified = implode("", $this->pieces);
+        }
+        return $this->stringified;
     }
 
+    /** @inheritDoc */
     function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->pieces, $other->pieces);
-    }
-
-    function getPieces(): array{
-        return $this->pieces;
     }
 
     /** @inheritDoc */
@@ -47,5 +68,15 @@ class NameToken implements EvaluableToken
             }
         }
         return $this->value;
+    }
+
+    /**
+     * Returns the {@see NameToken}'s components.
+     *
+     * @returns     NameBitToken[]|ValidEscape[]                                            `Array<Int, NameBitToken|ValidEscape>`
+     * Returns the {@see NameToken}'s components.
+     */
+    function getPieces(): array{
+        return $this->pieces;
     }
 }
