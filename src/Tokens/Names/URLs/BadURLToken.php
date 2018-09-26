@@ -46,7 +46,7 @@ class BadURLToken implements AnyURLToken
         return $this->whitespaceBefore;
     }
 
-    function getPieces(): array{
+    function getPieces(): Array{
         return $this->pieces;
     }
 

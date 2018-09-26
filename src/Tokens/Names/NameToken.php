@@ -76,7 +76,7 @@ class NameToken implements EvaluableToken
      * @returns     NameBitToken[]|ValidEscape[]                                            `Array<Int, NameBitToken|ValidEscape>`
      * Returns the {@see NameToken}'s components.
      */
-    function getPieces(): array{
+    function getPieces(): Array{
         return $this->pieces;
     }
 }

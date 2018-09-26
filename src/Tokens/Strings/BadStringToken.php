@@ -46,7 +46,7 @@ class BadStringToken implements AnyStringToken
         return $this->delimiter;
     }
 
-    function getPieces(): array{
+    function getPieces(): Array{
         return $this->pieces;
     }
 }

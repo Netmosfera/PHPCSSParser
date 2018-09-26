@@ -9,6 +9,16 @@ use function Netmosfera\PHPCSSAST\match;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+/**
+ * A {@see URLToken} is `url(` followed by a series of words and `)`.
+ *
+ * The code `url(path/image.gif)` represents a single {@see URLToken}, unlike
+ * `url('path/image.gif')` that is instead a sequence of three tokens:
+ *
+ * - {@see FunctionToken} `url(`
+ * - {@see StringToken} `'path/image.gif'`
+ * - {@see RightParenthesisToken} `)`
+ */
 class URLToken implements AnyURLToken
 {
     private $whitespaceBefore;
@@ -53,7 +63,7 @@ class URLToken implements AnyURLToken
         return $this->whitespaceBefore;
     }
 
-    function getPieces(): array{
+    function getPieces(): Array{
         return $this->pieces;
     }
 

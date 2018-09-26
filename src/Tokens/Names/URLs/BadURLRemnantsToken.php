@@ -35,7 +35,7 @@ class BadURLRemnantsToken implements Token
             match($this->terminatedWithEOF, $other->terminatedWithEOF);
     }
 
-    function getPieces(): array{
+    function getPieces(): Array{
         return $this->pieces;
     }
 
