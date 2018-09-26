@@ -6,6 +6,7 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Closure;
 
@@ -35,7 +36,7 @@ function eatStringToken(
         }
 
         if($traverser->eatStr($delimiter) === $delimiter){
-            return new StringToken($delimiter, $pieces);
+            return new StringToken($delimiter, $pieces, FALSE);
         }
 
         if($traverser->createBranch()->eatExp('[' . $newlineRegExpSet . ']')){
@@ -44,7 +45,7 @@ function eatStringToken(
 
         $stringPiece = $traverser->eatExp('[^' . $newlineRegExpSet . $eDelimiter . '\\\\]+');
         if($stringPiece !== NULL){
-            $pieces[] = $stringPiece;
+            $pieces[] = new StringBitToken($stringPiece);
             continue;
         }
 

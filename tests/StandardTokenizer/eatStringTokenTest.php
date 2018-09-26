@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -58,7 +59,8 @@ class eatStringTokenTest extends TestCase
     /** @dataProvider data2 */
     function test2($prefix, $delimiter, $string){
         $traverser = getTraverser($prefix, $delimiter . $string);
-        $expected = new StringToken($delimiter, $string === "" ? [] : [$string], TRUE);
+        $pieces = $string === "" ? [] : [new StringBitToken($string)];
+        $expected = new StringToken($delimiter, $pieces, TRUE);
         $eatEscape = function(Traverser $t): ?Escape{ self::fail(); };
         $actual = eatStringToken($traverser, "\f", $eatEscape);
         assertMatch($actual, $expected);
@@ -79,7 +81,8 @@ class eatStringTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3($prefix, $delimiter, $string, $rest){
         $traverser = getTraverser($prefix, $delimiter . $string . "\f" . $rest);
-        $expected = new BadStringToken($delimiter, $string === "" ? [] : [$string]);
+        $pieces = $string === "" ? [] : [new StringBitToken($string)];
+        $expected = new BadStringToken($delimiter, $pieces);
         $eatEscape = function(Traverser $t): ?Escape{ self::fail(); };
         $actual = eatStringToken($traverser, "\f", $eatEscape);
         assertMatch($actual, $expected);
@@ -100,7 +103,7 @@ class eatStringTokenTest extends TestCase
     /** @dataProvider data4 */
     function test4(String $prefix, String $delimiter, Array $pieces, String $rest){
         $traverser = getTraverser($prefix, $delimiter . implode("", $pieces) . $delimiter . $rest);
-        $expected = new StringToken($delimiter, $pieces);
+        $expected = new StringToken($delimiter, $pieces, FALSE);
         $eatEscape = function(Traverser $traverser): ?Escape{
             return $traverser->eatStr("\\@") === NULL ? NULL : new CodePointEscape("@");
         };
@@ -112,10 +115,10 @@ class eatStringTokenTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function getPieces($afterPiece){
-        if(!is_string($afterPiece)){
-            $data[] = "s";
-            $data[] = "st";
-            $data[] = "str";
+        if(!$afterPiece instanceof StringBitToken){
+            $data[] = new StringBitToken("s");
+            $data[] = new StringBitToken("st");
+            $data[] = new StringBitToken("str");
         }
         $data[] = new CodePointEscape("@");
         return $data;

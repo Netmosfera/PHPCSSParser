@@ -7,8 +7,6 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names;
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
 use Netmosfera\PHPCSSAST\Tokens\Token;
-use Netmosfera\PHPCSSAST\SpecData;
-use Error;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -20,7 +18,7 @@ class NameToken implements Token
     private $value;
 
     function __construct(Array $pieces){
-        foreach($pieces as $piece){
+        foreach($pieces as $piece){ // @TODO move this assertion to CheckedNameToken
             assert($piece instanceof NameBitToken || $piece instanceof ValidEscape);
         }
         $this->pieces = $pieces;

@@ -5,9 +5,18 @@ namespace Netmosfera\PHPCSSAST\Tokens\Strings;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+/**
+ * Bad String Token.
+ *
+ * A bad string is a string terminated with a newline, which is not allowed in a string
+ * unless it is escaped.
+ *
+ * Strings terminated with EOF are not considered "bad", but they are parse errors.
+ */
 class BadStringToken implements AnyStringToken
 {
     private $delimiter;
@@ -15,6 +24,9 @@ class BadStringToken implements AnyStringToken
     private $pieces;
 
     function __construct(String $delimiter, Array $pieces){
+        foreach($pieces as $piece){ // @TODO move to CheckedStringToken
+            assert($piece instanceof StringBitToken || $piece instanceof Escape);
+        }
         $this->delimiter = $delimiter;
         $this->pieces = $pieces;
     }
