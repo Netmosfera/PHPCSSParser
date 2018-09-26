@@ -6,6 +6,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 use function dechex;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -78,7 +79,7 @@ class eatIdentifierLikeTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, IdentifierToken $URLIdentifier, String $rest){
         $traverser = getTraverser($prefix, "url(\f\f\fpath\f\f\f\f)" . $rest);
-        $expected = new URLToken(NULL, ["works"], NULL, FALSE);
+        $expected = new URLToken(NULL, [new URLBitToken("works")], NULL, FALSE);
         $eatIdentifierToken = function(Traverser $traverser) use($URLIdentifier){
             assertNotMatch($traverser->eatStr("url"), NULL);
             return $URLIdentifier;

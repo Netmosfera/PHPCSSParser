@@ -10,6 +10,9 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+/**
+ * @TODOC
+ */
 class BadURLRemnantsToken implements Token
 {
     /** @var String[]|Escape[] */
@@ -33,10 +36,6 @@ class BadURLRemnantsToken implements Token
             $other instanceof self &&
             match($this->pieces, $other->pieces) &&
             match($this->terminatedWithEOF, $other->terminatedWithEOF);
-    }
-
-    function getPieces(): Array{
-        return $this->pieces;
     }
 
     function isTerminatedWithEOF(): Bool{

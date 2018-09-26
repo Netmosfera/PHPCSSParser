@@ -6,6 +6,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 
 use function implode;
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -28,7 +29,7 @@ class URLToken implements AnyURLToken
     private $whitespaceBefore;
 
     /**
-     * @TODO
+     * @var         URLBitToken[]|ValidEscape[]                                             `Array<Int, URLBitToken|ValidEscape>`
      */
     private $pieces;
 
@@ -53,6 +54,10 @@ class URLToken implements AnyURLToken
         ?WhitespaceToken $whitespaceAfter,
         Bool $terminatedWithEOF
     ){
+        foreach($pieces as $piece){
+            assert($piece instanceof URLBitToken || $piece instanceof ValidEscape);
+        }
+
         $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;
         $this->whitespaceAfter = $whitespaceAfter;

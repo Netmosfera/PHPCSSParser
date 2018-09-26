@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -22,6 +23,10 @@ class BadURLToken implements AnyURLToken
         Array $pieces,
         BadURLRemnantsToken $badURLRemnants
     ){
+        foreach($pieces as $piece){
+            assert($piece instanceof URLBitToken || $piece instanceof ValidEscape);
+        }
+
         $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;
         $this->badURLRemnants = $badURLRemnants;

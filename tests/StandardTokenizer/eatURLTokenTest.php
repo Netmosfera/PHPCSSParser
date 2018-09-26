@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
@@ -176,7 +177,7 @@ class eatURLTokenTest extends TestCase
         $vs = "valid sequence";
         $traverser = getTraverser($prefix, $startWS . $vs . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
-        $expected = new URLToken($startWS, [$vs], NULL, FALSE);
+        $expected = new URLToken($startWS, [new URLBitToken($vs)], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){ self::fail(); };
         $eatEscape = function(Traverser $traverser){ self::fail(); };
         $actual = eatURLToken($traverser, "\f", "0-9", $eatEscape, $eatRemnants);
@@ -196,7 +197,7 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . $endWS);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
         $endWS = $endWS === "" ? NULL :new WhitespaceToken($endWS);
-        $expected = new URLToken($startWS, [$vs], $endWS, TRUE);
+        $expected = new URLToken($startWS, [new URLBitToken($vs)], $endWS, TRUE);
         $eatRemnants = function(Traverser $traverser){ self::fail(); };
         $eatEscape = function(Traverser $traverser){ self::fail(); };
         $actual = eatURLToken($traverser, "\f", "0-9", $eatEscape, $eatRemnants);
@@ -216,7 +217,7 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . $endWS . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
         $endWS = $endWS === "" ? NULL :new WhitespaceToken($endWS);
-        $expected = new URLToken($startWS, [$vs], $endWS, FALSE);
+        $expected = new URLToken($startWS, [new URLBitToken($vs)], $endWS, FALSE);
         $eatRemnants = function(Traverser $traverser){ self::fail(); };
         $eatEscape = function(Traverser $traverser){ self::fail(); };
         $actual = eatURLToken($traverser, "\f", "0-9", $eatEscape, $eatRemnants);
@@ -237,7 +238,7 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . $ie . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
         $remnants = new BadURLRemnantsToken(["irrelevant"]);
-        $expected = new BadURLToken($startWS, [$vs], $remnants);
+        $expected = new BadURLToken($startWS, [new URLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ie){
             assertNotMatch($traverser->eatStr($ie), NULL);
             return $remnants;
@@ -264,7 +265,7 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . $ve . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
         $escape = new HexEscape("FFaaCC", NULL);
-        $expected = new URLToken($startWS, [$vs, $escape], NULL, FALSE);
+        $expected = new URLToken($startWS, [new URLBitToken($vs), $escape], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){ self::fail(); };
         $eatEscape = function(Traverser $traverser) use($escape, $ve){
             assertNotMatch($traverser->eatStr($ve), NULL);
@@ -288,7 +289,7 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . $ic . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
         $remnants = new BadURLRemnantsToken(["irrelevant"]);
-        $expected = new BadURLToken($startWS, [$vs], $remnants);
+        $expected = new BadURLToken($startWS, [new URLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ic){
             assertNotMatch($traverser->eatStr($ic), NULL);
             return $remnants;
@@ -311,7 +312,7 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . "\f remnants" . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
         $remnants = new BadURLRemnantsToken(["irrelevant"]);
-        $expected = new BadURLToken($startWS, [$vs], $remnants);
+        $expected = new BadURLToken($startWS, [new URLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants){
             assertNotMatch($traverser->eatStr("\f remnants"), NULL);
             return $remnants;
@@ -335,18 +336,18 @@ class eatURLTokenTest extends TestCase
     function test24(String $prefix, String $rest){
         $startWS = new WhitespaceToken("\f");
         $endWS = new WhitespaceToken("\f");
-        $pieces[] = "string1";
+        $pieces[] = new URLBitToken("string1");
         $pieces[] = $escapes[] = new CodePointEscape("x");
         $pieces[] = $escapes[] = new CodePointEscape("y");
         $pieces[] = $escapes[] = new CodePointEscape("z");
-        $pieces[] = "string2";
+        $pieces[] = new URLBitToken("string2");
         $pieces[] = $escapes[] = new CodePointEscape("0");
         $pieces[] = $escapes[] = new CodePointEscape("1");
-        $pieces[] = "string3";
+        $pieces[] = new URLBitToken("string3");
         $pieces[] = $escapes[] = new CodePointEscape("@");
-        $pieces[] = "string4";
+        $pieces[] = new URLBitToken("string4");
         $pieces[] = $escapes[] = new CodePointEscape("#");
-        $pieces[] = "string5";
+        $pieces[] = new URLBitToken("string5");
         $URL = implode("", $pieces);
         $traverser = getTraverser($prefix, $startWS . $URL . $endWS . ")" . $rest);
         $eatRemnants = function(Traverser $traverser){ self::fail(); };

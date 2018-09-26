@@ -7,6 +7,7 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use Closure;
 
@@ -82,6 +83,6 @@ function eatURLToken(
         // This must include everything but the CPs already handled
         // in the previous steps, therefore it can never be empty
         assert($piece !== NULL);
-        $pieces[] = $piece;
+        $pieces[] = new URLBitToken($piece);
     }
 }
