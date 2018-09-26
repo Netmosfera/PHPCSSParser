@@ -72,7 +72,7 @@ class eatValidEscapeTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $prefix, String $hexDigits, String $whitespace, String $rest){
         $traverser = getTraverser($prefix, "\\" . $hexDigits . $whitespace . $rest);
-        $expected = new HexEscape($hexDigits, new WhitespaceToken($whitespace));
+        $expected = new HexEscape($hexDigits, $whitespace === "" ? NULL : new WhitespaceToken($whitespace));
         $actual = eatValidEscape($traverser, "D", "\t", "\n");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);

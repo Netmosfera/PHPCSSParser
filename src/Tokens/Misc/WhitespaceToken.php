@@ -34,6 +34,7 @@ class WhitespaceToken implements Token
      * The whitespace sequence.
      */
     function __construct(String $whitespaces){
+        assert(preg_match('/^[ \\t\\r\\n\\f]+$/usD', $whitespaces) === 1);
         $this->whitespaces = $whitespaces;
     }
 

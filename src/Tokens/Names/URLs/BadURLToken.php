@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -17,7 +18,7 @@ class BadURLToken implements AnyURLToken
     private $badURLRemnants;
 
     function __construct(
-        String $whitespaceBefore,
+        ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
         BadURLRemnantsToken $badURLRemnants
     ){
@@ -42,7 +43,7 @@ class BadURLToken implements AnyURLToken
             match($this->badURLRemnants, $other->badURLRemnants);
     }
 
-    function getWhitespaceBefore(): String{
+    function getWhitespaceBefore(): ?WhitespaceToken{
         return $this->whitespaceBefore;
     }
 

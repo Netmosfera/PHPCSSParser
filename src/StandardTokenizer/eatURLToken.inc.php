@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
@@ -28,6 +29,7 @@ function eatURLToken(
     if($wsBefore === NULL){
         return NULL;
     }
+    $wsBefore = $wsBefore === "" ? NULL : new WhitespaceToken($wsBefore);
 
     // var_export(preg_quote("\\)"));
     // These CPs must appear as escape sequences if actually needed in a URL
@@ -38,16 +40,17 @@ function eatURLToken(
     for(;;){
 
         if($traverser->isEOF()){
-            return new URLToken($wsBefore, $pieces, "", TRUE);
+            return new URLToken($wsBefore, $pieces, NULL, TRUE);
         }
 
         if($traverser->eatStr(")") !== NULL){
-            return new URLToken($wsBefore, $pieces, "", FALSE);
+            return new URLToken($wsBefore, $pieces, NULL, FALSE);
         }
 
         $finishTraverser = $traverser->createBranch();
         $wsAfter = $finishTraverser->eatExp('[' . $whitespaceRegexSet . ']*');
         if($wsAfter !== ""){
+            $wsAfter = new WhitespaceToken($wsAfter);
             if($finishTraverser->isEOF()){
                 $traverser->importBranch($finishTraverser);
                 return new URLToken($wsBefore, $pieces, $wsAfter, TRUE);

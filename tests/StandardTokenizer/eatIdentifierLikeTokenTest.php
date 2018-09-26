@@ -78,7 +78,7 @@ class eatIdentifierLikeTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, IdentifierToken $URLIdentifier, String $rest){
         $traverser = getTraverser($prefix, "url(\f\f\fpath\f\f\f\f)" . $rest);
-        $expected = new URLToken("", ["works"], "", FALSE);
+        $expected = new URLToken(NULL, ["works"], NULL, FALSE);
         $eatIdentifierToken = function(Traverser $traverser) use($URLIdentifier){
             assertNotMatch($traverser->eatStr("url"), NULL);
             return $URLIdentifier;

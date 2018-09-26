@@ -34,8 +34,9 @@ function eatValidEscape(
 
     $hexDigits = $traverser->eatExp('[' . $hexDigitRegExpSet . ']{1,6}');
     if($hexDigits !== NULL){
-        $whitespace = $traverser->eatExp($whitespaceRegExp) ?? "";
-        return new HexEscape($hexDigits, new WhitespaceToken($whitespace));
+        $whitespace = $traverser->eatExp($whitespaceRegExp);
+        $whitespace = $whitespace === NULL ? NULL : new WhitespaceToken($whitespace);
+        return new HexEscape($hexDigits, $whitespace);
     }
 
     $codePoint = $traverser->eatExp('[^' . $newlineRegExpSet . ']');
