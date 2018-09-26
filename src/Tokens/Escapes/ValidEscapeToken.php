@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * @TODOC
+ * Escape sequences whose value equals the value of a code point.
  */
 interface ValidEscapeToken extends EscapeToken
 {}

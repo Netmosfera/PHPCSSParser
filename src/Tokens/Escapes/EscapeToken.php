@@ -9,7 +9,7 @@ use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * @TODOC
+ * A {@see EscapeToken} is `\` followed by zero or more code points.
  */
 interface EscapeToken extends EvaluableToken
 {}

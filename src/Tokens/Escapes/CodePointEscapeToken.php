@@ -6,18 +6,14 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 
 use function hexdec;
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\SpecData;
 use IntlChar;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * A backslash followed by a unicode code point expressed in hex digits.
- *
- * @TODO add more info
- *
- * @TODO rename this to CodePointEscape
+ * A {@see CodePointEscapeToken} is `\` followed by 1 up to 6 hex digits.
  */
 class CodePointEscapeToken implements ValidEscapeToken
 {
@@ -45,8 +41,15 @@ class CodePointEscapeToken implements ValidEscapeToken
      */
     private $value;
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
+    /**
+     * @param       String                                  $hexDigits
+     * `String`
+     * @TODOC
+     *
+     * @param       WhitespaceToken|NULL                    $terminator
+     * `WhitespaceToken|NULL`
+     * @TODOC
+     */
     function __construct(String $hexDigits, ?WhitespaceToken $terminator){
         $this->hexDigits = $hexDigits;
         $this->terminator = $terminator;

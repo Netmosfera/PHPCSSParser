@@ -5,18 +5,21 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * A backslash followed by EOF.
+ * A {@see EOFEscapeToken} is `\` followed by no more data.
  */
 class EOFEscapeToken implements NullEscapeToken
 {
+    /** @inheritDoc */
     function equals($other): Bool{
         return $other instanceof self;
     }
 
+    /** @inheritDoc */
     function __toString(): String{
         return "\\";
     }
 
+    /** @inheritDoc */
     function getValue(): String{
         return "";
     }

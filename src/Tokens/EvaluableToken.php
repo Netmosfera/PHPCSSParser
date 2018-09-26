@@ -12,5 +12,12 @@ namespace Netmosfera\PHPCSSAST\Tokens;
  */
 interface EvaluableToken extends Token
 {
+    /**
+     * Returns the intended value of the token.
+     *
+     * @returns     String
+     * `String`
+     * @TODOC
+     */
     function getValue(): String;
 }
