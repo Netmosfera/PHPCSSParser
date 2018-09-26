@@ -5,12 +5,12 @@ namespace Netmosfera\PHPCSSAST\Tokens\Strings;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 use Netmosfera\PHPCSSAST\SpecData;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class StringBitToken implements Token
+class StringBitToken implements EvaluableToken
 {
     private $text;
 

@@ -5,14 +5,12 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 use Netmosfera\PHPCSSAST\SpecData;
-use Error;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class NameBitToken implements Token
+class NameBitToken implements EvaluableToken
 {
     private $text;
 

@@ -6,11 +6,11 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names;
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class NameToken implements Token
+class NameToken implements EvaluableToken
 {
     /** @var NameBitToken[]|ValidEscape[] */
     private $pieces;

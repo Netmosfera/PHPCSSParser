@@ -8,12 +8,17 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+/**
+ * A {@see CommaToken} represents the character `,`.
+ */
 class CommaToken implements Token
 {
+    /** @inheritDoc */
     function __toString(): String{
         return ",";
     }
 
+    /** @inheritDoc */
     function equals($other): Bool{
         return $other instanceof self;
     }
