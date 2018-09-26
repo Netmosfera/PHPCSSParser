@@ -48,6 +48,19 @@ class URLToken implements AnyURLToken
      */
     private $stringified;
 
+    /**
+     * @param       WhitespaceToken|NULL                    $whitespaceBefore               `WhitespaceToken|NULL`
+     * @TODOC
+     *
+     * @param       URLBitToken[]|ValidEscape[]             $pieces                         `Array<Int, URLBitToken|ValidEscape>`
+     * @TODOC
+     *
+     * @param       WhitespaceToken|NULL                    $whitespaceAfter                `WhitespaceToken|NULL`
+     * @TODOC
+     *
+     * @param       Bool                                    $terminatedWithEOF              `Bool`
+     * @TODOC
+     */
     function __construct(
         ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
@@ -57,7 +70,6 @@ class URLToken implements AnyURLToken
         foreach($pieces as $piece){
             assert($piece instanceof URLBitToken || $piece instanceof ValidEscape);
         }
-
         $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;
         $this->whitespaceAfter = $whitespaceAfter;
@@ -86,18 +98,42 @@ class URLToken implements AnyURLToken
             match($this->terminatedWithEOF, $other->terminatedWithEOF);
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @TODOC
+     */
     function getWhitespaceBefore(): ?WhitespaceToken{
         return $this->whitespaceBefore;
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     URLBitToken[]|ValidEscape[]                                             `Array<Int, URLBitToken|ValidEscape>`
+     * @TODOC
+     */
     function getPieces(): Array{
         return $this->pieces;
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @TODOC
+     */
     function getWhitespaceAfter(): ?WhitespaceToken{
         return $this->whitespaceAfter;
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     Bool                                                                    `Bool`
+     * @TODOC
+     */
     function isTerminatedWithEOF(): Bool{
         return $this->terminatedWithEOF;
     }

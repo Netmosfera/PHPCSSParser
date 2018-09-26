@@ -10,14 +10,41 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+/**
+ * A {@see BadURLToken} is a {@see URLToken} that terminates with invalid data.
+ */
 class BadURLToken implements AnyURLToken
 {
+    /**
+     * @var         WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     */
     private $whitespaceBefore;
 
+    /**
+     * @var         URLBitToken[]|ValidEscape[]                                             `Array<Int, URLBitToken|ValidEscape>`
+     */
     private $pieces;
 
+    /**
+     * @var         BadURLRemnantsToken                                                     `BadURLRemnantsToken`
+     */
     private $badURLRemnants;
 
+    /**
+     * @var         String|NULL                                                             `String|NULL`
+     */
+    private $stringified;
+
+    /**
+     * @param       WhitespaceToken|NULL                    $whitespaceBefore               `WhitespaceToken|NULL`
+     * @TODOC
+     *
+     * @param       URLBitToken[]|ValidEscape[]             $pieces                         `Array<Int, URLBitToken|ValidEscape>`
+     * @TODOC
+     *
+     * @param       BadURLRemnantsToken                     $badURLRemnants                 `BadURLRemnantsToken`
+     * @TODOC
+     */
     function __construct(
         ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
@@ -32,14 +59,18 @@ class BadURLToken implements AnyURLToken
         $this->badURLRemnants = $badURLRemnants;
     }
 
+    /** @inheritDoc */
     function __toString(): String{
-        return
-            "url(" .
-            $this->whitespaceBefore .
-            implode("", $this->pieces) .
-            $this->badURLRemnants;
+        if($this->stringified === NULL){
+            $this->stringified = "url(" .
+                $this->whitespaceBefore .
+                implode("", $this->pieces) .
+                $this->badURLRemnants;
+        }
+        return $this->stringified;
     }
 
+    /** @inheritDoc */
     function equals($other): Bool{
         return
             $other instanceof self &&
@@ -48,14 +79,32 @@ class BadURLToken implements AnyURLToken
             match($this->badURLRemnants, $other->badURLRemnants);
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     WhitespaceToken|NULL                                                    `WhitespaceToken|NULL`
+     * @TODOC
+     */
     function getWhitespaceBefore(): ?WhitespaceToken{
         return $this->whitespaceBefore;
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     URLBitToken[]|ValidEscape[]                                             `Array<Int, URLBitToken|ValidEscape>`
+     * @TODOC
+     */
     function getPieces(): Array{
         return $this->pieces;
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     BadURLRemnantsToken                                                     `BadURLRemnantsToken`
+     * @TODOC
+     */
     function getRemnants(): BadURLRemnantsToken{
         return $this->badURLRemnants;
     }
