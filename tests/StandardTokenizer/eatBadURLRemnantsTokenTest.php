@@ -6,10 +6,10 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 use Closure;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatBadURLRemnantsToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -38,7 +38,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
     /** @dataProvider data1 */
     function test1(String $prefix){
         $traverser = getTraverser($prefix, "");
-        $eatEscape = function(Traverser $traverser): ?Escape{ return NULL; };
+        $eatEscape = function(Traverser $traverser): ?EscapeToken{ return NULL; };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         $expected = new BadURLRemnantsToken([], TRUE);
         assertMatch($actual, $expected);
@@ -55,7 +55,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
     function test2(String $prefix, String $rest){
         $traverser = getTraverser($prefix, ")" . $rest);
         $expected = new BadURLRemnantsToken([], FALSE);
-        $eatEscape = function(Traverser $traverser): ?Escape{ return NULL; };
+        $eatEscape = function(Traverser $traverser): ?EscapeToken{ return NULL; };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -71,7 +71,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
     function test3(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $this->remnants . ")" . $rest);
         $expected = new BadURLRemnantsToken([$this->remnants], FALSE);
-        $eatEscape = function(Traverser $traverser): ?Escape{ return NULL; };
+        $eatEscape = function(Traverser $traverser): ?EscapeToken{ return NULL; };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -86,10 +86,10 @@ class eatBadURLRemnantsTokenTest extends TestCase
     /** @dataProvider data4 */
     function test4(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "\\FFAACC" . ")" . $rest);
-        $expected = new BadURLRemnantsToken([new HexEscape("FFAACC", NULL)], FALSE);
-        $eatEscape = function(Traverser $traverser): ?Escape{
+        $expected = new BadURLRemnantsToken([new CodePointEscapeToken("FFAACC", NULL)], FALSE);
+        $eatEscape = function(Traverser $traverser): ?EscapeToken{
             assertNotMatch($traverser->eatStr("\\FFAACC"), NULL);
-            return new HexEscape("FFAACC", NULL);
+            return new CodePointEscapeToken("FFAACC", NULL);
         };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
@@ -110,9 +110,9 @@ class eatBadURLRemnantsTokenTest extends TestCase
     function test5(String $prefix, Array $pieces, String $rest){
         $traverser = getTraverser($prefix, implode("", $pieces) . ")" . $rest);
         $expected = new BadURLRemnantsToken($pieces, FALSE);
-        $eatEscape = function(Traverser $traverser): ?Escape{
+        $eatEscape = function(Traverser $traverser): ?EscapeToken{
             $escape = $traverser->eatStr("\\@");
-            return $escape === NULL ? NULL : new CodePointEscape("@");
+            return $escape === NULL ? NULL : new EncodedCodePointEscapeToken("@");
         };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
@@ -123,9 +123,9 @@ class eatBadURLRemnantsTokenTest extends TestCase
     function test6(String $prefix, Array $pieces){
         $traverser = getTraverser($prefix, implode("", $pieces));
         $expected = new BadURLRemnantsToken($pieces, TRUE);
-        $eatEscape = function(Traverser $traverser): ?Escape{
+        $eatEscape = function(Traverser $traverser): ?EscapeToken{
             $escape = $traverser->eatStr("\\@");
-            return $escape === NULL ? NULL : new CodePointEscape("@");
+            return $escape === NULL ? NULL : new EncodedCodePointEscapeToken("@");
         };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
@@ -138,7 +138,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
         if(!is_string($afterPiece)){
             $data[] = $this->remnants;
         }
-        $data[] = new CodePointEscape("@");
+        $data[] = new EncodedCodePointEscapeToken("@");
         return $data;
     }
 

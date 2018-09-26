@@ -6,12 +6,12 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatURLToken;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -131,7 +131,7 @@ class eatURLTokenTest extends TestCase
         $ve = "\\66ff";
         $traverser = getTraverser($prefix, $startWS . $ve . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
-        $escape = new HexEscape($ve, NULL);
+        $escape = new CodePointEscapeToken($ve, NULL);
         $expected = new URLToken($startWS, [$escape], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){ self::fail(); };
         $eatEscape = function(Traverser $traverser) use($escape, $ve){
@@ -264,7 +264,7 @@ class eatURLTokenTest extends TestCase
         $ve = "\\66ff";
         $traverser = getTraverser($prefix, $startWS . $vs . $ve . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
-        $escape = new HexEscape("FFaaCC", NULL);
+        $escape = new CodePointEscapeToken("FFaaCC", NULL);
         $expected = new URLToken($startWS, [new URLBitToken($vs), $escape], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){ self::fail(); };
         $eatEscape = function(Traverser $traverser) use($escape, $ve){
@@ -337,16 +337,16 @@ class eatURLTokenTest extends TestCase
         $startWS = new WhitespaceToken("\f");
         $endWS = new WhitespaceToken("\f");
         $pieces[] = new URLBitToken("string1");
-        $pieces[] = $escapes[] = new CodePointEscape("x");
-        $pieces[] = $escapes[] = new CodePointEscape("y");
-        $pieces[] = $escapes[] = new CodePointEscape("z");
+        $pieces[] = $escapes[] = new EncodedCodePointEscapeToken("x");
+        $pieces[] = $escapes[] = new EncodedCodePointEscapeToken("y");
+        $pieces[] = $escapes[] = new EncodedCodePointEscapeToken("z");
         $pieces[] = new URLBitToken("string2");
-        $pieces[] = $escapes[] = new CodePointEscape("0");
-        $pieces[] = $escapes[] = new CodePointEscape("1");
+        $pieces[] = $escapes[] = new EncodedCodePointEscapeToken("0");
+        $pieces[] = $escapes[] = new EncodedCodePointEscapeToken("1");
         $pieces[] = new URLBitToken("string3");
-        $pieces[] = $escapes[] = new CodePointEscape("@");
+        $pieces[] = $escapes[] = new EncodedCodePointEscapeToken("@");
         $pieces[] = new URLBitToken("string4");
-        $pieces[] = $escapes[] = new CodePointEscape("#");
+        $pieces[] = $escapes[] = new EncodedCodePointEscapeToken("#");
         $pieces[] = new URLBitToken("string5");
         $URL = implode("", $pieces);
         $traverser = getTraverser($prefix, $startWS . $URL . $endWS . ")" . $rest);

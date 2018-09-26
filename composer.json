@@ -8,6 +8,7 @@
     }],
     "require": {
         "php": ">=7.2 <8",
+        "ext-intl": "*",
         "php-tool-bucket/compressed-int-set": ">=1 <2"
     },
     "require-dev": {

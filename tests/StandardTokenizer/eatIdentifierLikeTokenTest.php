@@ -12,11 +12,11 @@ use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatIdentifierLikeToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use PHPUnit\Framework\TestCase;
@@ -144,13 +144,13 @@ class eatIdentifierLikeTokenTest extends TestCase
         };
 
         $c = function(String $cp){
-            return new CodePointEscape($cp);
+            return new EncodedCodePointEscapeToken($cp);
         };
 
         $x = function(String $cp){
             $dec = IntlChar::ord($cp);
             $hex = dechex($dec);
-            return new HexEscape($hex, NULL);
+            return new CodePointEscapeToken($hex, NULL);
         };
 
         $urls[] = new IdentifierToken(new NameToken([$b("url")]));

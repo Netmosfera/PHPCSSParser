@@ -6,11 +6,11 @@ namespace Netmosfera\PHPCSSAST\TokensChecked\Escapes;
 
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class CheckedCodePointEscape extends CodePointEscape
+class CheckedEncodedCodePointEscapeToken extends EncodedCodePointEscapeToken
 {
     function __construct(String $codePoint){
         if(preg_match('/^[' . SpecData::ENCODED_ESCAPE_SET . ']$/usD', $codePoint) === 0){

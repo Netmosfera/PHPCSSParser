@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * @TODOC
+ * Escape sequences that have no effect.
  */
-interface ValidEscape extends Escape
+interface NullEscapeToken extends EscapeToken
 {}

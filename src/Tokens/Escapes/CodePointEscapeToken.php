@@ -19,7 +19,7 @@ use IntlChar;
  *
  * @TODO rename this to CodePointEscape
  */
-class HexEscape implements ValidEscape
+class CodePointEscapeToken implements ValidEscapeToken
 {
     /**
      * @var         String                                                                  `String`

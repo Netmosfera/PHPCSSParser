@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Strings;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -25,7 +25,7 @@ class BadStringToken implements AnyStringToken
 
     function __construct(String $delimiter, Array $pieces){
         foreach($pieces as $piece){ // @TODO move to CheckedStringToken
-            assert($piece instanceof StringBitToken || $piece instanceof Escape);
+            assert($piece instanceof StringBitToken || $piece instanceof EscapeToken);
         }
         $this->delimiter = $delimiter;
         $this->pieces = $pieces;

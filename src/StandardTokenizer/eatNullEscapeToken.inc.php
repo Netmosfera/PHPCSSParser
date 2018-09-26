@@ -4,19 +4,19 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscape;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\NullEscape;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\NullEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * Consumes a {@see NullEscape}, if any.
+ * Consumes a {@see NullEscapeToken}, if any.
  */
-function eatNullEscape(
+function eatNullEscapeToken(
     Traverser $traverser,
     String $newlineRegExp
-): ?NullEscape{
+): ?NullEscapeToken{
 
     $beforeBackslash = $traverser->savepoint();
 
@@ -25,12 +25,12 @@ function eatNullEscape(
     }
 
     if($traverser->isEOF()){
-        return new EOFEscape();
+        return new EOFEscapeToken();
     }
 
     $newline = $traverser->eatExp($newlineRegExp);
     if($newline !== NULL){
-        return new ContinuationEscape($newline);
+        return new ContinuationEscapeToken($newline);
     }
 
     $traverser->rollback($beforeBackslash);

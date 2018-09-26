@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -19,7 +19,7 @@ use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 class NameToken implements EvaluableToken
 {
     /**
-     * @var         NameBitToken[]|ValidEscape[]                                            `Array<Int, NameBitToken|ValidEscape>`
+     * @var         NameBitToken[]|ValidEscapeToken[]                                            `Array<Int, NameBitToken|ValidEscape>`
      */
     private $pieces;
 
@@ -34,12 +34,12 @@ class NameToken implements EvaluableToken
     private $stringified;
 
     /**
-     * @param       NameBitToken[]|ValidEscape[]            $pieces                         `Array<Int, NameBitToken|ValidEscape>`
+     * @param       NameBitToken[]|ValidEscapeToken[]            $pieces                         `Array<Int, NameBitToken|ValidEscape>`
      * The {@see NameToken}'s components.
      */
     function __construct(Array $pieces){
         foreach($pieces as $piece){ // @TODO move this assertion to CheckedNameToken
-            assert($piece instanceof NameBitToken || $piece instanceof ValidEscape);
+            assert($piece instanceof NameBitToken || $piece instanceof ValidEscapeToken);
         }
         $this->pieces = $pieces;
     }
@@ -73,7 +73,7 @@ class NameToken implements EvaluableToken
     /**
      * Returns the {@see NameToken}'s components.
      *
-     * @returns     NameBitToken[]|ValidEscape[]                                            `Array<Int, NameBitToken|ValidEscape>`
+     * @returns     NameBitToken[]|ValidEscapeToken[]                                            `Array<Int, NameBitToken|ValidEscape>`
      * Returns the {@see NameToken}'s components.
      */
     function getPieces(): Array{

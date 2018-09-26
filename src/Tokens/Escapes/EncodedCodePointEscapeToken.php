@@ -5,23 +5,13 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * A continuation is a backslash followed by a newline.
+ * Escape of an encoded code point.
  *
- * This has a use in CSS strings; users are allowed to go on multiple lines without
- * affecting the string's value. For example, the following strings have equivalent value:
- *
- * ```
- * div::before{
- *     content: 'hello \
- * world';
- *     content: 'hello world';
- * }
- * ```
- *
- * The code point is always of length `1`, except for `\r\n`, whose actual value, however,
- * is also of length `1` (`\n`, as per-spec).
+ * `\` followed by any code point usually has a value of that code point; for example,
+ * the value of `\x` is `x`. This is useful in strings, as this allows to escape the string
+ * delimiter, e.g. `'Bon Jovi - It\'s my life'`.
  */
-class ContinuationEscape implements NullEscape
+class EncodedCodePointEscapeToken implements ValidEscapeToken
 {
     private $codePoint;
 
@@ -34,7 +24,7 @@ class ContinuationEscape implements NullEscape
     }
 
     function getValue(): String{
-        return "";
+        return $this->codePoint;
     }
 
     function equals($other): Bool{

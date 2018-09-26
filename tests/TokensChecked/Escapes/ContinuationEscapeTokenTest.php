@@ -7,7 +7,7 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscape;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getNewlineSeqsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
@@ -23,7 +23,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  * #1 | test getters
  * #2 | test invalid
  */
-class ContinuationEscapeTest extends TestCase
+class ContinuationEscapeTokenTest extends TestCase
 {
     function data1(){
         return cartesianProduct(getNewlineSeqsSet());
@@ -31,8 +31,8 @@ class ContinuationEscapeTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $newline){
-        $object1 = new CheckedContinuationEscape($newline);
-        $object2 = new CheckedContinuationEscape($newline);
+        $object1 = new CheckedContinuationEscapeToken($newline);
+        $object2 = new CheckedContinuationEscapeToken($newline);
 
         assertMatch($object1, $object2);
 
@@ -64,7 +64,7 @@ class ContinuationEscapeTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $newline){
         assertThrowsType(InvalidToken::CLASS, function() use($newline){
-            new CheckedContinuationEscape($newline);
+            new CheckedContinuationEscapeToken($newline);
         });
     }
 }

@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Strings;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -22,7 +22,7 @@ class StringToken implements AnyStringToken
 
     function __construct(String $delimiter, Array $pieces, Bool $terminatedWithEOF){
         foreach($pieces as $piece){ // @TODO move to CheckedStringToken
-            assert($piece instanceof StringBitToken || $piece instanceof Escape);
+            assert($piece instanceof StringBitToken || $piece instanceof EscapeToken);
         }
         // @TODO make sure that if $pieces' last element is EOFEscape, $terminatedWithEOF
         // should be set to TRUE

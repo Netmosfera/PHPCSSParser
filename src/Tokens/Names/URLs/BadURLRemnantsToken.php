@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Token;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -15,7 +15,7 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
  */
 class BadURLRemnantsToken implements Token
 {
-    /** @var String[]|Escape[] */
+    /** @var String[]|EscapeToken[] */
     private $pieces;
 
     private $terminatedWithEOF;

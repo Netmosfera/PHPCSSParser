@@ -7,7 +7,7 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscape;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getEncodedEscapeSet;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\assertThrowsType;
@@ -22,7 +22,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  * #1 | test getters
  * #2 | test invalid
  */
-class CodePointEscapeTest extends TestCase
+class EncodedCodePointEscapeTokenTest extends TestCase
 {
     function data1(){
         $set = getEncodedEscapeSet();
@@ -31,8 +31,8 @@ class CodePointEscapeTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $codePoint){
-        $object1 = new CheckedCodePointEscape($codePoint);
-        $object2 = new CheckedCodePointEscape($codePoint);
+        $object1 = new CheckedEncodedCodePointEscapeToken($codePoint);
+        $object2 = new CheckedEncodedCodePointEscapeToken($codePoint);
 
         assertMatch($object1, $object2);
 
@@ -61,7 +61,7 @@ class CodePointEscapeTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $cp){
         assertThrowsType(InvalidToken::CLASS, function() use($cp){
-            new CheckedCodePointEscape($cp);
+            new CheckedEncodedCodePointEscapeToken($cp);
         });
     }
 }

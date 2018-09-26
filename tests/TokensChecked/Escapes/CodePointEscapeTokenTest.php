@@ -10,7 +10,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedHexEscape;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +25,7 @@ use IntlChar;
  * #2 | test invalid hex digits
  * #3 | test invalid whitespace token length
  */
-class HexEscapeTest extends TestCase
+class CodePointEscapeTokenTest extends TestCase
 {
     function data1(){
         $digits = str_split("abcdefABCDEF1234567890", 1);
@@ -50,8 +50,8 @@ class HexEscapeTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $hexDigits, String $whitespace){
-        $object1 = new CheckedHexEscape($hexDigits, $whitespace === "" ? NULL : new WhitespaceToken($whitespace));
-        $object2 = new CheckedHexEscape($hexDigits, $whitespace === "" ? NULL : new WhitespaceToken($whitespace));
+        $object1 = new CheckedCodePointEscapeToken($hexDigits, $whitespace === "" ? NULL : new WhitespaceToken($whitespace));
+        $object2 = new CheckedCodePointEscapeToken($hexDigits, $whitespace === "" ? NULL : new WhitespaceToken($whitespace));
 
         assertMatch($object1, $object2);
 
@@ -93,7 +93,7 @@ class HexEscapeTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $hexDigits){
         assertThrowsType(InvalidToken::CLASS, function() use($hexDigits){
-            new CheckedHexEscape($hexDigits, NULL);
+            new CheckedCodePointEscapeToken($hexDigits, NULL);
         });
     }
 
@@ -109,7 +109,7 @@ class HexEscapeTest extends TestCase
         if($ws === "\r\n"){ $ws = $ws . $ws; }
         $whitespace = new WhitespaceToken($ws);
         assertThrowsType(InvalidToken::CLASS, function() use($whitespace){
-            new CheckedHexEscape("FF", $whitespace);
+            new CheckedCodePointEscapeToken("FF", $whitespace);
         });
     }
 }

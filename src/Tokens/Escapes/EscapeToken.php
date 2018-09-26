@@ -4,14 +4,12 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * @TODOC
  */
-interface Escape extends Token
-{
-    function getValue(): String;
-}
+interface EscapeToken extends EvaluableToken
+{}

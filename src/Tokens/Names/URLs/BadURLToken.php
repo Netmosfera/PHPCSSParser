@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -21,7 +21,7 @@ class BadURLToken implements AnyURLToken
     private $whitespaceBefore;
 
     /**
-     * @var         URLBitToken[]|ValidEscape[]                                             `Array<Int, URLBitToken|ValidEscape>`
+     * @var         URLBitToken[]|ValidEscapeToken[]                                             `Array<Int, URLBitToken|ValidEscape>`
      */
     private $pieces;
 
@@ -39,7 +39,7 @@ class BadURLToken implements AnyURLToken
      * @param       WhitespaceToken|NULL                    $whitespaceBefore               `WhitespaceToken|NULL`
      * @TODOC
      *
-     * @param       URLBitToken[]|ValidEscape[]             $pieces                         `Array<Int, URLBitToken|ValidEscape>`
+     * @param       URLBitToken[]|ValidEscapeToken[]             $pieces                         `Array<Int, URLBitToken|ValidEscape>`
      * @TODOC
      *
      * @param       BadURLRemnantsToken                     $badURLRemnants                 `BadURLRemnantsToken`
@@ -51,7 +51,7 @@ class BadURLToken implements AnyURLToken
         BadURLRemnantsToken $badURLRemnants
     ){
         foreach($pieces as $piece){
-            assert($piece instanceof URLBitToken || $piece instanceof ValidEscape);
+            assert($piece instanceof URLBitToken || $piece instanceof ValidEscapeToken);
         }
 
         $this->whitespaceBefore = $whitespaceBefore;
@@ -92,7 +92,7 @@ class BadURLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     URLBitToken[]|ValidEscape[]                                             `Array<Int, URLBitToken|ValidEscape>`
+     * @returns     URLBitToken[]|ValidEscapeToken[]                                             `Array<Int, URLBitToken|ValidEscape>`
      * @TODOC
      */
     function getPieces(): Array{

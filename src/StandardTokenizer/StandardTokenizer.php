@@ -5,12 +5,12 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\Escape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
@@ -82,16 +82,16 @@ class StandardTokenizer
             return eatURLToken($traverser, $this->whitespaceRegexSet, $this->URLTokenBlacklistedCodePointsRegExpSet, $this->eatValidEscape, $this->eatBadURLRemnants);
         };
 
-        $this->eatAnyEscape = function(Traverser $traverser): ?Escape{
+        $this->eatAnyEscape = function(Traverser $traverser): ?EscapeToken{
             return ($this->eatValidEscape)($traverser) ?? ($this->eatNullEscape)($traverser);
         };
 
-        $this->eatNullEscape = function(Traverser $traverser): ?ValidEscape{
-            return eatNullEscape($traverser, $this->newlineRegExp);
+        $this->eatNullEscape = function(Traverser $traverser): ?ValidEscapeToken{
+            return eatNullEscapeToken($traverser, $this->newlineRegExp);
         };
 
-        $this->eatValidEscape = function(Traverser $traverser): ?ValidEscape{
-            return eatValidEscape($traverser, $this->hexDigitRegExpSet, $this->whitespaceRegExp, $this->newlineRegExpSet);
+        $this->eatValidEscape = function(Traverser $traverser): ?ValidEscapeToken{
+            return eatValidEscapeToken($traverser, $this->hexDigitRegExpSet, $this->whitespaceRegExp, $this->newlineRegExpSet);
         };
 
         $this->eatIdentifierToken = function(Traverser $traverser): ?IdentifierToken{

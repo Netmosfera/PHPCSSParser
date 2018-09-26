@@ -7,7 +7,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 /**
  * A backslash followed by EOF.
  */
-class EOFEscape implements NullEscape
+class EOFEscapeToken implements NullEscapeToken
 {
     function equals($other): Bool{
         return $other instanceof self;

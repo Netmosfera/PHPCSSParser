@@ -5,9 +5,9 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscape;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscape;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\eatNullEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
+use function Netmosfera\PHPCSSAST\StandardTokenizer\eatNullEscapeToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
@@ -22,7 +22,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  * #2 | newline (continuation)
  * #3 | valid escape
  */
-class eatNullEscapeTest extends TestCase
+class eatNullEscapeTokenTest extends TestCase
 {
     function data0(){
         return cartesianProduct(ANY_UTF8(), ["not escape", ""]);
@@ -32,7 +32,7 @@ class eatNullEscapeTest extends TestCase
     function test0(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $rest);
         $expected = NULL;
-        $actual = eatNullEscape($traverser, "\n");
+        $actual = eatNullEscapeToken($traverser, "\n");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -46,8 +46,8 @@ class eatNullEscapeTest extends TestCase
     /** @dataProvider data1 */
     function test1(String $prefix){
         $traverser = getTraverser($prefix, "\\");
-        $expected = new EOFEscape();
-        $actual = eatNullEscape($traverser, "irrelevant");
+        $expected = new EOFEscapeToken();
+        $actual = eatNullEscapeToken($traverser, "irrelevant");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), "");
     }
@@ -61,8 +61,8 @@ class eatNullEscapeTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "\\\f" . $rest);
-        $expected = new ContinuationEscape("\f");
-        $actual = eatNullEscape($traverser, "\f");
+        $expected = new ContinuationEscapeToken("\f");
+        $actual = eatNullEscapeToken($traverser, "\f");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -77,7 +77,7 @@ class eatNullEscapeTest extends TestCase
     function test3(String $prefix, String $validEscape, String $rest){
         $traverser = getTraverser($prefix, "\\" . $validEscape . $rest);
         $expected = NULL;
-        $actual = eatNullEscape($traverser, "\x{C}");
+        $actual = eatNullEscapeToken($traverser, "\x{C}");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), "\\" . $validEscape . $rest);
     }

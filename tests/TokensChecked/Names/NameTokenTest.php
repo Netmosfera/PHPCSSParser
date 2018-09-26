@@ -4,8 +4,8 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscape;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
@@ -29,11 +29,11 @@ class NameTokenTest extends TestCase
         for($i = 0; $i < 2; $i++){
             $pieces[$i] = [
                 new NameBitToken("A"),
-                new CodePointEscape("@"),
+                new EncodedCodePointEscapeToken("@"),
                 new NameBitToken("B"),
-                new HexEscape("FFAACC", new WhitespaceToken(" ")),
+                new CodePointEscapeToken("FFAACC", new WhitespaceToken(" ")),
                 new NameBitToken("C"),
-                new HexEscape("FFAA", new WhitespaceToken("\t")),
+                new CodePointEscapeToken("FFAA", new WhitespaceToken("\t")),
                 new NameBitToken("D\0D"),
             ];
         }

@@ -5,13 +5,13 @@ namespace Netmosfera\PHPCSSAST\TokensChecked\Escapes;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\HexEscape;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class CheckedHexEscape extends HexEscape
+class CheckedCodePointEscapeToken extends CodePointEscapeToken
 {
     function __construct(String $hexDigits, ?WhitespaceToken $terminator){
         if(
