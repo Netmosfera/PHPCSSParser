@@ -15,8 +15,14 @@ use Netmosfera\PHPCSSAST\SpecData;
  */
 class NameBitToken implements EvaluableToken
 {
+    /**
+     * @var         String                                                                  `String`
+     */
     private $text;
 
+    /**
+     * @var         String|NULL                                                             `String|NULL`
+     */
     private $value;
 
     /**
