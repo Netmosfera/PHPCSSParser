@@ -5,32 +5,50 @@ namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 use function Netmosfera\PHPCSSAST\match;
 use function preg_replace;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-class WhitespaceToken implements Token
+/**
+ * A {@see WhitespaceToken} is a sequence of one or more whitespace code points.
+ *
+ * The following code points are considered whitespace: SPACE, TAB, CR, LF, FF.
+ */
+class WhitespaceToken implements EvaluableToken
 {
+
+    /**
+     * @var         String                                                                  `String`
+     */
     private $whitespaces;
 
+    /**
+     * @var         String|NULL                                                             `String|NULL`
+     */
     private $value;
 
+    /**
+     * @param       String                                  $whitespaces                    `String`
+     */
     function __construct(String $whitespaces){
         $this->whitespaces = $whitespaces;
     }
 
+    /** @inheritDoc */
     function __toString(): String{
         return $this->whitespaces;
     }
 
+    /** @inheritDoc */
     function equals($other): Bool{
         return
             $other instanceof self &&
             match($other->whitespaces, $this->whitespaces);
     }
 
+    /** @inheritDoc */
     function getValue(): String{
         if($this->value === NULL){
             $this->value = preg_replace(

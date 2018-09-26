@@ -38,6 +38,7 @@ class NameToken implements EvaluableToken
         return $this->pieces;
     }
 
+    /** @inheritDoc */
     function getValue(): String{
         if($this->value === NULL){
             $this->value = "";

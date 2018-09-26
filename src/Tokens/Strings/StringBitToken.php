@@ -34,6 +34,7 @@ class StringBitToken implements EvaluableToken
         return $this->text;
     }
 
+    /** @inheritDoc */
     function getValue(): String{
         if($this->value === NULL){
             $this->value = str_replace("\0", SpecData::REPLACEMENT_CHARACTER, $this->text);
