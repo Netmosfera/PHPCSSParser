@@ -15,12 +15,32 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
  */
 class BadURLRemnantsToken implements Token
 {
-    /** @var String[]|EscapeToken[] */
+    /**
+     * @var         BadURLRemnantsBitToken[]|EscapeToken[]
+     * @TODOC
+     */
     private $pieces;
 
+    /**
+     * @var         Bool
+     * `Bool`
+     * @TODOC
+     */
     private $terminatedWithEOF;
 
-    function __construct(Array $pieces, Bool $terminatedWithEOF = FALSE){
+    /**
+     * @param       BadURLRemnantsBitToken[]|EscapeToken[]  $pieces
+     * `Array<Int, BadURLRemnantsBitToken|EscapeToken>`
+     * @TODOC
+     *
+     * @param       Bool                                    $terminatedWithEOF
+     * `Bool`
+     * @TODOC
+     */
+    function __construct(Array $pieces, Bool $terminatedWithEOF){
+        foreach($pieces as $piece){
+            assert($piece instanceof BadURLRemnantsBitToken || $piece instanceof EscapeToken);
+        }
         $this->pieces = $pieces;
         $this->terminatedWithEOF = $terminatedWithEOF;
     }
@@ -40,6 +60,13 @@ class BadURLRemnantsToken implements Token
             match($this->terminatedWithEOF, $other->terminatedWithEOF);
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     Bool
+     * `Bool`
+     * @TODOC
+     */
     function isTerminatedWithEOF(): Bool{
         return $this->terminatedWithEOF;
     }

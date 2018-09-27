@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
@@ -70,7 +71,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $this->remnants . ")" . $rest);
-        $expected = new BadURLRemnantsToken([$this->remnants], FALSE);
+        $expected = new BadURLRemnantsToken([new BadURLRemnantsBitToken($this->remnants)], FALSE);
         $eatEscape = function(Traverser $traverser): ?EscapeToken{ return NULL; };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
@@ -135,8 +136,8 @@ class eatBadURLRemnantsTokenTest extends TestCase
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     function getPieces($afterPiece){
-        if(!is_string($afterPiece)){
-            $data[] = $this->remnants;
+        if(!$afterPiece instanceof BadURLRemnantsBitToken){
+            $data[] = new BadURLRemnantsBitToken($this->remnants);
         }
         $data[] = new EncodedCodePointEscapeToken("@");
         return $data;

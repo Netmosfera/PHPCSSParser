@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
@@ -105,7 +106,7 @@ class eatURLTokenTest extends TestCase
     function test3(String $prefix, String $startWS, String $rest){
         $traverser = getTraverser($prefix, $startWS . "\\\n" . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
-        $remnants = new BadURLRemnantsToken(["irrelevant"]);
+        $remnants = new BadURLRemnantsToken([new BadURLRemnantsBitToken("irrelevant")], FALSE);
         $expected = new BadURLToken($startWS, [], $remnants);
         $eatEscape = function(Traverser $traverser){
             assertNotMatch($traverser->createBranch()->eatStr("\\\n"), NULL);
@@ -154,7 +155,7 @@ class eatURLTokenTest extends TestCase
         $ic = "6 invalid code point";
         $traverser = getTraverser($prefix, $startWS . $ic . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
-        $remnants = new BadURLRemnantsToken(["irrelevant"]);
+        $remnants = new BadURLRemnantsToken([new BadURLRemnantsBitToken("irrelevant")], FALSE);
         $expected = new BadURLToken($startWS, [], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ic){
             assertNotMatch($traverser->eatStr($ic), NULL);
@@ -237,7 +238,7 @@ class eatURLTokenTest extends TestCase
         $ie = "\\\n invalid escape";
         $traverser = getTraverser($prefix, $startWS . $vs . $ie . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
-        $remnants = new BadURLRemnantsToken(["irrelevant"]);
+        $remnants = new BadURLRemnantsToken([new BadURLRemnantsBitToken("irrelevant")], FALSE);
         $expected = new BadURLToken($startWS, [new URLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ie){
             assertNotMatch($traverser->eatStr($ie), NULL);
@@ -288,7 +289,7 @@ class eatURLTokenTest extends TestCase
         $ic = "6 invalid code point";
         $traverser = getTraverser($prefix, $startWS . $vs . $ic . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
-        $remnants = new BadURLRemnantsToken(["irrelevant"]);
+        $remnants = new BadURLRemnantsToken([new BadURLRemnantsBitToken("irrelevant")], FALSE);
         $expected = new BadURLToken($startWS, [new URLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ic){
             assertNotMatch($traverser->eatStr($ic), NULL);
@@ -311,7 +312,7 @@ class eatURLTokenTest extends TestCase
         $vs = "valid sequence";
         $traverser = getTraverser($prefix, $startWS . $vs . "\f remnants" . $rest);
         $startWS = $startWS === "" ? NULL :new WhitespaceToken($startWS);
-        $remnants = new BadURLRemnantsToken(["irrelevant"]);
+        $remnants = new BadURLRemnantsToken([new BadURLRemnantsBitToken("irrelevant")], FALSE);
         $expected = new BadURLToken($startWS, [new URLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants){
             assertNotMatch($traverser->eatStr("\f remnants"), NULL);
