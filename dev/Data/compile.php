@@ -1,7 +1,7 @@
 <?php declare(strict_types = 1); // atom
 
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getDigitsSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getEncodedEscapeSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getEncodedCodePointEscapeSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getLettersSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNonASCIIsSet;
@@ -49,7 +49,7 @@ $data->NON_PRINTABLES_SET = getNonPrintablesSet()->getRegExp();
 $data->STRING_DELIMITERS_SET = getStringDelimiterSet()->getRegExp();
 
 $data->VALID_ESCAPE_STARTERS_SET = getValidEscapeStartersSet()->getRegExp();
-$data->ENCODED_ESCAPE_SET = getEncodedEscapeSet()->getRegExp();
+$data->ENCODED_ESCAPE_SET = getEncodedCodePointEscapeSet()->getRegExp();
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 

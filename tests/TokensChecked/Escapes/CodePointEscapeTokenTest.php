@@ -50,8 +50,10 @@ class CodePointEscapeTokenTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $hexDigits, String $whitespace){
-        $object1 = new CheckedCodePointEscapeToken($hexDigits, $whitespace === "" ? NULL : new WhitespaceToken($whitespace));
-        $object2 = new CheckedCodePointEscapeToken($hexDigits, $whitespace === "" ? NULL : new WhitespaceToken($whitespace));
+        $whitespace1 = $whitespace === "" ? NULL : new WhitespaceToken($whitespace);
+        $whitespace2 = $whitespace === "" ? NULL : new WhitespaceToken($whitespace);
+        $object1 = new CheckedCodePointEscapeToken($hexDigits, $whitespace1);
+        $object2 = new CheckedCodePointEscapeToken($hexDigits, $whitespace2);
 
         assertMatch($object1, $object2);
 
@@ -105,9 +107,11 @@ class CodePointEscapeTokenTest extends TestCase
 
     /** @dataProvider data3 */
     function test3(String $whitespace1, String $whitespace2){
-        $ws = $whitespace1 . $whitespace2;
-        if($ws === "\r\n"){ $ws = $ws . $ws; }
-        $whitespace = new WhitespaceToken($ws);
+        $whitespaces = $whitespace1 . $whitespace2;
+        if($whitespaces === "\r\n"){
+            $whitespaces = $whitespaces . $whitespaces;
+        }
+        $whitespace = new WhitespaceToken($whitespaces);
         assertThrowsType(InvalidToken::CLASS, function() use($whitespace){
             new CheckedCodePointEscapeToken("FF", $whitespace);
         });

@@ -6,7 +6,7 @@ require(__DIR__ . "/dev/Data/CodePointSeqsSets/getWhitespaceSeqsSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getASCIINameItemsSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getASCIINameStartersSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getDigitsSet.inc.php");
-require(__DIR__ . "/dev/Data/CodePointSets/getEncodedEscapeSet.inc.php");
+require(__DIR__ . "/dev/Data/CodePointSets/getEncodedCodePointEscapeSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getHexDigitsSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getLCLettersSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getLettersSet.inc.php");

@@ -8,7 +8,7 @@ use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function getEncodedEscapeSet(): CompressedCodePointSet{
+function getEncodedCodePointEscapeSet(): CompressedCodePointSet{
     $set = new CompressedCodePointSet();
     $set->selectAll();
     $set->removeAll(getNewlinesSet());

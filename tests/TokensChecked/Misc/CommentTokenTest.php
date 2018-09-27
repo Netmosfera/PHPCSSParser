@@ -17,6 +17,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  * Tests in this file:
  *
  * #1 | test getters
+ * #2 | test invalid
  */
 class CommentTokenTest extends TestCase
 {
@@ -50,6 +51,7 @@ class CommentTokenTest extends TestCase
     function data2(){
         $comments[] = "*/";
         $comments[] = "comment */ text";
+        $comments[] = "comment text */";
         return cartesianProduct($comments);
     }
 
