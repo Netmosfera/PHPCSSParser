@@ -10,16 +10,41 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
- * String Token.
+ * A {@see StringToken} is text delimited by `'` or `"`.
  */
 class StringToken implements AnyStringToken
 {
+    /**
+     * @var         String
+     * `String`
+     */
     private $delimiter;
 
+    /**
+     * @var         StringBitToken[]|EscapeToken[]
+     * `Array<Int, StringBitToken|EscapeToken>`
+     */
     private $pieces;
 
+    /**
+     * @var         Bool
+     * `Bool`
+     */
     private $terminatedWithEOF;
 
+    /**
+     * @param       String                                  $delimiter
+     * `String`
+     * @TODOC
+     *
+     * @param       StringBitToken[]|EscapeToken[]          $pieces
+     * `Array<Int, StringBitToken|EscapeToken>`
+     * @TODOC
+     *
+     * @param       Bool                                    $terminatedWithEOF
+     * `Bool`
+     * @TODOC
+     */
     function __construct(String $delimiter, Array $pieces, Bool $terminatedWithEOF){
         foreach($pieces as $piece){ // @TODO move to CheckedStringToken
             assert($piece instanceof StringBitToken || $piece instanceof EscapeToken);
@@ -31,6 +56,7 @@ class StringToken implements AnyStringToken
         $this->terminatedWithEOF = $terminatedWithEOF;
     }
 
+    /** @inheritDoc */
     function __toString(): String{
         return
             $this->delimiter .
@@ -38,6 +64,7 @@ class StringToken implements AnyStringToken
             ($this->terminatedWithEOF ? "" : $this->delimiter);
     }
 
+    /** @inheritDoc */
     function equals($other): Bool{
         return
             $other instanceof self &&
@@ -46,14 +73,35 @@ class StringToken implements AnyStringToken
             match($this->terminatedWithEOF, $other->terminatedWithEOF);
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     String
+     * `String`
+     * @TODOC
+     */
     function getDelimiter(): String{
         return $this->delimiter;
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     StringBitToken[]|EscapeToken[]
+     * `Array<Int, StringBitToken|EscapeToken>`
+     * @TODOC
+     */
     function getPieces(): Array{
         return $this->pieces;
     }
 
+    /**
+     * @TODOC
+     *
+     * @returns     Bool
+     * `Bool`
+     * @TODOC
+     */
     function isTerminatedWithEOF(): Bool{
         return $this->isTerminatedWithEOF();
     }
