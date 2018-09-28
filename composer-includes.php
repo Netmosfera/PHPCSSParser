@@ -1,5 +1,6 @@
 <?php
 
+require(__DIR__ . "/src/isArraySequence.inc.php");
 require(__DIR__ . "/src/match.inc.php");
 require(__DIR__ . "/src/StandardTokenizer/eatAtKeywordToken.inc.php");
 require(__DIR__ . "/src/StandardTokenizer/eatBadURLRemnantsToken.inc.php");

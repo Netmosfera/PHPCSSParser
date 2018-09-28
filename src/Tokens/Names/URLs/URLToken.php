@@ -31,7 +31,7 @@ class URLToken implements AnyURLToken
 
     /**
      * @var         URLBitToken[]|ValidEscapeToken[]
-     * `Array<Int, URLBitToken|ValidEscape>`
+     * `Array<Int, URLBitToken|ValidEscapeToken>`
      */
     private $pieces;
 
@@ -59,7 +59,7 @@ class URLToken implements AnyURLToken
      * @TODOC
      *
      * @param       URLBitToken[]|ValidEscapeToken[]        $pieces
-     * `Array<Int, URLBitToken|ValidEscape>`
+     * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      *
      * @param       WhitespaceToken|NULL                    $whitespaceAfter
@@ -122,7 +122,7 @@ class URLToken implements AnyURLToken
      * @TODOC
      *
      * @returns     URLBitToken[]|ValidEscapeToken[]
-     * `Array<Int, URLBitToken|ValidEscape>`
+     * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      */
     function getPieces(): Array{

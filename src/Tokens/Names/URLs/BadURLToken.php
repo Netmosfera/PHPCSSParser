@@ -23,7 +23,7 @@ class BadURLToken implements AnyURLToken
 
     /**
      * @var         URLBitToken[]|ValidEscapeToken[]
-     * `Array<Int, URLBitToken|ValidEscape>`
+     * `Array<Int, URLBitToken|ValidEscapeToken>`
      */
     private $pieces;
 
@@ -45,7 +45,7 @@ class BadURLToken implements AnyURLToken
      * @TODOC
      *
      * @param       URLBitToken[]|ValidEscapeToken[]        $pieces
-     * `Array<Int, URLBitToken|ValidEscape>`
+     * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      *
      * @param       BadURLRemnantsToken                     $badURLRemnants
@@ -101,7 +101,7 @@ class BadURLToken implements AnyURLToken
      * @TODOC
      *
      * @returns     URLBitToken[]|ValidEscapeToken[]
-     * `Array<Int, URLBitToken|ValidEscape>`
+     * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      */
     function getPieces(): Array{

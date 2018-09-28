@@ -20,7 +20,7 @@ class NameToken implements EvaluableToken
 {
     /**
      * @var         NameBitToken[]|ValidEscapeToken[]
-     * `Array<Int, NameBitToken|ValidEscape>`
+     * `Array<Int, NameBitToken|ValidEscapeToken>`
      */
     private $pieces;
 
@@ -38,13 +38,10 @@ class NameToken implements EvaluableToken
 
     /**
      * @param       NameBitToken[]|ValidEscapeToken[]       $pieces
-     * `Array<Int, NameBitToken|ValidEscape>`
+     * `Array<Int, NameBitToken|ValidEscapeToken>`
      * The {@see NameToken}'s components.
      */
     function __construct(Array $pieces){
-        foreach($pieces as $piece){ // @TODO move this assertion to CheckedNameToken
-            assert($piece instanceof NameBitToken || $piece instanceof ValidEscapeToken);
-        }
         $this->pieces = $pieces;
     }
 
@@ -78,7 +75,7 @@ class NameToken implements EvaluableToken
      * Returns the {@see NameToken}'s components.
      *
      * @returns     NameBitToken[]|ValidEscapeToken[]
-     * `Array<Int, NameBitToken|ValidEscape>`
+     * `Array<Int, NameBitToken|ValidEscapeToken>`
      * Returns the {@see NameToken}'s components.
      */
     function getPieces(): Array{
