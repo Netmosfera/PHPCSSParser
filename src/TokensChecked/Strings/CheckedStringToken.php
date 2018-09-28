@@ -30,10 +30,6 @@ class CheckedStringToken extends StringToken
             }
         }
 
-        if(count($pieces) === 0){
-            throw new InvalidToken("The token cannot be empty");
-        }
-
         foreach($pieces as $offset => $piece){
             if($piece instanceof StringBitToken){
                 $nextPiece = $pieces[$offset + 1] ?? NULL;
@@ -51,7 +47,7 @@ class CheckedStringToken extends StringToken
             $terminatedWithEOF === FALSE
         ){
             throw new InvalidToken(sprintf(
-                "A string that ends with a `%s` must be `\$terminatedWithEof`",
+                "A string that ends with a `%s` must be `\$terminatedWithEOF`",
                 EOFEscapeToken::CLASS
             ));
         }

@@ -4,19 +4,16 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-/**
- * Consumes a {@see WhitespaceToken}, if any.
- */
 function eatWhitespaceToken(
     Traverser $traverser,
     String $whitespaceRegExpSet
-): ?WhitespaceToken{
+): ?CheckedWhitespaceToken{
 
     $whitespaces = $traverser->eatExp('[' . $whitespaceRegExpSet . ']+');
 
-    return $whitespaces === NULL ? NULL : new WhitespaceToken($whitespaces);
+    return $whitespaces === NULL ? NULL : new CheckedWhitespaceToken($whitespaces);
 }

@@ -50,10 +50,12 @@ class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
             }
         }
 
+        // @TODO if the last $pieces is eofescape, then $terminatedWithEOF must be true
+
         $firstPiece = $pieces[0];
         if((
             $firstPiece instanceof BadURLRemnantsBitToken &&
-            preg_match('/^[' . SpecData::URLTOKEN_BIT_CP_NOT_SET . ']/usD', $firstPiece) === 1
+            preg_match('/^[' . SpecData::URLTOKEN_BIT_CP_NOT_SET . ']/usD', (String)$firstPiece) === 1
         ) || (
             $firstPiece instanceof ValidEscapeToken
         )){

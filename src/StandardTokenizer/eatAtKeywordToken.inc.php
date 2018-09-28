@@ -9,9 +9,6 @@ use Closure;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-/**
- * Consumes a {@see AtKeywordToken}.
- */
 function eatAtKeywordToken(
     Traverser $traverser,
     Closure $eatIdentifier

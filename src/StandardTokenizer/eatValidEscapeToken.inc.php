@@ -4,16 +4,13 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-/**
- * Consumes a {@see ValidEscapeToken}, if any.
- */
 function eatValidEscapeToken(
     Traverser $traverser,
     String $hexDigitRegExpSet,
@@ -35,13 +32,13 @@ function eatValidEscapeToken(
     $hexDigits = $traverser->eatExp('[' . $hexDigitRegExpSet . ']{1,6}');
     if($hexDigits !== NULL){
         $whitespace = $traverser->eatExp($whitespaceRegExp);
-        $whitespace = $whitespace === NULL ? NULL : new WhitespaceToken($whitespace);
-        return new CodePointEscapeToken($hexDigits, $whitespace);
+        $whitespace = $whitespace === NULL ? NULL : new CheckedWhitespaceToken($whitespace);
+        return new CheckedCodePointEscapeToken($hexDigits, $whitespace);
     }
 
     $codePoint = $traverser->eatExp('[^' . $newlineRegExpSet . ']');
     if($codePoint !== NULL){
-        return new EncodedCodePointEscapeToken($codePoint);
+        return new CheckedEncodedCodePointEscapeToken($codePoint);
     }
 
     $traverser->rollback($beforeBackslash);

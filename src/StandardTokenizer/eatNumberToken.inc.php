@@ -4,17 +4,14 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-/**
- * Consumes a {@see NumberToken}, if any.
- */
 function eatNumberToken(
     Traverser $traverser,
     String $digitRegExpSet
-): ?NumberToken{
+): ?CheckedNumberToken{
 
     $xx = $traverser->createBranch();
 
@@ -69,7 +66,7 @@ function eatNumberToken(
         $expLetter = $expSign = $exponent = "";
     }
 
-    return new NumberToken(
+    return new CheckedNumberToken(
         $sign,
         $wholes,
         $decimals,

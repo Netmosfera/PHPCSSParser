@@ -4,10 +4,10 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Closure;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -16,7 +16,7 @@ function eatIdentifierToken(
     String $nameStartRegExpSet,
     String $nameRegExpSet,
     Closure $eatEscapeFunction
-): ?IdentifierToken{
+): ?CheckedIdentifierToken{
     $nscp = $nameStartRegExpSet;
     $ncp = $nameRegExpSet;
 
@@ -27,14 +27,14 @@ function eatIdentifierToken(
     $identifierStart = $traverser->eatExp('-?[' . $nscp . '][' . $ncp . ']*|--[' . $ncp . ']*');
 
     if($identifierStart !== NULL){
-        $pieces = [new NameBitToken($identifierStart)];
+        $pieces = [new CheckedNameBitToken($identifierStart)];
     }else{
         $tt = $traverser->createBranch();
 
         $pieces = [];
 
         if($tt->eatStr("-") !== NULL){
-            $pieces[] = new NameBitToken("-");
+            $pieces[] = new CheckedNameBitToken("-");
         }
 
         $escape = $eatEscapeFunction($tt);
@@ -52,11 +52,11 @@ function eatIdentifierToken(
         $piece = $traverser->eatExp('[' . $ncp . ']+') ?? $eatEscapeFunction($traverser);
 
         if($piece === NULL){
-            return new IdentifierToken(new NameToken($pieces));
+            return new CheckedIdentifierToken(new CheckedNameToken($pieces));
         }
 
         if(is_string($piece)){
-            $piece = new NameBitToken($piece);
+            $piece = new CheckedNameBitToken($piece);
         }
 
         $pieces[] = $piece;

@@ -11,9 +11,6 @@ use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-/**
- * Consumes a {@see IdentifierLikeToken}, if any.
- */
 function eatIdentifierLikeToken(
     Traverser $traverser,
     Closure $eatIdentifierToken,

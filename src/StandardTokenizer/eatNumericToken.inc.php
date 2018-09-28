@@ -11,9 +11,6 @@ use Netmosfera\PHPCSSAST\Tokens\Numbers\PercentageToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-/**
- * Consumes a {@see NumericToken}, if any.
- */
 function eatNumericToken(
     Traverser $traverser,
     Closure $eatNumberTokenFunction,

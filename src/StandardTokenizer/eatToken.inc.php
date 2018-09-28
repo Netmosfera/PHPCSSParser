@@ -6,18 +6,18 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Token;
-use Netmosfera\PHPCSSAST\Tokens\Operators\CDOToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\CDCToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\CommaToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\DelimiterToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedDelimiterToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -87,5 +87,5 @@ function eatToken(
     $token = $eatCommentToken($traverser);
     if($token !== NULL){ return $token; }
 
-    return new DelimiterToken($traverser->eatLength(1));
+    return new CheckedDelimiterToken($traverser->eatLength(1));
 }

@@ -8,8 +8,10 @@ use Closure;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-function makePiecesSample(Closure $getPiecesFunction){
-    yield [];
+function makePiecesSample(Closure $getPiecesFunction, Bool $doGiveEmpty = TRUE){
+    if($doGiveEmpty){
+        yield [];
+    }
     foreach($getPiecesFunction(NULL) as $p0){
         yield [$p0];
         foreach($getPiecesFunction($p0) as $p1){

@@ -4,17 +4,14 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
-use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
-use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
-use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedBadStringToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringBitToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-/**
- * Consumes a {@see StringToken}, if any.
- */
 function eatStringToken(
     Traverser $traverser,
     String $newlineRegExpSet,
@@ -32,20 +29,20 @@ function eatStringToken(
 
     for(;;){
         if($traverser->isEOF()){
-            return new StringToken($delimiter, $pieces, TRUE);
+            return new CheckedStringToken($delimiter, $pieces, TRUE);
         }
 
         if($traverser->eatStr($delimiter) === $delimiter){
-            return new StringToken($delimiter, $pieces, FALSE);
+            return new CheckedStringToken($delimiter, $pieces, FALSE);
         }
 
         if($traverser->createBranch()->eatExp('[' . $newlineRegExpSet . ']')){
-            return new BadStringToken($delimiter, $pieces);
+            return new CheckedBadStringToken($delimiter, $pieces);
         }
 
         $stringPiece = $traverser->eatExp('[^' . $newlineRegExpSet . $eDelimiter . '\\\\]+');
         if($stringPiece !== NULL){
-            $pieces[] = new StringBitToken($stringPiece);
+            $pieces[] = new CheckedStringBitToken($stringPiece);
             continue;
         }
 
