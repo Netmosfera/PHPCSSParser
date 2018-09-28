@@ -11,7 +11,7 @@ use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use PHPUnit\Framework\TestCase;
 use IntlChar;
@@ -50,8 +50,8 @@ class CodePointEscapeTokenTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $hexDigits, String $whitespace){
-        $whitespace1 = $whitespace === "" ? NULL : new WhitespaceToken($whitespace);
-        $whitespace2 = $whitespace === "" ? NULL : new WhitespaceToken($whitespace);
+        $whitespace1 = $whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace);
+        $whitespace2 = $whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace);
         $object1 = new CheckedCodePointEscapeToken($hexDigits, $whitespace1);
         $object2 = new CheckedCodePointEscapeToken($hexDigits, $whitespace2);
 
@@ -66,7 +66,7 @@ class CodePointEscapeTokenTest extends TestCase
         assertMatch(hexdec($hexDigits), $object1->getIntValue());
         assertMatch($object1->getIntValue(), $object2->getIntValue());
 
-        assertMatch($whitespace === "" ? NULL : new WhitespaceToken($whitespace), $object1->getTerminator());
+        assertMatch($whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace), $object1->getTerminator());
         assertMatch($object1->getTerminator(), $object2->getTerminator());
 
         $codePoint = IntlChar::chr($object1->getIntValue());
@@ -111,7 +111,7 @@ class CodePointEscapeTokenTest extends TestCase
         if($whitespaces === "\r\n"){
             $whitespaces = $whitespaces . $whitespaces;
         }
-        $whitespace = new WhitespaceToken($whitespaces);
+        $whitespace = new CheckedWhitespaceToken($whitespaces);
         assertThrowsType(InvalidToken::CLASS, function() use($whitespace){
             new CheckedCodePointEscapeToken("FF", $whitespace);
         });

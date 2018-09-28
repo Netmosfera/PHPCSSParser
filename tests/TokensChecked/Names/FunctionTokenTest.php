@@ -4,12 +4,12 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
-use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -21,8 +21,12 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class FunctionTokenTest extends TestCase
 {
     function test1(){
-        $identifier1 = new IdentifierToken(new NameToken([new NameBitToken("linear-gradient")]));
-        $identifier2 = new IdentifierToken(new NameToken([new NameBitToken("linear-gradient")]));
+        $nameBit1 = new CheckedNameBitToken("linear-gradient");
+        $nameBit2 = new CheckedNameBitToken("linear-gradient");
+        $name1 = new CheckedNameToken([$nameBit1]);
+        $name2 = new CheckedNameToken([$nameBit2]);
+        $identifier1 = new CheckedIdentifierToken($name1);
+        $identifier2 = new CheckedIdentifierToken($name2);
         $object1 = new FunctionToken($identifier1);
         $object2 = new FunctionToken($identifier2);
 

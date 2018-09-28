@@ -5,11 +5,11 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -22,24 +22,23 @@ use PHPUnit\Framework\TestCase;
 class NameTokenTest extends TestCase
 {
     function test1(){
-
         $pieces = [];
         for($i = 0; $i < 2; $i++){
             $pieces[$i] = [
-                new NameBitToken("A"),
-                new EncodedCodePointEscapeToken("@"),
-                new NameBitToken("B"),
-                new CodePointEscapeToken("FFAACC", new WhitespaceToken(" ")),
-                new NameBitToken("C"),
-                new CodePointEscapeToken("FFAA", new WhitespaceToken("\t")),
-                new NameBitToken("D\0D"),
+                new CheckedNameBitToken("A"),
+                new CheckedEncodedCodePointEscapeToken("@"),
+                new CheckedNameBitToken("B"),
+                new CheckedCodePointEscapeToken("FFAACC", new CheckedWhitespaceToken(" ")),
+                new CheckedNameBitToken("C"),
+                new CheckedCodePointEscapeToken("FFAA", new CheckedWhitespaceToken("\t")),
+                new CheckedNameBitToken("D\0D"),
             ];
         }
 
         [$pieces1, $pieces2] = $pieces;
 
-        $object1 = new NameToken($pieces1);
-        $object2 = new NameToken($pieces2);
+        $object1 = new CheckedNameToken($pieces1);
+        $object2 = new CheckedNameToken($pieces2);
 
         assertMatch($object1, $object2);
 

@@ -4,17 +4,13 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
-use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
-use function Netmosfera\PHPCSSASTTests\assertThrowsType;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
+use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -27,29 +23,29 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class IdentifierTokenTest extends TestCase
 {
     function data1(){
-        $names[] = [new NameBitToken("--")];
+        $names[] = [new CheckedNameBitToken("--")];
 
-        $names[] = [new NameBitToken("-"), new EncodedCodePointEscapeToken("x")];
+        $names[] = [new CheckedNameBitToken("-"), new CheckedEncodedCodePointEscapeToken("x")];
 
-        $names[] = [new NameBitToken("-a")];
-        $names[] = [new NameBitToken("-A")];
-        $names[] = [new NameBitToken("-_")];
-        $names[] = [new NameBitToken("-\u{2764}")];
+        $names[] = [new CheckedNameBitToken("-a")];
+        $names[] = [new CheckedNameBitToken("-A")];
+        $names[] = [new CheckedNameBitToken("-_")];
+        $names[] = [new CheckedNameBitToken("-\u{2764}")];
 
-        $names[] = [new NameBitToken("a")];
-        $names[] = [new NameBitToken("A")];
-        $names[] = [new NameBitToken("_")];
-        $names[] = [new NameBitToken("\u{2764}")];
+        $names[] = [new CheckedNameBitToken("a")];
+        $names[] = [new CheckedNameBitToken("A")];
+        $names[] = [new CheckedNameBitToken("_")];
+        $names[] = [new CheckedNameBitToken("\u{2764}")];
 
-        $names[] = [new EncodedCodePointEscapeToken("x")];
+        $names[] = [new CheckedEncodedCodePointEscapeToken("x")];
 
         return cartesianProduct($names);
     }
 
     /** @dataProvider data1 */
     function test1(Array $name){
-        $name1 = new NameToken($name);
-        $name2 = new NameToken($name);
+        $name1 = new CheckedNameToken($name);
+        $name2 = new CheckedNameToken($name);
         $object1 = new CheckedIdentifierToken($name1);
         $object2 = new CheckedIdentifierToken($name2);
 
@@ -62,16 +58,5 @@ class IdentifierTokenTest extends TestCase
         assertMatch($object1->getName(), $object2->getName());
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
-        return cartesianProduct([]);
-    }
-
-    /** @dataProvider data2 */
-    function xtest2(){
-        assertThrowsType(InvalidToken::CLASS, function(){
-            new CheckedCommentToken($comment, FALSE);
-        });
-    }
+    // @TODO invalids
 }

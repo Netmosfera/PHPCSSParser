@@ -4,11 +4,11 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Misc;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
-use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]

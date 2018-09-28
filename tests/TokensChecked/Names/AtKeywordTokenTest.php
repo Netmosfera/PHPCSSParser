@@ -4,11 +4,11 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -21,17 +21,21 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class AtKeywordTokenTest extends TestCase
 {
     function test1(){
-        $identifier1 = new IdentifierToken(new NameToken([new NameBitToken("import")]));
-        $identifier2 = new IdentifierToken(new NameToken([new NameBitToken("import")]));
-        $object1 = new AtKeywordToken($identifier1);
-        $object2 = new AtKeywordToken($identifier2);
+        $nameBit1 = new CheckedNameBitToken("import");
+        $nameBit2 = new CheckedNameBitToken("import");
+        $name1 = new CheckedNameToken([$nameBit1]);
+        $name2 = new CheckedNameToken([$nameBit2]);
+        $identifier1 = new CheckedIdentifierToken($name1);
+        $identifier2 = new CheckedIdentifierToken($name2);
+        $atKeyword1 = new AtKeywordToken($identifier1);
+        $atKeyword2 = new AtKeywordToken($identifier2);
 
-        assertMatch($object1, $object2);
+        assertMatch($atKeyword1, $atKeyword2);
 
-        assertMatch("@import", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch("@import", (String)$atKeyword1);
+        assertMatch((String)$atKeyword1, (String)$atKeyword2);
 
-        assertMatch($identifier2, $object1->getIdentifier());
-        assertMatch($object1->getIdentifier(), $object2->getIdentifier());
+        assertMatch($identifier2, $atKeyword1->getIdentifier());
+        assertMatch($atKeyword1->getIdentifier(), $atKeyword2->getIdentifier());
     }
 }
