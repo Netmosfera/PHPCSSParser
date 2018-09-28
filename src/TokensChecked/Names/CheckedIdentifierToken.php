@@ -23,13 +23,14 @@ class CheckedIdentifierToken extends IdentifierToken
         if($firstPiece instanceof NameBitToken){
             if($stringifiedFirstPiece === "-"){
                 if(($pieces[1] ?? NULL) === NULL){
-                    // If "-" is followed by an escape
+                    // It's valid if "-" is followed by an escape
                     throw new InvalidToken();
                 }
             }elseif(preg_match('/^(?:--|-?[' . SpecData::NAME_STARTERS_SET . '])/usD', $stringifiedFirstPiece) === 0){
-                // If "--" optionally followed by zero or more name-code-points
-                // If "-" followed by one name-start-code-point, optionally followed by zero or more name-code-points
-                // If one name-start-code-point, optionally followed by zero or more name-code-points
+                // It's valid if
+                // "--", optionally followed by zero or more name-code-points
+                // "-" is followed by one name-start-code-point, optionally followed by zero or more name-code-points
+                // starts with one name-start-code-point, optionally followed by zero or more name-code-points
                 throw new InvalidToken();
             }
         }
