@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
  *
  * #1 | test getters
  */
-class BadURLRemnantsTokenTest extends TestCase
+class BadURLTokenTest extends TestCase
 {
     // @TODO
 
