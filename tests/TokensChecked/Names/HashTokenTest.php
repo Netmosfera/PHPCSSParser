@@ -4,11 +4,11 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
-use function Netmosfera\PHPCSSASTTests\assertMatch;
+use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 

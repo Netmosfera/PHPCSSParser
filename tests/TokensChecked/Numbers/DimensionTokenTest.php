@@ -4,17 +4,13 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
-use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
-use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\DimensionToken;
-use function Netmosfera\PHPCSSASTTests\assertMatch;
+use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 

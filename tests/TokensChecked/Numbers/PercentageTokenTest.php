@@ -4,10 +4,10 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
-use Netmosfera\PHPCSSAST\Tokens\Numbers\PercentageToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\PercentageToken;
+use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -19,17 +19,17 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class PercentageTokenTest extends TestCase
 {
     function test1(){
-        $number1 = new NumberToken("-", "123", "456", "e", "", "3");
-        $number2 = new NumberToken("-", "123", "456", "e", "", "3");
-        $object1 = new PercentageToken($number1);
-        $object2 = new PercentageToken($number2);
+        $number1 = new CheckedNumberToken("-", "123", "456", "e", "", "3");
+        $number2 = new CheckedNumberToken("-", "123", "456", "e", "", "3");
+        $percentage1 = new PercentageToken($number1);
+        $percentage2 = new PercentageToken($number2);
 
-        assertMatch($object1, $object2);
+        assertMatch($percentage1, $percentage2);
 
-        assertMatch("-123.456e3%", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch("-123.456e3%", (String)$percentage1);
+        assertMatch((String)$percentage1, (String)$percentage2);
 
-        assertMatch($number2, $object1->getNumber());
-        assertMatch($object1->getNumber(), $object2->getNumber());
+        assertMatch($number2, $percentage1->getNumber());
+        assertMatch($percentage1->getNumber(), $percentage2->getNumber());
     }
 }
