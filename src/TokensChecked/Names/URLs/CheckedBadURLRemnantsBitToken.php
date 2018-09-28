@@ -5,8 +5,8 @@ namespace Netmosfera\PHPCSSAST\TokensChecked\Names\URLs;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 

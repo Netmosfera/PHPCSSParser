@@ -4,8 +4,8 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\NullEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEOFEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -22,7 +22,7 @@ function eatNullEscapeToken(
     }
 
     if($traverser->isEOF()){
-        return new EOFEscapeToken();
+        return new CheckedEOFEscapeToken();
     }
 
     $newline = $traverser->eatExp($newlineRegExp);

@@ -4,17 +4,16 @@ namespace Netmosfera\PHPCSSAST\TokensChecked\Names\URLs;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use function Netmosfera\PHPCSSAST\isArraySequence;
+use TypeError;
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\NullEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
+use function Netmosfera\PHPCSSAST\isArraySequence;
 use function preg_match;
-use TypeError;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 

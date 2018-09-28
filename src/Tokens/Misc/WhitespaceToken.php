@@ -6,6 +6,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use function Netmosfera\PHPCSSAST\match;
 use function preg_replace;
 
@@ -18,7 +19,6 @@ use function preg_replace;
  */
 class WhitespaceToken implements Token
 {
-
     /**
      * @var         String
      * `String`
@@ -55,7 +55,7 @@ class WhitespaceToken implements Token
     /** @inheritDoc */
     function normalize(): WhitespaceToken{
         if($this->normalizedObject === NULL){
-            $this->normalizedObject = new WhitespaceToken(
+            $this->normalizedObject = new CheckedWhitespaceToken(  // @TODO revert to non-checked
                 preg_replace(
                     "/" . SpecData::WHITESPACES_SEQS_SET . "/usD",
                     SpecData::WHITESPACE,

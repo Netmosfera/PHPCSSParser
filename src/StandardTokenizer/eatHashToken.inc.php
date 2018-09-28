@@ -4,8 +4,9 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedHashToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -20,7 +21,7 @@ function eatHashToken(
         $name = $eatNameToken($hashTraverser);
         if($name !== NULL){
             $traverser->importBranch($hashTraverser);
-            return new HashToken($name);
+            return new CheckedHashToken($name);
         }
     }
 

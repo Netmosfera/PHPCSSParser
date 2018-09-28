@@ -4,12 +4,13 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedAtKeywordToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatAtKeywordToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -69,8 +70,8 @@ class eatAtKeywordTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "@the-identifier" . $rest);
-        $identifier = new IdentifierToken(new NameToken([new NameBitToken("the-identifier")]));
-        $expected = new AtKeywordToken($identifier);
+        $identifier = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("the-identifier")]));
+        $expected = new CheckedAtKeywordToken($identifier);
         $eatIdentifier = function(Traverser $traverser) use($identifier): ?IdentifierToken{
             return $traverser->eatStr("the-identifier") === NULL ? NULL : $identifier;
         };

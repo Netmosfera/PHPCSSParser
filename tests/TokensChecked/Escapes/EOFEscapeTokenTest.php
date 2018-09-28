@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEOFEscapeToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -18,8 +18,8 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class EOFEscapeTokenTest extends TestCase
 {
     function test1(){
-        $EOFEscape1 = new EOFEscapeToken();
-        $EOFEscape2 = new EOFEscapeToken();
+        $EOFEscape1 = new CheckedEOFEscapeToken();
+        $EOFEscape2 = new CheckedEOFEscapeToken();
 
         assertMatch($EOFEscape1, $EOFEscape2);
 

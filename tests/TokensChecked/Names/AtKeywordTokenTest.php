@@ -5,9 +5,9 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedAtKeywordToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
@@ -27,8 +27,8 @@ class AtKeywordTokenTest extends TestCase
         $name2 = new CheckedNameToken([$nameBit2]);
         $identifier1 = new CheckedIdentifierToken($name1);
         $identifier2 = new CheckedIdentifierToken($name2);
-        $atKeyword1 = new AtKeywordToken($identifier1);
-        $atKeyword2 = new AtKeywordToken($identifier2);
+        $atKeyword1 = new CheckedAtKeywordToken($identifier1);
+        $atKeyword2 = new CheckedAtKeywordToken($identifier2);
 
         assertMatch($atKeyword1, $atKeyword2);
 

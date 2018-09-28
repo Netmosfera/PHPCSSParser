@@ -5,14 +5,13 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsBitToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatBadURLRemnantsToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -40,7 +39,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $this->remnants . ")" . $rest);
-        $expected = new BadURLRemnantsToken([new BadURLRemnantsBitToken($this->remnants)], FALSE);
+        $expected = new CheckedBadURLRemnantsToken([new CheckedBadURLRemnantsBitToken($this->remnants)], FALSE);
         $eatEscape = function(Traverser $traverser): ?EscapeToken{ return NULL; };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
@@ -56,10 +55,10 @@ class eatBadURLRemnantsTokenTest extends TestCase
     /** @dataProvider data4 */
     function test4(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "\\\n" . ")" . $rest);
-        $expected = new BadURLRemnantsToken([new ContinuationEscapeToken("\n")], FALSE);
+        $expected = new CheckedBadURLRemnantsToken([new CheckedContinuationEscapeToken("\n")], FALSE);
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
             assertNotMatch($traverser->eatStr("\\\n"), NULL);
-            return new ContinuationEscapeToken("\n");
+            return new CheckedContinuationEscapeToken("\n");
         };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
@@ -79,10 +78,10 @@ class eatBadURLRemnantsTokenTest extends TestCase
     /** @dataProvider data56 */
     function test5(String $prefix, Array $pieces, String $rest){
         $traverser = getTraverser($prefix, implode("", $pieces) . ")" . $rest);
-        $expected = new BadURLRemnantsToken($pieces, FALSE);
+        $expected = new CheckedBadURLRemnantsToken($pieces, FALSE);
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
             $escape = $traverser->eatStr("\\\n");
-            return $escape === NULL ? NULL : new ContinuationEscapeToken("\n");
+            return $escape === NULL ? NULL : new CheckedContinuationEscapeToken("\n");
         };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
@@ -92,10 +91,10 @@ class eatBadURLRemnantsTokenTest extends TestCase
     /** @dataProvider data56 */
     function test6(String $prefix, Array $pieces){
         $traverser = getTraverser($prefix, implode("", $pieces));
-        $expected = new BadURLRemnantsToken($pieces, TRUE);
+        $expected = new CheckedBadURLRemnantsToken($pieces, TRUE);
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
             $escape = $traverser->eatStr("\\\n");
-            return $escape === NULL ? NULL : new ContinuationEscapeToken("\n");
+            return $escape === NULL ? NULL : new CheckedContinuationEscapeToken("\n");
         };
         $actual = eatBadURLRemnantsToken($traverser, $eatEscape);
         assertMatch($actual, $expected);
@@ -106,9 +105,9 @@ class eatBadURLRemnantsTokenTest extends TestCase
 
     function getPieces($afterPiece){
         if(!$afterPiece instanceof BadURLRemnantsBitToken){
-            $data[] = new BadURLRemnantsBitToken($this->remnants);
+            $data[] = new CheckedBadURLRemnantsBitToken($this->remnants);
         }
-        $data[] = new ContinuationEscapeToken("\n");
+        $data[] = new CheckedContinuationEscapeToken("\n");
         return $data;
     }
 

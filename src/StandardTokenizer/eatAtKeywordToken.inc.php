@@ -4,8 +4,9 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedAtKeywordToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -20,7 +21,7 @@ function eatAtKeywordToken(
         $identifier = $eatIdentifier($atKeywordTraverser);
         if($identifier !== NULL){
             $traverser->importBranch($atKeywordTraverser);
-            return new AtKeywordToken($identifier);
+            return new CheckedAtKeywordToken($identifier);
         }
     }
 

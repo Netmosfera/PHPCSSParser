@@ -5,11 +5,11 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedDimensionToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\Tokens\Numbers\DimensionToken;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -30,8 +30,8 @@ class DimensionTokenTest extends TestCase
         $identifier2 = new CheckedIdentifierToken($name2);
         $number1 = new CheckedNumberToken("-", "123", "456", "e", "", "3");
         $number2 = new CheckedNumberToken("-", "123", "456", "e", "", "3");
-        $dimension1 = new DimensionToken($number1, $identifier1);
-        $dimension2 = new DimensionToken($number2, $identifier2);
+        $dimension1 = new CheckedDimensionToken($number1, $identifier1);
+        $dimension2 = new CheckedDimensionToken($number2, $identifier2);
 
         assertMatch($dimension1, $dimension2);
 

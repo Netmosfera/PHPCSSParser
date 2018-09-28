@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatCommentToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -48,7 +48,7 @@ class eatCommentTokenTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $prefix, String $text){
         $traverser = getTraverser($prefix, "/*" . $text);
-        $expected = new CommentToken($text, TRUE);
+        $expected = new CheckedCommentToken($text, TRUE);
         $actual = eatCommentToken($traverser);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), "");
@@ -66,7 +66,7 @@ class eatCommentTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, String $text, String $rest){
         $traverser = getTraverser($prefix, "/*" . $text . "*/" . $rest);
-        $expected = new CommentToken($text, FALSE);
+        $expected = new CheckedCommentToken($text, FALSE);
         $actual = eatCommentToken($traverser);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);

@@ -4,11 +4,12 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedHashToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatHashToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -64,8 +65,8 @@ class eatHashTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "#hash" . $rest);
-        $name = new NameToken([new NameBitToken("hash")]);
-        $expected = new HashToken($name);
+        $name = new CheckedNameToken([new CheckedNameBitToken("hash")]);
+        $expected = new CheckedHashToken($name);
         $eatName = function(Traverser $traverser) use($name): ?NameToken{
             return $traverser->eatStr("hash") === NULL ? NULL : $name;
         };

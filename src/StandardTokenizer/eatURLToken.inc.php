@@ -4,12 +4,12 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLBitToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -25,7 +25,7 @@ function eatURLToken(
     if($wsBefore === NULL){
         return NULL;
     }
-    $wsBefore = $wsBefore === "" ? NULL : new WhitespaceToken($wsBefore);
+    $wsBefore = $wsBefore === "" ? NULL : new CheckedWhitespaceToken($wsBefore);
 
     // @TODO assert that $blacklistCPsRegexSet contains \ ) and the other delimiters used in this function
 
@@ -36,26 +36,26 @@ function eatURLToken(
     for(;;){
 
         if($traverser->isEOF()){
-            return new URLToken($wsBefore, $pieces, NULL, TRUE);
+            return new CheckedURLToken($wsBefore, $pieces, NULL, TRUE);
         }
 
         if($traverser->eatStr(")") !== NULL){
-            return new URLToken($wsBefore, $pieces, NULL, FALSE);
+            return new CheckedURLToken($wsBefore, $pieces, NULL, FALSE);
         }
 
         $finishTraverser = $traverser->createBranch();
         $wsAfter = $finishTraverser->eatExp('[' . $whitespaceRegexSet . ']*');
         if($wsAfter !== ""){
-            $wsAfter = new WhitespaceToken($wsAfter);
+            $wsAfter = new CheckedWhitespaceToken($wsAfter);
             if($finishTraverser->isEOF()){
                 $traverser->importBranch($finishTraverser);
-                return new URLToken($wsBefore, $pieces, $wsAfter, TRUE);
+                return new CheckedURLToken($wsBefore, $pieces, $wsAfter, TRUE);
             }elseif($finishTraverser->eatStr(")") !== NULL){
                 $traverser->importBranch($finishTraverser);
-                return new URLToken($wsBefore, $pieces, $wsAfter, FALSE);
+                return new CheckedURLToken($wsBefore, $pieces, $wsAfter, FALSE);
             }
             $remnants = $eatBadURLRemnantsFunction($traverser);
-            return new BadURLToken($wsBefore, $pieces, $remnants);
+            return new CheckedBadURLToken($wsBefore, $pieces, $remnants);
         }
 
         if($traverser->createBranch()->eatStr("\\") !== NULL){
@@ -65,19 +65,19 @@ function eatURLToken(
                 continue;
             }else{
                 $remnants = $eatBadURLRemnantsFunction($traverser);
-                return new BadURLToken($wsBefore, $pieces, $remnants);
+                return new CheckedBadURLToken($wsBefore, $pieces, $remnants);
             }
         }
 
         if($traverser->createBranch()->eatExp('[' . $blacklistCPsRegexSet . ']') !== NULL){
             $remnants = $eatBadURLRemnantsFunction($traverser);
-            return new BadURLToken($wsBefore, $pieces, $remnants);
+            return new CheckedBadURLToken($wsBefore, $pieces, $remnants);
         }
 
         $piece = $traverser->eatExp('[^' . $blacklistCPsRegexSet . ']+');
         // This must include everything but the CPs already handled
         // in the previous steps, therefore it can never be empty
         assert($piece !== NULL);
-        $pieces[] = new URLBitToken($piece);
+        $pieces[] = new CheckedURLBitToken($piece);
     }
 }

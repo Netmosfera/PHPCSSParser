@@ -5,20 +5,21 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function dechex;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatIdentifierLikeToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedFunctionToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
-use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use PHPUnit\Framework\TestCase;
 use IntlChar;
 
@@ -59,7 +60,7 @@ class eatIdentifierLikeTokenTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "identifier_name" . $rest);
-        $expected = new IdentifierToken(new NameToken([new NameBitToken("identifier_name")]));
+        $expected = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("identifier_name")]));
         $eatIdentifierToken = function(Traverser $traverser) use($expected){
             assertNotMatch($traverser->eatStr("identifier_name"), NULL);
             return $expected;
@@ -79,7 +80,7 @@ class eatIdentifierLikeTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, IdentifierToken $URLIdentifier, String $rest){
         $traverser = getTraverser($prefix, "url(\f\f\fpath\f\f\f\f)" . $rest);
-        $expected = new URLToken(NULL, [new URLBitToken("works")], NULL, FALSE);
+        $expected = new CheckedURLToken(NULL, [new CheckedURLBitToken("works")], NULL, FALSE);
         $eatIdentifierToken = function(Traverser $traverser) use($URLIdentifier){
             assertNotMatch($traverser->eatStr("url"), NULL);
             return $URLIdentifier;
@@ -102,7 +103,7 @@ class eatIdentifierLikeTokenTest extends TestCase
     /** @dataProvider data4 */
     function test4(String $prefix, IdentifierToken $URLIdentifier, String $rest){
         $traverser = getTraverser($prefix, "url(\f\f\f'url'\f\f\f\f)" . $rest);
-        $expected = new FunctionToken($URLIdentifier);
+        $expected = new CheckedFunctionToken($URLIdentifier);
         $eatIdentifierToken = function(Traverser $traverser) use($URLIdentifier){
             assertNotMatch($traverser->eatStr("url"), NULL);
             return $URLIdentifier;
@@ -125,10 +126,10 @@ class eatIdentifierLikeTokenTest extends TestCase
     /** @dataProvider data5 */
     function test5(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "func_name(" . $rest);
-        $expected = new FunctionToken(new IdentifierToken(new NameToken([new NameBitToken("func_name")])));
+        $expected = new CheckedFunctionToken(new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("func_name")])));
         $eatIdentifierToken = function(Traverser $t){
             assertMatch($t->eatStr("func_name"), "func_name");
-            return new IdentifierToken(new NameToken([new NameBitToken("func_name")]));
+            return new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("func_name")]));
         };
         $eatURLToken = function(Traverser $t){ self::fail(); };
         $actual = eatIdentifierLikeToken($traverser, $eatIdentifierToken, "\f", $eatURLToken);
@@ -140,26 +141,26 @@ class eatIdentifierLikeTokenTest extends TestCase
 
     function URLIdentifiers(){
         $b = function(String $bit){
-            return new NameBitToken($bit);
+            return new CheckedNameBitToken($bit);
         };
 
         $c = function(String $cp){
-            return new EncodedCodePointEscapeToken($cp);
+            return new CheckedEncodedCodePointEscapeToken($cp);
         };
 
         $x = function(String $cp){
             $dec = IntlChar::ord($cp);
             $hex = dechex($dec);
-            return new CodePointEscapeToken($hex, NULL);
+            return new CheckedCodePointEscapeToken($hex, NULL);
         };
 
-        $urls[] = new IdentifierToken(new NameToken([$b("url")]));
+        $urls[] = new CheckedIdentifierToken(new CheckedNameToken([$b("url")]));
 
-        $urls[] = new IdentifierToken(new NameToken([$b("u"), $c("r"), $b("l")]));
-        $urls[] = new IdentifierToken(new NameToken([$c("u"), $c("r"), $c("l")]));
+        $urls[] = new CheckedIdentifierToken(new CheckedNameToken([$b("u"), $c("r"), $b("l")]));
+        $urls[] = new CheckedIdentifierToken(new CheckedNameToken([$c("u"), $c("r"), $c("l")]));
 
-        $urls[] = new IdentifierToken(new NameToken([$b("u"), $x("r"), $b("l")]));
-        $urls[] = new IdentifierToken(new NameToken([$x("u"), $x("r"), $x("l")]));
+        $urls[] = new CheckedIdentifierToken(new CheckedNameToken([$b("u"), $x("r"), $b("l")]));
+        $urls[] = new CheckedIdentifierToken(new CheckedNameToken([$x("u"), $x("r"), $x("l")]));
 
         return $urls;
     }

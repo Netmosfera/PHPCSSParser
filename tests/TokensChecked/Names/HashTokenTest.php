@@ -6,8 +6,8 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedHashToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -24,8 +24,8 @@ class HashTokenTest extends TestCase
         $nameBit2 = new CheckedNameBitToken("BADA55");
         $name1 = new CheckedNameToken([$nameBit1]);
         $name2 = new CheckedNameToken([$nameBit2]);
-        $hash1 = new HashToken($name1);
-        $hash2 = new HashToken($name2);
+        $hash1 = new CheckedHashToken($name1);
+        $hash2 = new CheckedHashToken($name2);
 
         assertMatch($hash1, $hash2);
 

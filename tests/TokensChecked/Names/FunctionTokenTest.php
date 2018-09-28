@@ -6,9 +6,9 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedFunctionToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -27,8 +27,8 @@ class FunctionTokenTest extends TestCase
         $name2 = new CheckedNameToken([$nameBit2]);
         $identifier1 = new CheckedIdentifierToken($name1);
         $identifier2 = new CheckedIdentifierToken($name2);
-        $function1 = new FunctionToken($identifier1);
-        $function2 = new FunctionToken($identifier2);
+        $function1 = new CheckedFunctionToken($identifier1);
+        $function2 = new CheckedFunctionToken($identifier2);
 
         assertMatch($function1, $function2);
 

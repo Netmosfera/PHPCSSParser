@@ -5,9 +5,9 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
-use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedFunctionToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
@@ -37,5 +37,5 @@ function eatIdentifierLikeToken(
         }
     }
 
-    return new FunctionToken($identifier);
+    return new CheckedFunctionToken($identifier);
 }

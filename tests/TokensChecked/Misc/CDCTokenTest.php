@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Misc;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDCToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -18,8 +18,8 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class CDCTokenTest extends TestCase
 {
     function test1(){
-        $CDC1 = new CDCToken();
-        $CDC2 = new CDCToken();
+        $CDC1 = new CheckedCDCToken();
+        $CDC2 = new CheckedCDCToken();
 
         assertMatch($CDC1, $CDC2);
 

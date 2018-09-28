@@ -5,15 +5,15 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Operators;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\CommaToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedColonToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedCommaToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedSemicolonToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedLeftParenthesisToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedLeftCurlyBracketToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedRightParenthesisToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedLeftSquareBracketToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedRightCurlyBracketToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedRightSquareBracketToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -26,15 +26,15 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class OperatorsTest extends TestCase
 {
     function data1(){
-        yield [ColonToken::CLASS, ":"];
-        yield [CommaToken::CLASS, ","];
-        yield [LeftCurlyBracketToken::CLASS, "{"];
-        yield [LeftParenthesisToken::CLASS, "("];
-        yield [LeftSquareBracketToken::CLASS, "["];
-        yield [RightCurlyBracketToken::CLASS, "}"];
-        yield [RightParenthesisToken::CLASS, ")"];
-        yield [RightSquareBracketToken::CLASS, "]"];
-        yield [SemicolonToken::CLASS, ";"];
+        yield [CheckedColonToken::CLASS, ":"];
+        yield [CheckedCommaToken::CLASS, ","];
+        yield [CheckedLeftCurlyBracketToken::CLASS, "{"];
+        yield [CheckedLeftParenthesisToken::CLASS, "("];
+        yield [CheckedLeftSquareBracketToken::CLASS, "["];
+        yield [CheckedRightCurlyBracketToken::CLASS, "}"];
+        yield [CheckedRightParenthesisToken::CLASS, ")"];
+        yield [CheckedRightSquareBracketToken::CLASS, "]"];
+        yield [CheckedSemicolonToken::CLASS, ";"];
     }
 
     /** @dataProvider data1 */

@@ -6,12 +6,13 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 use Closure;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
-use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatIdentifierToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -53,16 +54,16 @@ class eatIdentifierTokenTest extends TestCase
     /** @dataProvider data1 */
     function test1(String $prefix, Array $pieces, String $rest){
         if($pieces === []){
-            $pieces = [new NameBitToken("--")];
+            $pieces = [new CheckedNameBitToken("--")];
         }elseif($pieces[0] instanceof NameBitToken){
-            $pieces[0] = new NameBitToken("--" . $pieces[0]);
+            $pieces[0] = new CheckedNameBitToken("--" . $pieces[0]);
         }else{
-            array_unshift($pieces, new NameBitToken("--"));
+            array_unshift($pieces, new CheckedNameBitToken("--"));
         }
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
-        $expected = new IdentifierToken(new NameToken($pieces));
+        $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
-            return $traverser->eatStr("\\@") === NULL ? NULL : new EncodedCodePointEscapeToken("@");
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -97,16 +98,16 @@ class eatIdentifierTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, Array $pieces, String $rest){
         if($pieces === []){
-            $pieces = [new NameBitToken("-S")];
+            $pieces = [new CheckedNameBitToken("-S")];
         }elseif($pieces[0] instanceof NameBitToken){
-            $pieces[0] = new NameBitToken("-S" . $pieces[0]);
+            $pieces[0] = new CheckedNameBitToken("-S" . $pieces[0]);
         }else{
-            array_unshift($pieces, new NameBitToken("-S"));
+            array_unshift($pieces, new CheckedNameBitToken("-S"));
         }
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
-        $expected = new IdentifierToken(new NameToken($pieces));
+        $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
-            return $traverser->eatStr("\\@") === NULL ? NULL : new EncodedCodePointEscapeToken("@");
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -125,11 +126,11 @@ class eatIdentifierTokenTest extends TestCase
 
     /** @dataProvider data4 */
     function test4(String $prefix, Array $pieces, String $rest){
-        array_unshift($pieces, new NameBitToken("-"), new EncodedCodePointEscapeToken("@"));
+        array_unshift($pieces, new CheckedNameBitToken("-"), new CheckedEncodedCodePointEscapeToken("@"));
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
-        $expected = new IdentifierToken(new NameToken($pieces));
+        $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
-            return $traverser->eatStr("\\@") === NULL ? NULL : new EncodedCodePointEscapeToken("@");
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -165,17 +166,17 @@ class eatIdentifierTokenTest extends TestCase
     /** @dataProvider data6 */
     function test6(String $prefix, Array $pieces, String $rest){
         if($pieces === []){
-            $pieces = [new NameBitToken("S")];
+            $pieces = [new CheckedNameBitToken("S")];
         }elseif($pieces[0] instanceof NameBitToken){
-            $pieces[0] = new NameBitToken("S" . $pieces[0]);
+            $pieces[0] = new CheckedNameBitToken("S" . $pieces[0]);
         }
         else{
-            array_unshift($pieces, new NameBitToken("S"));
+            array_unshift($pieces, new CheckedNameBitToken("S"));
         }
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
-        $expected = new IdentifierToken(new NameToken($pieces));
+        $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
-            return $traverser->eatStr("\\@") === NULL ? NULL : new EncodedCodePointEscapeToken("@");
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -194,11 +195,11 @@ class eatIdentifierTokenTest extends TestCase
 
     /** @dataProvider data7 */
     function test7(String $prefix, Array $pieces, String $rest){
-        array_unshift($pieces, new EncodedCodePointEscapeToken("@"));
+        array_unshift($pieces, new CheckedEncodedCodePointEscapeToken("@"));
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
-        $expected = new IdentifierToken(new NameToken($pieces));
+        $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
-            return $traverser->eatStr("\\@") === NULL ? NULL : new EncodedCodePointEscapeToken("@");
+            return $traverser->eatStr("\\@") === NULL ? NULL : new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -209,11 +210,11 @@ class eatIdentifierTokenTest extends TestCase
 
     function getPieces($afterPiece){
         if(!$afterPiece instanceof NameBitToken){
-            $data[] = new NameBitToken("N");
-            $data[] = new NameBitToken("NN");
-            $data[] = new NameBitToken("NNN");
+            $data[] = new CheckedNameBitToken("N");
+            $data[] = new CheckedNameBitToken("NN");
+            $data[] = new CheckedNameBitToken("NNN");
         }
-        $data[] = new EncodedCodePointEscapeToken("@");
+        $data[] = new CheckedEncodedCodePointEscapeToken("@");
         return $data;
     }
 }

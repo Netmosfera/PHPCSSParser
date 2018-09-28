@@ -4,14 +4,14 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getHexDigitsSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatValidEscapeToken;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -72,7 +72,7 @@ class eatValidEscapeTokenTest extends TestCase
     /** @dataProvider data2 */
     function test2(String $prefix, String $hexDigits, String $whitespace, String $rest){
         $traverser = getTraverser($prefix, "\\" . $hexDigits . $whitespace . $rest);
-        $expected = new CodePointEscapeToken($hexDigits, $whitespace === "" ? NULL : new WhitespaceToken($whitespace));
+        $expected = new CheckedCodePointEscapeToken($hexDigits, $whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace));
         $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -96,7 +96,7 @@ class eatValidEscapeTokenTest extends TestCase
     /** @dataProvider data3 */
     function test3(String $prefix, String $codePoint, String $rest){
         $traverser = getTraverser($prefix, "\\" . $codePoint . $rest);
-        $expected = new EncodedCodePointEscapeToken($codePoint);
+        $expected = new CheckedEncodedCodePointEscapeToken($codePoint);
         $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);

@@ -5,8 +5,8 @@ namespace Netmosfera\PHPCSSAST\TokensChecked\Escapes;
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 

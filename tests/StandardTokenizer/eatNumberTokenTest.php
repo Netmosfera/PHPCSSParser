@@ -4,14 +4,14 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use function Netmosfera\PHPCSSASTDev\Data\cp;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTDev\Data\cp;
 use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatNumberToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
-use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use PHPUnit\Framework\TestCase;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -121,7 +121,7 @@ class eatNumberTokenTest extends TestCase
     /** @dataProvider data5 */
     function test5(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $rest){
         $traverser = getTraverser($prefix, $sign . $digits . "." . $digits . $eLetter . $eSign . $digits . $rest);
-        $expected = new NumberToken($sign, $digits, $digits, $eLetter, $eSign, $digits);
+        $expected = new CheckedNumberToken($sign, $digits, $digits, $eLetter, $eSign, $digits);
         $actual = eatNumberToken($traverser, "5");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -141,7 +141,7 @@ class eatNumberTokenTest extends TestCase
     /** @dataProvider data6 */
     function test6(String $prefix, String $sign, String $digits, String $rest){
         $traverser = getTraverser($prefix, $sign . $digits . "." . $digits . $rest);
-        $expected = new NumberToken($sign, $digits, $digits, "", "", "");
+        $expected = new CheckedNumberToken($sign, $digits, $digits, "", "", "");
         $actual = eatNumberToken($traverser, "5");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -163,7 +163,7 @@ class eatNumberTokenTest extends TestCase
     /** @dataProvider data7 */
     function test7(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $rest){
         $traverser = getTraverser($prefix, $sign . $digits . $eLetter . $eSign . $digits . $rest);
-        $expected = new NumberToken($sign, $digits, "", $eLetter, $eSign, $digits);
+        $expected = new CheckedNumberToken($sign, $digits, "", $eLetter, $eSign, $digits);
         $actual = eatNumberToken($traverser, "5");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -183,7 +183,7 @@ class eatNumberTokenTest extends TestCase
     /** @dataProvider data8 */
     function test8(String $prefix, String $sign, String $digits, String $rest){
         $traverser = getTraverser($prefix, $sign . $digits . $rest);
-        $expected = new NumberToken($sign, $digits, "", "", "", "");
+        $expected = new CheckedNumberToken($sign, $digits, "", "", "", "");
         $actual = eatNumberToken($traverser, "5");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -205,7 +205,7 @@ class eatNumberTokenTest extends TestCase
     /** @dataProvider data9 */
     function test9(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $rest){
         $traverser = getTraverser($prefix, $sign . "." . $digits . $eLetter . $eSign . $digits . $rest);
-        $expected = new NumberToken($sign, "", $digits, $eLetter, $eSign, $digits);
+        $expected = new CheckedNumberToken($sign, "", $digits, $eLetter, $eSign, $digits);
         $actual = eatNumberToken($traverser, "5");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -225,7 +225,7 @@ class eatNumberTokenTest extends TestCase
     /** @dataProvider data10 */
     function test10(String $prefix, String $sign, String $digits, String $rest){
         $traverser = getTraverser($prefix, $sign . "." . $digits . $rest);
-        $expected = new NumberToken($sign, "", $digits, "", "", "");
+        $expected = new CheckedNumberToken($sign, "", $digits, "", "", "");
         $actual = eatNumberToken($traverser, "5");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
