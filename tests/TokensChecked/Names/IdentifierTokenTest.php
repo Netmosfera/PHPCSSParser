@@ -46,16 +46,16 @@ class IdentifierTokenTest extends TestCase
     function test1(Array $name){
         $name1 = new CheckedNameToken($name);
         $name2 = new CheckedNameToken($name);
-        $object1 = new CheckedIdentifierToken($name1);
-        $object2 = new CheckedIdentifierToken($name2);
+        $identifier1 = new CheckedIdentifierToken($name1);
+        $identifier2 = new CheckedIdentifierToken($name2);
 
-        assertMatch($object1, $object2);
+        assertMatch($identifier1, $identifier2);
 
-        assertMatch((String)$name1, (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch((String)$name1, (String)$identifier1);
+        assertMatch((String)$identifier1, (String)$identifier2);
 
-        assertMatch($name1, $object1->getName());
-        assertMatch($object1->getName(), $object2->getName());
+        assertMatch($name1, $identifier1->getName());
+        assertMatch($identifier1->getName(), $identifier2->getName());
     }
 
     // @TODO invalids

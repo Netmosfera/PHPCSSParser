@@ -37,18 +37,20 @@ class NameTokenTest extends TestCase
 
         [$pieces1, $pieces2] = $pieces;
 
-        $object1 = new CheckedNameToken($pieces1);
-        $object2 = new CheckedNameToken($pieces2);
+        $name1 = new CheckedNameToken($pieces1);
+        $name2 = new CheckedNameToken($pieces2);
 
-        assertMatch($object1, $object2);
+        assertMatch($name1, $name2);
 
-        assertMatch(implode("", $pieces1), (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch(implode("", $pieces1), (String)$name1);
+        assertMatch((String)$name1, (String)$name2);
 
-        assertMatch("A@B\u{FFFD}C\u{FFAA}D\u{FFFD}D", $object1->getValue());
-        assertMatch($object1->getValue(), $object2->getValue());
+        assertMatch("A@B\u{FFFD}C\u{FFAA}D\u{FFFD}D", $name1->getValue());
+        assertMatch($name1->getValue(), $name2->getValue());
 
-        assertMatch($pieces1, $object1->getPieces());
-        assertMatch($object1->getPieces(), $object2->getPieces());
+        assertMatch($pieces1, $name1->getPieces());
+        assertMatch($name1->getPieces(), $name2->getPieces());
     }
+
+    // @TODO test invalid cases
 }

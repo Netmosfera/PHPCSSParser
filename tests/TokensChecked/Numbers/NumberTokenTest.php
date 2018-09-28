@@ -23,6 +23,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  * #5  | test getters only decimals and e-part
  * #6  | test getters wholes and decimals and e-part
  *
+ * missing components:
  *     | number | e-letter | e-sign | e-exponent
  *  #7 |   no   |   ?      |    ?   |     ?
  *  #8 |    ?   |  yes     |    ?   |    no
@@ -47,35 +48,35 @@ class NumberTokenTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $sign){
-        $object1 = new CheckedNumberToken($sign, "123", "", "", "", "");
-        $object2 = new CheckedNumberToken($sign, "123", "", "", "", "");
+        $number1 = new CheckedNumberToken($sign, "123", "", "", "", "");
+        $number2 = new CheckedNumberToken($sign, "123", "", "", "", "");
 
-        assertMatch($object1, $object2);
+        assertMatch($number1, $number2);
 
-        assertMatch($sign . "123", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch($sign . "123", (String)$number1);
+        assertMatch((String)$number1, (String)$number2);
 
-        assertMatch($sign, $object1->getSign());
-        assertMatch($object1->getSign(), $object2->getSign());
+        assertMatch($sign, $number1->getSign());
+        assertMatch($number1->getSign(), $number2->getSign());
 
-        assertMatch("123", $object1->getWholes());
-        assertMatch($object1->getWholes(), $object2->getWholes());
+        assertMatch("123", $number1->getWholes());
+        assertMatch($number1->getWholes(), $number2->getWholes());
 
-        assertMatch("", $object1->getDecimals());
-        assertMatch($object1->getDecimals(), $object2->getDecimals());
+        assertMatch("", $number1->getDecimals());
+        assertMatch($number1->getDecimals(), $number2->getDecimals());
 
-        assertMatch("", $object1->getEIndicator());
-        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
+        assertMatch("", $number1->getEIndicator());
+        assertMatch($number1->getEIndicator(), $number2->getEIndicator());
 
-        assertMatch("", $object1->getESign());
-        assertMatch($object1->getESign(), $object2->getESign());
+        assertMatch("", $number1->getESign());
+        assertMatch($number1->getESign(), $number2->getESign());
 
-        assertMatch("", $object1->getEExponent());
-        assertMatch($object1->getEExponent(), $object2->getEExponent());
+        assertMatch("", $number1->getEExponent());
+        assertMatch($number1->getEExponent(), $number2->getEExponent());
 
-        assertMatch($object1->toFloat(), $object2->toFloat());
+        assertMatch($number1->toFloat(), $number2->toFloat());
 
-        assertMatch($object1->toNumber(), $object2->toNumber());
+        assertMatch($number1->toNumber(), $number2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -86,35 +87,35 @@ class NumberTokenTest extends TestCase
 
     /** @dataProvider data2 */
     function test2(String $sign){
-        $object1 = new CheckedNumberToken($sign, "", "456", "", "", "");
-        $object2 = new CheckedNumberToken($sign, "", "456", "", "", "");
+        $number1 = new CheckedNumberToken($sign, "", "456", "", "", "");
+        $number2 = new CheckedNumberToken($sign, "", "456", "", "", "");
 
-        assertMatch($object1, $object2);
+        assertMatch($number1, $number2);
 
-        assertMatch($sign . ".456", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch($sign . ".456", (String)$number1);
+        assertMatch((String)$number1, (String)$number2);
 
-        assertMatch($sign, $object1->getSign());
-        assertMatch($object1->getSign(), $object2->getSign());
+        assertMatch($sign, $number1->getSign());
+        assertMatch($number1->getSign(), $number2->getSign());
 
-        assertMatch("", $object1->getWholes());
-        assertMatch($object1->getWholes(), $object2->getWholes());
+        assertMatch("", $number1->getWholes());
+        assertMatch($number1->getWholes(), $number2->getWholes());
 
-        assertMatch("456", $object1->getDecimals());
-        assertMatch($object1->getDecimals(), $object2->getDecimals());
+        assertMatch("456", $number1->getDecimals());
+        assertMatch($number1->getDecimals(), $number2->getDecimals());
 
-        assertMatch("", $object1->getEIndicator());
-        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
+        assertMatch("", $number1->getEIndicator());
+        assertMatch($number1->getEIndicator(), $number2->getEIndicator());
 
-        assertMatch("", $object1->getESign());
-        assertMatch($object1->getESign(), $object2->getESign());
+        assertMatch("", $number1->getESign());
+        assertMatch($number1->getESign(), $number2->getESign());
 
-        assertMatch("", $object1->getEExponent());
-        assertMatch($object1->getEExponent(), $object2->getEExponent());
+        assertMatch("", $number1->getEExponent());
+        assertMatch($number1->getEExponent(), $number2->getEExponent());
 
-        assertMatch($object1->toFloat(), $object2->toFloat());
+        assertMatch($number1->toFloat(), $number2->toFloat());
 
-        assertMatch($object1->toNumber(), $object2->toNumber());
+        assertMatch($number1->toNumber(), $number2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -125,35 +126,35 @@ class NumberTokenTest extends TestCase
 
     /** @dataProvider data3 */
     function test3(String $sign){
-        $object1 = new CheckedNumberToken($sign, "123", "456", "", "", "");
-        $object2 = new CheckedNumberToken($sign, "123", "456", "", "", "");
+        $number1 = new CheckedNumberToken($sign, "123", "456", "", "", "");
+        $number2 = new CheckedNumberToken($sign, "123", "456", "", "", "");
 
-        assertMatch($object1, $object2);
+        assertMatch($number1, $number2);
 
-        assertMatch($sign . "123.456", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch($sign . "123.456", (String)$number1);
+        assertMatch((String)$number1, (String)$number2);
 
-        assertMatch($sign, $object1->getSign());
-        assertMatch($object1->getSign(), $object2->getSign());
+        assertMatch($sign, $number1->getSign());
+        assertMatch($number1->getSign(), $number2->getSign());
 
-        assertMatch("123", $object1->getWholes());
-        assertMatch($object1->getWholes(), $object2->getWholes());
+        assertMatch("123", $number1->getWholes());
+        assertMatch($number1->getWholes(), $number2->getWholes());
 
-        assertMatch("456", $object1->getDecimals());
-        assertMatch($object1->getDecimals(), $object2->getDecimals());
+        assertMatch("456", $number1->getDecimals());
+        assertMatch($number1->getDecimals(), $number2->getDecimals());
 
-        assertMatch("", $object1->getEIndicator());
-        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
+        assertMatch("", $number1->getEIndicator());
+        assertMatch($number1->getEIndicator(), $number2->getEIndicator());
 
-        assertMatch("", $object1->getESign());
-        assertMatch($object1->getESign(), $object2->getESign());
+        assertMatch("", $number1->getESign());
+        assertMatch($number1->getESign(), $number2->getESign());
 
-        assertMatch("", $object1->getEExponent());
-        assertMatch($object1->getEExponent(), $object2->getEExponent());
+        assertMatch("", $number1->getEExponent());
+        assertMatch($number1->getEExponent(), $number2->getEExponent());
 
-        assertMatch($object1->toFloat(), $object2->toFloat());
+        assertMatch($number1->toFloat(), $number2->toFloat());
 
-        assertMatch($object1->toNumber(), $object2->toNumber());
+        assertMatch($number1->toNumber(), $number2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -164,35 +165,35 @@ class NumberTokenTest extends TestCase
 
     /** @dataProvider data4 */
     function test4(String $sign, String $e, String $eSign){
-        $object1 = new CheckedNumberToken($sign, "123", "", $e, $eSign, "7");
-        $object2 = new CheckedNumberToken($sign, "123", "", $e, $eSign, "7");
+        $number1 = new CheckedNumberToken($sign, "123", "", $e, $eSign, "7");
+        $number2 = new CheckedNumberToken($sign, "123", "", $e, $eSign, "7");
 
-        assertMatch($object1, $object2);
+        assertMatch($number1, $number2);
 
-        assertMatch($sign . "123" . $e . $eSign . "7", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch($sign . "123" . $e . $eSign . "7", (String)$number1);
+        assertMatch((String)$number1, (String)$number2);
 
-        assertMatch($sign, $object1->getSign());
-        assertMatch($object1->getSign(), $object2->getSign());
+        assertMatch($sign, $number1->getSign());
+        assertMatch($number1->getSign(), $number2->getSign());
 
-        assertMatch("123", $object1->getWholes());
-        assertMatch($object1->getWholes(), $object2->getWholes());
+        assertMatch("123", $number1->getWholes());
+        assertMatch($number1->getWholes(), $number2->getWholes());
 
-        assertMatch("", $object1->getDecimals());
-        assertMatch($object1->getDecimals(), $object2->getDecimals());
+        assertMatch("", $number1->getDecimals());
+        assertMatch($number1->getDecimals(), $number2->getDecimals());
 
-        assertMatch($e, $object1->getEIndicator());
-        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
+        assertMatch($e, $number1->getEIndicator());
+        assertMatch($number1->getEIndicator(), $number2->getEIndicator());
 
-        assertMatch($eSign, $object1->getESign());
-        assertMatch($object1->getESign(), $object2->getESign());
+        assertMatch($eSign, $number1->getESign());
+        assertMatch($number1->getESign(), $number2->getESign());
 
-        assertMatch("7", $object1->getEExponent());
-        assertMatch($object1->getEExponent(), $object2->getEExponent());
+        assertMatch("7", $number1->getEExponent());
+        assertMatch($number1->getEExponent(), $number2->getEExponent());
 
-        assertMatch($object1->toFloat(), $object2->toFloat());
+        assertMatch($number1->toFloat(), $number2->toFloat());
 
-        assertMatch($object1->toNumber(), $object2->toNumber());
+        assertMatch($number1->toNumber(), $number2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -203,35 +204,35 @@ class NumberTokenTest extends TestCase
 
     /** @dataProvider data5 */
     function test5(String $sign, String $e, String $eSign){
-        $object1 = new CheckedNumberToken($sign, "", "456", $e, $eSign, "789");
-        $object2 = new CheckedNumberToken($sign, "", "456", $e, $eSign, "789");
+        $number1 = new CheckedNumberToken($sign, "", "456", $e, $eSign, "789");
+        $number2 = new CheckedNumberToken($sign, "", "456", $e, $eSign, "789");
 
-        assertMatch($object1, $object2);
+        assertMatch($number1, $number2);
 
-        assertMatch($sign . ".456" . $e . $eSign . "789", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch($sign . ".456" . $e . $eSign . "789", (String)$number1);
+        assertMatch((String)$number1, (String)$number2);
 
-        assertMatch($sign, $object1->getSign());
-        assertMatch($object1->getSign(), $object2->getSign());
+        assertMatch($sign, $number1->getSign());
+        assertMatch($number1->getSign(), $number2->getSign());
 
-        assertMatch("", $object1->getWholes());
-        assertMatch($object1->getWholes(), $object2->getWholes());
+        assertMatch("", $number1->getWholes());
+        assertMatch($number1->getWholes(), $number2->getWholes());
 
-        assertMatch("456", $object1->getDecimals());
-        assertMatch($object1->getDecimals(), $object2->getDecimals());
+        assertMatch("456", $number1->getDecimals());
+        assertMatch($number1->getDecimals(), $number2->getDecimals());
 
-        assertMatch($e, $object1->getEIndicator());
-        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
+        assertMatch($e, $number1->getEIndicator());
+        assertMatch($number1->getEIndicator(), $number2->getEIndicator());
 
-        assertMatch($eSign, $object1->getESign());
-        assertMatch($object1->getESign(), $object2->getESign());
+        assertMatch($eSign, $number1->getESign());
+        assertMatch($number1->getESign(), $number2->getESign());
 
-        assertMatch("789", $object1->getEExponent());
-        assertMatch($object1->getEExponent(), $object2->getEExponent());
+        assertMatch("789", $number1->getEExponent());
+        assertMatch($number1->getEExponent(), $number2->getEExponent());
 
-        assertMatch($object1->toFloat(), $object2->toFloat());
+        assertMatch($number1->toFloat(), $number2->toFloat());
 
-        assertMatch($object1->toNumber(), $object2->toNumber());
+        assertMatch($number1->toNumber(), $number2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
@@ -242,35 +243,35 @@ class NumberTokenTest extends TestCase
 
     /** @dataProvider data6 */
     function test6(String $sign, String $e, String $eSign){
-        $object1 = new CheckedNumberToken($sign, "123", "456", $e, $eSign, "789");
-        $object2 = new CheckedNumberToken($sign, "123", "456", $e, $eSign, "789");
+        $number1 = new CheckedNumberToken($sign, "123", "456", $e, $eSign, "789");
+        $number2 = new CheckedNumberToken($sign, "123", "456", $e, $eSign, "789");
 
-        assertMatch($object1, $object2);
+        assertMatch($number1, $number2);
 
-        assertMatch($sign . "123.456" . $e . $eSign . "789", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch($sign . "123.456" . $e . $eSign . "789", (String)$number1);
+        assertMatch((String)$number1, (String)$number2);
 
-        assertMatch($sign, $object1->getSign());
-        assertMatch($object1->getSign(), $object2->getSign());
+        assertMatch($sign, $number1->getSign());
+        assertMatch($number1->getSign(), $number2->getSign());
 
-        assertMatch("123", $object1->getWholes());
-        assertMatch($object1->getWholes(), $object2->getWholes());
+        assertMatch("123", $number1->getWholes());
+        assertMatch($number1->getWholes(), $number2->getWholes());
 
-        assertMatch("456", $object1->getDecimals());
-        assertMatch($object1->getDecimals(), $object2->getDecimals());
+        assertMatch("456", $number1->getDecimals());
+        assertMatch($number1->getDecimals(), $number2->getDecimals());
 
-        assertMatch($e, $object1->getEIndicator());
-        assertMatch($object1->getEIndicator(), $object2->getEIndicator());
+        assertMatch($e, $number1->getEIndicator());
+        assertMatch($number1->getEIndicator(), $number2->getEIndicator());
 
-        assertMatch($eSign, $object1->getESign());
-        assertMatch($object1->getESign(), $object2->getESign());
+        assertMatch($eSign, $number1->getESign());
+        assertMatch($number1->getESign(), $number2->getESign());
 
-        assertMatch("789", $object1->getEExponent());
-        assertMatch($object1->getEExponent(), $object2->getEExponent());
+        assertMatch("789", $number1->getEExponent());
+        assertMatch($number1->getEExponent(), $number2->getEExponent());
 
-        assertMatch($object1->toFloat(), $object2->toFloat());
+        assertMatch($number1->toFloat(), $number2->toFloat());
 
-        assertMatch($object1->toNumber(), $object2->toNumber());
+        assertMatch($number1->toNumber(), $number2->toNumber());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]

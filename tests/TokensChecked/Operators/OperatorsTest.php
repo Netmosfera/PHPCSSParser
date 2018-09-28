@@ -39,12 +39,12 @@ class OperatorsTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $className, String $value){
-        $object1 = new $className();
-        $object2 = new $className();
+        $delimiter1 = new $className();
+        $delimiter2 = new $className();
 
-        assertMatch($object1, $object2);
+        assertMatch($delimiter1, $delimiter2);
 
-        assertMatch($value, (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch($value, (String)$delimiter1);
+        assertMatch((String)$delimiter1, (String)$delimiter2);
     }
 }

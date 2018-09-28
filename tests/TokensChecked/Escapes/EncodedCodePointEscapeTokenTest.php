@@ -31,16 +31,16 @@ class EncodedCodePointEscapeTokenTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $codePoint){
-        $object1 = new CheckedEncodedCodePointEscapeToken($codePoint);
-        $object2 = new CheckedEncodedCodePointEscapeToken($codePoint);
+        $encodedCPEscape1 = new CheckedEncodedCodePointEscapeToken($codePoint);
+        $encodedCPEscape2 = new CheckedEncodedCodePointEscapeToken($codePoint);
 
-        assertMatch($object1, $object2);
+        assertMatch($encodedCPEscape1, $encodedCPEscape2);
 
-        assertMatch("\\" . $codePoint, (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch("\\" . $codePoint, (String)$encodedCPEscape1);
+        assertMatch((String)$encodedCPEscape1, (String)$encodedCPEscape2);
 
-        assertMatch($codePoint, $object1->getValue());
-        assertMatch($object1->getValue(), $object2->getValue());
+        assertMatch($codePoint, $encodedCPEscape1->getValue());
+        assertMatch($encodedCPEscape1->getValue(), $encodedCPEscape2->getValue());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]

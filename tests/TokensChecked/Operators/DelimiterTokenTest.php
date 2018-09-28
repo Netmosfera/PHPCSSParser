@@ -18,12 +18,12 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class DelimiterTokenTest extends TestCase
 {
     function test1(){
-        $object1 = new CheckedDelimiterToken("@");
-        $object2 = new CheckedDelimiterToken("@");
+        $delimiter1 = new CheckedDelimiterToken("@");
+        $delimiter2 = new CheckedDelimiterToken("@");
 
-        assertMatch($object1, $object2);
+        assertMatch($delimiter1, $delimiter2);
 
-        assertMatch("@", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch("@", (String)$delimiter1);
+        assertMatch((String)$delimiter1, (String)$delimiter2);
     }
 }

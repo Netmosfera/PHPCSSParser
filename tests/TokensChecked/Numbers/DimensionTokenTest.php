@@ -22,8 +22,8 @@ use PHPUnit\Framework\TestCase;
 class DimensionTokenTest extends TestCase
 {
     function test1(){
-        $nameBit1 = new CheckedNameBitToken("poo");
-        $nameBit2 = new CheckedNameBitToken("poo");
+        $nameBit1 = new CheckedNameBitToken("iau");
+        $nameBit2 = new CheckedNameBitToken("iau");
         $name1 = new CheckedNameToken([$nameBit1]);
         $name2 = new CheckedNameToken([$nameBit2]);
         $identifier1 = new CheckedIdentifierToken($name1);
@@ -35,7 +35,7 @@ class DimensionTokenTest extends TestCase
 
         assertMatch($dimension1, $dimension2);
 
-        assertMatch("-123.456e3poo", (String)$dimension1);
+        assertMatch("-123.456e3iau", (String)$dimension1);
         assertMatch((String)$dimension1, (String)$dimension2);
 
         assertMatch($number2, $dimension1->getNumber());

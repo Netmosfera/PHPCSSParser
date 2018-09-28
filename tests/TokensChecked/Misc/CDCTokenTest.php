@@ -18,12 +18,12 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class CDCTokenTest extends TestCase
 {
     function test1(){
-        $object1 = new CDCToken();
-        $object2 = new CDCToken();
+        $CDC1 = new CDCToken();
+        $CDC2 = new CDCToken();
 
-        assertMatch($object1, $object2);
+        assertMatch($CDC1, $CDC2);
 
-        assertMatch("-->", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch("-->", (String)$CDC1);
+        assertMatch((String)$CDC1, (String)$CDC2);
     }
 }

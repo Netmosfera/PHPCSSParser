@@ -18,15 +18,15 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class EOFEscapeTokenTest extends TestCase
 {
     function test1(){
-        $object1 = new EOFEscapeToken();
-        $object2 = new EOFEscapeToken();
+        $EOFEscape1 = new EOFEscapeToken();
+        $EOFEscape2 = new EOFEscapeToken();
 
-        assertMatch($object1, $object2);
+        assertMatch($EOFEscape1, $EOFEscape2);
 
-        assertMatch("\\", (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch("\\", (String)$EOFEscape1);
+        assertMatch((String)$EOFEscape1, (String)$EOFEscape2);
 
-        assertMatch("", $object1->getValue());
-        assertMatch($object1->getValue(), $object2->getValue());
+        assertMatch("", $EOFEscape1->getValue());
+        assertMatch($EOFEscape1->getValue(), $EOFEscape2->getValue());
     }
 }

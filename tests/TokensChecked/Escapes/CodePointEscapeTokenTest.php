@@ -52,30 +52,30 @@ class CodePointEscapeTokenTest extends TestCase
     function test1(String $hexDigits, String $whitespace){
         $whitespace1 = $whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace);
         $whitespace2 = $whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace);
-        $object1 = new CheckedCodePointEscapeToken($hexDigits, $whitespace1);
-        $object2 = new CheckedCodePointEscapeToken($hexDigits, $whitespace2);
+        $CPEscape1 = new CheckedCodePointEscapeToken($hexDigits, $whitespace1);
+        $CPEscape2 = new CheckedCodePointEscapeToken($hexDigits, $whitespace2);
 
-        assertMatch($object1, $object2);
+        assertMatch($CPEscape1, $CPEscape2);
 
-        assertMatch("\\" . $hexDigits . $whitespace, (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch("\\" . $hexDigits . $whitespace, (String)$CPEscape1);
+        assertMatch((String)$CPEscape1, (String)$CPEscape2);
 
-        assertMatch($hexDigits, $object1->getHexDigits());
-        assertMatch($object1->getHexDigits(), $object2->getHexDigits());
+        assertMatch($hexDigits, $CPEscape1->getHexDigits());
+        assertMatch($CPEscape1->getHexDigits(), $CPEscape2->getHexDigits());
 
-        assertMatch(hexdec($hexDigits), $object1->getIntValue());
-        assertMatch($object1->getIntValue(), $object2->getIntValue());
+        assertMatch(hexdec($hexDigits), $CPEscape1->getIntValue());
+        assertMatch($CPEscape1->getIntValue(), $CPEscape2->getIntValue());
 
-        assertMatch($whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace), $object1->getTerminator());
-        assertMatch($object1->getTerminator(), $object2->getTerminator());
+        assertMatch($whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace), $CPEscape1->getTerminator());
+        assertMatch($CPEscape1->getTerminator(), $CPEscape2->getTerminator());
 
-        $codePoint = IntlChar::chr($object1->getIntValue());
+        $codePoint = IntlChar::chr($CPEscape1->getIntValue());
 
-        assertMatch($codePoint ?? "\u{FFFD}", $object1->getValue());
-        assertMatch($object1->getValue(), $object2->getValue());
+        assertMatch($codePoint ?? "\u{FFFD}", $CPEscape1->getValue());
+        assertMatch($CPEscape1->getValue(), $CPEscape2->getValue());
 
-        assertMatch($codePoint !== NULL, $object1->isValidCodePoint());
-        assertMatch($object1->isValidCodePoint(), $object2->isValidCodePoint());
+        assertMatch($codePoint !== NULL, $CPEscape1->isValidCodePoint());
+        assertMatch($CPEscape1->isValidCodePoint(), $CPEscape2->isValidCodePoint());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]

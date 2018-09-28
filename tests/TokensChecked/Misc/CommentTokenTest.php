@@ -30,20 +30,20 @@ class CommentTokenTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(String $comment, Bool $terminatedWithEOF){
-        $object1 = new CheckedCommentToken($comment, $terminatedWithEOF);
-        $object2 = new CheckedCommentToken($comment, $terminatedWithEOF);
+        $comment1 = new CheckedCommentToken($comment, $terminatedWithEOF);
+        $comment2 = new CheckedCommentToken($comment, $terminatedWithEOF);
 
-        assertMatch($object1, $object2);
+        assertMatch($comment1, $comment2);
 
         $commentEnd = $terminatedWithEOF ? "" : "*/";
-        assertMatch("/*" . $comment . $commentEnd, (String)$object1);
-        assertMatch((String)$object1, (String)$object2);
+        assertMatch("/*" . $comment . $commentEnd, (String)$comment1);
+        assertMatch((String)$comment1, (String)$comment2);
 
-        assertMatch($comment, $object1->getText());
-        assertMatch($object1->getText(), $object2->getText());
+        assertMatch($comment, $comment1->getText());
+        assertMatch($comment1->getText(), $comment2->getText());
 
-        assertMatch($terminatedWithEOF, $object1->isTerminatedWithEOF());
-        assertMatch($object1->isTerminatedWithEOF(), $object2->isTerminatedWithEOF());
+        assertMatch($terminatedWithEOF, $comment1->isTerminatedWithEOF());
+        assertMatch($comment1->isTerminatedWithEOF(), $comment2->isTerminatedWithEOF());
     }
 
     //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
