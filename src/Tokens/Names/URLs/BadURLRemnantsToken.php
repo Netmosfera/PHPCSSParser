@@ -38,9 +38,6 @@ class BadURLRemnantsToken implements Token
      * @TODOC
      */
     function __construct(Array $pieces, Bool $terminatedWithEOF){
-        foreach($pieces as $piece){
-            assert($piece instanceof BadURLRemnantsBitToken || $piece instanceof EscapeToken);
-        }
         $this->pieces = $pieces;
         $this->terminatedWithEOF = $terminatedWithEOF;
     }

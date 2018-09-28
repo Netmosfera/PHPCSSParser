@@ -50,6 +50,7 @@ class StandardTokenizer
     private $newlineRegExp;
     private $newlineRegExpSet;
     private $digitRegExpSet;
+    private $URLTokenBlacklistedCodePointsRegExpSet;
 
     function __construct(){
         $this->nameStartRegExpSet = SpecData::NAME_STARTERS_SET;
@@ -60,9 +61,7 @@ class StandardTokenizer
         $this->newlineRegExp = SpecData::NEWLINES_SEQS_SET;
         $this->newlineRegExpSet = SpecData::NEWLINES_SET;
         $this->digitRegExpSet = SpecData::DIGITS_SET;
-        // string delimiters are disallowed anywhere in a URLToken
-        // also ( is disallowed, not sure the reason
-        $this->URLTokenBlacklistedCodePointsRegExpSet = SpecData::NON_PRINTABLES_SET . "\"'(";
+        $this->URLTokenBlacklistedCodePointsRegExpSet = SpecData::URLTOKEN_BIT_CP_NOT_SET;
 
         //----------------------------------------------------------------------------------
 

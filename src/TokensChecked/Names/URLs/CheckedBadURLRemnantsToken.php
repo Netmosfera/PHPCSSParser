@@ -45,6 +45,8 @@ class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
             }
         }
 
+        // @TODO check that the first BadURLRemnantsBitToken actually starts with an invalid cp
+
         parent::__construct($pieces, $terminatedWithEOF);
     }
 }

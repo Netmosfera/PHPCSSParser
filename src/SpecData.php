@@ -23,6 +23,9 @@ class SpecData
     public const VALID_ESCAPE_STARTERS_SET = "\x{0}-\x{9}\x{b}-\x{b}\x{e}-\x{10ffff}";
     public const ENCODED_ESCAPE_SET        = "\x{0}-\x{9}\x{b}-\x{b}\x{e}-\x{2f}\x{67}-\x{10ffff}\x{3a}-\x{40}\x{47}-\x{60}";
     public const STRING_BIT_CP_SET         = "\x{5d}-\x{10ffff}\x{0}-\x{9}\x{b}-\x{b}\x{e}-\x{5b}";
+    public const URLTOKEN_BIT_CP_SET       = "\x{9}-\x{9}\x{80}-\x{10ffff}\x{0}-\x{0}\x{20}-\x{21}\x{23}-\x{26}\x{2a}-\x{5b}\x{5d}-\x{7e}";
+    public const URLTOKEN_BIT_CP_NOT_SET   = "\x{1}-\x{8}\x{a}-\x{1f}\x{22}-\x{22}\x{27}-\x{29}\x{5c}-\x{5c}\x{7f}-\x{7f}";
+    public const BAD_URL_REMNANTS_BIT_SET  = "\x{0}-\x{28}\x{2a}-\x{5b}\x{5d}-\x{10ffff}";
     public const REPLACEMENT_CHARACTER = "\u{FFFD}"; 
     public const WHITESPACE = " "; 
 }

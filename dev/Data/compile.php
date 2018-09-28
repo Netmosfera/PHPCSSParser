@@ -1,5 +1,6 @@
 <?php declare(strict_types = 1); // atom
 
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getBadURLRemnantsBitSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getDigitsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getLettersSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
@@ -9,6 +10,8 @@ use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getHexDigitsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getStringBitSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getUCLettersSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getLCLettersSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getURLTokenBitDisallowedSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getURLTokenBitSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getWhitespacesSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNameStartersSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNonPrintablesSet;
@@ -54,6 +57,12 @@ $data->ENCODED_ESCAPE_SET = getEncodedCodePointEscapeSet()->getRegExp();
 
 $data->STRING_BIT_CP_SET = getStringBitSet()->getRegExp();
 
+$data->URLTOKEN_BIT_CP_SET = getURLTokenBitSet()->getRegExp();
+$data->URLTOKEN_BIT_CP_NOT_SET = getURLTokenBitDisallowedSet()->getRegExp();
+
+
+$data->BAD_URL_REMNANTS_BIT_SET = getBadURLRemnantsBitSet()->getRegExp();
+
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 $data = (array)$data;
@@ -81,4 +90,7 @@ $source .= "    public const REPLACEMENT_CHARACTER = \"\\u{FFFD}\"; \n";
 $source .= "    public const WHITESPACE = \" \"; \n";
 $source .= "}\n";
 
-file_put_contents(__DIR__ . "/../../src/SpecData.php", $source);
+$dest = __DIR__ . "/../../src/SpecData.php";
+file_put_contents($dest, $source);
+
+echo $dest . "\n";

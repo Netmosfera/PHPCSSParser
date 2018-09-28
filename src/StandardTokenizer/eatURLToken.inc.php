@@ -26,15 +26,15 @@ function eatURLToken(
     Closure $eatBadURLRemnantsFunction
 ): ?AnyURLToken{
 
-    $wsBefore = $traverser->eatExp('[' . $whitespaceRegexSet . ']*+(?!["\'])');
+    $wsBefore = $traverser->eatExp('[' . $whitespaceRegexSet . ']*+(?!["\'])'); // @TODO inject delimiters
     if($wsBefore === NULL){
         return NULL;
     }
     $wsBefore = $wsBefore === "" ? NULL : new WhitespaceToken($wsBefore);
 
-    // var_export(preg_quote("\\)"));
-    // These CPs must appear as escape sequences if actually needed in a URL
-    $excludeCPs = '\\\\\\)';
+    // @TODO assert that $blacklistCPsRegexSet contains \ ) and the other delimiters used in this function
+
+    // @TODO also assert that $blacklistCPsRegexSet contains $whitespaceRegexSet
 
     $pieces = [];
 
@@ -74,12 +74,12 @@ function eatURLToken(
             }
         }
 
-        if($traverser->createBranch()->eatExp('[' . $excludeCPs . $blacklistCPsRegexSet . ']') !== NULL){
+        if($traverser->createBranch()->eatExp('[' . $blacklistCPsRegexSet . ']') !== NULL){
             $remnants = $eatBadURLRemnantsFunction($traverser);
             return new BadURLToken($wsBefore, $pieces, $remnants);
         }
 
-        $piece = $traverser->eatExp('[^' . $whitespaceRegexSet . $excludeCPs . $blacklistCPsRegexSet . ']+');
+        $piece = $traverser->eatExp('[^' . $blacklistCPsRegexSet . ']+');
         // This must include everything but the CPs already handled
         // in the previous steps, therefore it can never be empty
         assert($piece !== NULL);

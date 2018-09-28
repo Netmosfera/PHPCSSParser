@@ -4,11 +4,21 @@ namespace Netmosfera\PHPCSSAST\TokensChecked\Names\URLs;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 
 //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 class CheckedBadURLRemnantsBitToken extends BadURLRemnantsBitToken
 {
-    // @TODO
+    function __construct(String $text){
+        if(preg_match('/^[' . SpecData::BAD_URL_REMNANTS_BIT_SET . ']+$/usD', $text) === 0){
+            throw new InvalidToken();
+        }
+        parent::__construct($text);
+    }
 }
+
+
+
