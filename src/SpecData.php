@@ -22,6 +22,7 @@ class SpecData
     public const STRING_DELIMITERS_SET     = "\x{22}-\x{22}\x{27}-\x{27}";
     public const VALID_ESCAPE_STARTERS_SET = "\x{0}-\x{9}\x{b}-\x{b}\x{e}-\x{10ffff}";
     public const ENCODED_ESCAPE_SET        = "\x{0}-\x{9}\x{b}-\x{b}\x{e}-\x{2f}\x{67}-\x{10ffff}\x{3a}-\x{40}\x{47}-\x{60}";
+    public const STRING_BIT_CP_SET         = "\x{5d}-\x{10ffff}\x{0}-\x{9}\x{b}-\x{b}\x{e}-\x{5b}";
     public const REPLACEMENT_CHARACTER = "\u{FFFD}"; 
     public const WHITESPACE = " "; 
 }

@@ -46,11 +46,6 @@ class StringToken implements AnyStringToken
      * @TODOC
      */
     function __construct(String $delimiter, Array $pieces, Bool $terminatedWithEOF){
-        foreach($pieces as $piece){ // @TODO move to CheckedStringToken
-            assert($piece instanceof StringBitToken || $piece instanceof EscapeToken);
-        }
-        // @TODO make sure that if $pieces' last element is EOFEscape, $terminatedWithEOF
-        // should be set to TRUE
         $this->delimiter = $delimiter;
         $this->pieces = $pieces;
         $this->terminatedWithEOF = $terminatedWithEOF;

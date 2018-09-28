@@ -15,6 +15,7 @@ require(__DIR__ . "/dev/Data/CodePointSets/getNameStartersSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getNewlinesSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getNonASCIIsSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getNonPrintablesSet.inc.php");
+require(__DIR__ . "/dev/Data/CodePointSets/getStringBitSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getStringDelimiterSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getUCLettersSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getValidEscapeStartersSet.inc.php");

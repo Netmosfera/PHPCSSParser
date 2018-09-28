@@ -42,9 +42,6 @@ class BadStringToken implements AnyStringToken
      * @TODOC
      */
     function __construct(String $delimiter, Array $pieces){
-        foreach($pieces as $piece){ // @TODO move to CheckedStringToken
-            assert($piece instanceof StringBitToken || $piece instanceof EscapeToken);
-        }
         $this->delimiter = $delimiter;
         $this->pieces = $pieces;
     }
