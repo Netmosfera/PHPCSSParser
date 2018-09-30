@@ -1,22 +1,18 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Strings;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * A {@see BadStringToken} is {@see StringToken} terminated with a newline.
  *
- * Newlines are not allowed in a {@see StringToken}, unless they appear as a escape
- * sequence.
+ * Newlines are not allowed in a {@see StringToken}, unless they appear as a
+ * escape sequence.
  *
- * Strings terminated with EOF are not considered "bad" (i.e. not usable), but they are
- * considered parse errors.
+ * Strings terminated with EOF are not considered "bad" (i.e. not usable), but
+ * they are considered parse errors.
  */
 class BadStringToken implements AnyStringToken
 {
@@ -41,18 +37,18 @@ class BadStringToken implements AnyStringToken
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      */
-    function __construct(String $delimiter, Array $pieces){
+    public function __construct(String $delimiter, Array $pieces){
         $this->delimiter = $delimiter;
         $this->pieces = $pieces;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return $this->delimiter . implode("", $this->pieces);
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->delimiter, $other->delimiter) &&
@@ -62,22 +58,22 @@ class BadStringToken implements AnyStringToken
     /**
      * @TODOC
      *
-     * @returns     String
+     * @return      String
      * `String`
      * @TODOC
      */
-    function getDelimiter(): String{
+    public function getDelimiter(): String{
         return $this->delimiter;
     }
 
     /**
      * @TODOC
      *
-     * @returns     StringBitToken[]|EscapeToken[]
+     * @return      StringBitToken[]|EscapeToken[]
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      */
-    function getPieces(): Array{
+    public function getPieces(): Array{
         return $this->pieces;
     }
 }

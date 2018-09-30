@@ -1,14 +1,10 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see BadURLToken} is a {@see URLToken} that terminates with invalid data.
@@ -52,22 +48,18 @@ class BadURLToken implements AnyURLToken
      * `BadURLRemnantsToken`
      * @TODOC
      */
-    function __construct(
+    public function __construct(
         ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
         BadURLRemnantsToken $badURLRemnants
     ){
-        foreach($pieces as $piece){
-            assert($piece instanceof URLBitToken || $piece instanceof ValidEscapeToken);
-        }
-
         $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;
         $this->badURLRemnants = $badURLRemnants;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         if($this->stringified === NULL){
             $this->stringified = "url(" .
                 $this->whitespaceBefore .
@@ -78,7 +70,7 @@ class BadURLToken implements AnyURLToken
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->whitespaceBefore, $other->whitespaceBefore) &&
@@ -89,33 +81,33 @@ class BadURLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     WhitespaceToken|NULL
+     * @return      WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
      * @TODOC
      */
-    function getWhitespaceBefore(): ?WhitespaceToken{
+    public function getWhitespaceBefore(): ?WhitespaceToken{
         return $this->whitespaceBefore;
     }
 
     /**
      * @TODOC
      *
-     * @returns     URLBitToken[]|ValidEscapeToken[]
+     * @return      URLBitToken[]|ValidEscapeToken[]
      * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      */
-    function getPieces(): Array{
+    public function getPieces(): Array{
         return $this->pieces;
     }
 
     /**
      * @TODOC
      *
-     * @returns     BadURLRemnantsToken
+     * @return      BadURLRemnantsToken
      * `BadURLRemnantsToken`
      * @TODOC
      */
-    function getRemnants(): BadURLRemnantsToken{
+    public function getRemnants(): BadURLRemnantsToken{
         return $this->badURLRemnants;
     }
 }

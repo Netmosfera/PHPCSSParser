@@ -1,14 +1,10 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatNameToken(
     Traverser $traverser,
@@ -30,19 +26,19 @@ function eatNameToken(
         $pieces = [$escape];
     }
 
-    LOOP:
+    while(TRUE){
+        $piece =
+            $traverser->eatExp('[' . $nameRegExpSet . ']+') ??
+            $eatEscapeFunction($traverser);
 
-    $piece = $traverser->eatExp('[' . $nameRegExpSet . ']+') ?? $eatEscapeFunction($traverser);
+        if($piece === NULL){
+            return new CheckedNameToken($pieces);
+        }
 
-    if($piece === NULL){
-        return new CheckedNameToken($pieces);
+        if(is_string($piece)){
+            $piece = new CheckedNameBitToken($piece);
+        }
+
+        $pieces[] = $piece;
     }
-
-    if(is_string($piece)){
-        $piece = new CheckedNameBitToken($piece);
-    }
-
-    $pieces[] = $piece;
-
-    goto LOOP;
 }

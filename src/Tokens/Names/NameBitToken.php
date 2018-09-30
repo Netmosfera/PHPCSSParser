@@ -1,17 +1,14 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Names;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 use Netmosfera\PHPCSSAST\SpecData;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
- * A {@see NameBitToken} is sequence of {@see SpecData::NAME_ITEMS_SET} code points.
+ * A {@see NameBitToken} is sequence of {@see SpecData::NAME_ITEMS_SET} code
+ * points.
  */
 class NameBitToken implements EvaluableToken
 {
@@ -32,26 +29,30 @@ class NameBitToken implements EvaluableToken
      * `String`
      * The sequence of {@see SpecData::NAME_ITEMS_SET} code points.
      */
-    function __construct(String $text){
+    public function __construct(String $text){
         $this->text = $text;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return $this->text;
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->text, $this->text);
     }
 
     /** @inheritDoc */
-    function getValue(): String{
+    public function getValue(): String{
         if($this->value === NULL){
-            $this->value = str_replace("\0", SpecData::REPLACEMENT_CHARACTER, $this->text);
+            $this->value = str_replace(
+                "\0",
+                SpecData::REPLACEMENT_CHARACTER,
+                $this->text
+            );
         }
         return $this->value;
     }

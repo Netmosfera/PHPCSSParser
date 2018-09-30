@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see EOFEscapeToken} is `\` followed by no more data.
@@ -10,17 +8,17 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 class EOFEscapeToken implements NullEscapeToken
 {
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return $other instanceof self;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return "\\";
     }
 
     /** @inheritDoc */
-    function getValue(): String{
+    public function getValue(): String{
         return "";
     }
 }

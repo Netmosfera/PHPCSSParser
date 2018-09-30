@@ -1,15 +1,11 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedFunctionToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatIdentifierLikeToken(
     Traverser $traverser,

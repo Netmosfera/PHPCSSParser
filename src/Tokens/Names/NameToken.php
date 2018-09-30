@@ -1,20 +1,16 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Names;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * An {@see NameToken} is a "word" in the CSS language.
  *
- * It is any sequence of readable characters that is not a number, an escape sequence, an
- * operator or a generic delimiter.
+ * It is any sequence of readable characters that is not a number, an escape
+ * sequence, an operator or a generic delimiter.
  */
 class NameToken implements EvaluableToken
 {
@@ -41,12 +37,12 @@ class NameToken implements EvaluableToken
      * `Array<Int, NameBitToken|ValidEscapeToken>`
      * The {@see NameToken}'s components.
      */
-    function __construct(Array $pieces){
+    public function __construct(Array $pieces){
         $this->pieces = $pieces;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         if($this->stringified === NULL){
             $this->stringified = implode("", $this->pieces);
         }
@@ -54,14 +50,14 @@ class NameToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->pieces, $other->pieces);
     }
 
     /** @inheritDoc */
-    function getValue(): String{
+    public function getValue(): String{
         if($this->value === NULL){
             $this->value = "";
             foreach($this->pieces as $piece){
@@ -74,11 +70,11 @@ class NameToken implements EvaluableToken
     /**
      * Returns the {@see NameToken}'s components.
      *
-     * @returns     NameBitToken[]|ValidEscapeToken[]
+     * @return      NameBitToken[]|ValidEscapeToken[]
      * `Array<Int, NameBitToken|ValidEscapeToken>`
      * Returns the {@see NameToken}'s components.
      */
-    function getPieces(): Array{
+    public function getPieces(): Array{
         return $this->pieces;
     }
 }

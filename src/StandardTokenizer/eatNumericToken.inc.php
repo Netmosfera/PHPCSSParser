@@ -1,15 +1,11 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumericToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedDimensionToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedPercentageToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatNumericToken(
     Traverser $traverser,

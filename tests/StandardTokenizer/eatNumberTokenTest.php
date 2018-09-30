@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSASTDev\Data\cp;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
@@ -13,8 +11,6 @@ use function Netmosfera\PHPCSSAST\StandardTokenizer\eatNumberToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use PHPUnit\Framework\TestCase;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -40,15 +36,20 @@ use PHPUnit\Framework\TestCase;
   */
 class eatNumberTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
         $codePoints->remove(cp("5"));
-        return cartesianProduct(ANY_UTF8(), $this->optionalSign(), getCodePointsFromRanges($codePoints), ANY_UTF8());
+        return cartesianProduct(
+            ANY_UTF8(),
+            $this->optionalSign(),
+            getCodePointsFromRanges($codePoints),
+            ANY_UTF8()
+        );
     }
 
     /** @dataProvider data1 */
-    function test1(String $prefix, String $sign, String $nonDigit, String $rest){
+    public function test1(String $prefix, String $sign, String $nonDigit, String $rest){
         $traverser = getTraverser($prefix, $sign . "." . $nonDigit . $rest);
         $expected = NULL;
         $actual = eatNumberToken($traverser, "5");
@@ -56,14 +57,12 @@ class eatNumberTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $sign . "." . $nonDigit . $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
+    public function data2(){
         return cartesianProduct(ANY_UTF8(), $this->optionalSign());
     }
 
     /** @dataProvider data2 */
-    function test2(String $prefix, String $sign){
+    public function test2(String $prefix, String $sign){
         $traverser = getTraverser($prefix, $sign . ".");
         $expected = NULL;
         $actual = eatNumberToken($traverser, "5");
@@ -71,18 +70,21 @@ class eatNumberTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $sign . ".");
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data3(){
+    public function data3(){
         $codePoints = new CompressedCodePointSet();
         $codePoints->selectAll();
         $codePoints->remove(cp("5"));
         $codePoints->remove(cp("."));
-        return cartesianProduct(ANY_UTF8(), $this->optionalSign(), getCodePointsFromRanges($codePoints), ANY_UTF8());
+        return cartesianProduct(
+            ANY_UTF8(),
+            $this->optionalSign(),
+            getCodePointsFromRanges($codePoints),
+            ANY_UTF8()
+        );
     }
 
     /** @dataProvider data3 */
-    function test3(String $prefix, String $sign, String $nonDigit, String $rest){
+    public function test3(String $prefix, String $sign, String $nonDigit, String $rest){
         $traverser = getTraverser($prefix, $sign . $nonDigit . $rest);
         $expected = NULL;
         $actual = eatNumberToken($traverser, "5");
@@ -90,14 +92,12 @@ class eatNumberTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $sign . $nonDigit . $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data4(){
+    public function data4(){
         return cartesianProduct(ANY_UTF8(), $this->optionalSign());
     }
 
     /** @dataProvider data4 */
-    function test4(String $prefix, String $sign){
+    public function test4(String $prefix, String $sign){
         $traverser = getTraverser($prefix, $sign);
         $expected = NULL;
         $actual = eatNumberToken($traverser, "5");
@@ -105,9 +105,7 @@ class eatNumberTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $sign);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data5(){
+    public function data5(){
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
@@ -119,17 +117,32 @@ class eatNumberTokenTest extends TestCase
     }
 
     /** @dataProvider data5 */
-    function test5(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $rest){
-        $traverser = getTraverser($prefix, $sign . $digits . "." . $digits . $eLetter . $eSign . $digits . $rest);
-        $expected = new CheckedNumberToken($sign, $digits, $digits, $eLetter, $eSign, $digits);
+    public function test5(
+        String $prefix,
+        String $sign,
+        String $digits,
+        String $eLetter,
+        String $eSign,
+        String $rest
+    ){
+        $traverser = getTraverser(
+            $prefix,
+            $sign . $digits . "." . $digits . $eLetter . $eSign . $digits . $rest
+        );
+        $expected = new CheckedNumberToken(
+            $sign,
+            $digits,
+            $digits,
+            $eLetter,
+            $eSign,
+            $digits
+        );
         $actual = eatNumberToken($traverser, "5");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data6(){
+    public function data6(){
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
@@ -139,7 +152,7 @@ class eatNumberTokenTest extends TestCase
     }
 
     /** @dataProvider data6 */
-    function test6(String $prefix, String $sign, String $digits, String $rest){
+    public function test6(String $prefix, String $sign, String $digits, String $rest){
         $traverser = getTraverser($prefix, $sign . $digits . "." . $digits . $rest);
         $expected = new CheckedNumberToken($sign, $digits, $digits, "", "", "");
         $actual = eatNumberToken($traverser, "5");
@@ -147,9 +160,7 @@ class eatNumberTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data7(){
+    public function data7(){
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
@@ -161,17 +172,25 @@ class eatNumberTokenTest extends TestCase
     }
 
     /** @dataProvider data7 */
-    function test7(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $rest){
-        $traverser = getTraverser($prefix, $sign . $digits . $eLetter . $eSign . $digits . $rest);
+    public function test7(
+        String $prefix,
+        String $sign,
+        String $digits,
+        String $eLetter,
+        String $eSign,
+        String $rest
+    ){
+        $traverser = getTraverser(
+            $prefix,
+            $sign . $digits . $eLetter . $eSign . $digits . $rest
+        );
         $expected = new CheckedNumberToken($sign, $digits, "", $eLetter, $eSign, $digits);
         $actual = eatNumberToken($traverser, "5");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data8(){
+    public function data8(){
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
@@ -181,7 +200,12 @@ class eatNumberTokenTest extends TestCase
     }
 
     /** @dataProvider data8 */
-    function test8(String $prefix, String $sign, String $digits, String $rest){
+    public function test8(
+        String $prefix,
+        String $sign,
+        String $digits,
+        String $rest
+    ){
         $traverser = getTraverser($prefix, $sign . $digits . $rest);
         $expected = new CheckedNumberToken($sign, $digits, "", "", "", "");
         $actual = eatNumberToken($traverser, "5");
@@ -189,9 +213,7 @@ class eatNumberTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data9(){
+    public function data9(){
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
@@ -203,17 +225,25 @@ class eatNumberTokenTest extends TestCase
     }
 
     /** @dataProvider data9 */
-    function test9(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $rest){
-        $traverser = getTraverser($prefix, $sign . "." . $digits . $eLetter . $eSign . $digits . $rest);
+    public function test9(
+        String $prefix,
+        String $sign,
+        String $digits,
+        String $eLetter,
+        String $eSign,
+        String $rest
+    ){
+        $traverser = getTraverser(
+            $prefix,
+            $sign . "." . $digits . $eLetter . $eSign . $digits . $rest
+        );
         $expected = new CheckedNumberToken($sign, "", $digits, $eLetter, $eSign, $digits);
         $actual = eatNumberToken($traverser, "5");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data10(){
+    public function data10(){
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
@@ -223,7 +253,7 @@ class eatNumberTokenTest extends TestCase
     }
 
     /** @dataProvider data10 */
-    function test10(String $prefix, String $sign, String $digits, String $rest){
+    public function test10(String $prefix, String $sign, String $digits, String $rest){
         $traverser = getTraverser($prefix, $sign . "." . $digits . $rest);
         $expected = new CheckedNumberToken($sign, "", $digits, "", "", "");
         $actual = eatNumberToken($traverser, "5");
@@ -231,9 +261,7 @@ class eatNumberTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function optionalSign(){
+    public function optionalSign(){
         return ["+", "-", ""];
     }
 
@@ -246,7 +274,7 @@ class eatNumberTokenTest extends TestCase
      * - not starting with "e|E" and a digit
      * - not starting with "e|E" and "+|-" and a digit
      */
-    function notNumberContinuationAfterDecimalPart(){
+    public function notNumberContinuationAfterDecimalPart(){
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $sequences = getCodePointsFromRanges($set);
@@ -268,7 +296,7 @@ class eatNumberTokenTest extends TestCase
      *
      * - not starting with a digit
      */
-    function notNumberContinuationAfterEPart(){
+    public function notNumberContinuationAfterEPart(){
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $sequences = getCodePointsFromRanges($set);
@@ -288,7 +316,7 @@ class eatNumberTokenTest extends TestCase
      * - not starting with "e|E" and a digit
      * - not starting with "e|E" and "+|-" and a digit
      */
-    function notNumberContinuationAfterIntegerPart(){
+    public function notNumberContinuationAfterIntegerPart(){
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $sequences = getCodePointsFromRanges($set);

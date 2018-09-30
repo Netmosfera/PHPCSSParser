@@ -1,12 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Strings;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use PHPUnit\Framework\TestCase;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -17,7 +13,7 @@ class StringBitTokenTest extends TestCase
 {
     // @TODO
 
-    function test1(){
+    public function test1(){
         self::assertTrue(TRUE);
     }
 }

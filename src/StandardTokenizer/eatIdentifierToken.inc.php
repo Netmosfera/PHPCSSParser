@@ -1,15 +1,11 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Closure;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatIdentifierToken(
     Traverser $traverser,
@@ -24,7 +20,9 @@ function eatIdentifierToken(
     // -(namestartcp|escape)
     // --(namecp|escape)
 
-    $identifierStart = $traverser->eatExp('-?[' . $nscp . '][' . $ncp . ']*|--[' . $ncp . ']*');
+    $identifierStart = $traverser->eatExp(
+        '-?[' . $nscp . '][' . $ncp . ']*|--[' . $ncp . ']*'
+    );
 
     if($identifierStart !== NULL){
         $pieces = [new CheckedNameBitToken($identifierStart)];
@@ -49,7 +47,8 @@ function eatIdentifierToken(
     }
 
     for(;;){
-        $piece = $traverser->eatExp('[' . $ncp . ']+') ?? $eatEscapeFunction($traverser);
+        $piece = $traverser->eatExp('[' . $ncp . ']+') ??
+            $eatEscapeFunction($traverser);
 
         if($piece === NULL){
             return new CheckedIdentifierToken(new CheckedNameToken($pieces));

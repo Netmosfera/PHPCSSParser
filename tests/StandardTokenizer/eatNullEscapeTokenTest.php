@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEOFEscapeToken;
@@ -11,8 +9,6 @@ use function Netmosfera\PHPCSSAST\StandardTokenizer\eatNullEscapeToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -24,12 +20,12 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatNullEscapeTokenTest extends TestCase
 {
-    function data0(){
+    public function data0(){
         return cartesianProduct(ANY_UTF8(), ["not escape", ""]);
     }
 
     /** @dataProvider data0 */
-    function test0(String $prefix, String $rest){
+    public function test0(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $rest);
         $expected = NULL;
         $actual = eatNullEscapeToken($traverser, "\n");
@@ -37,14 +33,12 @@ class eatNullEscapeTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data1(){
+    public function data1(){
         return cartesianProduct(ANY_UTF8());
     }
 
     /** @dataProvider data1 */
-    function test1(String $prefix){
+    public function test1(String $prefix){
         $traverser = getTraverser($prefix, "\\");
         $expected = new CheckedEOFEscapeToken();
         $actual = eatNullEscapeToken($traverser, "irrelevant");
@@ -52,14 +46,12 @@ class eatNullEscapeTokenTest extends TestCase
         assertMatch($traverser->eatAll(), "");
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
+    public function data2(){
         return cartesianProduct(ANY_UTF8(), ANY_UTF8());
     }
 
     /** @dataProvider data2 */
-    function test2(String $prefix, String $rest){
+    public function test2(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "\\\f" . $rest);
         $expected = new CheckedContinuationEscapeToken("\f");
         $actual = eatNullEscapeToken($traverser, "\f");
@@ -67,14 +59,16 @@ class eatNullEscapeTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data3(){
-        return cartesianProduct(ANY_UTF8(), ["f", "FFAACC", "x", "a", "z", "@"], ANY_UTF8());
+    public function data3(){
+        return cartesianProduct(
+            ANY_UTF8(),
+            ["f", "FFAACC", "x", "a", "z", "@"],
+            ANY_UTF8()
+        );
     }
 
     /** @dataProvider data3 */
-    function test3(String $prefix, String $validEscape, String $rest){
+    public function test3(String $prefix, String $validEscape, String $rest){
         $traverser = getTraverser($prefix, "\\" . $validEscape . $rest);
         $expected = NULL;
         $actual = eatNullEscapeToken($traverser, "\x{C}");

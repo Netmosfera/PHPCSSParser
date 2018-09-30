@@ -1,17 +1,15 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use Closure;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
+// phpcs:disable Generic.Metrics.NestingLevel
 function makePiecesSample(Closure $getPiecesFunction, Bool $doGiveEmpty = TRUE){
     if($doGiveEmpty){
         yield [];
     }
+
     foreach($getPiecesFunction(NULL) as $p0){
         yield [$p0];
         foreach($getPiecesFunction($p0) as $p1){
@@ -28,3 +26,4 @@ function makePiecesSample(Closure $getPiecesFunction, Bool $doGiveEmpty = TRUE){
         }
     }
 }
+// phpcs:enable

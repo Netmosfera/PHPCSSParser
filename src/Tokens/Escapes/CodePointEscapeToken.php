@@ -1,16 +1,12 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function hexdec;
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\SpecData;
 use IntlChar;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see CodePointEscapeToken} is `\` followed by 1 up to 6 hex digits.
@@ -50,18 +46,21 @@ class CodePointEscapeToken implements ValidEscapeToken
      * `WhitespaceToken|NULL`
      * @TODOC
      */
-    function __construct(String $hexDigits, ?WhitespaceToken $terminator){
+    public function __construct(
+        String $hexDigits,
+        ?WhitespaceToken $terminator
+    ){
         $this->hexDigits = $hexDigits;
         $this->terminator = $terminator;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return "\\" . $this->hexDigits . $this->terminator;
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->hexDigits, $other->hexDigits) &&
@@ -69,9 +68,11 @@ class CodePointEscapeToken implements ValidEscapeToken
     }
 
     /** @inheritDoc */
-    function getValue(): String{
+    public function getValue(): String{
         if($this->value === NULL){
-            $this->value = IntlChar::chr($this->getIntValue()) ?? SpecData::REPLACEMENT_CHARACTER;
+            $this->value = IntlChar::chr(
+                $this->getIntValue()
+            ) ?? SpecData::REPLACEMENT_CHARACTER;
         }
         return $this->value;
     }
@@ -84,22 +85,22 @@ class CodePointEscapeToken implements ValidEscapeToken
      * When the code point is invalid, {@see self::getValue()} will return the
      * `U+FFFD` replacement character.
      *
-     * @returns     Bool
+     * @return      Bool
      * `Bool`
      * Tells whether this code point is valid.
      */
-    function isValidCodePoint(): Bool{
+    public function isValidCodePoint(): Bool{
         return $this->getIntValue() <= IntlChar::CODEPOINT_MAX;
     }
 
     /**
      * Returns the {@see Int} value of the hexadecimal digits.
      *
-     * @returns     Int
+     * @return      Int
      * `Int`
      * Returns the code point.
      */
-    function getIntValue(): Int{
+    public function getIntValue(): Int{
         if($this->intValue === NULL){
             $this->intValue = hexdec($this->hexDigits);
         }
@@ -109,30 +110,28 @@ class CodePointEscapeToken implements ValidEscapeToken
     /**
      * Returns the hexadecimal digits as they were originally specified.
      *
-     * @returns     String
+     * @return      String
      * `String`
      * Returns the hexadecimal digits as they were originally specified.
      */
-    function getHexDigits(): String{
+    public function getHexDigits(): String{
         return $this->hexDigits;
     }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     /**
      * Returns the whitespace terminator of the escape sequence.
      *
-     * A single whitespace character is allowed after a code point escape as escape
-     * terminator. For example, `\4E E` in CSS equals to `"\u{4E}E"` (with no space in
-     * between) in PHP.
+     * A single whitespace character is allowed after a code point escape as
+     * escape terminator. For example, `\4E E` in CSS equals to `"\u{4E}E"`
+     * (with no space in between the two) in PHP.
      *
-     * If any, the returned token has always a computed length of 1.
+     * If any, the returned token has always a computed length of `1`.
      *
-     * @returns     WhitespaceToken|NULL
+     * @return      WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
      * Returns the whitespace terminator of the escape sequence.
      */
-    function getTerminator(): ?WhitespaceToken{
+    public function getTerminator(): ?WhitespaceToken{
         return $this->terminator;
     }
 }

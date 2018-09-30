@@ -1,12 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTDev\Data\CodePointSets;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function getEncodedCodePointEscapeSet(): CompressedCodePointSet{
     $set = new CompressedCodePointSet();

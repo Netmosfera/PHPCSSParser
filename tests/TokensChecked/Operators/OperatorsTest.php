@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Operators;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedColonToken;
@@ -16,8 +14,6 @@ use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedRightCurlyBracketToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedRightSquareBracketToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * Tests in this file:
  *
@@ -25,7 +21,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class OperatorsTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         yield [CheckedColonToken::CLASS, ":"];
         yield [CheckedCommaToken::CLASS, ","];
         yield [CheckedLeftCurlyBracketToken::CLASS, "{"];
@@ -38,7 +34,7 @@ class OperatorsTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    function test1(String $className, String $value){
+    public function test1(String $className, String $value){
         $delimiter1 = new $className();
         $delimiter2 = new $className();
 

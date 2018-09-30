@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -12,8 +10,6 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use PHPUnit\Framework\TestCase;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * Tests in this file:
  *
@@ -22,10 +18,13 @@ use PHPUnit\Framework\TestCase;
  */
 class IdentifierTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $names[] = [new CheckedNameBitToken("--")];
 
-        $names[] = [new CheckedNameBitToken("-"), new CheckedEncodedCodePointEscapeToken("x")];
+        $names[] = [
+            new CheckedNameBitToken("-"),
+            new CheckedEncodedCodePointEscapeToken("x")
+        ];
 
         $names[] = [new CheckedNameBitToken("-a")];
         $names[] = [new CheckedNameBitToken("-A")];
@@ -43,7 +42,7 @@ class IdentifierTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    function test1(Array $name){
+    public function test1(Array $name){
         $name1 = new CheckedNameToken($name);
         $name2 = new CheckedNameToken($name);
         $identifier1 = new CheckedIdentifierToken($name1);

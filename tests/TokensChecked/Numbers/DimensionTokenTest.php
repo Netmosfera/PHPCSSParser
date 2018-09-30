@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedDimensionToken;
@@ -12,8 +10,6 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use PHPUnit\Framework\TestCase;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * Tests in this file:
  *
@@ -21,7 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 class DimensionTokenTest extends TestCase
 {
-    function test1(){
+    public function test1(){
         $nameBit1 = new CheckedNameBitToken("iau");
         $nameBit2 = new CheckedNameBitToken("iau");
         $name1 = new CheckedNameToken([$nameBit1]);

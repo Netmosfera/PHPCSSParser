@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\TokensChecked\Names;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
@@ -10,11 +8,9 @@ use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 class CheckedIdentifierToken extends IdentifierToken
 {
-    function __construct(NameToken $name){
+    public function __construct(NameToken $name){
         $pieces = $name->getPieces();
         $firstPiece = $pieces[0];
         $stringifiedFirstPiece = (String)$firstPiece;
@@ -26,11 +22,21 @@ class CheckedIdentifierToken extends IdentifierToken
                     // It's valid if "-" is followed by an escape
                     throw new InvalidToken();
                 }
-            }elseif(preg_match('/^(?:--|-?[' . SpecData::NAME_STARTERS_SET . '])/usD', $stringifiedFirstPiece) === 0){
+            }elseif(
+                preg_match(
+                    '/^(?:--|-?[' . SpecData::NAME_STARTERS_SET . '])/usD',
+                    $stringifiedFirstPiece
+                ) === 0
+            ){
                 // It's valid if
+
                 // "--", optionally followed by zero or more name-code-points
-                // "-" is followed by one name-start-code-point, optionally followed by zero or more name-code-points
-                // starts with one name-start-code-point, optionally followed by zero or more name-code-points
+
+                // "-" is followed by one name-start-code-point,
+                // optionally followed by zero or more name-code-points
+
+                // starts with one name-start-code-point,
+                // optionally followed by zero or more name-code-points
                 throw new InvalidToken();
             }
         }

@@ -1,17 +1,14 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Strings;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 use Netmosfera\PHPCSSAST\SpecData;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
- * A {@see StringBitToken} is sequence of {@see SpecData::STRING_BIT_CP_SET} code points.
+ * A {@see StringBitToken} is sequence of {@see SpecData::STRING_BIT_CP_SET}
+ * code points.
  */
 class StringBitToken implements EvaluableToken
 {
@@ -32,17 +29,17 @@ class StringBitToken implements EvaluableToken
      * `String`
      * @TODOC
      */
-    function __construct(String $text){
+    public function __construct(String $text){
         $this->text = $text;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return $this->text;
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->text, $this->text);
@@ -51,24 +48,28 @@ class StringBitToken implements EvaluableToken
     /**
      * @TODOC
      *
-     * @returns String
+     * @return      String
      * `String`
      * @TODOC
      */
-    function getText(): String{
+    public function getText(): String{
         return $this->text;
     }
 
     /**
      * @TODOC
      *
-     * @returns String
+     * @return      String
      * `String`
      * @TODOC
      */
-    function getValue(): String{
+    public function getValue(): String{
         if($this->value === NULL){
-            $this->value = str_replace("\0", SpecData::REPLACEMENT_CHARACTER, $this->text);
+            $this->value = str_replace(
+                "\0",
+                SpecData::REPLACEMENT_CHARACTER,
+                $this->text
+            );
         }
         return $this->value;
     }

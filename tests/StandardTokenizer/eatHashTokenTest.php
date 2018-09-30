@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
@@ -15,8 +13,6 @@ use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * Tests in this file:
  *
@@ -26,44 +22,44 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatHashTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         return cartesianProduct(ANY_UTF8(), ["@-not-hash", ""]);
     }
 
     /** @dataProvider data1 */
-    function test1(String $prefix, String $rest){
+    public function test1(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $rest);
         $expected = NULL;
-        $eatName = function(Traverser $traverser): ?NameToken{ return NULL; };
+        $eatName = function(Traverser $traverser): ?NameToken{
+            return NULL;
+        };
         $actual = eatHashToken($traverser, $eatName);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
+    public function data2(){
         return cartesianProduct(ANY_UTF8(), ["@-not-hash", ""]);
     }
 
     /** @dataProvider data2 */
-    function test2(String $prefix, String $rest){
+    public function test2(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "#" . $rest);
         $expected = NULL;
-        $eatName = function(Traverser $traverser): ?NameToken{ return NULL; };
+        $eatName = function(Traverser $traverser): ?NameToken{
+            return NULL;
+        };
         $actual = eatHashToken($traverser, $eatName);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), "#" . $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data3(){
+    public function data3(){
         return cartesianProduct(ANY_UTF8(), ANY_UTF8());
     }
 
     /** @dataProvider data3 */
-    function test3(String $prefix, String $rest){
+    public function test3(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "#hash" . $rest);
         $name = new CheckedNameToken([new CheckedNameBitToken("hash")]);
         $expected = new CheckedHashToken($name);

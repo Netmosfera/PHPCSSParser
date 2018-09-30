@@ -1,16 +1,12 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedHashToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use PHPUnit\Framework\TestCase;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -19,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class HashTokenTest extends TestCase
 {
-    function test1(){
+    public function test1(){
         $nameBit1 = new CheckedNameBitToken("BADA55");
         $nameBit2 = new CheckedNameBitToken("BADA55");
         $name1 = new CheckedNameToken([$nameBit1]);

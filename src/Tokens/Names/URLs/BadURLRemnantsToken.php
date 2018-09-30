@@ -1,14 +1,10 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Token;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * @TODOC
@@ -37,20 +33,20 @@ class BadURLRemnantsToken implements Token
      * `Bool`
      * @TODOC
      */
-    function __construct(Array $pieces, Bool $terminatedWithEOF){
+    public function __construct(Array $pieces, Bool $terminatedWithEOF){
         $this->pieces = $pieces;
         $this->terminatedWithEOF = $terminatedWithEOF;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return
             implode("", $this->pieces) .
             ($this->terminatedWithEOF ? "" : ")");
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->pieces, $other->pieces) &&
@@ -60,11 +56,11 @@ class BadURLRemnantsToken implements Token
     /**
      * @TODOC
      *
-     * @returns     Bool
+     * @return      Bool
      * `Bool`
      * @TODOC
      */
-    function isTerminatedWithEOF(): Bool{
+    public function isTerminatedWithEOF(): Bool{
         return $this->terminatedWithEOF;
     }
 }

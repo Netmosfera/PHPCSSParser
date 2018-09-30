@@ -1,16 +1,12 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedBadStringToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringBitToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatStringToken(
     Traverser $traverser,
@@ -40,7 +36,9 @@ function eatStringToken(
             return new CheckedBadStringToken($delimiter, $pieces);
         }
 
-        $stringPiece = $traverser->eatExp('[^' . $newlineRegExpSet . $eDelimiter . '\\\\]+');
+        $stringPiece = $traverser->eatExp(
+            '[^' . $newlineRegExpSet . $eDelimiter . '\\\\]+'
+        );
         if($stringPiece !== NULL){
             $pieces[] = new CheckedStringBitToken($stringPiece);
             continue;

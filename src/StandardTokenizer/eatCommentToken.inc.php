@@ -1,13 +1,9 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use function mb_substr;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatCommentToken(Traverser $traverser): ?CheckedCommentToken{
     $inCommentTraverser = $traverser->createBranch();

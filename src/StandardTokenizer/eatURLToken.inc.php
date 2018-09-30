@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
@@ -10,8 +8,6 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLBitToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatURLToken(
     Traverser $traverser,
@@ -21,19 +17,21 @@ function eatURLToken(
     Closure $eatBadURLRemnantsFunction
 ): ?AnyURLToken{
 
-    $wsBefore = $traverser->eatExp('[' . $whitespaceRegexSet . ']*+(?!["\'])'); // @TODO inject delimiters
+    // @TODO inject delimiters
+    $wsBefore = $traverser->eatExp('[' . $whitespaceRegexSet . ']*+(?!["\'])');
     if($wsBefore === NULL){
         return NULL;
     }
     $wsBefore = $wsBefore === "" ? NULL : new CheckedWhitespaceToken($wsBefore);
 
-    // @TODO assert that $blacklistCPsRegexSet contains \ ) and the other delimiters used in this function
+    // @TODO assert that $blacklistCPsRegexSet contains \ )
+    // and the other delimiters used in this function
 
     // @TODO also assert that $blacklistCPsRegexSet contains $whitespaceRegexSet
 
     $pieces = [];
 
-    for(;;){
+    while(TRUE){
 
         if($traverser->isEOF()){
             return new CheckedURLToken($wsBefore, $pieces, NULL, TRUE);
@@ -69,7 +67,9 @@ function eatURLToken(
             }
         }
 
-        if($traverser->createBranch()->eatExp('[' . $blacklistCPsRegexSet . ']') !== NULL){
+        if($traverser->createBranch()->eatExp(
+            '[' . $blacklistCPsRegexSet . ']'
+        ) !== NULL){
             $remnants = $eatBadURLRemnantsFunction($traverser);
             return new CheckedBadURLToken($wsBefore, $pieces, $remnants);
         }

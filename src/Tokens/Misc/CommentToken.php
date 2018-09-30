@@ -1,13 +1,9 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Token;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see CommentToken} is a programmer-readable explanation or annotation.
@@ -43,13 +39,13 @@ class CommentToken implements Token
      * `Bool`
      * Whether the comment is unterminated.
      */
-    function __construct(String $text, Bool $terminatedWithEOF){
+    public function __construct(String $text, Bool $terminatedWithEOF){
         $this->text = $text;
         $this->terminatedWithEOF = $terminatedWithEOF;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         if($this->stringified === NULL){
             $this->stringified = "/*" . $this->text;
             $this->stringified .= $this->terminatedWithEOF ? "" : "*/";
@@ -58,7 +54,7 @@ class CommentToken implements Token
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($other->text, $this->text) &&
@@ -68,22 +64,22 @@ class CommentToken implements Token
     /**
      * Returns the comment's text.
      *
-     * @returns     String
+     * @return      String
      * `String`
      * Returns the comment's text.
      */
-    function getText(): String{
+    public function getText(): String{
         return $this->text;
     }
 
     /**
      * Returns {@see TRUE} if the comment is unterminated.
      *
-     * @returns     Bool
+     * @return      Bool
      * `Bool`
      * Returns {@see TRUE} if the comment is unterminated.
      */
-    function isTerminatedWithEOF(): Bool{
+    public function isTerminatedWithEOF(): Bool{
         return $this->terminatedWithEOF;
     }
 }

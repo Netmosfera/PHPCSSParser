@@ -1,13 +1,9 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Strings;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see StringToken} is text delimited by `'` or `"`.
@@ -45,14 +41,18 @@ class StringToken implements AnyStringToken
      * `Bool`
      * @TODOC
      */
-    function __construct(String $delimiter, Array $pieces, Bool $terminatedWithEOF){
+    public function __construct(
+        String $delimiter,
+        Array $pieces,
+        Bool $terminatedWithEOF
+    ){
         $this->delimiter = $delimiter;
         $this->pieces = $pieces;
         $this->terminatedWithEOF = $terminatedWithEOF;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return
             $this->delimiter .
             implode("", $this->pieces) .
@@ -60,7 +60,7 @@ class StringToken implements AnyStringToken
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->delimiter, $other->delimiter) &&
@@ -71,33 +71,33 @@ class StringToken implements AnyStringToken
     /**
      * @TODOC
      *
-     * @returns     String
+     * @return      String
      * `String`
      * @TODOC
      */
-    function getDelimiter(): String{
+    public function getDelimiter(): String{
         return $this->delimiter;
     }
 
     /**
      * @TODOC
      *
-     * @returns     StringBitToken[]|EscapeToken[]
+     * @return      StringBitToken[]|EscapeToken[]
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      */
-    function getPieces(): Array{
+    public function getPieces(): Array{
         return $this->pieces;
     }
 
     /**
      * @TODOC
      *
-     * @returns     Bool
+     * @return      Bool
      * `Bool`
      * @TODOC
      */
-    function isTerminatedWithEOF(): Bool{
+    public function isTerminatedWithEOF(): Bool{
         return $this->isTerminatedWithEOF();
     }
 }

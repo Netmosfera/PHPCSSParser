@@ -1,13 +1,9 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Numbers;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see DimensionToken} is a number followed by a unit of measurement.
@@ -35,18 +31,18 @@ class DimensionToken implements NumericToken
      * `IdentifierToken`
      * The unit of measurement.
      */
-    function __construct(NumberToken $number, IdentifierToken $unit){
+    public function __construct(NumberToken $number, IdentifierToken $unit){
         $this->number = $number;
         $this->unit = $unit;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return $this->number . $this->unit;
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($other->number, $this->number) &&
@@ -56,22 +52,22 @@ class DimensionToken implements NumericToken
     /**
      * Returns the number.
      *
-     * @returns     NumberToken
+     * @return      NumberToken
      * `NumberToken`
      * Returns the number.
      */
-    function getNumber(): NumberToken{
+    public function getNumber(): NumberToken{
         return $this->number;
     }
 
     /**
      * Returns the unit of measurement.
      *
-     * @returns     IdentifierToken
+     * @return      IdentifierToken
      * `IdentifierToken`
      * Returns the unit of measurement.
      */
-    function getUnit(): IdentifierToken{
+    public function getUnit(): IdentifierToken{
         return $this->unit;
     }
 }

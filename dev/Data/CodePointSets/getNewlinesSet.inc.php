@@ -1,13 +1,9 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTDev\Data\CodePointSets;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use function Netmosfera\PHPCSSASTDev\Data\cp;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function getNewlinesSet(){
     $set = new CompressedCodePointSet();

@@ -1,15 +1,11 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Numbers;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedPercentageToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 use PHPUnit\Framework\TestCase;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -18,7 +14,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PercentageTokenTest extends TestCase
 {
-    function test1(){
+    public function test1(){
         $number1 = new CheckedNumberToken("-", "123", "456", "e", "", "3");
         $number2 = new CheckedNumberToken("-", "123", "456", "e", "", "3");
         $percentage1 = new CheckedPercentageToken($number1);

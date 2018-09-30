@@ -1,14 +1,10 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Operators;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedDelimiterToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -17,7 +13,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class DelimiterTokenTest extends TestCase
 {
-    function test1(){
+    public function test1(){
         $delimiter1 = new CheckedDelimiterToken("@");
         $delimiter2 = new CheckedDelimiterToken("@");
 

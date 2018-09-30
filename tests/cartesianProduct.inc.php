@@ -1,12 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use function iterator_to_array;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function cartesianProduct(Iterable $array, Iterable ...$arrays){
     $cartesian = function(Array $rows, Array $arrays) use(&$cartesian){

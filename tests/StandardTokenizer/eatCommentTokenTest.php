@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
@@ -10,8 +8,6 @@ use function Netmosfera\PHPCSSAST\StandardTokenizer\eatCommentToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -22,7 +18,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatCommentTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $rest[] = "";
         $rest[] = "not \u{2764} a \u{2764} comment";
         $rest[] = "*/ also this is not a comment";
@@ -31,7 +27,7 @@ class eatCommentTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    function test1(String $prefix, String $rest){
+    public function test1(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $rest);
         $expected = NULL;
         $actual = eatCommentToken($traverser);
@@ -39,14 +35,12 @@ class eatCommentTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
+    public function data2(){
         return cartesianProduct(ANY_UTF8(), $this->commentTexts());
     }
 
     /** @dataProvider data2 */
-    function test2(String $prefix, String $text){
+    public function test2(String $prefix, String $text){
         $traverser = getTraverser($prefix, "/*" . $text);
         $expected = new CheckedCommentToken($text, TRUE);
         $actual = eatCommentToken($traverser);
@@ -54,17 +48,15 @@ class eatCommentTokenTest extends TestCase
         assertMatch($traverser->eatAll(), "");
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data3(){
+    public function data3(){
         $rest[] = "";
         $rest[] = "sample \u{2764} string";
-        $rest[] = "this is used to test that */ is matched lazily (ie, that stops at the first encountered)";
+        $rest[] = "this is used to test that */ is matched lazily";
         return cartesianProduct(ANY_UTF8(), $this->commentTexts(), $rest);
     }
 
     /** @dataProvider data3 */
-    function test3(String $prefix, String $text, String $rest){
+    public function test3(String $prefix, String $text, String $rest){
         $traverser = getTraverser($prefix, "/*" . $text . "*/" . $rest);
         $expected = new CheckedCommentToken($text, FALSE);
         $actual = eatCommentToken($traverser);
@@ -72,9 +64,7 @@ class eatCommentTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function commentTexts(){
+    public function commentTexts(){
         $sequences[] = "";
         $sequences[] = "comment text";
         $sequences[] = "\t \n \r \r\n \f";

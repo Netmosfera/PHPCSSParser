@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
@@ -15,8 +13,6 @@ use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * Tests in this file:
  *
@@ -25,12 +21,12 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class ContinuationEscapeTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         return cartesianProduct(getNewlineSeqsSet());
     }
 
     /** @dataProvider data1 */
-    function test1(String $newline){
+    public function test1(String $newline){
         $continuationEscape1 = new CheckedContinuationEscapeToken($newline);
         $continuationEscape2 = new CheckedContinuationEscapeToken($newline);
 
@@ -40,15 +36,16 @@ class ContinuationEscapeTokenTest extends TestCase
         assertMatch((String)$continuationEscape1, (String)$continuationEscape2);
 
         assertMatch($newline, $continuationEscape1->getCodePoint());
-        assertMatch($continuationEscape1->getCodePoint(), $continuationEscape2->getCodePoint());
+        assertMatch(
+            $continuationEscape1->getCodePoint(),
+            $continuationEscape2->getCodePoint()
+        );
 
         assertMatch("", $continuationEscape1->getValue());
         assertMatch($continuationEscape1->getValue(), $continuationEscape2->getValue());
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
+    public function data2(){
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->removeAll(getNewlinesSet());
@@ -62,7 +59,7 @@ class ContinuationEscapeTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    function test2(String $newline){
+    public function test2(String $newline){
         assertThrowsType(InvalidToken::CLASS, function() use($newline){
             new CheckedContinuationEscapeToken($newline);
         });

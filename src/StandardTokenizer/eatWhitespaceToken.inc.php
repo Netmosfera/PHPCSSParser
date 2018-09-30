@@ -1,12 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatWhitespaceToken(
     Traverser $traverser,
@@ -15,5 +11,6 @@ function eatWhitespaceToken(
 
     $whitespaces = $traverser->eatExp('[' . $whitespaceRegExpSet . ']+');
 
-    return $whitespaces === NULL ? NULL : new CheckedWhitespaceToken($whitespaces);
+    return $whitespaces === NULL ? NULL :
+        new CheckedWhitespaceToken($whitespaces);
 }

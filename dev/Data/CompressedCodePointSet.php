@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTDev\Data;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function dechex;
 use PHPToolBucket\CompressedIntSet\CompressedIntSet;
@@ -10,23 +8,21 @@ use IteratorAggregate;
 use Iterator;
 use IntlChar;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 class CompressedCodePointSet implements IteratorAggregate
 {
     private $data;
 
-    function __construct(){
+    public function __construct(){
         $this->data = new CompressedIntSet();
     }
 
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof CompressedCodePointSet &&
             $this->data->equals($other->data);
     }
 
-    function getRegExp(): String{
+    public function getRegExp(): String{
         $b = "";
         foreach($this->data->ranges as $start => $end){
             $b .= sprintf('\x{%s}-\x{%s}', dechex($start), dechex($end));
@@ -34,7 +30,7 @@ class CompressedCodePointSet implements IteratorAggregate
         return $b;
     }
 
-    function getIterator(): Iterator{
+    public function getIterator(): Iterator{
         foreach($this->data->ranges as $start => $end){
             do{
                 yield IntlChar::chr($start);
@@ -43,20 +39,26 @@ class CompressedCodePointSet implements IteratorAggregate
         }
     }
 
-    function contains(String $codePoint){
+    public function contains(String $codePoint){
         return $this->data->contains(IntlChar::ord($codePoint));
     }
 
     /** @return ContiguousCodePointsSet[] */
-    function getRanges(){
+    public function getRanges(){
         foreach($this->data->ranges as $start => $end){
-            yield new ContiguousCodePointsSet(new CodePoint($start), new CodePoint($end));
+            yield new ContiguousCodePointsSet(
+                new CodePoint($start),
+                new CodePoint($end)
+            );
         }
     }
 
-    function addAll(Iterable/* Mixed, CodePoint */ $elements){
+    public function addAll(Iterable/* Mixed, CodePoint */ $elements){
         if($elements instanceof ContiguousCodePointsSet){
-            $this->data->addRange($elements->getStart()->getCode(), $elements->getEnd()->getCode());
+            $this->data->addRange(
+                $elements->getStart()->getCode(),
+                $elements->getEnd()->getCode()
+            );
         }elseif($elements instanceof CompressedCodePointSet){
             foreach($elements->getRanges() as $range){
                 $this->addAll($range);
@@ -64,18 +66,23 @@ class CompressedCodePointSet implements IteratorAggregate
         }else{
             foreach($elements as $element){
                 assert($element instanceof CodePoint);
-                $this->addAll(new ContiguousCodePointsSet($element, $element));
+                $this->addAll(
+                    new ContiguousCodePointsSet($element, $element)
+                );
             }
         }
     }
 
-    function add(CodePoint $codePoint){
+    public function add(CodePoint $codePoint){
         $this->addAll([$codePoint]);
     }
 
-    function removeAll(Iterable $elements){
+    public function removeAll(Iterable $elements){
         if($elements instanceof ContiguousCodePointsSet){
-            $this->data->removeRange($elements->getStart()->getCode(), $elements->getEnd()->getCode());
+            $this->data->removeRange(
+                $elements->getStart()->getCode(),
+                $elements->getEnd()->getCode()
+            );
         }elseif($elements instanceof CompressedCodePointSet){
             foreach($elements->getRanges() as $range){
                 $this->removeAll($range);
@@ -83,17 +90,19 @@ class CompressedCodePointSet implements IteratorAggregate
         }else{
             foreach($elements as $element){
                 if($element instanceof CodePoint){
-                    $this->removeAll(new ContiguousCodePointsSet($element, $element));
+                    $this->removeAll(
+                        new ContiguousCodePointsSet($element, $element)
+                    );
                 }
             }
         }
     }
 
-    function remove($element){
+    public function remove($element){
         $this->removeAll([$element]);
     }
 
-    function selectAll(){
+    public function selectAll(){
         $this->data->addRange(0, IntlChar::CODEPOINT_MAX);
     }
 }

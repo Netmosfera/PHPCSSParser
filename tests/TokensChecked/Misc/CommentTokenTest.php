@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Misc;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
@@ -10,8 +8,6 @@ use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -21,7 +17,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class CommentTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $comments[] = "comment /* text";
         $comments[] = "comment \u{2764} text";
         $comments[] = "";
@@ -29,7 +25,7 @@ class CommentTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    function test1(String $comment, Bool $terminatedWithEOF){
+    public function test1(String $comment, Bool $terminatedWithEOF){
         $comment1 = new CheckedCommentToken($comment, $terminatedWithEOF);
         $comment2 = new CheckedCommentToken($comment, $terminatedWithEOF);
 
@@ -46,9 +42,7 @@ class CommentTokenTest extends TestCase
         assertMatch($comment1->isTerminatedWithEOF(), $comment2->isTerminatedWithEOF());
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
+    public function data2(){
         $comments[] = "*/";
         $comments[] = "comment */ text";
         $comments[] = "comment text */";
@@ -56,7 +50,7 @@ class CommentTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    function test2(String $comment){
+    public function test2(String $comment){
         assertThrowsType(InvalidToken::CLASS, function() use($comment){
             new CheckedCommentToken($comment, FALSE);
         });

@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\TokensChecked\Strings;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSAST\isArraySequence;
 use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
@@ -11,17 +9,20 @@ use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use TypeError;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 class CheckedBadStringToken extends BadStringToken
 {
-    function __construct(String $delimiter, Array $pieces){
+    public function __construct(String $delimiter, Array $pieces){
         if(isArraySequence($pieces) === FALSE){
-            throw new TypeError("The given `\$pieces` is not an array sequence");
+            throw new TypeError(
+                "The given `\$pieces` is not an array sequence"
+            );
         }
 
         foreach($pieces as $offset => $piece){
-            if(!$piece instanceof StringBitToken && !$piece instanceof EscapeToken){
+            if(
+                !$piece instanceof StringBitToken &&
+                !$piece instanceof EscapeToken
+            ){
                 throw new TypeError(sprintf(
                     "\$pieces must be an array of `%s`",
                     StringBitToken::CLASS . "|" . EscapeToken::CLASS

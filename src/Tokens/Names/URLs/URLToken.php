@@ -1,18 +1,15 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function implode;
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
- * A {@see URLToken} is `url(` followed by words and delimiters, and finally by `)`.
+ * A {@see URLToken} is `url(` followed by words and delimiters, and finally
+ * followed by `)`.
  *
  * The code `url(path/image.gif)` represents a single {@see URLToken}, unlike
  * `url('path/image.gif')` that is instead a sequence of three tokens:
@@ -70,15 +67,12 @@ class URLToken implements AnyURLToken
      * `Bool`
      * @TODOC
      */
-    function __construct(
+    public function __construct(
         ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
         ?WhitespaceToken $whitespaceAfter,
         Bool $terminatedWithEOF
     ){
-        foreach($pieces as $piece){
-            assert($piece instanceof URLBitToken || $piece instanceof ValidEscapeToken);
-        }
         $this->whitespaceBefore = $whitespaceBefore;
         $this->pieces = $pieces;
         $this->whitespaceAfter = $whitespaceAfter;
@@ -86,7 +80,7 @@ class URLToken implements AnyURLToken
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         if($this->stringified === NULL){
             $this->stringified = "url(" .
                 $this->whitespaceBefore .
@@ -98,7 +92,7 @@ class URLToken implements AnyURLToken
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->whitespaceBefore, $other->whitespaceBefore) &&
@@ -110,44 +104,44 @@ class URLToken implements AnyURLToken
     /**
      * @TODOC
      *
-     * @returns     WhitespaceToken|NULL
+     * @return      WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
      * @TODOC
      */
-    function getWhitespaceBefore(): ?WhitespaceToken{
+    public function getWhitespaceBefore(): ?WhitespaceToken{
         return $this->whitespaceBefore;
     }
 
     /**
      * @TODOC
      *
-     * @returns     URLBitToken[]|ValidEscapeToken[]
+     * @return      URLBitToken[]|ValidEscapeToken[]
      * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      */
-    function getPieces(): Array{
+    public function getPieces(): Array{
         return $this->pieces;
     }
 
     /**
      * @TODOC
      *
-     * @returns     WhitespaceToken|NULL
+     * @return      WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
      * @TODOC
      */
-    function getWhitespaceAfter(): ?WhitespaceToken{
+    public function getWhitespaceAfter(): ?WhitespaceToken{
         return $this->whitespaceAfter;
     }
 
     /**
      * @TODOC
      *
-     * @returns     Bool
+     * @return      Bool
      * `Bool`
      * @TODOC
      */
-    function isTerminatedWithEOF(): Bool{
+    public function isTerminatedWithEOF(): Bool{
         return $this->terminatedWithEOF;
     }
 }

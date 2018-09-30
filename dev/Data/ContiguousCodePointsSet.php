@@ -1,22 +1,18 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTDev\Data;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Error;
 use IntlChar;
 use Iterator;
 use IteratorAggregate;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 class ContiguousCodePointsSet implements IteratorAggregate
 {
     private $start;
     private $end;
 
-    function __construct(CodePoint $start, ?CodePoint $end = NULL){
+    public function __construct(CodePoint $start, ?CodePoint $end = NULL){
         $end = $end ?? $start;
 
         if($start->getCode() > $end->getCode()){
@@ -27,21 +23,25 @@ class ContiguousCodePointsSet implements IteratorAggregate
         $this->end = $end;
     }
 
-    function getIterator(): Iterator{
+    public function getIterator(): Iterator{
         for($o = $this->start; $o <= $this->end; $o++){
             yield IntlChar::chr($o);
         }
     }
 
-    function getRegExp(): String{
-        return sprintf('\x{%s}-\x{%s}', $this->start->getHexCode(), $this->end->getHexCode());
+    public function getRegExp(): String{
+        return sprintf(
+            '\x{%s}-\x{%s}',
+            $this->start->getHexCode(),
+            $this->end->getHexCode()
+        );
     }
 
-    function getStart(): CodePoint{
+    public function getStart(): CodePoint{
         return $this->start;
     }
 
-    function getEnd(): CodePoint{
+    public function getEnd(): CodePoint{
         return $this->end;
     }
 }

@@ -1,15 +1,11 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Error;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function makeEatEscapeFunctionFromEscapeList($escapes){
     return function(Traverser $t) use(&$escapes): ?EscapeToken{

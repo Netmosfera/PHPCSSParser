@@ -1,12 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Names;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use function Netmosfera\PHPCSSAST\match;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see FunctionToken} is an {@see IdentifierToken} followed by `(`.
@@ -24,17 +20,17 @@ class FunctionToken implements IdentifierLikeToken
      * `IdentifierToken`
      * The {@see IdentifierToken} to become a {@see FunctionToken}.
      */
-    function __construct(IdentifierToken $identifier){
+    public function __construct(IdentifierToken $identifier){
         $this->identifier = $identifier;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return $this->identifier . "(";
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($this->identifier, $other->identifier);
@@ -43,11 +39,11 @@ class FunctionToken implements IdentifierLikeToken
     /**
      * Returns the {@see IdentifierToken} for this {@see FunctionToken}.
      *
-     * @returns     IdentifierToken
+     * @return      IdentifierToken
      * `IdentifierToken`
      * Returns the {@see IdentifierToken} for this {@see FunctionToken}.
      */
-    function getIdentifier(): IdentifierToken{
+    public function getIdentifier(): IdentifierToken{
         return $this->identifier;
     }
 }

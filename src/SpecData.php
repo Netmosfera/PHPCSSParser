@@ -1,8 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
+
+// phpcs:disable
 
 namespace Netmosfera\PHPCSSAST;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 class SpecData
 {
@@ -29,3 +29,5 @@ class SpecData
     public const REPLACEMENT_CHARACTER = "\u{FFFD}"; 
     public const WHITESPACE = " "; 
 }
+
+// phpcs:enable

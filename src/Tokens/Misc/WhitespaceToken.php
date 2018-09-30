@@ -1,16 +1,11 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Token;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use function Netmosfera\PHPCSSAST\match;
 use function preg_replace;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see WhitespaceToken} is a sequence of one or more whitespace code points.
@@ -36,26 +31,26 @@ class WhitespaceToken implements Token
      * `String`
      * The whitespace sequence.
      */
-    function __construct(String $whitespaces){
+    public function __construct(String $whitespaces){
         $this->whitespaces = $whitespaces;
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return $this->whitespaces;
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($other->whitespaces, $this->whitespaces);
     }
 
     /** @inheritDoc */
-    function normalize(): WhitespaceToken{
+    public function normalize(): WhitespaceToken{
         if($this->normalizedObject === NULL){
-            $this->normalizedObject = new CheckedWhitespaceToken(  // @TODO revert to non-checked
+            $this->normalizedObject = new WhitespaceToken(
                 preg_replace(
                     "/" . SpecData::WHITESPACES_SEQS_SET . "/usD",
                     SpecData::WHITESPACE,

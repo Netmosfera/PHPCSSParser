@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use function array_shift;
 use function iterator_to_array;
@@ -16,8 +14,6 @@ use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use PHPUnit\Framework\TestCase;
 use IntlChar;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * Tests in this file:
  *
@@ -27,9 +23,15 @@ use IntlChar;
  */
 class CodePointEscapeTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $digits = str_split("abcdefABCDEF1234567890", 1);
-        $d = function() use(&$digits){ $d = array_shift($digits); $digits[] = $d; return $d; };
+
+        $d = function() use(&$digits){
+            $d = array_shift($digits);
+            $digits[] = $d;
+            return $d;
+        };
+
         $hex[] = $d();
         $hex[] = $d() . $d();
         $hex[] = $d() . $d() . $d();
@@ -49,7 +51,7 @@ class CodePointEscapeTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    function test1(String $hexDigits, String $whitespace){
+    public function test1(String $hexDigits, String $whitespace){
         $whitespace1 = $whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace);
         $whitespace2 = $whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace);
         $CPEscape1 = new CheckedCodePointEscapeToken($hexDigits, $whitespace1);
@@ -66,7 +68,8 @@ class CodePointEscapeTokenTest extends TestCase
         assertMatch(hexdec($hexDigits), $CPEscape1->getIntValue());
         assertMatch($CPEscape1->getIntValue(), $CPEscape2->getIntValue());
 
-        assertMatch($whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace), $CPEscape1->getTerminator());
+        assertMatch($whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace),
+            $CPEscape1->getTerminator());
         assertMatch($CPEscape1->getTerminator(), $CPEscape2->getTerminator());
 
         $codePoint = IntlChar::chr($CPEscape1->getIntValue());
@@ -78,9 +81,7 @@ class CodePointEscapeTokenTest extends TestCase
         assertMatch($CPEscape1->isValidCodePoint(), $CPEscape2->isValidCodePoint());
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
+    public function data2(){
         $seqs[] = "";
         $seqs[] = "G";
         $seqs[] = "gg";
@@ -93,20 +94,18 @@ class CodePointEscapeTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    function test2(String $hexDigits){
+    public function test2(String $hexDigits){
         assertThrowsType(InvalidToken::CLASS, function() use($hexDigits){
             new CheckedCodePointEscapeToken($hexDigits, NULL);
         });
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data3(){
+    public function data3(){
         return cartesianProduct(getWhitespaceSeqsSet(), getWhitespaceSeqsSet());
     }
 
     /** @dataProvider data3 */
-    function test3(String $whitespace1, String $whitespace2){
+    public function test3(String $whitespace1, String $whitespace2){
         $whitespaces = $whitespace1 . $whitespace2;
         if($whitespaces === "\r\n"){
             $whitespaces = $whitespaces . $whitespaces;

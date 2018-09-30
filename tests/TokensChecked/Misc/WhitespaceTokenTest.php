@@ -1,12 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Misc;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use PHPUnit\Framework\TestCase;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -18,5 +14,5 @@ class WhitespaceTokenTest extends TestCase
 {
     // @TODO
 
-    function test(){ self::assertTrue(TRUE); }
+    public function test(){ self::assertTrue(TRUE); }
 }

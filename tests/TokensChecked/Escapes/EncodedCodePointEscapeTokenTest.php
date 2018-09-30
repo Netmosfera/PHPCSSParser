@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
@@ -14,8 +12,6 @@ use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * Tests in this file:
  *
@@ -24,13 +20,13 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class EncodedCodePointEscapeTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $set = getEncodedCodePointEscapeSet();
         return cartesianProduct(getCodePointsFromRanges($set));
     }
 
     /** @dataProvider data1 */
-    function test1(String $codePoint){
+    public function test1(String $codePoint){
         $encodedCPEscape1 = new CheckedEncodedCodePointEscapeToken($codePoint);
         $encodedCPEscape2 = new CheckedEncodedCodePointEscapeToken($codePoint);
 
@@ -43,9 +39,7 @@ class EncodedCodePointEscapeTokenTest extends TestCase
         assertMatch($encodedCPEscape1->getValue(), $encodedCPEscape2->getValue());
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
+    public function data2(){
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->removeAll(getEncodedCodePointEscapeSet());
@@ -57,7 +51,7 @@ class EncodedCodePointEscapeTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    function test2(String $codePoint){
+    public function test2(String $codePoint){
         assertThrowsType(InvalidToken::CLASS, function() use($codePoint){
             new CheckedEncodedCodePointEscapeToken($codePoint);
         });

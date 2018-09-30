@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function isArraySequence(Array $array): Bool{
     if(array_values($array) !== $array){
@@ -13,6 +11,7 @@ function isArraySequence(Array $array): Bool{
 
     end($array);
     $lastIndex = key($array);
+
 
     return $lastIndex + 1 === count($array);
 }

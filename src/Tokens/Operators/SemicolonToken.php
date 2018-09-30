@@ -1,12 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Operators;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use Netmosfera\PHPCSSAST\Tokens\Token;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see SemicolonToken} represents the character `;`.
@@ -14,12 +10,12 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
 class SemicolonToken implements Token
 {
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return ";";
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return $other instanceof self;
     }
 }

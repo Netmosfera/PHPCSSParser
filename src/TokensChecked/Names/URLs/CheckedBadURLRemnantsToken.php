@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\TokensChecked\Names\URLs;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use TypeError;
 use Netmosfera\PHPCSSAST\SpecData;
@@ -15,17 +13,20 @@ use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 use function Netmosfera\PHPCSSAST\isArraySequence;
 use function preg_match;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
 {
-    function __construct(Array $pieces, Bool $terminatedWithEOF){
+    public function __construct(Array $pieces, Bool $terminatedWithEOF){
         if(isArraySequence($pieces) === FALSE){
-            throw new TypeError("The given `\$pieces` is not an array sequence");
+            throw new TypeError(
+                "The given `\$pieces` is not an array sequence"
+            );
         }
 
         foreach($pieces as $offset => $piece){
-            if(!$piece instanceof BadURLRemnantsBitToken && !$piece instanceof EscapeToken){
+            if(
+                !$piece instanceof BadURLRemnantsBitToken &&
+                !$piece instanceof EscapeToken
+            ){
                 throw new TypeError(sprintf(
                     "\$pieces must be an array of `%s`",
                     BadURLRemnantsBitToken::CLASS . "|" . EscapeToken::CLASS
@@ -49,17 +50,22 @@ class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
             }
         }
 
-        // @TODO if the last $pieces is eofescape, then $terminatedWithEOF must be true
+        // @TODO if the last $pieces is eofescape,
+        // then $terminatedWithEOF must be true
 
         $firstPiece = $pieces[0];
         if((
             $firstPiece instanceof BadURLRemnantsBitToken &&
-            preg_match('/^[' . SpecData::URLTOKEN_BIT_CP_NOT_SET . ']/usD', (String)$firstPiece) === 1
+            preg_match(
+                '/^[' . SpecData::URLTOKEN_BIT_CP_NOT_SET . ']/usD',
+                (String)$firstPiece
+            ) === 1
         ) || (
             $firstPiece instanceof ValidEscapeToken
         )){
             throw new InvalidToken(sprintf(
-                "`%s` must begin with a code point not allowed in a `%s` or an invalid escape",
+                "`%s` must begin with a code point not allowed in a `%s` " .
+                "or must begin with an invalid escape",
                 BadURLRemnantsToken::CLASS,
                 URLToken::CLASS
             ));

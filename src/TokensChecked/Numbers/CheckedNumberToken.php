@@ -1,17 +1,13 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\TokensChecked\Numbers;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 class CheckedNumberToken extends NumberToken
 {
-    function __construct(
+    public function __construct(
         String $sign,
         String $wholes,
         String $decimals,
@@ -27,15 +23,21 @@ class CheckedNumberToken extends NumberToken
 
             ($sign !== "" && $sign !== "+" && $sign !== "-") ||
             ($ESign !== "" && $ESign !== "+" && $ESign !== "-") ||
-            ($wholes !== "" && preg_match("/^[0-9]+$/usD", $wholes) === 0) ||
-            ($decimals !== "" && preg_match("/^[0-9]+$/usD", $decimals) === 0) ||
-            ($EExponent !== "" && preg_match("/^[0-9]+$/usD", $EExponent) === 0) ||
-
+            (preg_match("/^(|[0-9]+)$/usD", $wholes) === 0) ||
+            (preg_match("/^(|[0-9]+)$/usD", $decimals) === 0) ||
+            (preg_match("/^(|[0-9]+)$/usD", $EExponent) === 0) ||
             FALSE
         ){
             throw new InvalidToken();
         }
 
-        parent::__construct($sign, $wholes, $decimals, $ELetter, $ESign, $EExponent);
+        parent::__construct(
+            $sign,
+            $wholes,
+            $decimals,
+            $ELetter,
+            $ESign,
+            $EExponent
+        );
     }
 }

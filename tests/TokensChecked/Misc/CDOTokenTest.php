@@ -1,14 +1,10 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Misc;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDOToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * Tests in this file:
@@ -17,7 +13,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class CDOTokenTest extends TestCase
 {
-    function test1(){
+    public function test1(){
         $CDO1 = new CheckedCDOToken();
         $CDO2 = new CheckedCDOToken();
 

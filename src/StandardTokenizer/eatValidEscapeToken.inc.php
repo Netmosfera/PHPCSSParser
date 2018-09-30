@@ -1,15 +1,11 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatValidEscapeToken(
     Traverser $traverser,
@@ -32,7 +28,8 @@ function eatValidEscapeToken(
     $hexDigits = $traverser->eatExp('[' . $hexDigitRegExpSet . ']{1,6}');
     if($hexDigits !== NULL){
         $whitespace = $traverser->eatExp($whitespaceRegExp);
-        $whitespace = $whitespace === NULL ? NULL : new CheckedWhitespaceToken($whitespace);
+        $whitespace = $whitespace === NULL ? NULL :
+            new CheckedWhitespaceToken($whitespace);
         return new CheckedCodePointEscapeToken($hexDigits, $whitespace);
     }
 

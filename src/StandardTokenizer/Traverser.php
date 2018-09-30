@@ -1,15 +1,11 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Error;
 use function mb_substr;
 use function preg_quote;
 use function preg_last_error;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 class Traverser
 {
@@ -28,9 +24,10 @@ class Traverser
      * {@TODOC}
      *
      * @param       Bool                                    $showPreview
-     * If set to `TRUE` will preview the result of `substr($data, $offset)` in `$preview`.
-     * Enabling this has no purpose except for debugging. Keeping it enabled will slow down
-     * the operations, so it must be enabled only if needed.
+     * If set to `TRUE` will preview the result of `substr($data, $offset)` in
+     * `$preview`. Enabling this has no purpose except for debugging. Keeping it
+     * enabled will slow down the operations, so it must be enabled only if
+     * needed.
      */
     public function __construct(String $data, Bool $showPreview = FALSE){
         $this->originator = $this;
@@ -39,8 +36,6 @@ class Traverser
         $this->preview = NULL;
         $this->setOffset(0);
     }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     public function savepoint(){
         return $this->offset;
@@ -52,7 +47,10 @@ class Traverser
 
     public function importBranch(Traverser $traverser){
         if($this->originator !== $traverser->originator){
-            throw new Error("Branch can be imported only from a traverser with the same origin");
+            throw new Error(
+                "Branch can be imported only from a " .
+                "traverser with the same origin"
+            );
         }
         $this->offset = $traverser->offset;
         $this->preview = $traverser->preview;
@@ -61,8 +59,6 @@ class Traverser
     public function createBranch(): Traverser{
         return clone $this;
     }
-
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
     private function setOffset(Int $offset){
         $this->offset = $offset;
@@ -75,14 +71,18 @@ class Traverser
         return $this->offset === strlen($this->data);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
     public function escapeRegexp(String $string): String{
         return preg_quote($string, "/");
     }
 
     private function execRegexp(String $regexp): ?String{
-        $result = preg_match("/\G(" . $regexp . ")/usD", $this->data, $matches, 0, $this->offset);
+        $result = preg_match(
+            "/\G(" . $regexp . ")/usD",
+            $this->data,
+            $matches,
+            0,
+            $this->offset
+        );
 
         if($result === FALSE){
             throw new Error("PCRE ERROR: " . preg_last_error());

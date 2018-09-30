@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Token;
@@ -18,8 +16,6 @@ use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedDelimiterToken;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function eatToken(
     Traverser $traverser,

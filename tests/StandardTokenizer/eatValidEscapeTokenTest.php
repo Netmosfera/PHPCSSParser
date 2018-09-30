@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
@@ -17,8 +15,6 @@ use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 /**
  * Tests in this file:
  *
@@ -30,12 +26,12 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatValidEscapeTokenTest extends TestCase
 {
-    function data0(){
+    public function data0(){
         return cartesianProduct(ANY_UTF8(), ["not escape", ""]);
     }
 
     /** @dataProvider data0 */
-    function test0(String $prefix, String $rest){
+    public function test0(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $rest);
         $expected = NULL;
         $actual = eatValidEscapeToken($traverser, "D", "\t", "\f");
@@ -43,14 +39,12 @@ class eatValidEscapeTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data1(){
+    public function data1(){
         return cartesianProduct(ANY_UTF8());
     }
 
     /** @dataProvider data1 */
-    function test1(String $prefix){
+    public function test1(String $prefix){
         $traverser = getTraverser($prefix, "\\");
         $expected = NULL;
         $actual = eatValidEscapeToken($traverser, "D", "\t", "\f");
@@ -58,9 +52,7 @@ class eatValidEscapeTokenTest extends TestCase
         assertMatch($traverser->eatAll(), "\\");
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data2(){
+    public function data2(){
         return cartesianProduct(
             ANY_UTF8(),
             ["D", "DD", "DDD", "DDDD", "DDDDD", "DDDDDD"],
@@ -70,17 +62,16 @@ class eatValidEscapeTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    function test2(String $prefix, String $hexDigits, String $whitespace, String $rest){
-        $traverser = getTraverser($prefix, "\\" . $hexDigits . $whitespace . $rest);
-        $expected = new CheckedCodePointEscapeToken($hexDigits, $whitespace === "" ? NULL : new CheckedWhitespaceToken($whitespace));
+    public function test2(String $prefix, String $hexDigits, String $ws, String $rest){
+        $traverser = getTraverser($prefix, "\\" . $hexDigits . $ws . $rest);
+        $expected = new CheckedCodePointEscapeToken($hexDigits,
+            $ws === "" ? NULL : new CheckedWhitespaceToken($ws));
         $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data3(){
+    public function data3(){
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->removeAll(getHexDigitsSet());
@@ -94,7 +85,7 @@ class eatValidEscapeTokenTest extends TestCase
     }
 
     /** @dataProvider data3 */
-    function test3(String $prefix, String $codePoint, String $rest){
+    public function test3(String $prefix, String $codePoint, String $rest){
         $traverser = getTraverser($prefix, "\\" . $codePoint . $rest);
         $expected = new CheckedEncodedCodePointEscapeToken($codePoint);
         $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");
@@ -102,14 +93,12 @@ class eatValidEscapeTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    //[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
-    function data4(){
+    public function data4(){
         return cartesianProduct(ANY_UTF8(), ANY_UTF8());
     }
 
     /** @dataProvider data4 */
-    function test4(String $prefix, String $rest){
+    public function test4(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "\\" . "\n" . $rest);
         $expected = NULL;
         $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");

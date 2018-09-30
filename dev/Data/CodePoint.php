@@ -1,35 +1,31 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSASTDev\Data;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Error;
 use IntlChar;
 use function dechex;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 class CodePoint
 {
     private $code;
 
-    function __construct(Int $code){
+    public function __construct(Int $code){
         if($code < 0 || $code > IntlChar::CODEPOINT_MAX){
             throw new Error("Invalid code point");
         }
         $this->code = $code;
     }
 
-    function getCode(): Int{
+    public function getCode(): Int{
         return $this->code;
     }
 
-    function getHexCode(): String{
+    public function getHexCode(): String{
         return dechex($this->code);
     }
 
-    function getString(): String{
+    public function getString(): String{
         return IntlChar::chr($this->code);
     }
 }

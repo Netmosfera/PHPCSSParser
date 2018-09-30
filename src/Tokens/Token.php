@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * @TODOC
@@ -10,5 +8,5 @@ namespace Netmosfera\PHPCSSAST\Tokens;
 interface Token
 {
     /** @inheritDoc */
-    function __toString(): String;
+    public function __toString(): String;
 }

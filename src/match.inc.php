@@ -1,12 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use Generator;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 function match($a, $b){
     if(
@@ -25,34 +21,40 @@ function match($a, $b){
             return FALSE;
         }
 
-        if(array_keys($a) !== array_keys($b)){ return FALSE; }
+        if(array_keys($a) !== array_keys($b)){
+            return FALSE;
+        }
 
-        $aIterator = (function() use($a){ yield from $a; })();
-        $bIterator = (function() use($b){ yield from $b; })();
+        $aIterator = (function() use($a){
+            yield from $a;
+        })();
+
+        $bIterator = (function() use($b){
+            yield from $b;
+        })();
+
         /** @var Generator $aIterator */
         /** @var Generator $bIterator */
 
         $aIterator->rewind();
         $bIterator->rewind();
 
-        CHECK_ENTRY:
+        while(TRUE){
+            if($aIterator->valid() === FALSE){
+                return TRUE;
+            }
 
-        if($aIterator->valid() === FALSE){
-            return TRUE;
+            if(match($aIterator->key(), $bIterator->key()) === FALSE){
+                return FALSE;
+            }
+
+            if(match($aIterator->current(), $bIterator->current()) === FALSE){
+                return FALSE;
+            }
+
+            $aIterator->next();
+            $bIterator->next();
         }
-
-        if(match($aIterator->key(), $bIterator->key()) === FALSE){
-            return FALSE;
-        }
-
-        if(match($aIterator->current(), $bIterator->current()) === FALSE){
-            return FALSE;
-        }
-
-        $aIterator->next();
-        $bIterator->next();
-
-        goto CHECK_ENTRY;
 
     }elseif($aIsArray || $bIsArray){
         return FALSE;

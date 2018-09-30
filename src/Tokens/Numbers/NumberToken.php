@@ -1,12 +1,8 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\Tokens\Numbers;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 use function Netmosfera\PHPCSSAST\match;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 /**
  * A {@see NumberToken} is a integral or decimal number.
@@ -70,29 +66,29 @@ class NumberToken implements NumericToken
     /**
      * @param       String                                  $sign
      * `String`
-     * The number's sign; it is `"+"`, `"-"` or an empty string.
+     * The number's sign; it is `"+"`, `"-"` or `""`.
      *
      * @param       String                                  $wholes
      * `String`
-     * The number's whole part; it is any sequence of digits or an empty string.
+     * The number's whole part; it is any sequence of digits or `""`.
      *
      * @param       String                                  $decimals
      * `String`
-     * The number's decimal part; it is any sequence of digits or an empty string.
+     * The number's decimal part; it is any sequence of digits or `""`.
      *
      * @param       String                                  $EIndicator
      * `String`
-     * The "E" indicator; it is `"E"`, `"e"` or an empty string.
+     * The "E" indicator; it is `"E"`, `"e"` or `""`.
      *
      * @param       String                                  $ESign
      * `String`
-     * The E-notation's exponent's sign; it is `"+"`, `"-"` or an empty string.
+     * The E-notation's exponent's sign; it is `"+"`, `"-"` or `""`.
      *
      * @param       String                                  $EExponent
      * `String`
-     * The E-notation's exponent; it is any sequence of digits or an empty string.
+     * The E-notation's exponent; it is any sequence of digits or `""`.
      */
-    function __construct(
+    public function __construct(
         String $sign,
         String $wholes,
         String $decimals,
@@ -109,7 +105,7 @@ class NumberToken implements NumericToken
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         if($this->stringified === NULL){
             $number  = $this->sign;
             $number .= $this->wholes;
@@ -123,7 +119,7 @@ class NumberToken implements NumericToken
     }
 
     /** @inheritDoc */
-    function equals($other): Bool{
+    public function equals($other): Bool{
         return
             $other instanceof self &&
             match($other->sign, $this->sign) &&
@@ -136,79 +132,79 @@ class NumberToken implements NumericToken
     }
 
     /**
-     * Returns the number's sign; it is `"+"`, `"-"` or an empty string.
+     * Returns the number's sign; it is `"+"`, `"-"` or `""`.
      *
-     * @returns     String
+     * @return      String
      * `String`
-     * Returns the number's sign; it is `"+"`, `"-"` or an empty string.
+     * Returns the number's sign; it is `"+"`, `"-"` or `""`.
      */
-    function getSign(): String{
+    public function getSign(): String{
         return $this->sign;
     }
 
     /**
-     * Returns the number's whole part; it is any sequence of digits or an empty string.
+     * Returns the number's whole part; it is any sequence of digits or `""`.
      *
-     * @returns     String
+     * @return      String
      * `String`
-     * Returns the number's whole part; it is any sequence of digits or an empty string.
+     * Returns the number's whole part; it is any sequence of digits or `""`.
      */
-    function getWholes(): String{
+    public function getWholes(): String{
         return $this->wholes;
     }
 
     /**
-     * Returns the number's decimal part; it is any sequence of digits or an empty string.
+     * Returns the number's decimal part; it is any sequence of digits or `""`.
      *
-     * @returns     String
+     * @return      String
      * `String`
-     * Returns the number's decimal part; it is any sequence of digits or an empty string.
+     * Returns the number's decimal part; it is any sequence of digits or `""`.
      */
-    function getDecimals(): String{
+    public function getDecimals(): String{
         return $this->decimals;
     }
 
     /**
-     * Returns the "E" indicator; it is `"E"`, `"e"` or an empty string.
+     * Returns the "E" indicator; it is `"E"`, `"e"` or `""`.
      *
-     * @returns     String
+     * @return      String
      * `String`
-     * Returns the "E" indicator; it is `"E"`, `"e"` or an empty string.
+     * Returns the "E" indicator; it is `"E"`, `"e"` or `""`.
      */
-    function getEIndicator(): String{
+    public function getEIndicator(): String{
         return $this->EIndicator;
     }
 
     /**
-     * Returns the E-notation's exponent's sign; it is `"+"`, `"-"` or an empty string.
+     * Returns the E-notation's exponent's sign; it is `"+"`, `"-"` or `""`.
      *
-     * @returns     String
+     * @return      String
      * `String`
-     * Returns the E-notation's exponent's sign; it is `"+"`, `"-"` or an empty string.
+     * Returns the E-notation's exponent's sign; it is `"+"`, `"-"` or `""`.
      */
-    function getESign(): String{
+    public function getESign(): string{
         return $this->ESign;
     }
 
     /**
-     * Returns the E-notation's exponent; it is any sequence of digits or an empty string.
+     * Returns the E-notation's exponent; it is any sequence of digits or `""`.
      *
-     * @returns     String
+     * @return      String
      * `String`
-     * Returns the E-notation's exponent; it is any sequence of digits or an empty string.
+     * Returns the E-notation's exponent; it is any sequence of digits or `""`.
      */
-    function getEExponent(): String{
+    public function getEExponent(): String{
         return $this->EExponent;
     }
 
     /**
      * Returns the number as {@see Float}
      *
-     * @returns     Float
+     * @return      Float
      * `Float`
      * Returns the number as {@see Float}
      */
-    function toFloat(): Float{
+    public function toFloat(): Float{
         if($this->floatified === NULL){
             $this->floatified = (Float)(String)$this;
         }
@@ -216,13 +212,13 @@ class NumberToken implements NumericToken
     }
 
     /**
-     * Returns the number as {@see Int} if possible, otherwise returns it as {@see Float}.
+     * Returns the number as {@see Int} if possible, otherwise {@see Float}.
      *
-     * @returns     Int|Float
+     * @return      Int|Float
      * `Int|Float`
-     * Returns the number as {@see Int} if possible, otherwise returns it as {@see Float}.
+     * Returns the number as {@see Int} if possible, otherwise {@see Float}.
      */
-    function toNumber(){
+    public function toNumber(){
         if($this->numberified === NULL){
             $float = $this->toFloat();
             $floatAsInt = (int)$float;

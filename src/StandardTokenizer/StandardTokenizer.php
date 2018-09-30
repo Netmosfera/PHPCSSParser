@@ -1,8 +1,6 @@
-<?php declare(strict_types = 1); // atom
+<?php declare(strict_types = 1);
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
-
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
@@ -29,8 +27,6 @@ use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
 
-//[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
-
 class StandardTokenizer
 {
     private $eatIdentifierToken;
@@ -52,7 +48,15 @@ class StandardTokenizer
     private $digitRegExpSet;
     private $URLTokenBlacklistedCodePointsRegExpSet;
 
-    function __construct(){
+    private $eatNumberToken;
+    private $eatNameToken;
+    private $eatBadURLRemnants;
+    private $eatURLToken;
+    private $eatAnyEscape;
+    private $eatNullEscape;
+    private $eatValidEscape;
+
+    public function __construct(){
         $this->nameStartRegExpSet = SpecData::NAME_STARTERS_SET;
         $this->nameRegExpSet = SpecData::NAME_ITEMS_SET;
         $this->hexDigitRegExpSet = SpecData::HEX_DIGITS_SET;
@@ -61,52 +65,96 @@ class StandardTokenizer
         $this->newlineRegExp = SpecData::NEWLINES_SEQS_SET;
         $this->newlineRegExpSet = SpecData::NEWLINES_SET;
         $this->digitRegExpSet = SpecData::DIGITS_SET;
-        $this->URLTokenBlacklistedCodePointsRegExpSet = SpecData::URLTOKEN_BIT_CP_NOT_SET;
+        $this->URLTokenBlacklistedCodePointsRegExpSet =
+            SpecData::URLTOKEN_BIT_CP_NOT_SET;
 
-        //----------------------------------------------------------------------------------
+        //----------------------------------------------------------------------
 
         $this->eatNumberToken = function(Traverser $traverser): ?NumberToken{
             return eatNumberToken($traverser, $this->digitRegExpSet);
         };
 
         $this->eatNameToken = function(Traverser $traverser): ?NameToken{
-            return eatNameToken($traverser, $this->nameRegExpSet, $this->eatValidEscape);
+            return eatNameToken(
+                $traverser,
+                $this->nameRegExpSet,
+                $this->eatValidEscape
+            );
         };
 
-        $this->eatBadURLRemnants = function(Traverser $traverser): BadURLRemnantsToken{
+        $this->eatBadURLRemnants = function(
+            Traverser $traverser
+        ): BadURLRemnantsToken{
             return eatBadURLRemnantsToken($traverser, $this->eatAnyEscape);
         };
 
         $this->eatURLToken = function(Traverser $traverser): ?AnyURLToken{
-            return eatURLToken($traverser, $this->whitespaceRegexSet, $this->URLTokenBlacklistedCodePointsRegExpSet, $this->eatValidEscape, $this->eatBadURLRemnants);
+            return eatURLToken(
+                $traverser,
+                $this->whitespaceRegexSet,
+                $this->URLTokenBlacklistedCodePointsRegExpSet,
+                $this->eatValidEscape,
+                $this->eatBadURLRemnants
+            );
         };
 
         $this->eatAnyEscape = function(Traverser $traverser): ?EscapeToken{
-            return ($this->eatValidEscape)($traverser) ?? ($this->eatNullEscape)($traverser);
+            return
+                ($this->eatValidEscape)($traverser) ??
+                ($this->eatNullEscape)($traverser);
         };
 
-        $this->eatNullEscape = function(Traverser $traverser): ?ValidEscapeToken{
+        $this->eatNullEscape = function(
+            Traverser $traverser
+        ): ?ValidEscapeToken{
             return eatNullEscapeToken($traverser, $this->newlineRegExp);
         };
 
-        $this->eatValidEscape = function(Traverser $traverser): ?ValidEscapeToken{
-            return eatValidEscapeToken($traverser, $this->hexDigitRegExpSet, $this->whitespaceRegExp, $this->newlineRegExpSet);
+        $this->eatValidEscape = function(
+            Traverser $traverser
+        ): ?ValidEscapeToken{
+            return eatValidEscapeToken(
+                $traverser,
+                $this->hexDigitRegExpSet,
+                $this->whitespaceRegExp,
+                $this->newlineRegExpSet
+            );
         };
 
-        $this->eatIdentifierToken = function(Traverser $traverser): ?IdentifierToken{
-            return eatIdentifierToken($traverser, $this->nameStartRegExpSet, $this->nameRegExpSet, $this->eatValidEscape);
+        $this->eatIdentifierToken = function(
+            Traverser $traverser
+        ): ?IdentifierToken{
+            return eatIdentifierToken(
+                $traverser,
+                $this->nameStartRegExpSet,
+                $this->nameRegExpSet,
+                $this->eatValidEscape
+            );
         };
 
-        $this->eatIdentifierLikeToken = function(Traverser $traverser): ?IdentifierLikeToken{
-            return eatIdentifierLikeToken($traverser, $this->eatIdentifierToken, $this->whitespaceRegexSet, $this->eatURLToken);
+        $this->eatIdentifierLikeToken = function(
+            Traverser $traverser
+        ): ?IdentifierLikeToken{
+            return eatIdentifierLikeToken(
+                $traverser,
+                $this->eatIdentifierToken,
+                $this->whitespaceRegexSet,
+                $this->eatURLToken
+            );
         };
 
-        $this->eatWhitespaceToken = function(Traverser $traverser): ?WhitespaceToken{
+        $this->eatWhitespaceToken = function(
+            Traverser $traverser
+        ): ?WhitespaceToken{
             return eatWhitespaceToken($traverser, $this->whitespaceRegexSet);
         };
 
         $this->eatNumericToken = function(Traverser $traverser): ?NumericToken{
-            return eatNumericToken($traverser, $this->eatNumberToken, $this->eatIdentifierToken);
+            return eatNumericToken(
+                $traverser,
+                $this->eatNumberToken,
+                $this->eatIdentifierToken
+            );
         };
 
         $this->eatHashToken = function(Traverser $traverser): ?HashToken{
@@ -114,10 +162,16 @@ class StandardTokenizer
         };
 
         $this->eatStringToken = function(Traverser $traverser): ?StringToken{
-            return eatStringToken($traverser, $this->newlineRegExpSet, $this->eatAnyEscape);
+            return eatStringToken(
+                $traverser,
+                $this->newlineRegExpSet,
+                $this->eatAnyEscape
+            );
         };
 
-        $this->eatAtKeywordToken = function(Traverser $traverser): ?AtKeywordToken{
+        $this->eatAtKeywordToken = function(
+            Traverser $traverser
+        ): ?AtKeywordToken{
             return eatAtKeywordToken($traverser, $this->eatIdentifierToken);
         };
 
@@ -126,7 +180,7 @@ class StandardTokenizer
         };
     }
 
-    function tokenize(String $CSSCode): Array{
+    public function tokenize(String $CSSCode): Array{
         $traverser = new Traverser($CSSCode);
 
         $tokens = [];
