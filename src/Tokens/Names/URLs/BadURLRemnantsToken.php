@@ -29,13 +29,13 @@ class BadURLRemnantsToken implements Token
      * `Array<Int, BadURLRemnantsBitToken|EscapeToken>`
      * @TODOC
      *
-     * @param       Bool                                    $terminatedWithEOF
+     * @param       Bool                                    $precedesEOF
      * `Bool`
      * @TODOC
      */
-    public function __construct(Array $pieces, Bool $terminatedWithEOF){
+    public function __construct(Array $pieces, Bool $precedesEOF){
         $this->_pieces = $pieces;
-        $this->_precedesEOF = $terminatedWithEOF;
+        $this->_precedesEOF = $precedesEOF;
     }
 
     /** @inheritDoc */

@@ -8,8 +8,7 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 /**
- * A {@see URLToken} is `url(` followed by words and delimiters, and finally
- * followed by `)`.
+ * A {@see URLToken} is `url(` followed by words and delimiters, and finally by `)`.
  *
  * The code `url(path/image.gif)` represents a single {@see URLToken}, unlike
  * `url('path/image.gif')` that is instead a sequence of three tokens:
@@ -63,7 +62,7 @@ class URLToken implements AnyURLToken
      * `WhitespaceToken|NULL`
      * @TODOC
      *
-     * @param       Bool                                    $terminatedWithEOF
+     * @param       Bool                                    $precedesEOF
      * `Bool`
      * @TODOC
      */
@@ -71,12 +70,12 @@ class URLToken implements AnyURLToken
         ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
         ?WhitespaceToken $whitespaceAfter,
-        Bool $terminatedWithEOF
+        Bool $precedesEOF
     ){
         $this->_whitespaceBefore = $whitespaceBefore;
         $this->_pieces = $pieces;
         $this->_whitespaceAfter = $whitespaceAfter;
-        $this->_precedesEOF = $terminatedWithEOF;
+        $this->_precedesEOF = $precedesEOF;
     }
 
     /** @inheritDoc */

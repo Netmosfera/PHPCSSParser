@@ -8,11 +8,11 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 /**
  * A {@see BadStringToken} is {@see StringToken} terminated with a newline.
  *
- * Newlines are not allowed in a {@see StringToken}, unless they appear as a
- * escape sequence.
+ * Newlines are not allowed in a {@see StringToken}, unless they appear as a escape
+ * sequence.
  *
- * Strings terminated with EOF are not considered "bad" (i.e. not usable), but
- * they are considered parse errors.
+ * N.B. Strings terminated with EOF are not considered "bad", but they are considered
+ * parse errors.
  */
 class BadStringToken implements AnyStringToken
 {

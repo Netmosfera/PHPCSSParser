@@ -14,15 +14,10 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class EOFEscapeTokenTest extends TestCase
 {
     public function test1(){
-        $EOFEscape1 = new CheckedEOFEscapeToken();
-        $EOFEscape2 = new CheckedEOFEscapeToken();
-
-        assertMatch($EOFEscape1, $EOFEscape2);
-
-        assertMatch("\\", (String)$EOFEscape1);
-        assertMatch((String)$EOFEscape1, (String)$EOFEscape2);
-
-        assertMatch("", $EOFEscape1->intendedValue());
-        assertMatch($EOFEscape1->intendedValue(), $EOFEscape2->intendedValue());
+        $escape1 = new CheckedEOFEscapeToken();
+        $escape2 = new CheckedEOFEscapeToken();
+        assertMatch($escape1, $escape2);
+        assertMatch((String)$escape1, "\\");
+        assertMatch($escape1->intendedValue(), "");
     }
 }

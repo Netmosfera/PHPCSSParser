@@ -5,9 +5,8 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 /**
  * A {@see ContinuationEscapeToken} is `\` followed by a newline.
  *
- * This has a use in CSS strings; users are allowed to go on multiple lines
- * without affecting the string's value. For example, the following strings have
- * equivalent value:
+ * This has a use in CSS strings; users are allowed to go on multiple lines  without
+ * affecting the string's value. For example, the following strings have equivalent value:
  *
  * ```
  * div::before{
@@ -17,8 +16,8 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
  * }
  * ```
  *
- * The newline is of length `1` unless it's `\r\n`, whose actual computed value
- * value in CSS (`\n`), however, is also of length `1`.
+ * The newline is of length `1` unless it's `\r\n`, whose actual computed value value in
+ * CSS (`\n`), however, is also of length `1`.
  */
 class ContinuationEscapeToken implements NullEscapeToken
 {

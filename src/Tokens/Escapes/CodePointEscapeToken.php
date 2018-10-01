@@ -82,8 +82,8 @@ class CodePointEscapeToken implements ValidEscapeToken
      *
      * For example `\FFFFFF` is invalid, as the max code point is `\10FFFF`.
      *
-     * When the code point is invalid, {@see self::getValue()} will return the
-     * `U+FFFD` replacement character.
+     * When the code point is invalid, {@see self::getValue()} will return the `U+FFFD`
+     * replacement character.
      *
      * @return      Bool
      * `Bool`
@@ -121,9 +121,9 @@ class CodePointEscapeToken implements ValidEscapeToken
     /**
      * Returns the whitespace terminator of the escape sequence.
      *
-     * A single whitespace character is allowed after a code point escape as
-     * escape terminator. For example, `\4E E` in CSS equals to `"\u{4E}E"`
-     * (with no space in between the two) in PHP.
+     * A single whitespace character is allowed after a code point escape as terminator.
+     * For example, `\4E E` in CSS equals to `"\u{4E}E"` (with no space in between the
+     * two) in PHP.
      *
      * If any, the returned token has always a computed length of `1`.
      *

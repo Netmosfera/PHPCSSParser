@@ -7,8 +7,8 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
 /**
  * A {@see CDCToken} represents the sequence of characters `-->`.
  *
- * This token has no actual purpose; originally it was used to hide CSS code
- * embedded in HTML code to old user-agents:
+ * This token has no actual purpose; originally it was used to hide CSS code embedded in
+ * HTML code to old user-agents:
  *
  * ```css
  * <style><!--

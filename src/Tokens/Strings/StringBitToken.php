@@ -7,8 +7,7 @@ use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 use Netmosfera\PHPCSSAST\SpecData;
 
 /**
- * A {@see StringBitToken} is sequence of {@see SpecData::STRING_BIT_CP_SET}
- * code points.
+ * A {@see StringBitToken} is sequence of {@see SpecData::STRING_BIT_CP_SET} code points.
  */
 class StringBitToken implements EvaluableToken
 {

@@ -8,10 +8,10 @@ use function strpos;
 
 class CheckedCommentToken extends CommentToken
 {
-    public function __construct(String $text, Bool $terminatedWithEOF){
+    public function __construct(String $text, Bool $precedesEOF){
         if(strpos($text, "*/") !== FALSE){
             throw new InvalidToken();
         }
-        parent::__construct($text, $terminatedWithEOF);
+        parent::__construct($text, $precedesEOF);
     }
 }

@@ -37,18 +37,18 @@ class StringToken implements AnyStringToken
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      *
-     * @param       Bool                                    $terminatedWithEOF
+     * @param       Bool                                    $precedesEOF
      * `Bool`
      * @TODOC
      */
     public function __construct(
         String $delimiter,
         Array $pieces,
-        Bool $terminatedWithEOF
+        Bool $precedesEOF
     ){
         $this->_delimiter = $delimiter;
         $this->_pieces = $pieces;
-        $this->_precedesEOF = $terminatedWithEOF;
+        $this->_precedesEOF = $precedesEOF;
     }
 
     /** @inheritDoc */

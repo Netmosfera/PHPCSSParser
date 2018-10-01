@@ -2,14 +2,15 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
 
+use Netmosfera\PHPCSSAST\SpecData;
+
 /**
  * A {@see EncodedCPEscapeToken} is `\` followed by an encoded code point.
  *
- * With the exception of code points that are hex digits and the newline code
- * points, `\` followed by an encoded code point has a value of that very code
- * point; for example, the value of `\x` is `x`. This is used in strings, for
- * example, as this allows to escape the string delimiter, e.g.
- * `'Bon Jovi - It\'s my life'`.
+ * With the exception of code points that are hex digits and the newline code  points, `\`
+ * followed by an encoded code point has a value of that very code point; for example, the
+ * value of `\x` is `x`. This is used in strings, for example, as this allows to escape
+ * the string delimiter, e.g. `'Bon Jovi - It\'s my life'`.
  */
 class EncodedCodePointEscapeToken implements ValidEscapeToken
 {
@@ -35,7 +36,9 @@ class EncodedCodePointEscapeToken implements ValidEscapeToken
 
     /** @inheritDoc */
     public function intendedValue(): String{
-        return $this->_codePoint;
+        return $this->_codePoint === "\0" ?
+            SpecData::REPLACEMENT_CHARACTER :
+            $this->_codePoint;
     }
 
     /** @inheritDoc */

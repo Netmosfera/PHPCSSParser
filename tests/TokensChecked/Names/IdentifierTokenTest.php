@@ -19,23 +19,28 @@ use PHPUnit\Framework\TestCase;
 class IdentifierTokenTest extends TestCase
 {
     public function data1(){
+        // --
         $names[] = [new CheckedNameBitToken("--")];
 
+        // - followed by valid escape
         $names[] = [
             new CheckedNameBitToken("-"),
             new CheckedEncodedCodePointEscapeToken("x")
         ];
 
+        // - followed by name-start code point
         $names[] = [new CheckedNameBitToken("-a")];
         $names[] = [new CheckedNameBitToken("-A")];
         $names[] = [new CheckedNameBitToken("-_")];
         $names[] = [new CheckedNameBitToken("-\u{2764}")];
 
+        // a name-start code point
         $names[] = [new CheckedNameBitToken("a")];
         $names[] = [new CheckedNameBitToken("A")];
         $names[] = [new CheckedNameBitToken("_")];
         $names[] = [new CheckedNameBitToken("\u{2764}")];
 
+        // a valid escape
         $names[] = [new CheckedEncodedCodePointEscapeToken("x")];
 
         return cartesianProduct($names);
@@ -47,14 +52,9 @@ class IdentifierTokenTest extends TestCase
         $name2 = new CheckedNameToken($name);
         $identifier1 = new CheckedIdentifierToken($name1);
         $identifier2 = new CheckedIdentifierToken($name2);
-
         assertMatch($identifier1, $identifier2);
-
-        assertMatch((String)$name1, (String)$identifier1);
-        assertMatch((String)$identifier1, (String)$identifier2);
-
-        assertMatch($name1, $identifier1->name());
-        assertMatch($identifier1->name(), $identifier2->name());
+        assertMatch((String)$identifier2, (String)$identifier1);
+        assertMatch($identifier2->name(), $identifier1->name());
     }
 
     // @TODO invalids

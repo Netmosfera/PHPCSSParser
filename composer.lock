@@ -224,12 +224,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Netmosfera/Sniffs.git",
-                "reference": "c53464133c7ebdca787f3698c4e44e99ef5bade7"
+                "reference": "8eb9ffec04b31c936ac816bd10d8f0624495647c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Netmosfera/Sniffs/zipball/c53464133c7ebdca787f3698c4e44e99ef5bade7",
-                "reference": "c53464133c7ebdca787f3698c4e44e99ef5bade7",
+                "url": "https://api.github.com/repos/Netmosfera/Sniffs/zipball/8eb9ffec04b31c936ac816bd10d8f0624495647c",
+                "reference": "8eb9ffec04b31c936ac816bd10d8f0624495647c",
                 "shasum": ""
             },
             "require": {
@@ -246,7 +246,7 @@
             "license": [
                 "MIT"
             ],
-            "time": "2018-09-30T23:43:15+00:00"
+            "time": "2018-10-01T04:16:01+00:00"
         },
         {
             "name": "phar-io/manifest",

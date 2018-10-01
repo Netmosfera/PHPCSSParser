@@ -22,13 +22,8 @@ class HashTokenTest extends TestCase
         $name2 = new CheckedNameToken([$nameBit2]);
         $hash1 = new CheckedHashToken($name1);
         $hash2 = new CheckedHashToken($name2);
-
         assertMatch($hash1, $hash2);
-
-        assertMatch("#BADA55", (String)$hash1);
-        assertMatch((String)$hash1, (String)$hash2);
-
-        assertMatch($name2, $hash1->name());
-        assertMatch($hash1->name(), $hash2->name());
+        assertMatch((String)$hash1, "#BADA55");
+        assertMatch($hash1->name(), $name2);
     }
 }

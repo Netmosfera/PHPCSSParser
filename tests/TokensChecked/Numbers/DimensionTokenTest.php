@@ -28,16 +28,9 @@ class DimensionTokenTest extends TestCase
         $number2 = new CheckedNumberToken("-", "123", "456", "e", "", "3");
         $dimension1 = new CheckedDimensionToken($number1, $identifier1);
         $dimension2 = new CheckedDimensionToken($number2, $identifier2);
-
         assertMatch($dimension1, $dimension2);
-
-        assertMatch("-123.456e3iau", (String)$dimension1);
-        assertMatch((String)$dimension1, (String)$dimension2);
-
-        assertMatch($number2, $dimension1->number());
-        assertMatch($dimension1->number(), $dimension2->number());
-
-        assertMatch($identifier2, $dimension1->unit());
-        assertMatch($dimension1->unit(), $dimension2->unit());
+        assertMatch((String)$dimension1, "-123.456e3iau");
+        assertMatch($dimension1->number(), $number2);
+        assertMatch($dimension1->unit(), $identifier2);
     }
 }

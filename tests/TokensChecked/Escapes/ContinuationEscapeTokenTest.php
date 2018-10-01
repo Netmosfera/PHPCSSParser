@@ -27,19 +27,12 @@ class ContinuationEscapeTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $newline){
-        $continuation1 = new CheckedContinuationEscapeToken($newline);
-        $continuation2 = new CheckedContinuationEscapeToken($newline);
-
-        assertMatch($continuation1, $continuation2);
-
-        assertMatch("\\" . $newline, (String)$continuation1);
-        assertMatch((String)$continuation1, (String)$continuation2);
-
-        assertMatch($newline, $continuation1->codePoint());
-        assertMatch($continuation1->codePoint(), $continuation2->codePoint());
-
-        assertMatch("", $continuation1->intendedValue());
-        assertMatch($continuation1->intendedValue(), $continuation2->intendedValue());
+        $escape1 = new CheckedContinuationEscapeToken($newline);
+        $escape2 = new CheckedContinuationEscapeToken($newline);
+        assertMatch($escape1, $escape2);
+        assertMatch((String)$escape1, "\\" . $newline);
+        assertMatch($escape1->codePoint(), $newline);
+        assertMatch($escape1->intendedValue(), "");
     }
 
     public function data2(){
@@ -47,6 +40,7 @@ class ContinuationEscapeTokenTest extends TestCase
         $set->selectAll();
         $set->removeAll(getNewlinesSet());
         $seqs = getCodePointsFromRanges($set);
+        $seqs[] = "\r\n\r\n";
         $seqs[] = "\n\n";
         $seqs[] = "f";
         $seqs[] = "F";

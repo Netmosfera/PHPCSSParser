@@ -15,7 +15,7 @@ use function preg_match;
 
 class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
 {
-    public function __construct(Array $pieces, Bool $terminatedWithEOF){
+    public function __construct(Array $pieces, Bool $precedesEOF){
         if(isArraySequence($pieces) === FALSE){
             throw new TypeError(
                 "The given `\$pieces` is not an array sequence"
@@ -51,7 +51,7 @@ class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
         }
 
         // @TODO if the last $pieces is eofescape,
-        // then $terminatedWithEOF must be true
+        // then $precedesEOF must be true
 
         $firstPiece = $pieces[0];
         if((
@@ -71,6 +71,6 @@ class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
             ));
         }
 
-        parent::__construct($pieces, $terminatedWithEOF);
+        parent::__construct($pieces, $precedesEOF);
     }
 }

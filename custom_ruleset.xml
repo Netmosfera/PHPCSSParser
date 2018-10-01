@@ -8,7 +8,7 @@
 
     <rule ref="NetmosferaSniffs.Files.EnforceMaxLineLength">
         <properties>
-            <property name="maxLength" type="int" value="80"/>
+            <property name="maxLength" type="int" value="90"/>
         </properties>
     </rule>
 

@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
 
+use Netmosfera\PHPCSSAST\SpecData;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
@@ -18,7 +19,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  * #1 | test getters
  * #2 | test invalid
  */
-class EncodedCPEscapeTokenTest extends TestCase
+class EncodedCodePointEscapeTokenTest extends TestCase
 {
     public function data1(){
         $set = getEncodedCodePointEscapeSet();
@@ -27,16 +28,16 @@ class EncodedCPEscapeTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $codePoint){
-        $CPEscape1 = new CheckedEncodedCodePointEscapeToken($codePoint);
-        $CPEscape2 = new CheckedEncodedCodePointEscapeToken($codePoint);
-
-        assertMatch($CPEscape1, $CPEscape2);
-
-        assertMatch("\\" . $codePoint, (String)$CPEscape1);
-        assertMatch((String)$CPEscape1, (String)$CPEscape2);
-
-        assertMatch($codePoint, $CPEscape1->intendedValue());
-        assertMatch($CPEscape1->intendedValue(), $CPEscape2->intendedValue());
+        $escape1 = new CheckedEncodedCodePointEscapeToken($codePoint);
+        $escape2 = new CheckedEncodedCodePointEscapeToken($codePoint);
+        assertMatch($escape1, $escape2);
+        assertMatch((String)$escape1, "\\" . $codePoint);
+        if($codePoint === "\0"){
+            $intendedValue = SpecData::REPLACEMENT_CHARACTER;
+        }else{
+            $intendedValue = $codePoint;
+        }
+        assertMatch($escape1->intendedValue(), $intendedValue);
     }
 
     public function data2(){

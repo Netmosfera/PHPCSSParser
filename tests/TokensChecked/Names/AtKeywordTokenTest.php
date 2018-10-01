@@ -25,13 +25,8 @@ class AtKeywordTokenTest extends TestCase
         $identifier2 = new CheckedIdentifierToken($name2);
         $atKeyword1 = new CheckedAtKeywordToken($identifier1);
         $atKeyword2 = new CheckedAtKeywordToken($identifier2);
-
         assertMatch($atKeyword1, $atKeyword2);
-
-        assertMatch("@import", (String)$atKeyword1);
-        assertMatch((String)$atKeyword1, (String)$atKeyword2);
-
-        assertMatch($identifier2, $atKeyword1->identifier());
-        assertMatch($atKeyword1->identifier(), $atKeyword2->identifier());
+        assertMatch((String)$atKeyword1, "@import");
+        assertMatch($atKeyword1->identifier(), $identifier2);
     }
 }

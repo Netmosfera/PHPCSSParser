@@ -35,13 +35,13 @@ class CommentToken implements Token
      * `String`
      * The comment's text.
      *
-     * @param       Bool                                    $terminatedWithEOF
+     * @param       Bool                                    $precedesEOF
      * `Bool`
      * Whether the comment is unterminated.
      */
-    public function __construct(String $text, Bool $terminatedWithEOF){
+    public function __construct(String $text, Bool $precedesEOF){
         $this->_text = $text;
-        $this->_precedesEOF = $terminatedWithEOF;
+        $this->_precedesEOF = $precedesEOF;
     }
 
     /** @inheritDoc */

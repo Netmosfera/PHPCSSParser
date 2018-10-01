@@ -8,8 +8,8 @@ use function Netmosfera\PHPCSSAST\match;
  * An {@see IdentifierToken} is a root {@see NameToken}.
  *
  * The initial part of an {@see IdentifierToken} cannot be confused with a
- * {@see NumberToken}; that is, it cannot start with a digit and it cannot start
- * with `-` followed by a digit.
+ * {@see NumberToken}; that is, it cannot start with a digit and it cannot start with `-`
+ * followed by a digit.
  */
 class IdentifierToken implements IdentifierLikeToken
 {

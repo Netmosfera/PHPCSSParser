@@ -11,14 +11,14 @@ class CheckedNumberToken extends NumberToken
         String $sign,
         String $wholes,
         String $decimals,
-        String $ELetter,
+        String $EIndicator,
         String $ESign,
         String $EExponent
     ){
         if(
             ($wholes === "" && $decimals === "") ||
-            ($ELetter !== "" && $EExponent === "") ||
-            ($EExponent !== "" && $ELetter === "") ||
+            ($EIndicator !== "" && $EExponent === "") ||
+            ($EExponent !== "" && $EIndicator === "") ||
             ($ESign !== "" && $EExponent === "") ||
 
             ($sign !== "" && $sign !== "+" && $sign !== "-") ||
@@ -35,7 +35,7 @@ class CheckedNumberToken extends NumberToken
             $sign,
             $wholes,
             $decimals,
-            $ELetter,
+            $EIndicator,
             $ESign,
             $EExponent
         );

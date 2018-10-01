@@ -25,13 +25,8 @@ class FunctionTokenTest extends TestCase
         $identifier2 = new CheckedIdentifierToken($name2);
         $function1 = new CheckedFunctionToken($identifier1);
         $function2 = new CheckedFunctionToken($identifier2);
-
         assertMatch($function1, $function2);
-
-        assertMatch("linear-gradient(", (String)$function1);
-        assertMatch((String)$function1, (String)$function2);
-
-        assertMatch($identifier2, $function1->identifier());
-        assertMatch($function1->identifier(), $function2->identifier());
+        assertMatch((String)$function1, "linear-gradient(");
+        assertMatch($function1->identifier(), $identifier2);
     }
 }

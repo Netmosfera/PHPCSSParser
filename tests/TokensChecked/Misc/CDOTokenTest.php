@@ -16,10 +16,7 @@ class CDOTokenTest extends TestCase
     public function test1(){
         $CDO1 = new CheckedCDOToken();
         $CDO2 = new CheckedCDOToken();
-
         assertMatch($CDO1, $CDO2);
-
-        assertMatch("<!--", (String)$CDO1);
-        assertMatch((String)$CDO1, (String)$CDO2);
+        assertMatch((String)$CDO1, "<!--");
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
+use Netmosfera\PHPCSSAST\SpecData;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
@@ -20,34 +21,36 @@ class NameTokenTest extends TestCase
     public function test1(){
         $pieces = [];
         for($i = 0; $i < 2; $i++){
-            $ws1 = new CheckedWhitespaceToken(" ");
-            $ws2 = new CheckedWhitespaceToken("\t");
+            $whitespace1 = new CheckedWhitespaceToken(" ");
+            $whitespace2 = new CheckedWhitespaceToken("\t");
             $pieces[$i] = [
                 new CheckedNameBitToken("A"),
                 new CheckedEncodedCodePointEscapeToken("@"),
                 new CheckedNameBitToken("B"),
-                new CheckedCodePointEscapeToken("FFAACC", $ws1),
+                new CheckedCodePointEscapeToken("FFAACC", $whitespace1),
                 new CheckedNameBitToken("C"),
-                new CheckedCodePointEscapeToken("FFAA", $ws2),
+                new CheckedCodePointEscapeToken("FFAA", $whitespace2),
+                new CheckedEncodedCodePointEscapeToken("\0"),
                 new CheckedNameBitToken("D\0D"),
             ];
         }
 
-        [$pieces1, $pieces2] = $pieces;
+        $intendedValue  = "A";
+        $intendedValue .= "@";
+        $intendedValue .= "B";
+        $intendedValue .= SpecData::REPLACEMENT_CHARACTER;
+        $intendedValue .= "C";
+        $intendedValue .= "\u{FFAA}";
+        $intendedValue .= SpecData::REPLACEMENT_CHARACTER;
+        $intendedValue .= "D" . SpecData::REPLACEMENT_CHARACTER . "D";
 
+        [$pieces1, $pieces2] = $pieces;
         $name1 = new CheckedNameToken($pieces1);
         $name2 = new CheckedNameToken($pieces2);
-
         assertMatch($name1, $name2);
-
-        assertMatch(implode("", $pieces1), (String)$name1);
-        assertMatch((String)$name1, (String)$name2);
-
-        assertMatch("A@B\u{FFFD}C\u{FFAA}D\u{FFFD}D", $name1->intendedValue());
-        assertMatch($name1->intendedValue(), $name2->intendedValue());
-
-        assertMatch($pieces1, $name1->pieces());
-        assertMatch($name1->pieces(), $name2->pieces());
+        assertMatch((String)$name1, implode("", $pieces1));
+        assertMatch($name1->intendedValue(), $intendedValue);
+        assertMatch($name1->pieces(), $pieces2);
     }
 
     // @TODO test invalid cases

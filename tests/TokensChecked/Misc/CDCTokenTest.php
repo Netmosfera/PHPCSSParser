@@ -16,10 +16,7 @@ class CDCTokenTest extends TestCase
     public function test1(){
         $CDC1 = new CheckedCDCToken();
         $CDC2 = new CheckedCDCToken();
-
         assertMatch($CDC1, $CDC2);
-
-        assertMatch("-->", (String)$CDC1);
-        assertMatch((String)$CDC1, (String)$CDC2);
+        assertMatch((String)$CDC1, "-->");
     }
 }
