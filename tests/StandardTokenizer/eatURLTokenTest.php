@@ -7,10 +7,10 @@ use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatURLToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCPEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCPEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
@@ -143,7 +143,7 @@ class eatURLTokenTest extends TestCase
         $ve = "\\66ff";
         $traverser = getTraverser($prefix, $startWS . $ve . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
-        $escape = new CheckedCodePointEscapeToken("66ff", NULL);
+        $escape = new CheckedCPEscapeToken("66ff", NULL);
         $expected = new CheckedURLToken($startWS, [$escape], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){
             self::fail();
@@ -290,7 +290,7 @@ class eatURLTokenTest extends TestCase
         $ve = "\\66ff";
         $traverser = getTraverser($prefix, $startWS . $vs . $ve . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
-        $escape = new CheckedCodePointEscapeToken("FFaaCC", NULL);
+        $escape = new CheckedCPEscapeToken("FFaaCC", NULL);
         $expected = new CheckedURLToken(
             $startWS, [new CheckedURLBitToken($vs), $escape], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){
@@ -371,16 +371,16 @@ class eatURLTokenTest extends TestCase
         $startWS = new CheckedWhitespaceToken("\f");
         $endWS = new CheckedWhitespaceToken("\f");
         $pieces[] = new CheckedURLBitToken("string1");
-        $pieces[] = $escapes[] = new CheckedEncodedCodePointEscapeToken("x");
-        $pieces[] = $escapes[] = new CheckedEncodedCodePointEscapeToken("y");
-        $pieces[] = $escapes[] = new CheckedEncodedCodePointEscapeToken("z");
+        $pieces[] = $escapes[] = new CheckedEncodedCPEscapeToken("x");
+        $pieces[] = $escapes[] = new CheckedEncodedCPEscapeToken("y");
+        $pieces[] = $escapes[] = new CheckedEncodedCPEscapeToken("z");
         $pieces[] = new CheckedURLBitToken("string2");
-        $pieces[] = $escapes[] = new CheckedEncodedCodePointEscapeToken("#");
-        $pieces[] = $escapes[] = new CheckedEncodedCodePointEscapeToken("+");
+        $pieces[] = $escapes[] = new CheckedEncodedCPEscapeToken("#");
+        $pieces[] = $escapes[] = new CheckedEncodedCPEscapeToken("+");
         $pieces[] = new CheckedURLBitToken("string3");
-        $pieces[] = $escapes[] = new CheckedEncodedCodePointEscapeToken("@");
+        $pieces[] = $escapes[] = new CheckedEncodedCPEscapeToken("@");
         $pieces[] = new CheckedURLBitToken("string4");
-        $pieces[] = $escapes[] = new CheckedEncodedCodePointEscapeToken("#");
+        $pieces[] = $escapes[] = new CheckedEncodedCPEscapeToken("#");
         $pieces[] = new CheckedURLBitToken("string5");
         $URL = implode("", $pieces);
         $traverser = getTraverser($prefix, $startWS . $URL . $endWS . ")" . $rest);

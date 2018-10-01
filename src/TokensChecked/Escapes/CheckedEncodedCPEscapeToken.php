@@ -4,14 +4,15 @@ namespace Netmosfera\PHPCSSAST\TokensChecked\Escapes;
 
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCPEscapeToken;
 
-class CheckedEncodedCodePointEscapeToken extends EncodedCodePointEscapeToken
+class CheckedEncodedCPEscapeToken extends EncodedCPEscapeToken
 {
     public function __construct(String $codePoint){
-        if(preg_match(
-            '/^[' . SpecData::ENCODED_ESCAPE_SET . ']$/usD',
-            $codePoint
+        if(
+            preg_match(
+                '/^[' . SpecData::ENCODED_ESCAPE_SET . ']$/usD',
+                $codePoint
             ) === 0
         ){
             throw new InvalidToken();

@@ -6,7 +6,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatStringToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCPEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedBadStringToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringToken;
@@ -104,7 +104,7 @@ class eatStringTokenTest extends TestCase
         $expected = new CheckedStringToken($delimiter, $pieces, FALSE);
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
             if($traverser->eatStr("\\@") === NULL){ return NULL; }
-            return new CheckedEncodedCodePointEscapeToken("@");
+            return new CheckedEncodedCPEscapeToken("@");
         };
         $actual = eatStringToken($traverser, "\f", $eatEscape);
         assertMatch($actual, $expected);
@@ -117,7 +117,7 @@ class eatStringTokenTest extends TestCase
             $data[] = new CheckedStringBitToken("st");
             $data[] = new CheckedStringBitToken("str");
         }
-        $data[] = new CheckedEncodedCodePointEscapeToken("@");
+        $data[] = new CheckedEncodedCPEscapeToken("@");
         return $data;
     }
 }

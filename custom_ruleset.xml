@@ -6,6 +6,8 @@
 
     <description>Netmosfera Coding Standard</description>
 
+    <rule ref="NetmosferaSniffs.Files.EnforceMaxLineLengthOf80Characters"/>
+
     <rule ref="Generic.Arrays.ArrayIndent"/>
     <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
     <NOPE ref="Generic.Arrays.DisallowShortArraySyntax"/>

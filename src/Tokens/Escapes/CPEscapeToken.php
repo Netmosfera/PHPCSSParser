@@ -9,9 +9,9 @@ use Netmosfera\PHPCSSAST\SpecData;
 use IntlChar;
 
 /**
- * A {@see CodePointEscapeToken} is `\` followed by 1 up to 6 hex digits.
+ * A {@see CPEscapeToken} is `\` followed by one up to six hex digits.
  */
-class CodePointEscapeToken implements ValidEscapeToken
+class CPEscapeToken implements ValidEscapeToken
 {
     /**
      * @var         String
@@ -89,7 +89,7 @@ class CodePointEscapeToken implements ValidEscapeToken
      * `Bool`
      * Tells whether this code point is valid.
      */
-    public function isValidCodePoint(): Bool{
+    public function isValidCP(): Bool{
         return $this->getIntValue() <= IntlChar::CODEPOINT_MAX;
     }
 

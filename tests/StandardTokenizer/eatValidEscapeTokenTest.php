@@ -5,8 +5,8 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCPEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCPEscapeToken;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getHexDigitsSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatValidEscapeToken;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
@@ -64,7 +64,7 @@ class eatValidEscapeTokenTest extends TestCase
     /** @dataProvider data2 */
     public function test2(String $prefix, String $hexDigits, String $ws, String $rest){
         $traverser = getTraverser($prefix, "\\" . $hexDigits . $ws . $rest);
-        $expected = new CheckedCodePointEscapeToken($hexDigits,
+        $expected = new CheckedCPEscapeToken($hexDigits,
             $ws === "" ? NULL : new CheckedWhitespaceToken($ws));
         $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");
         assertMatch($actual, $expected);
@@ -87,7 +87,7 @@ class eatValidEscapeTokenTest extends TestCase
     /** @dataProvider data3 */
     public function test3(String $prefix, String $codePoint, String $rest){
         $traverser = getTraverser($prefix, "\\" . $codePoint . $rest);
-        $expected = new CheckedEncodedCodePointEscapeToken($codePoint);
+        $expected = new CheckedEncodedCPEscapeToken($codePoint);
         $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);

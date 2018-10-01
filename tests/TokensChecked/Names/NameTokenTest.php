@@ -3,8 +3,8 @@
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCPEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCPEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
@@ -22,11 +22,11 @@ class NameTokenTest extends TestCase
         for($i = 0; $i < 2; $i++){
             $pieces[$i] = [
                 new CheckedNameBitToken("A"),
-                new CheckedEncodedCodePointEscapeToken("@"),
+                new CheckedEncodedCPEscapeToken("@"),
                 new CheckedNameBitToken("B"),
-                new CheckedCodePointEscapeToken("FFAACC", new CheckedWhitespaceToken(" ")),
+                new CheckedCPEscapeToken("FFAACC", new CheckedWhitespaceToken(" ")),
                 new CheckedNameBitToken("C"),
-                new CheckedCodePointEscapeToken("FFAA", new CheckedWhitespaceToken("\t")),
+                new CheckedCPEscapeToken("FFAA", new CheckedWhitespaceToken("\t")),
                 new CheckedNameBitToken("D\0D"),
             ];
         }

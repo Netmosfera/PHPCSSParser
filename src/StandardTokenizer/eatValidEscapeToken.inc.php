@@ -4,8 +4,8 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCPEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCPEscapeToken;
 
 function eatValidEscapeToken(
     Traverser $traverser,
@@ -30,12 +30,12 @@ function eatValidEscapeToken(
         $whitespace = $traverser->eatExp($whitespaceRegExp);
         $whitespace = $whitespace === NULL ? NULL :
             new CheckedWhitespaceToken($whitespace);
-        return new CheckedCodePointEscapeToken($hexDigits, $whitespace);
+        return new CheckedCPEscapeToken($hexDigits, $whitespace);
     }
 
     $codePoint = $traverser->eatExp('[^' . $newlineRegExpSet . ']');
     if($codePoint !== NULL){
-        return new CheckedEncodedCodePointEscapeToken($codePoint);
+        return new CheckedEncodedCPEscapeToken($codePoint);
     }
 
     $traverser->rollback($beforeBackslash);

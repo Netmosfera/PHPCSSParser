@@ -17,8 +17,8 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
  * }
  * ```
  *
- * The code point is always of length `1`, except for `\r\n`, whose actual value
- * (`\n`), however, is also of length `1`.
+ * The newline is of length `1` unless it's `\r\n`, whose actual computed value
+ * value in CSS (`\n`), however, is also of length `1`.
  */
 class ContinuationEscapeToken implements NullEscapeToken
 {

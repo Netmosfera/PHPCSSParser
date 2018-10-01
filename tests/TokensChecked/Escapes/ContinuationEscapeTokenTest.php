@@ -27,22 +27,22 @@ class ContinuationEscapeTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $newline){
-        $continuationEscape1 = new CheckedContinuationEscapeToken($newline);
-        $continuationEscape2 = new CheckedContinuationEscapeToken($newline);
+        $CEscape1 = new CheckedContinuationEscapeToken($newline);
+        $CEscape2 = new CheckedContinuationEscapeToken($newline);
 
-        assertMatch($continuationEscape1, $continuationEscape2);
+        assertMatch($CEscape1, $CEscape2);
 
-        assertMatch("\\" . $newline, (String)$continuationEscape1);
-        assertMatch((String)$continuationEscape1, (String)$continuationEscape2);
+        assertMatch("\\" . $newline, (String)$CEscape1);
+        assertMatch((String)$CEscape1, (String)$CEscape2);
 
-        assertMatch($newline, $continuationEscape1->getCodePoint());
+        assertMatch($newline, $CEscape1->getCodePoint());
         assertMatch(
-            $continuationEscape1->getCodePoint(),
-            $continuationEscape2->getCodePoint()
+            $CEscape1->getCodePoint(),
+            $CEscape2->getCodePoint()
         );
 
-        assertMatch("", $continuationEscape1->getValue());
-        assertMatch($continuationEscape1->getValue(), $continuationEscape2->getValue());
+        assertMatch("", $CEscape1->getValue());
+        assertMatch($CEscape1->getValue(), $CEscape2->getValue());
     }
 
     public function data2(){
