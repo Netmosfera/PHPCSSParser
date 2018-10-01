@@ -8,15 +8,15 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 class CheckedWhitespaceToken extends WhitespaceToken
 {
-    public function __construct(String $whitespaces){
+    public function __construct(String $text){
         if(
             preg_match(
                 '/^[' . SpecData::WHITESPACES_SET . ']+$/usD',
-                $whitespaces
+                $text
             ) === 0
         ){
             throw new InvalidToken();
         }
-        parent::__construct($whitespaces);
+        parent::__construct($text);
     }
 }

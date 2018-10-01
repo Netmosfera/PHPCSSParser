@@ -31,7 +31,7 @@ class AtKeywordTokenTest extends TestCase
         assertMatch("@import", (String)$atKeyword1);
         assertMatch((String)$atKeyword1, (String)$atKeyword2);
 
-        assertMatch($identifier2, $atKeyword1->getIdentifier());
-        assertMatch($atKeyword1->getIdentifier(), $atKeyword2->getIdentifier());
+        assertMatch($identifier2, $atKeyword1->identifier());
+        assertMatch($atKeyword1->identifier(), $atKeyword2->identifier());
     }
 }

@@ -18,13 +18,13 @@ class NameToken implements EvaluableToken
      * @var         NameBitToken[]|ValidEscapeToken[]
      * `Array<Int, NameBitToken|ValidEscapeToken>`
      */
-    private $pieces;
+    private $_pieces;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $value;
+    private $_intendedValue;
 
     /**
      * @var         String|NULL
@@ -38,13 +38,13 @@ class NameToken implements EvaluableToken
      * The {@see NameToken}'s components.
      */
     public function __construct(Array $pieces){
-        $this->pieces = $pieces;
+        $this->_pieces = $pieces;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
         if($this->stringified === NULL){
-            $this->stringified = implode("", $this->pieces);
+            $this->stringified = implode("", $this->_pieces);
         }
         return $this->stringified;
     }
@@ -53,18 +53,18 @@ class NameToken implements EvaluableToken
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->pieces, $other->pieces);
+            match($this->_pieces, $other->_pieces);
     }
 
     /** @inheritDoc */
-    public function getValue(): String{
-        if($this->value === NULL){
-            $this->value = "";
-            foreach($this->pieces as $piece){
-                $this->value .= $piece->getValue();
+    public function intendedValue(): String{
+        if($this->_intendedValue === NULL){
+            $this->_intendedValue = "";
+            foreach($this->_pieces as $piece){
+                $this->_intendedValue .= $piece->intendedValue();
             }
         }
-        return $this->value;
+        return $this->_intendedValue;
     }
 
     /**
@@ -74,7 +74,7 @@ class NameToken implements EvaluableToken
      * `Array<Int, NameBitToken|ValidEscapeToken>`
      * Returns the {@see NameToken}'s components.
      */
-    public function getPieces(): Array{
-        return $this->pieces;
+    public function pieces(): Array{
+        return $this->_pieces;
     }
 }

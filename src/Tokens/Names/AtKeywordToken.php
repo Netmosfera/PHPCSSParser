@@ -14,7 +14,7 @@ class AtKeywordToken implements Token
      * @var         IdentifierToken
      * `IdentifierToken`
      */
-    private $identifier;
+    private $_identifier;
 
     /**
      * @param       IdentifierToken                         $identifier
@@ -22,19 +22,19 @@ class AtKeywordToken implements Token
      * The {@see IdentifierToken} to become a {@see AtKeywordToken}.
      */
     public function __construct(IdentifierToken $identifier){
-        $this->identifier = $identifier;
+        $this->_identifier = $identifier;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return "@" . $this->identifier;
+        return "@" . $this->_identifier;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->identifier, $other->identifier);
+            match($this->_identifier, $other->_identifier);
     }
 
     /**
@@ -44,7 +44,7 @@ class AtKeywordToken implements Token
      * `IdentifierToken`
      * Returns the {@see IdentifierToken} for this {@see AtKeywordToken}.
      */
-    public function getIdentifier(): IdentifierToken{
-        return $this->identifier;
+    public function identifier(): IdentifierToken{
+        return $this->_identifier;
     }
 }

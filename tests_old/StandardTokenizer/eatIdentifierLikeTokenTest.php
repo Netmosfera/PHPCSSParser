@@ -8,8 +8,8 @@ use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatIdentifierLikeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCPEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCPEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLToken;
@@ -149,13 +149,13 @@ class eatIdentifierLikeTokenTest extends TestCase
         };
 
         $c = function(String $cp){
-            return new CheckedEncodedCPEscapeToken($cp);
+            return new CheckedEncodedCodePointEscapeToken($cp);
         };
 
         $x = function(String $cp){
             $dec = IntlChar::ord($cp);
             $hex = dechex($dec);
-            return new CheckedCPEscapeToken($hex, NULL);
+            return new CheckedCodePointEscapeToken($hex, NULL);
         };
 
         $urls[] = new CheckedIdentifierToken(

@@ -14,7 +14,7 @@ class HashToken implements Token
      * @var         NameToken
      * `NameToken`
      */
-    private $name;
+    private $_name;
 
     /**
      * @param       NameToken                               $name
@@ -22,19 +22,19 @@ class HashToken implements Token
      * The {@see NameToken} to become a {@see HashToken}.
      */
     public function __construct(NameToken $name){
-        $this->name = $name;
+        $this->_name = $name;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return "#" . $this->name;
+        return "#" . $this->_name;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->name, $other->name);
+            match($this->_name, $other->_name);
     }
 
     /**
@@ -44,7 +44,7 @@ class HashToken implements Token
      * `NameToken`
      * Returns the {@see NameToken} for this {@see HashToken}.
      */
-    public function getName(): NameToken{
-        return $this->name;
+    public function name(): NameToken{
+        return $this->_name;
     }
 }

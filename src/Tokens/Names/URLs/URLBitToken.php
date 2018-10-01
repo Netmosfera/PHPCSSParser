@@ -45,7 +45,7 @@ class URLBitToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    public function getValue(): String{
+    public function intendedValue(): String{
         if($this->value === NULL){
             $this->value = str_replace(
                 "\0",

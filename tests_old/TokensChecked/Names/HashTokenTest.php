@@ -28,7 +28,7 @@ class HashTokenTest extends TestCase
         assertMatch("#BADA55", (String)$hash1);
         assertMatch((String)$hash1, (String)$hash2);
 
-        assertMatch($name2, $hash1->getName());
-        assertMatch($hash1->getName(), $hash2->getName());
+        assertMatch($name2, $hash1->name());
+        assertMatch($hash1->name(), $hash2->name());
     }
 }

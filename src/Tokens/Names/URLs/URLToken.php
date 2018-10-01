@@ -24,31 +24,31 @@ class URLToken implements AnyURLToken
      * @var         WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
      */
-    private $whitespaceBefore;
+    private $_whitespaceBefore;
 
     /**
      * @var         URLBitToken[]|ValidEscapeToken[]
      * `Array<Int, URLBitToken|ValidEscapeToken>`
      */
-    private $pieces;
+    private $_pieces;
 
     /**
      * @var         WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
      */
-    private $whitespaceAfter;
+    private $_whitespaceAfter;
 
     /**
      * @var         Bool
      * `Bool`
      */
-    private $terminatedWithEOF;
+    private $_precedesEOF;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $stringified;
+    private $_stringValue;
 
     /**
      * @param       WhitespaceToken|NULL                    $whitespaceBefore
@@ -73,32 +73,32 @@ class URLToken implements AnyURLToken
         ?WhitespaceToken $whitespaceAfter,
         Bool $terminatedWithEOF
     ){
-        $this->whitespaceBefore = $whitespaceBefore;
-        $this->pieces = $pieces;
-        $this->whitespaceAfter = $whitespaceAfter;
-        $this->terminatedWithEOF = $terminatedWithEOF;
+        $this->_whitespaceBefore = $whitespaceBefore;
+        $this->_pieces = $pieces;
+        $this->_whitespaceAfter = $whitespaceAfter;
+        $this->_precedesEOF = $terminatedWithEOF;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        if($this->stringified === NULL){
-            $this->stringified = "url(" .
-                $this->whitespaceBefore .
-                implode("", $this->pieces) .
-                $this->whitespaceAfter .
-                ($this->terminatedWithEOF ? "" : ")");
+        if($this->_stringValue === NULL){
+            $this->_stringValue = "url(" .
+                $this->_whitespaceBefore .
+                implode("", $this->_pieces) .
+                $this->_whitespaceAfter .
+                ($this->_precedesEOF ? "" : ")");
         }
-        return $this->stringified;
+        return $this->_stringValue;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->whitespaceBefore, $other->whitespaceBefore) &&
-            match($this->pieces, $other->pieces) &&
-            match($this->whitespaceAfter, $other->whitespaceAfter) &&
-            match($this->terminatedWithEOF, $other->terminatedWithEOF);
+            match($this->_whitespaceBefore, $other->_whitespaceBefore) &&
+            match($this->_pieces, $other->_pieces) &&
+            match($this->_whitespaceAfter, $other->_whitespaceAfter) &&
+            match($this->_precedesEOF, $other->_precedesEOF);
     }
 
     /**
@@ -109,7 +109,7 @@ class URLToken implements AnyURLToken
      * @TODOC
      */
     public function getWhitespaceBefore(): ?WhitespaceToken{
-        return $this->whitespaceBefore;
+        return $this->_whitespaceBefore;
     }
 
     /**
@@ -120,7 +120,7 @@ class URLToken implements AnyURLToken
      * @TODOC
      */
     public function getPieces(): Array{
-        return $this->pieces;
+        return $this->_pieces;
     }
 
     /**
@@ -131,7 +131,7 @@ class URLToken implements AnyURLToken
      * @TODOC
      */
     public function getWhitespaceAfter(): ?WhitespaceToken{
-        return $this->whitespaceAfter;
+        return $this->_whitespaceAfter;
     }
 
     /**
@@ -141,7 +141,7 @@ class URLToken implements AnyURLToken
      * `Bool`
      * @TODOC
      */
-    public function isTerminatedWithEOF(): Bool{
-        return $this->terminatedWithEOF;
+    public function precedesEOF(): Bool{
+        return $this->_precedesEOF;
     }
 }

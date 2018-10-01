@@ -20,13 +20,13 @@ class BadStringToken implements AnyStringToken
      * @var         String
      * `String`
      */
-    private $delimiter;
+    private $_delimiter;
 
     /**
      * @var         StringBitToken[]|EscapeToken[]
      * `Array<Int, StringBitToken|EscapeToken>`
      */
-    private $pieces;
+    private $_pieces;
 
     /**
      * @param       String                                  $delimiter
@@ -38,21 +38,21 @@ class BadStringToken implements AnyStringToken
      * @TODOC
      */
     public function __construct(String $delimiter, Array $pieces){
-        $this->delimiter = $delimiter;
-        $this->pieces = $pieces;
+        $this->_delimiter = $delimiter;
+        $this->_pieces = $pieces;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return $this->delimiter . implode("", $this->pieces);
+        return $this->_delimiter . implode("", $this->_pieces);
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->delimiter, $other->delimiter) &&
-            match($this->pieces, $other->pieces);
+            match($this->_delimiter, $other->_delimiter) &&
+            match($this->_pieces, $other->_pieces);
     }
 
     /**
@@ -62,8 +62,8 @@ class BadStringToken implements AnyStringToken
      * `String`
      * @TODOC
      */
-    public function getDelimiter(): String{
-        return $this->delimiter;
+    public function delimiter(): String{
+        return $this->_delimiter;
     }
 
     /**
@@ -73,7 +73,7 @@ class BadStringToken implements AnyStringToken
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      */
-    public function getPieces(): Array{
-        return $this->pieces;
+    public function pieces(): Array{
+        return $this->_pieces;
     }
 }

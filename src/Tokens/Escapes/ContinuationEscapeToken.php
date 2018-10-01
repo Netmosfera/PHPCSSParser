@@ -26,7 +26,7 @@ class ContinuationEscapeToken implements NullEscapeToken
      * @var         String
      * `String`
      */
-    private $codePoint;
+    private $_codePoint;
 
     /**
      * @param       String                                  $codePoint
@@ -34,16 +34,16 @@ class ContinuationEscapeToken implements NullEscapeToken
      * @TODOC
      */
     public function __construct(String $codePoint){
-        $this->codePoint = $codePoint;
+        $this->_codePoint = $codePoint;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return "\\" . $this->codePoint;
+        return "\\" . $this->_codePoint;
     }
 
     /** @inheritDoc */
-    public function getValue(): String{
+    public function intendedValue(): String{
         return "";
     }
 
@@ -51,7 +51,7 @@ class ContinuationEscapeToken implements NullEscapeToken
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            $this->codePoint === $other->codePoint;
+            $this->_codePoint === $other->_codePoint;
     }
 
     /**
@@ -61,7 +61,7 @@ class ContinuationEscapeToken implements NullEscapeToken
      * `String`
      * @TODOC
      */
-    public function getCodePoint(): String{
-        return $this->codePoint;
+    public function codePoint(): String{
+        return $this->_codePoint;
     }
 }

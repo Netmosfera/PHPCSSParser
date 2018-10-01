@@ -18,46 +18,46 @@ class WhitespaceToken implements Token
      * @var         String
      * `String`
      */
-    private $whitespaces;
+    private $_text;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $normalizedObject;
+    private $_normalizedObject;
 
     /**
-     * @param       String                                  $whitespaces
+     * @param       String                                  $text
      * `String`
      * The whitespace sequence.
      */
-    public function __construct(String $whitespaces){
-        $this->whitespaces = $whitespaces;
+    public function __construct(String $text){
+        $this->_text = $text;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return $this->whitespaces;
+        return $this->_text;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($other->whitespaces, $this->whitespaces);
+            match($other->_text, $this->_text);
     }
 
     /** @inheritDoc */
     public function normalize(): WhitespaceToken{
-        if($this->normalizedObject === NULL){
-            $this->normalizedObject = new WhitespaceToken(
+        if($this->_normalizedObject === NULL){
+            $this->_normalizedObject = new WhitespaceToken(
                 preg_replace(
                     '/' . SpecData::WHITESPACES_SEQS_SET . '/usD',
                     SpecData::WHITESPACE,
-                    $this->whitespaces
+                    $this->_text
                 )
             );
         }
-        return $this->normalizedObject;
+        return $this->_normalizedObject;
     }
 }

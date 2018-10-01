@@ -25,7 +25,7 @@ class PercentageTokenTest extends TestCase
         assertMatch("-123.456e3%", (String)$percentage1);
         assertMatch((String)$percentage1, (String)$percentage2);
 
-        assertMatch($number2, $percentage1->getNumber());
-        assertMatch($percentage1->getNumber(), $percentage2->getNumber());
+        assertMatch($number2, $percentage1->number());
+        assertMatch($percentage1->number(), $percentage2->number());
     }
 }

@@ -10,7 +10,7 @@ use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCPEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatIdentifierToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -60,7 +60,7 @@ class eatIdentifierTokenTest extends TestCase
         $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
             return $traverser->eatStr("\\@") === NULL ? NULL :
-                new CheckedEncodedCPEscapeToken("@");
+                new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -103,7 +103,7 @@ class eatIdentifierTokenTest extends TestCase
         $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
             return $traverser->eatStr("\\@") === NULL ? NULL :
-                new CheckedEncodedCPEscapeToken("@");
+                new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -123,13 +123,13 @@ class eatIdentifierTokenTest extends TestCase
         array_unshift(
             $pieces,
             new CheckedNameBitToken("-"),
-            new CheckedEncodedCPEscapeToken("@")
+            new CheckedEncodedCodePointEscapeToken("@")
         );
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
         $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
             return $traverser->eatStr("\\@") === NULL ? NULL :
-                new CheckedEncodedCPEscapeToken("@");
+                new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -174,7 +174,7 @@ class eatIdentifierTokenTest extends TestCase
         $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
             return $traverser->eatStr("\\@") === NULL ? NULL :
-                new CheckedEncodedCPEscapeToken("@");
+                new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -191,12 +191,12 @@ class eatIdentifierTokenTest extends TestCase
 
     /** @dataProvider data7 */
     public function test7(String $prefix, Array $pieces, String $rest){
-        array_unshift($pieces, new CheckedEncodedCPEscapeToken("@"));
+        array_unshift($pieces, new CheckedEncodedCodePointEscapeToken("@"));
         $traverser = getTraverser($prefix, implode("", $pieces) . $rest);
         $expected = new CheckedIdentifierToken(new CheckedNameToken($pieces));
         $eatEscape = function(Traverser $traverser): ?EscapeToken{
             return $traverser->eatStr("\\@") === NULL ? NULL :
-                new CheckedEncodedCPEscapeToken("@");
+                new CheckedEncodedCodePointEscapeToken("@");
         };
         $actual = eatIdentifierToken($traverser, "S", "N", $eatEscape);
         assertMatch($actual, $expected);
@@ -209,7 +209,7 @@ class eatIdentifierTokenTest extends TestCase
             $data[] = new CheckedNameBitToken("NN");
             $data[] = new CheckedNameBitToken("NNN");
         }
-        $data[] = new CheckedEncodedCPEscapeToken("@");
+        $data[] = new CheckedEncodedCodePointEscapeToken("@");
         return $data;
     }
 }

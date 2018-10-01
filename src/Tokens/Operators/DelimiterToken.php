@@ -19,7 +19,7 @@ class DelimiterToken implements Token
      * @var         String
      * `String`
      */
-    private $delimiter;
+    private $_delimiter;
 
     /**
      * @param       String                                  $delimiter
@@ -27,18 +27,18 @@ class DelimiterToken implements Token
      * The delimiter code point.
      */
     public function __construct(String $delimiter){
-        $this->delimiter = $delimiter;
+        $this->_delimiter = $delimiter;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return $this->delimiter;
+        return $this->_delimiter;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($other->delimiter, $this->delimiter);
+            match($other->_delimiter, $this->_delimiter);
     }
 }

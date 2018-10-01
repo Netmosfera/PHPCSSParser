@@ -3,8 +3,8 @@
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCPEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCPEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
@@ -20,13 +20,15 @@ class NameTokenTest extends TestCase
     public function test1(){
         $pieces = [];
         for($i = 0; $i < 2; $i++){
+            $ws1 = new CheckedWhitespaceToken(" ");
+            $ws2 = new CheckedWhitespaceToken("\t");
             $pieces[$i] = [
                 new CheckedNameBitToken("A"),
-                new CheckedEncodedCPEscapeToken("@"),
+                new CheckedEncodedCodePointEscapeToken("@"),
                 new CheckedNameBitToken("B"),
-                new CheckedCPEscapeToken("FFAACC", new CheckedWhitespaceToken(" ")),
+                new CheckedCodePointEscapeToken("FFAACC", $ws1),
                 new CheckedNameBitToken("C"),
-                new CheckedCPEscapeToken("FFAA", new CheckedWhitespaceToken("\t")),
+                new CheckedCodePointEscapeToken("FFAA", $ws2),
                 new CheckedNameBitToken("D\0D"),
             ];
         }
@@ -41,11 +43,11 @@ class NameTokenTest extends TestCase
         assertMatch(implode("", $pieces1), (String)$name1);
         assertMatch((String)$name1, (String)$name2);
 
-        assertMatch("A@B\u{FFFD}C\u{FFAA}D\u{FFFD}D", $name1->getValue());
-        assertMatch($name1->getValue(), $name2->getValue());
+        assertMatch("A@B\u{FFFD}C\u{FFAA}D\u{FFFD}D", $name1->intendedValue());
+        assertMatch($name1->intendedValue(), $name2->intendedValue());
 
-        assertMatch($pieces1, $name1->getPieces());
-        assertMatch($name1->getPieces(), $name2->getPieces());
+        assertMatch($pieces1, $name1->pieces());
+        assertMatch($name1->pieces(), $name2->pieces());
     }
 
     // @TODO test invalid cases

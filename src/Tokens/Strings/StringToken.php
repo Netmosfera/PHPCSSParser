@@ -14,19 +14,19 @@ class StringToken implements AnyStringToken
      * @var         String
      * `String`
      */
-    private $delimiter;
+    private $_delimiter;
 
     /**
      * @var         StringBitToken[]|EscapeToken[]
      * `Array<Int, StringBitToken|EscapeToken>`
      */
-    private $pieces;
+    private $_pieces;
 
     /**
      * @var         Bool
      * `Bool`
      */
-    private $terminatedWithEOF;
+    private $_precedesEOF;
 
     /**
      * @param       String                                  $delimiter
@@ -46,26 +46,26 @@ class StringToken implements AnyStringToken
         Array $pieces,
         Bool $terminatedWithEOF
     ){
-        $this->delimiter = $delimiter;
-        $this->pieces = $pieces;
-        $this->terminatedWithEOF = $terminatedWithEOF;
+        $this->_delimiter = $delimiter;
+        $this->_pieces = $pieces;
+        $this->_precedesEOF = $terminatedWithEOF;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
         return
-            $this->delimiter .
-            implode("", $this->pieces) .
-            ($this->terminatedWithEOF ? "" : $this->delimiter);
+            $this->_delimiter .
+            implode("", $this->_pieces) .
+            ($this->_precedesEOF ? "" : $this->_delimiter);
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->delimiter, $other->delimiter) &&
-            match($this->pieces, $other->pieces) &&
-            match($this->terminatedWithEOF, $other->terminatedWithEOF);
+            match($this->_delimiter, $other->_delimiter) &&
+            match($this->_pieces, $other->_pieces) &&
+            match($this->_precedesEOF, $other->_precedesEOF);
     }
 
     /**
@@ -76,7 +76,7 @@ class StringToken implements AnyStringToken
      * @TODOC
      */
     public function getDelimiter(): String{
-        return $this->delimiter;
+        return $this->_delimiter;
     }
 
     /**
@@ -87,7 +87,7 @@ class StringToken implements AnyStringToken
      * @TODOC
      */
     public function getPieces(): Array{
-        return $this->pieces;
+        return $this->_pieces;
     }
 
     /**
@@ -97,7 +97,7 @@ class StringToken implements AnyStringToken
      * `Bool`
      * @TODOC
      */
-    public function isTerminatedWithEOF(): Bool{
-        return $this->isTerminatedWithEOF();
+    public function precedesEOF(): Bool{
+        return $this->_precedesEOF;
     }
 }

@@ -8,7 +8,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCPEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use PHPUnit\Framework\TestCase;
@@ -54,31 +54,31 @@ class CPEscapeTokenTest extends TestCase
     public function test1(String $hexDigits, String $ws){
         $ws1 = $ws === "" ? NULL : new CheckedWhitespaceToken($ws);
         $ws2 = $ws === "" ? NULL : new CheckedWhitespaceToken($ws);
-        $CPEscape1 = new CheckedCPEscapeToken($hexDigits, $ws1);
-        $CPEscape2 = new CheckedCPEscapeToken($hexDigits, $ws2);
+        $CPEscape1 = new CheckedCodePointEscapeToken($hexDigits, $ws1);
+        $CPEscape2 = new CheckedCodePointEscapeToken($hexDigits, $ws2);
 
         assertMatch($CPEscape1, $CPEscape2);
 
         assertMatch("\\" . $hexDigits . $ws, (String)$CPEscape1);
         assertMatch((String)$CPEscape1, (String)$CPEscape2);
 
-        assertMatch($hexDigits, $CPEscape1->getHexDigits());
-        assertMatch($CPEscape1->getHexDigits(), $CPEscape2->getHexDigits());
+        assertMatch($hexDigits, $CPEscape1->hexDigits());
+        assertMatch($CPEscape1->hexDigits(), $CPEscape2->hexDigits());
 
-        assertMatch(hexdec($hexDigits), $CPEscape1->getIntValue());
-        assertMatch($CPEscape1->getIntValue(), $CPEscape2->getIntValue());
+        assertMatch(hexdec($hexDigits), $CPEscape1->integerValue());
+        assertMatch($CPEscape1->integerValue(), $CPEscape2->integerValue());
 
         assertMatch($ws === "" ? NULL : new CheckedWhitespaceToken($ws),
-            $CPEscape1->getTerminator());
-        assertMatch($CPEscape1->getTerminator(), $CPEscape2->getTerminator());
+            $CPEscape1->terminator());
+        assertMatch($CPEscape1->terminator(), $CPEscape2->terminator());
 
-        $codePoint = IntlChar::chr($CPEscape1->getIntValue());
+        $codePoint = IntlChar::chr($CPEscape1->integerValue());
 
-        assertMatch($codePoint ?? "\u{FFFD}", $CPEscape1->getValue());
-        assertMatch($CPEscape1->getValue(), $CPEscape2->getValue());
+        assertMatch($codePoint ?? "\u{FFFD}", $CPEscape1->intendedValue());
+        assertMatch($CPEscape1->intendedValue(), $CPEscape2->intendedValue());
 
-        assertMatch($codePoint !== NULL, $CPEscape1->isValidCP());
-        assertMatch($CPEscape1->isValidCP(), $CPEscape2->isValidCP());
+        assertMatch($codePoint !== NULL, $CPEscape1->isValid());
+        assertMatch($CPEscape1->isValid(), $CPEscape2->isValid());
     }
 
     public function data2(){
@@ -96,7 +96,7 @@ class CPEscapeTokenTest extends TestCase
     /** @dataProvider data2 */
     public function test2(String $hexDigits){
         assertThrowsType(InvalidToken::CLASS, function() use($hexDigits){
-            new CheckedCPEscapeToken($hexDigits, NULL);
+            new CheckedCodePointEscapeToken($hexDigits, NULL);
         });
     }
 
@@ -112,7 +112,7 @@ class CPEscapeTokenTest extends TestCase
         }
         $whitespace = new CheckedWhitespaceToken($whitespaces);
         assertThrowsType(InvalidToken::CLASS, function() use($whitespace){
-            new CheckedCPEscapeToken("FF", $whitespace);
+            new CheckedCodePointEscapeToken("FF", $whitespace);
         });
     }
 }

@@ -15,25 +15,25 @@ class BadURLToken implements AnyURLToken
      * @var         WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
      */
-    private $whitespaceBefore;
+    private $_whitespaceBefore;
 
     /**
      * @var         URLBitToken[]|ValidEscapeToken[]
      * `Array<Int, URLBitToken|ValidEscapeToken>`
      */
-    private $pieces;
+    private $_pieces;
 
     /**
      * @var         BadURLRemnantsToken
      * `BadURLRemnantsToken`
      */
-    private $badURLRemnants;
+    private $_badURLRemnants;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $stringified;
+    private $_stringValue;
 
     /**
      * @param       WhitespaceToken|NULL                    $whitespaceBefore
@@ -53,29 +53,29 @@ class BadURLToken implements AnyURLToken
         Array $pieces,
         BadURLRemnantsToken $badURLRemnants
     ){
-        $this->whitespaceBefore = $whitespaceBefore;
-        $this->pieces = $pieces;
-        $this->badURLRemnants = $badURLRemnants;
+        $this->_whitespaceBefore = $whitespaceBefore;
+        $this->_pieces = $pieces;
+        $this->_badURLRemnants = $badURLRemnants;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        if($this->stringified === NULL){
-            $this->stringified = "url(" .
-                $this->whitespaceBefore .
-                implode("", $this->pieces) .
-                $this->badURLRemnants;
+        if($this->_stringValue === NULL){
+            $this->_stringValue = "url(" .
+                $this->_whitespaceBefore .
+                implode("", $this->_pieces) .
+                $this->_badURLRemnants;
         }
-        return $this->stringified;
+        return $this->_stringValue;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->whitespaceBefore, $other->whitespaceBefore) &&
-            match($this->pieces, $other->pieces) &&
-            match($this->badURLRemnants, $other->badURLRemnants);
+            match($this->_whitespaceBefore, $other->_whitespaceBefore) &&
+            match($this->_pieces, $other->_pieces) &&
+            match($this->_badURLRemnants, $other->_badURLRemnants);
     }
 
     /**
@@ -85,8 +85,8 @@ class BadURLToken implements AnyURLToken
      * `WhitespaceToken|NULL`
      * @TODOC
      */
-    public function getWhitespaceBefore(): ?WhitespaceToken{
-        return $this->whitespaceBefore;
+    public function whitespaceBefore(): ?WhitespaceToken{
+        return $this->_whitespaceBefore;
     }
 
     /**
@@ -96,8 +96,8 @@ class BadURLToken implements AnyURLToken
      * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      */
-    public function getPieces(): Array{
-        return $this->pieces;
+    public function pieces(): Array{
+        return $this->_pieces;
     }
 
     /**
@@ -107,7 +107,7 @@ class BadURLToken implements AnyURLToken
      * `BadURLRemnantsToken`
      * @TODOC
      */
-    public function getRemnants(): BadURLRemnantsToken{
-        return $this->badURLRemnants;
+    public function remnants(): BadURLRemnantsToken{
+        return $this->_badURLRemnants;
     }
 }

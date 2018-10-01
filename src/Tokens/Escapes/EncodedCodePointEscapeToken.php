@@ -11,13 +11,13 @@ namespace Netmosfera\PHPCSSAST\Tokens\Escapes;
  * example, as this allows to escape the string delimiter, e.g.
  * `'Bon Jovi - It\'s my life'`.
  */
-class EncodedCPEscapeToken implements ValidEscapeToken
+class EncodedCodePointEscapeToken implements ValidEscapeToken
 {
     /**
      * @var         String
      * `String`
      */
-    private $codePoint;
+    private $_codePoint;
 
     /**
      * @param       String                                  $codePoint
@@ -25,23 +25,23 @@ class EncodedCPEscapeToken implements ValidEscapeToken
      * @TODOC
      */
     public function __construct(String $codePoint){
-        $this->codePoint = $codePoint;
+        $this->_codePoint = $codePoint;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return "\\" . $this->codePoint;
+        return "\\" . $this->_codePoint;
     }
 
     /** @inheritDoc */
-    public function getValue(): String{
-        return $this->codePoint;
+    public function intendedValue(): String{
+        return $this->_codePoint;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            $this->codePoint === $other->codePoint;
+            $this->_codePoint === $other->_codePoint;
     }
 }

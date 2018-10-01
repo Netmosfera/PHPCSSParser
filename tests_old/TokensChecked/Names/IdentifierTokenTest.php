@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCPEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
@@ -23,7 +23,7 @@ class IdentifierTokenTest extends TestCase
 
         $names[] = [
             new CheckedNameBitToken("-"),
-            new CheckedEncodedCPEscapeToken("x")
+            new CheckedEncodedCodePointEscapeToken("x")
         ];
 
         $names[] = [new CheckedNameBitToken("-a")];
@@ -36,7 +36,7 @@ class IdentifierTokenTest extends TestCase
         $names[] = [new CheckedNameBitToken("_")];
         $names[] = [new CheckedNameBitToken("\u{2764}")];
 
-        $names[] = [new CheckedEncodedCPEscapeToken("x")];
+        $names[] = [new CheckedEncodedCodePointEscapeToken("x")];
 
         return cartesianProduct($names);
     }
@@ -53,8 +53,8 @@ class IdentifierTokenTest extends TestCase
         assertMatch((String)$name1, (String)$identifier1);
         assertMatch((String)$identifier1, (String)$identifier2);
 
-        assertMatch($name1, $identifier1->getName());
-        assertMatch($identifier1->getName(), $identifier2->getName());
+        assertMatch($name1, $identifier1->name());
+        assertMatch($identifier1->name(), $identifier2->name());
     }
 
     // @TODO invalids

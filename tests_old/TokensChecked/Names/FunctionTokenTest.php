@@ -31,7 +31,7 @@ class FunctionTokenTest extends TestCase
         assertMatch("linear-gradient(", (String)$function1);
         assertMatch((String)$function1, (String)$function2);
 
-        assertMatch($identifier2, $function1->getIdentifier());
-        assertMatch($function1->getIdentifier(), $function2->getIdentifier());
+        assertMatch($identifier2, $function1->identifier());
+        assertMatch($function1->identifier(), $function2->identifier());
     }
 }

@@ -9,33 +9,33 @@ use Netmosfera\PHPCSSAST\SpecData;
 use IntlChar;
 
 /**
- * A {@see CPEscapeToken} is `\` followed by one up to six hex digits.
+ * A {@see CodePointEscapeToken} is `\` followed by one to six hex digits.
  */
-class CPEscapeToken implements ValidEscapeToken
+class CodePointEscapeToken implements ValidEscapeToken
 {
     /**
      * @var         String
      * `String`
      */
-    private $hexDigits;
+    private $_hexDigits;
 
     /**
      * @var         WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
      */
-    private $terminator;
+    private $_terminator;
 
     /**
      * @var         Int|NULL
      * `Int|NULL`
      */
-    private $intValue;
+    private $_intValue;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $value;
+    private $_intendedValue;
 
     /**
      * @param       String                                  $hexDigits
@@ -50,31 +50,31 @@ class CPEscapeToken implements ValidEscapeToken
         String $hexDigits,
         ?WhitespaceToken $terminator
     ){
-        $this->hexDigits = $hexDigits;
-        $this->terminator = $terminator;
+        $this->_hexDigits = $hexDigits;
+        $this->_terminator = $terminator;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return "\\" . $this->hexDigits . $this->terminator;
+        return "\\" . $this->_hexDigits . $this->_terminator;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->hexDigits, $other->hexDigits) &&
-            match($this->terminator, $other->terminator);
+            match($this->_hexDigits, $other->_hexDigits) &&
+            match($this->_terminator, $other->_terminator);
     }
 
     /** @inheritDoc */
-    public function getValue(): String{
-        if($this->value === NULL){
-            $this->value = IntlChar::chr(
-                $this->getIntValue()
+    public function intendedValue(): String{
+        if($this->_intendedValue === NULL){
+            $this->_intendedValue = IntlChar::chr(
+                $this->integerValue()
             ) ?? SpecData::REPLACEMENT_CHARACTER;
         }
-        return $this->value;
+        return $this->_intendedValue;
     }
 
     /**
@@ -89,8 +89,8 @@ class CPEscapeToken implements ValidEscapeToken
      * `Bool`
      * Tells whether this code point is valid.
      */
-    public function isValidCP(): Bool{
-        return $this->getIntValue() <= IntlChar::CODEPOINT_MAX;
+    public function isValid(): Bool{
+        return $this->integerValue() <= IntlChar::CODEPOINT_MAX;
     }
 
     /**
@@ -100,11 +100,11 @@ class CPEscapeToken implements ValidEscapeToken
      * `Int`
      * Returns the code point.
      */
-    public function getIntValue(): Int{
-        if($this->intValue === NULL){
-            $this->intValue = hexdec($this->hexDigits);
+    public function integerValue(): Int{
+        if($this->_intValue === NULL){
+            $this->_intValue = hexdec($this->_hexDigits);
         }
-        return $this->intValue;
+        return $this->_intValue;
     }
 
     /**
@@ -114,8 +114,8 @@ class CPEscapeToken implements ValidEscapeToken
      * `String`
      * Returns the hexadecimal digits as they were originally specified.
      */
-    public function getHexDigits(): String{
-        return $this->hexDigits;
+    public function hexDigits(): String{
+        return $this->_hexDigits;
     }
 
     /**
@@ -131,7 +131,7 @@ class CPEscapeToken implements ValidEscapeToken
      * `WhitespaceToken|NULL`
      * Returns the whitespace terminator of the escape sequence.
      */
-    public function getTerminator(): ?WhitespaceToken{
-        return $this->terminator;
+    public function terminator(): ?WhitespaceToken{
+        return $this->_terminator;
     }
 }

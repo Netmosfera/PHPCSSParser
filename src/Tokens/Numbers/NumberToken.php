@@ -13,55 +13,55 @@ class NumberToken implements NumericToken
      * @var         String
      * `String`
      */
-    private $sign;
+    private $_sign;
 
     /**
      * @var         String
      * `String`
      */
-    private $wholes;
+    private $_wholes;
 
     /**
      * @var         String
      * `String`
      */
-    private $decimals;
+    private $_decimals;
 
     /**
      * @var         String
      * `String`
      */
-    private $EIndicator;
+    private $_EIndicator;
 
     /**
      * @var         String
      * `String`
      */
-    private $ESign;
+    private $_ESign;
 
     /**
      * @var         String
      * `String`
      */
-    private $EExponent;
+    private $_EExponent;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $stringified;
+    private $_stringValue;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $floatified;
+    private $_floatValue;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $numberified;
+    private $_numberValue;
 
     /**
      * @param       String                                  $sign
@@ -96,38 +96,38 @@ class NumberToken implements NumericToken
         String $ESign,
         String $EExponent
     ){
-        $this->sign = $sign;
-        $this->wholes = $wholes;
-        $this->decimals = $decimals;
-        $this->EIndicator = $EIndicator;
-        $this->ESign = $ESign;
-        $this->EExponent = $EExponent;
+        $this->_sign = $sign;
+        $this->_wholes = $wholes;
+        $this->_decimals = $decimals;
+        $this->_EIndicator = $EIndicator;
+        $this->_ESign = $ESign;
+        $this->_EExponent = $EExponent;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        if($this->stringified === NULL){
-            $number  = $this->sign;
-            $number .= $this->wholes;
-            $number .= $this->decimals === "" ? "" : "." . $this->decimals;
-            $number .= $this->EIndicator;
-            $number .= $this->ESign;
-            $number .= $this->EExponent;
-            $this->stringified = $number;
+        if($this->_stringValue === NULL){
+            $number  = $this->_sign;
+            $number .= $this->_wholes;
+            $number .= $this->_decimals === "" ? "" : "." . $this->_decimals;
+            $number .= $this->_EIndicator;
+            $number .= $this->_ESign;
+            $number .= $this->_EExponent;
+            $this->_stringValue = $number;
         }
-        return $this->stringified;
+        return $this->_stringValue;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($other->sign, $this->sign) &&
-            match($other->ESign, $this->ESign) &&
-            match($other->EIndicator, $this->EIndicator) &&
-            match($other->wholes, $this->wholes) &&
-            match($other->decimals, $this->decimals) &&
-            match($other->EExponent, $this->EExponent) &&
+            match($other->_sign, $this->_sign) &&
+            match($other->_ESign, $this->_ESign) &&
+            match($other->_EIndicator, $this->_EIndicator) &&
+            match($other->_wholes, $this->_wholes) &&
+            match($other->_decimals, $this->_decimals) &&
+            match($other->_EExponent, $this->_EExponent) &&
             TRUE;
     }
 
@@ -138,8 +138,8 @@ class NumberToken implements NumericToken
      * `String`
      * Returns the number's sign; it is `"+"`, `"-"` or `""`.
      */
-    public function getSign(): String{
-        return $this->sign;
+    public function sign(): String{
+        return $this->_sign;
     }
 
     /**
@@ -149,8 +149,8 @@ class NumberToken implements NumericToken
      * `String`
      * Returns the number's whole part; it is any sequence of digits or `""`.
      */
-    public function getWholes(): String{
-        return $this->wholes;
+    public function wholes(): String{
+        return $this->_wholes;
     }
 
     /**
@@ -160,8 +160,8 @@ class NumberToken implements NumericToken
      * `String`
      * Returns the number's decimal part; it is any sequence of digits or `""`.
      */
-    public function getDecimals(): String{
-        return $this->decimals;
+    public function decimals(): String{
+        return $this->_decimals;
     }
 
     /**
@@ -171,8 +171,8 @@ class NumberToken implements NumericToken
      * `String`
      * Returns the "E" indicator; it is `"E"`, `"e"` or `""`.
      */
-    public function getEIndicator(): String{
-        return $this->EIndicator;
+    public function EIndicator(): String{
+        return $this->_EIndicator;
     }
 
     /**
@@ -182,8 +182,8 @@ class NumberToken implements NumericToken
      * `String`
      * Returns the E-notation's exponent's sign; it is `"+"`, `"-"` or `""`.
      */
-    public function getESign(): string{
-        return $this->ESign;
+    public function ESign(): string{
+        return $this->_ESign;
     }
 
     /**
@@ -193,8 +193,8 @@ class NumberToken implements NumericToken
      * `String`
      * Returns the E-notation's exponent; it is any sequence of digits or `""`.
      */
-    public function getEExponent(): String{
-        return $this->EExponent;
+    public function EExponent(): String{
+        return $this->_EExponent;
     }
 
     /**
@@ -204,11 +204,11 @@ class NumberToken implements NumericToken
      * `Float`
      * Returns the number as {@see Float}
      */
-    public function toFloat(): Float{
-        if($this->floatified === NULL){
-            $this->floatified = (Float)(String)$this;
+    public function floatValue(): Float{
+        if($this->_floatValue === NULL){
+            $this->_floatValue = (Float)(String)$this;
         }
-        return $this->floatified;
+        return $this->_floatValue;
     }
 
     /**
@@ -218,13 +218,13 @@ class NumberToken implements NumericToken
      * `Int|Float`
      * Returns the number as {@see Int} if possible, otherwise {@see Float}.
      */
-    public function toNumber(){
-        if($this->numberified === NULL){
-            $float = $this->toFloat();
+    public function numberValue(){
+        if($this->_numberValue === NULL){
+            $float = $this->floatValue();
             $floatAsInt = (int)$float;
             $isInt = (float)$floatAsInt === $float;
-            $this->numberified = $isInt ? $floatAsInt : $float;
+            $this->_numberValue = $isInt ? $floatAsInt : $float;
         }
-        return $this->numberified;
+        return $this->_numberValue;
     }
 }

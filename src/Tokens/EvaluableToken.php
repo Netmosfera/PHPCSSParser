@@ -18,5 +18,5 @@ interface EvaluableToken extends Token
      * `String`
      * @TODOC
      */
-    public function getValue(): String;
+    public function intendedValue(): String;
 }

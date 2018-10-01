@@ -16,13 +16,13 @@ class NameBitToken implements EvaluableToken
      * @var         String
      * `String`
      */
-    private $text;
+    private $_text;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $value;
+    private $_intendedValue;
 
     /**
      * @param       String                                  $text
@@ -30,30 +30,30 @@ class NameBitToken implements EvaluableToken
      * The sequence of {@see SpecData::NAME_ITEMS_SET} code points.
      */
     public function __construct(String $text){
-        $this->text = $text;
+        $this->_text = $text;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return $this->text;
+        return $this->_text;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->text, $this->text);
+            match($this->_text, $this->_text);
     }
 
     /** @inheritDoc */
-    public function getValue(): String{
-        if($this->value === NULL){
-            $this->value = str_replace(
+    public function intendedValue(): String{
+        if($this->_intendedValue === NULL){
+            $this->_intendedValue = str_replace(
                 "\0",
                 SpecData::REPLACEMENT_CHARACTER,
-                $this->text
+                $this->_text
             );
         }
-        return $this->value;
+        return $this->_intendedValue;
     }
 }

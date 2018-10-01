@@ -15,14 +15,14 @@ class BadURLRemnantsToken implements Token
      * @var         BadURLRemnantsBitToken[]|EscapeToken[]
      * @TODOC
      */
-    private $pieces;
+    private $_pieces;
 
     /**
      * @var         Bool
      * `Bool`
      * @TODOC
      */
-    private $terminatedWithEOF;
+    private $_precedesEOF;
 
     /**
      * @param       BadURLRemnantsBitToken[]|EscapeToken[]  $pieces
@@ -34,23 +34,23 @@ class BadURLRemnantsToken implements Token
      * @TODOC
      */
     public function __construct(Array $pieces, Bool $terminatedWithEOF){
-        $this->pieces = $pieces;
-        $this->terminatedWithEOF = $terminatedWithEOF;
+        $this->_pieces = $pieces;
+        $this->_precedesEOF = $terminatedWithEOF;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
         return
-            implode("", $this->pieces) .
-            ($this->terminatedWithEOF ? "" : ")");
+            implode("", $this->_pieces) .
+            ($this->_precedesEOF ? "" : ")");
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->pieces, $other->pieces) &&
-            match($this->terminatedWithEOF, $other->terminatedWithEOF);
+            match($this->_pieces, $other->_pieces) &&
+            match($this->_precedesEOF, $other->_precedesEOF);
     }
 
     /**
@@ -60,7 +60,7 @@ class BadURLRemnantsToken implements Token
      * `Bool`
      * @TODOC
      */
-    public function isTerminatedWithEOF(): Bool{
-        return $this->terminatedWithEOF;
+    public function precedesEOF(): Bool{
+        return $this->_precedesEOF;
     }
 }

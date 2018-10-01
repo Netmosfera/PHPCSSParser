@@ -4,9 +4,9 @@ namespace Netmosfera\PHPCSSAST\TokensChecked\Escapes;
 
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCPEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 
-class CheckedEncodedCPEscapeToken extends EncodedCPEscapeToken
+class CheckedEncodedCodePointEscapeToken extends EncodedCodePointEscapeToken
 {
     public function __construct(String $codePoint){
         if(

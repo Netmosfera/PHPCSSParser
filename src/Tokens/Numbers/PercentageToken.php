@@ -13,7 +13,7 @@ class PercentageToken implements NumericToken
      * @var         NumberToken
      * `NumberToken`
      */
-    private $number;
+    private $_number;
 
     /**
      * @param       NumberToken                             $number
@@ -21,19 +21,19 @@ class PercentageToken implements NumericToken
      * The {@see NumberToken} that is to represent a percentage.
      */
     public function __construct(NumberToken $number){
-        $this->number = $number;
+        $this->_number = $number;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return $this->number . "%";
+        return $this->_number . "%";
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($other->number, $this->number);
+            match($other->_number, $this->_number);
     }
 
     /**
@@ -43,7 +43,7 @@ class PercentageToken implements NumericToken
      * `NumberToken`
      * Returns the {@see NumberToken} represents the percentage.
      */
-    public function getNumber(): NumberToken{
-        return $this->number;
+    public function number(): NumberToken{
+        return $this->_number;
     }
 }

@@ -22,7 +22,7 @@ class EOFEscapeTokenTest extends TestCase
         assertMatch("\\", (String)$EOFEscape1);
         assertMatch((String)$EOFEscape1, (String)$EOFEscape2);
 
-        assertMatch("", $EOFEscape1->getValue());
-        assertMatch($EOFEscape1->getValue(), $EOFEscape2->getValue());
+        assertMatch("", $EOFEscape1->intendedValue());
+        assertMatch($EOFEscape1->intendedValue(), $EOFEscape2->intendedValue());
     }
 }

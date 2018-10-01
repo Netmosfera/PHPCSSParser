@@ -11,7 +11,7 @@ use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 class CheckedIdentifierToken extends IdentifierToken
 {
     public function __construct(NameToken $name){
-        $pieces = $name->getPieces();
+        $pieces = $name->pieces();
         $firstPiece = $pieces[0];
         $stringifiedFirstPiece = (String)$firstPiece;
 

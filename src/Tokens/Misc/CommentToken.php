@@ -16,19 +16,19 @@ class CommentToken implements Token
      * @var         String
      * `String`
      */
-    private $text;
+    private $_text;
 
     /**
      * @var         Bool
      * `Bool`
      */
-    private $terminatedWithEOF;
+    private $_precedesEOF;
 
     /**
      * @var         String
      * `String`
      */
-    private $stringified;
+    private $_stringValue;
 
     /**
      * @param       String                                  $text
@@ -40,25 +40,25 @@ class CommentToken implements Token
      * Whether the comment is unterminated.
      */
     public function __construct(String $text, Bool $terminatedWithEOF){
-        $this->text = $text;
-        $this->terminatedWithEOF = $terminatedWithEOF;
+        $this->_text = $text;
+        $this->_precedesEOF = $terminatedWithEOF;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        if($this->stringified === NULL){
-            $this->stringified = "/*" . $this->text;
-            $this->stringified .= $this->terminatedWithEOF ? "" : "*/";
+        if($this->_stringValue === NULL){
+            $this->_stringValue = "/*" . $this->_text;
+            $this->_stringValue .= $this->_precedesEOF ? "" : "*/";
         }
-        return $this->stringified;
+        return $this->_stringValue;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($other->text, $this->text) &&
-            match($other->terminatedWithEOF, $this->terminatedWithEOF);
+            match($other->_text, $this->_text) &&
+            match($other->_precedesEOF, $this->_precedesEOF);
     }
 
     /**
@@ -68,8 +68,8 @@ class CommentToken implements Token
      * `String`
      * Returns the comment's text.
      */
-    public function getText(): String{
-        return $this->text;
+    public function text(): String{
+        return $this->_text;
     }
 
     /**
@@ -79,7 +79,7 @@ class CommentToken implements Token
      * `Bool`
      * Returns {@see TRUE} if the comment is unterminated.
      */
-    public function isTerminatedWithEOF(): Bool{
-        return $this->terminatedWithEOF;
+    public function precedesEOF(): Bool{
+        return $this->_precedesEOF;
     }
 }

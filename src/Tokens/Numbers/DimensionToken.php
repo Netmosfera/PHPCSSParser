@@ -14,13 +14,13 @@ class DimensionToken implements NumericToken
      * @var         NumberToken
      * `NumberToken`
      */
-    private $number;
+    private $_number;
 
     /**
      * @var         IdentifierToken
      * `IdentifierToken`
      */
-    private $unit;
+    private $_unit;
 
     /**
      * @param       NumberToken                             $number
@@ -32,21 +32,21 @@ class DimensionToken implements NumericToken
      * The unit of measurement.
      */
     public function __construct(NumberToken $number, IdentifierToken $unit){
-        $this->number = $number;
-        $this->unit = $unit;
+        $this->_number = $number;
+        $this->_unit = $unit;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return $this->number . $this->unit;
+        return $this->_number . $this->_unit;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($other->number, $this->number) &&
-            match($other->unit, $this->unit);
+            match($other->_number, $this->_number) &&
+            match($other->_unit, $this->_unit);
     }
 
     /**
@@ -56,8 +56,8 @@ class DimensionToken implements NumericToken
      * `NumberToken`
      * Returns the number.
      */
-    public function getNumber(): NumberToken{
-        return $this->number;
+    public function number(): NumberToken{
+        return $this->_number;
     }
 
     /**
@@ -67,7 +67,7 @@ class DimensionToken implements NumericToken
      * `IdentifierToken`
      * Returns the unit of measurement.
      */
-    public function getUnit(): IdentifierToken{
-        return $this->unit;
+    public function unit(): IdentifierToken{
+        return $this->_unit;
     }
 }

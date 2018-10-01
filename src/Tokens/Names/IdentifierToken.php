@@ -17,7 +17,7 @@ class IdentifierToken implements IdentifierLikeToken
      * @var         NameToken
      * `NameToken`
      */
-    private $name;
+    private $_name;
 
     /**
      * @param       NameToken                               $name
@@ -25,19 +25,19 @@ class IdentifierToken implements IdentifierLikeToken
      * The {@see NameToken} to become a {@see IdentifierToken}.
      */
     public function __construct(NameToken $name){
-        $this->name = $name;
+        $this->_name = $name;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return (String)$this->name;
+        return (String)$this->_name;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->name, $other->name);
+            match($this->_name, $other->_name);
     }
 
     /**
@@ -47,7 +47,7 @@ class IdentifierToken implements IdentifierLikeToken
      * `NameToken`
      * Returns the {@see NameToken} for this {@see IdentifierToken}.
      */
-    public function getName(): NameToken{
-        return $this->name;
+    public function name(): NameToken{
+        return $this->_name;
     }
 }

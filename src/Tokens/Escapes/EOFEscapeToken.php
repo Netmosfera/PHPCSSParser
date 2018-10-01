@@ -18,7 +18,7 @@ class EOFEscapeToken implements NullEscapeToken
     }
 
     /** @inheritDoc */
-    public function getValue(): String{
+    public function intendedValue(): String{
         return "";
     }
 }

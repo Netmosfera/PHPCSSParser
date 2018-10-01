@@ -34,10 +34,10 @@ class DimensionTokenTest extends TestCase
         assertMatch("-123.456e3iau", (String)$dimension1);
         assertMatch((String)$dimension1, (String)$dimension2);
 
-        assertMatch($number2, $dimension1->getNumber());
-        assertMatch($dimension1->getNumber(), $dimension2->getNumber());
+        assertMatch($number2, $dimension1->number());
+        assertMatch($dimension1->number(), $dimension2->number());
 
-        assertMatch($identifier2, $dimension1->getUnit());
-        assertMatch($dimension1->getUnit(), $dimension2->getUnit());
+        assertMatch($identifier2, $dimension1->unit());
+        assertMatch($dimension1->unit(), $dimension2->unit());
     }
 }

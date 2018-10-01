@@ -13,7 +13,7 @@ class FunctionToken implements IdentifierLikeToken
      * @var         IdentifierToken
      * `IdentifierToken`
      */
-    private $identifier;
+    private $_identifier;
 
     /**
      * @param       IdentifierToken                         $identifier
@@ -21,19 +21,19 @@ class FunctionToken implements IdentifierLikeToken
      * The {@see IdentifierToken} to become a {@see FunctionToken}.
      */
     public function __construct(IdentifierToken $identifier){
-        $this->identifier = $identifier;
+        $this->_identifier = $identifier;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return $this->identifier . "(";
+        return $this->_identifier . "(";
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->identifier, $other->identifier);
+            match($this->_identifier, $other->_identifier);
     }
 
     /**
@@ -43,7 +43,7 @@ class FunctionToken implements IdentifierLikeToken
      * `IdentifierToken`
      * Returns the {@see IdentifierToken} for this {@see FunctionToken}.
      */
-    public function getIdentifier(): IdentifierToken{
-        return $this->identifier;
+    public function identifier(): IdentifierToken{
+        return $this->_identifier;
     }
 }

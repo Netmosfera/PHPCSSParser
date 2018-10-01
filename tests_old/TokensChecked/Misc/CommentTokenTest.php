@@ -35,11 +35,14 @@ class CommentTokenTest extends TestCase
         assertMatch("/*" . $comment . $commentEnd, (String)$comment1);
         assertMatch((String)$comment1, (String)$comment2);
 
-        assertMatch($comment, $comment1->getText());
-        assertMatch($comment1->getText(), $comment2->getText());
+        assertMatch($comment, $comment1->text());
+        assertMatch($comment1->text(), $comment2->text());
 
-        assertMatch($terminatedWithEOF, $comment1->isTerminatedWithEOF());
-        assertMatch($comment1->isTerminatedWithEOF(), $comment2->isTerminatedWithEOF());
+        assertMatch($terminatedWithEOF, $comment1->precedesEOF());
+        assertMatch(
+            $comment1->precedesEOF(),
+            $comment2->precedesEOF()
+        );
     }
 
     public function data2(){

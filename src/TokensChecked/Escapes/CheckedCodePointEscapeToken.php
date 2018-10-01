@@ -5,9 +5,9 @@ namespace Netmosfera\PHPCSSAST\TokensChecked\Escapes;
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\CPEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 
-class CheckedCPEscapeToken extends CPEscapeToken
+class CheckedCodePointEscapeToken extends CodePointEscapeToken
 {
     public function __construct(
         String $hexDigits,
