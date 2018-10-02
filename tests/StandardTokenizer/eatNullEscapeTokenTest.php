@@ -21,15 +21,17 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class eatNullEscapeTokenTest extends TestCase
 {
     public function data0(){
-        return cartesianProduct(ANY_UTF8(), ["not escape", ""]);
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("not starting with \\"));
     }
 
     /** @dataProvider data0 */
     public function test0(String $prefix, String $rest){
+        $escape = NULL;
+
         $traverser = getTraverser($prefix, $rest);
-        $expected = NULL;
-        $actual = eatNullEscapeToken($traverser, "\n");
-        assertMatch($actual, $expected);
+        $actualEscape = eatNullEscapeToken($traverser, "\f");
+
+        assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), $rest);
     }
 
@@ -39,10 +41,12 @@ class eatNullEscapeTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $prefix){
+        $escape = new CheckedEOFEscapeToken();
+
         $traverser = getTraverser($prefix, "\\");
-        $expected = new CheckedEOFEscapeToken();
-        $actual = eatNullEscapeToken($traverser, "irrelevant");
-        assertMatch($actual, $expected);
+        $actualEscape = eatNullEscapeToken($traverser, "\f");
+
+        assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), "");
     }
 
@@ -52,27 +56,31 @@ class eatNullEscapeTokenTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $rest){
+        $escape = new CheckedContinuationEscapeToken("\f");
+
         $traverser = getTraverser($prefix, "\\\f" . $rest);
-        $expected = new CheckedContinuationEscapeToken("\f");
-        $actual = eatNullEscapeToken($traverser, "\f");
-        assertMatch($actual, $expected);
+        $actualEscape = eatNullEscapeToken($traverser, "\f");
+
+        assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), $rest);
     }
 
     public function data3(){
         return cartesianProduct(
             ANY_UTF8(),
-            ["f", "FFAACC", "x", "a", "z", "@"],
+            ["f", "FFAACC", "FAC", "fAc", "x", "a", "z", "@"],
             ANY_UTF8()
         );
     }
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $validEscape, String $rest){
+        $escape = NULL;
+
         $traverser = getTraverser($prefix, "\\" . $validEscape . $rest);
-        $expected = NULL;
-        $actual = eatNullEscapeToken($traverser, "\x{C}");
-        assertMatch($actual, $expected);
+        $actualEscape = eatNullEscapeToken($traverser, "\f");
+
+        assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), "\\" . $validEscape . $rest);
     }
 }

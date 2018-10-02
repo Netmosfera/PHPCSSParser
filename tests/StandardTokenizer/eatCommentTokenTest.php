@@ -18,32 +18,33 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatCommentTokenTest extends TestCase
 {
-    public function commentTexts(){
-        $sequences[] = "";
-        $sequences[] = "comment text";
-        $sequences[] = "\t \n \r \r\n \f";
-        $sequences[] = "sample \u{2764} string";
-        $sequences[] = "comment terminating with incomplete comment-end *";
-        $sequences[] = "comment text can contain /* without causing a parse error";
-        return $sequences;
+    private function commentTexts(){
+        $texts[] = "";
+        $texts[] = "comment text";
+        $texts[] = "\t \n \r \r\n \f";
+        $texts[] = "sample \u{2764} string";
+        $texts[] = "comment terminating with incomplete comment-end *";
+        $texts[] = "comment text can contain /* without causing a parse error";
+        return $texts;
     }
 
     //------------------------------------------------------------------------------------
 
     public function data1(){
-        $rest[] = "";
-        $rest[] = "not \u{2764} a \u{2764} comment";
-        $rest[] = "*/ also this is not a comment";
-        $rest[] = " /* this too is not a comment, because it's prefixed by a space";
+        $rest = ANY_UTF8("not a comment start");
+        $rest[] = "*/ also not a comment start";
+        $rest[] = " /* this too is not a comment start, because it's prefixed by a space";
         return cartesianProduct(ANY_UTF8(), $rest);
     }
 
     /** @dataProvider data1 */
     public function test1(String $prefix, String $rest){
+        $comment = NULL;
+
         $traverser = getTraverser($prefix, $rest);
-        $expected = NULL;
-        $actual = eatCommentToken($traverser);
-        assertMatch($actual, $expected);
+        $actualComment = eatCommentToken($traverser);
+
+        assertMatch($actualComment, $comment);
         assertMatch($traverser->eatAll(), $rest);
     }
 
@@ -53,26 +54,29 @@ class eatCommentTokenTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $text){
-        $traverser = getTraverser($prefix, "/*" . $text);
-        $expected = new CheckedCommentToken($text, TRUE);
-        $actual = eatCommentToken($traverser);
-        assertMatch($actual, $expected);
+        $comment = new CheckedCommentToken($text, TRUE);
+
+        $traverser = getTraverser($prefix, $comment . "");
+        $actualComment = eatCommentToken($traverser);
+
+        assertMatch($actualComment, $comment);
         assertMatch($traverser->eatAll(), "");
     }
 
     public function data3(){
-        $rest[] = "";
-        $rest[] = "sample \u{2764} string";
+        $rest = ANY_UTF8();
         $rest[] = "this is used to test that */ is matched lazily";
         return cartesianProduct(ANY_UTF8(), $this->commentTexts(), $rest);
     }
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $text, String $rest){
-        $traverser = getTraverser($prefix, "/*" . $text . "*/" . $rest);
-        $expected = new CheckedCommentToken($text, FALSE);
-        $actual = eatCommentToken($traverser);
-        assertMatch($actual, $expected);
+        $comment = new CheckedCommentToken($text, FALSE);
+
+        $traverser = getTraverser($prefix, $comment . $rest);
+        $actualComment = eatCommentToken($traverser);
+
+        assertMatch($actualComment, $comment);
         assertMatch($traverser->eatAll(), $rest);
     }
 }

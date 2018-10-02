@@ -24,47 +24,53 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class eatAtKeywordTokenTest extends TestCase
 {
     public function data1(){
-        return cartesianProduct(ANY_UTF8(), ["not-at-keyword", ""]);
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("not @"));
     }
 
     /** @dataProvider data1 */
     public function test1(String $prefix, String $rest){
+        $atKeyword = NULL;
+
         $traverser = getTraverser($prefix, $rest);
-        $expected = NULL;
         $eatIdentifier = eatIdentifierTokenFailingFunction();
-        $actual = eatAtKeywordToken($traverser, $eatIdentifier);
-        assertMatch($actual, $expected);
+        $actualAtKeyword = eatAtKeywordToken($traverser, $eatIdentifier);
+
+        assertMatch($actualAtKeyword, $atKeyword);
         assertMatch($traverser->eatAll(), $rest);
     }
 
     public function data2(){
-        return cartesianProduct(ANY_UTF8(), ["9-not-a-identifier", ""]);
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("9 not name-start cp"));
     }
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $rest){
+        $atKeyword = NULL;
+
         $traverser = getTraverser($prefix, "@" . $rest);
-        $expected = NULL;
         $eatIdentifier = eatIdentifierTokenFunction(NULL);
-        $actual = eatAtKeywordToken($traverser, $eatIdentifier);
-        assertMatch($actual, $expected);
+        $actualAtKeyword = eatAtKeywordToken($traverser, $eatIdentifier);
+
+        assertMatch($actualAtKeyword, $atKeyword);
         assertMatch($traverser->eatAll(), "@" . $rest);
     }
 
     public function data3(){
-        return cartesianProduct(ANY_UTF8(), ANY_UTF8());
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("@ not name cp"));
     }
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $rest){
-        $traverser = getTraverser($prefix, "@the-identifier" . $rest);
         $nameBit = new CheckedNameBitToken("the-identifier");
         $name = new CheckedNameToken([$nameBit]);
         $identifier = new CheckedIdentifierToken($name);
-        $expected = new CheckedAtKeywordToken($identifier);
+        $atKeyword = new CheckedAtKeywordToken($identifier);
+
+        $traverser = getTraverser($prefix, $atKeyword . $rest);
         $eatIdentifier = eatIdentifierTokenFunction($identifier);
-        $actual = eatAtKeywordToken($traverser, $eatIdentifier);
-        assertMatch($actual, $expected);
+        $actualAtKeyword = eatAtKeywordToken($traverser, $eatIdentifier);
+
+        assertMatch($actualAtKeyword, $atKeyword);
         assertMatch($traverser->eatAll(), $rest);
     }
 }
