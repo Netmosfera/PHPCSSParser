@@ -50,7 +50,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
 
     //------------------------------------------------------------------------------------
 
-    public function data3(){
+    public function data1(){
         return cartesianProduct(
             ANY_UTF8(),
             makePiecesSample(Closure::fromCallable([$this, "piecesAfterPiece"]), FALSE),
@@ -58,7 +58,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
         );
     }
 
-    /** @dataProvider data3 */
+    /** @dataProvider data1 */
     public function test1(String $prefix, Array $pieces, String $rest){
         $escape1 = new CheckedContinuationEscapeToken("\n");
         $escape2 = new CheckedEncodedCodePointEscapeToken("@");
@@ -72,14 +72,14 @@ class eatBadURLRemnantsTokenTest extends TestCase
         assertMatch($traverser->eatAll(), $rest);
     }
 
-    public function data4(){
+    public function data2(){
         return cartesianProduct(
             ANY_UTF8(),
             makePiecesSample(Closure::fromCallable([$this, "piecesAfterPiece"]), FALSE)
         );
     }
 
-    /** @dataProvider data4 */
+    /** @dataProvider data2 */
     public function test2(String $prefix, Array $pieces){
         $escape1 = new CheckedContinuationEscapeToken("\n");
         $escape2 = new CheckedEncodedCodePointEscapeToken("@");

@@ -6,15 +6,15 @@ use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use Closure;
 
-function eatURLTokenFunction(?URLToken $URLToken): Closure{
-    return function(Traverser $traverser) use($URLToken): ?URLToken{
-        if($URLToken === NULL){
+function eatURLTokenFunction(?URLToken $URL): Closure{
+    return function(Traverser $traverser) use($URL): ?URLToken{
+        if($URL === NULL){
             return NULL;
         }else{
-            $stringValue = $URLToken->whitespaceBefore();
-            $stringValue .= implode("", $URLToken->pieces());
-            $stringValue .= $URLToken->whitespaceAfter() . ")";
-            return $traverser->eatStr($stringValue) === NULL ? NULL : $URLToken;
+            $stringValue = $URL->whitespaceBefore();
+            $stringValue .= implode("", $URL->pieces());
+            $stringValue .= $URL->whitespaceAfter() . ")";
+            return $traverser->eatStr($stringValue) === NULL ? NULL : $URL;
         }
     };
 }

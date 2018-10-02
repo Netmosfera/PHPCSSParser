@@ -6,13 +6,13 @@ use Closure;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
-function eatIdentifierTokenFunction(?IdentifierToken $identifierToken): Closure{
-    return function(Traverser $traverser) use($identifierToken): ?IdentifierToken{
-        if($identifierToken === NULL){
+function eatIdentifierTokenFunction(?IdentifierToken $identifier): Closure{
+    return function(Traverser $traverser) use($identifier): ?IdentifierToken{
+        if($identifier === NULL){
             return NULL;
         }else{
-            $stringValue = (String)$identifierToken;
-            return $traverser->eatStr($stringValue) === NULL ? NULL : $identifierToken;
+            $stringValue = (String)$identifier;
+            return $traverser->eatStr($stringValue) === NULL ? NULL : $identifier;
         }
     };
 }

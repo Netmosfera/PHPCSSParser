@@ -13,3 +13,7 @@
 
 // @TODO the format of urltokens's url identifier is lost
 // for example u\rl(path/) cannot be retained - always gets converted to url(path/)
+
+// @TODO make eatNumberToken and eatIdentifierToken tests less pedantic
+
+// @TODO add hex escapes in the tests of eatbadurlremnants and eatstring

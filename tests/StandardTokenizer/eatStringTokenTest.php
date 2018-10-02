@@ -2,46 +2,74 @@
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
-use function Netmosfera\PHPCSSASTTests\assertMatch;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSAST\StandardTokenizer\eatStringToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedBadStringToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringBitToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringToken;
-use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
-use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
-use PHPUnit\Framework\TestCase;
 use Closure;
+use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedBadStringToken;
+use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatEscapeTokenFunction;
+use function Netmosfera\PHPCSSAST\StandardTokenizer\eatStringToken;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**
  * Tests in this file:
  *
- * #1 | NULL if no string delimiter
- * #2 | StringToken if string is terminated with EOF
- * #3 | Returns BadStringToken if string is interrupted by a newline
- * #4 | test loop @TODO repeat the test with EOF and bad string token
- */
+ * #1 | good string
+ * #2 | good string terminated with eof
+ * #3 | bad string
+  */
 class eatStringTokenTest extends TestCase
 {
+    private $stringBit = "string \u{2764} bit";
+
+    private function piecesAfterPiece($afterPiece){
+        if($afterPiece === NULL){
+            // StringToken may start with anything
+            $data[] = new CheckedStringBitToken($this->stringBit);
+            $data[] = new CheckedContinuationEscapeToken("\n");
+            $data[] = new CheckedEncodedCodePointEscapeToken("@");
+        }elseif($afterPiece instanceof StringBitToken){
+            // StringBitToken can *not* appear after another one, only escapes can
+            $data[] = new CheckedContinuationEscapeToken("\n");
+            $data[] = new CheckedEncodedCodePointEscapeToken("@");
+        }else{
+            assert($afterPiece instanceof EscapeToken);
+            // After a EscapeToken can appear anything
+            $data[] = new CheckedStringBitToken($this->stringBit);
+            $data[] = new CheckedContinuationEscapeToken("\n");
+            $data[] = new CheckedEncodedCodePointEscapeToken("@");
+        }
+        return $data;
+    }
+
+    //------------------------------------------------------------------------------------
+
     public function data1(){
         return cartesianProduct(
             ANY_UTF8(),
-            ["", "not a \u{2764} CSS string"]
+            ["\"", "'"],
+            makePiecesSample(Closure::fromCallable([$this, "piecesAfterPiece"])),
+            ANY_UTF8()
         );
     }
 
     /** @dataProvider data1 */
-    public function test1($prefix, $rest){
-        $traverser = getTraverser($prefix, $rest);
-        $expected = NULL;
-        $eatEscape = function(Traverser $t): ?EscapeToken{
-            self::fail();
-        };
-        $actual = eatStringToken($traverser, "\f", $eatEscape);
-        assertMatch($actual, $expected);
+    public function test1(String $prefix, String $delimiter, Array $pieces, String $rest){
+        $escape1 = new CheckedContinuationEscapeToken("\n");
+        $escape2 = new CheckedEncodedCodePointEscapeToken("@");
+        $string = new CheckedStringToken($delimiter, $pieces, FALSE);
+
+        $traverser = getTraverser($prefix, $string . $rest);
+        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2]);
+        $actualString = eatStringToken($traverser, "\f", $eatEscape);
+
+        assertMatch($actualString, $string);
         assertMatch($traverser->eatAll(), $rest);
     }
 
@@ -49,20 +77,21 @@ class eatStringTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             ["\"", "'"],
-            ["", "skip \u{2764} me"]
+            makePiecesSample(Closure::fromCallable([$this, "piecesAfterPiece"]))
         );
     }
 
     /** @dataProvider data2 */
-    public function test2($prefix, $delimiter, $string){
-        $traverser = getTraverser($prefix, $delimiter . $string);
-        $pieces = $string === "" ? [] : [new CheckedStringBitToken($string)];
-        $expected = new CheckedStringToken($delimiter, $pieces, TRUE);
-        $eatEscape = function(Traverser $t): ?EscapeToken{
-            self::fail();
-        };
-        $actual = eatStringToken($traverser, "\f", $eatEscape);
-        assertMatch($actual, $expected);
+    public function test2(String $prefix, String $delimiter, Array $pieces){
+        $escape1 = new CheckedContinuationEscapeToken("\n");
+        $escape2 = new CheckedEncodedCodePointEscapeToken("@");
+        $string = new CheckedStringToken($delimiter, $pieces, TRUE);
+
+        $traverser = getTraverser($prefix, $string . "");
+        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2]);
+        $actualString = eatStringToken($traverser, "\f", $eatEscape);
+
+        assertMatch($actualString, $string);
         assertMatch($traverser->eatAll(), "");
     }
 
@@ -70,54 +99,22 @@ class eatStringTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             ["\"", "'"],
-            ["", "skip \u{2764} me"],
+            makePiecesSample(Closure::fromCallable([$this, "piecesAfterPiece"])),
             ANY_UTF8()
         );
     }
 
     /** @dataProvider data3 */
-    public function test3($prefix, $delimiter, $string, $rest){
-        $traverser = getTraverser($prefix, $delimiter . $string . "\f" . $rest);
-        $pieces = $string === "" ? [] : [new CheckedStringBitToken($string)];
-        $expected = new CheckedBadStringToken($delimiter, $pieces);
-        $eatEscape = function(Traverser $t): ?EscapeToken{
-            self::fail();
-        };
-        $actual = eatStringToken($traverser, "\f", $eatEscape);
-        assertMatch($actual, $expected);
+    public function test3(String $prefix, String $delimiter, Array $pieces, String $rest){
+        $escape1 = new CheckedContinuationEscapeToken("\n");
+        $escape2 = new CheckedEncodedCodePointEscapeToken("@");
+        $string = new CheckedBadStringToken($delimiter, $pieces);
+
+        $traverser = getTraverser($prefix, $string . "\f" . $rest);
+        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2]);
+        $actualString = eatStringToken($traverser, "\f", $eatEscape);
+
+        assertMatch($actualString, $string);
         assertMatch($traverser->eatAll(), "\f" . $rest);
-    }
-
-    public function data4(){
-        return cartesianProduct(
-            ANY_UTF8(),
-            ["\"", "'"],
-            makePiecesSample(Closure::fromCallable([$this, "getPieces"])),
-            ANY_UTF8()
-        );
-    }
-
-    /** @dataProvider data4 */
-    public function test4(String $prefix, String $delimiter, Array $pieces, String $rest){
-        $string = implode("", $pieces);
-        $traverser = getTraverser($prefix, $delimiter . $string . $delimiter . $rest);
-        $expected = new CheckedStringToken($delimiter, $pieces, FALSE);
-        $eatEscape = function(Traverser $traverser): ?EscapeToken{
-            if($traverser->eatStr("\\@") === NULL){ return NULL; }
-            return new CheckedEncodedCodePointEscapeToken("@");
-        };
-        $actual = eatStringToken($traverser, "\f", $eatEscape);
-        assertMatch($actual, $expected);
-        assertMatch($traverser->eatAll(), $rest);
-    }
-
-    public function getPieces($afterPiece){
-        if(!$afterPiece instanceof StringBitToken){
-            $data[] = new CheckedStringBitToken("s");
-            $data[] = new CheckedStringBitToken("st");
-            $data[] = new CheckedStringBitToken("str");
-        }
-        $data[] = new CheckedEncodedCodePointEscapeToken("@");
-        return $data;
     }
 }

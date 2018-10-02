@@ -3,17 +3,18 @@
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedDimensionToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedPercentageToken;
+use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatIdentifierTokenFailingFunction;
+use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatIdentifierTokenFunction;
+use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatNumberTokenFunction;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatNumericToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
-use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**
@@ -27,23 +28,19 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class eatNumericTokenTest extends TestCase
 {
     public function data1(){
-        $rest[] = "";
-        $rest[] = "sample \u{2764} string";
-        return cartesianProduct(ANY_UTF8(), $rest);
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("not starting with a number"));
     }
 
     /** @dataProvider data1 */
     public function test1(String $prefix, String $rest){
+        $numeric = NULL;
+
         $traverser = getTraverser($prefix, $rest);
-        $expected = NULL;
-        $eatNumberToken = function(Traverser $traverser){
-            return NULL;
-        };
-        $eatIdentifierToken = function(Traverser $traverser){
-            self::fail();
-        };
-        $actual = eatNumericToken($traverser, $eatNumberToken, $eatIdentifierToken);
-        assertMatch($actual, $expected);
+        $eatNumber = eatNumberTokenFunction(NULL);
+        $eatIdentifier = eatIdentifierTokenFailingFunction();
+        $actualNumeric = eatNumericToken($traverser, $eatNumber, $eatIdentifier);
+
+        assertMatch($actualNumeric, $numeric);
         assertMatch($traverser->eatAll(), $rest);
     }
 
@@ -53,63 +50,53 @@ class eatNumericTokenTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $rest){
-        $traverser = getTraverser($prefix, "abc%" . $rest);
-        $number = new CheckedNumberToken("+", "2398", "42", "", "", "");
-        $expected = new CheckedPercentageToken($number);
-        $eatNumberToken = function(Traverser $traverser) use($number){
-            assertNotMatch($traverser->eatStr("abc"), NULL);
-            return $number;
-        };
-        $eatIdentifierToken = function(Traverser $traverser){
-            self::fail();
-        };
-        $actual = eatNumericToken($traverser, $eatNumberToken, $eatIdentifierToken);
-        assertMatch($actual, $expected);
+        $number = new CheckedNumberToken("+", "2398", "42", "e", "+", "66");
+        $numeric = new CheckedPercentageToken($number);
+
+        $traverser = getTraverser($prefix, $numeric . $rest);
+        $eatNumber = eatNumberTokenFunction($number);
+        $eatIdentifier = eatIdentifierTokenFailingFunction();
+        $actualNumeric = eatNumericToken($traverser, $eatNumber, $eatIdentifier);
+
+        assertMatch($actualNumeric, $numeric);
         assertMatch($traverser->eatAll(), $rest);
     }
 
     public function data3(){
-        return cartesianProduct(ANY_UTF8(), ANY_UTF8());
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("@ not starting with name code point"));
     }
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $rest){
-        $traverser = getTraverser($prefix, "abcdef" . $rest);
-        $number = new CheckedNumberToken("+", "2398", "42", "", "", "");
-        $name = new CheckedNameToken([new CheckedNameBitToken("attoparsec")]);
-        $unit = new CheckedIdentifierToken($name);
-        $expected = new CheckedDimensionToken($number, $unit);
-        $eatNumberToken = function(Traverser $traverser) use($number){
-            assertNotMatch($traverser->eatStr("abc"), NULL);
-            return $number;
-        };
-        $eatIdentifierToken = function(Traverser $traverser) use($unit){
-            assertNotMatch($traverser->eatStr("def"), NULL);
-            return $unit;
-        };
-        $actual = eatNumericToken($traverser, $eatNumberToken, $eatIdentifierToken);
-        assertMatch($actual, $expected);
+        $number = new CheckedNumberToken("+", "2398", "42", "e", "+", "4");
+        $nameBit = new CheckedNameBitToken("iau");
+        $name = new CheckedNameToken([$nameBit]);
+        $identifier = new CheckedIdentifierToken($name);
+        $numeric = new CheckedDimensionToken($number, $identifier);
+
+        $traverser = getTraverser($prefix, $numeric . $rest);
+        $eatNumber = eatNumberTokenFunction($number);
+        $eatIdentifier = eatIdentifierTokenFunction($identifier);
+        $actualNumeric = eatNumericToken($traverser, $eatNumber, $eatIdentifier);
+
+        assertMatch($actualNumeric, $numeric);
         assertMatch($traverser->eatAll(), $rest);
     }
 
     public function data4(){
-        return cartesianProduct(ANY_UTF8(), ANY_UTF8());
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("@ not starting with name code point or %"));
     }
 
     /** @dataProvider data4 */
     public function test4(String $prefix, String $rest){
-        $traverser = getTraverser($prefix, "abc" . $rest);
-        $number = new CheckedNumberToken("+", "42", "24", "", "", "");
-        $expected = $number;
-        $eatNumberToken = function(Traverser $traverser) use($number){
-            assertNotMatch($traverser->eatStr("abc"), NULL);
-            return $number;
-        };
-        $eatIdentifierToken = function(Traverser $traverser){
-            return NULL;
-        };
-        $actual = eatNumericToken($traverser, $eatNumberToken, $eatIdentifierToken);
-        assertMatch($actual, $expected);
+        $numeric = new CheckedNumberToken("+", "42", "24", "e", "-", "44");
+
+        $traverser = getTraverser($prefix, $numeric . $rest);
+        $eatNumber = eatNumberTokenFunction($numeric);
+        $eatIdentifier = eatIdentifierTokenFunction(NULL);
+        $actualNumeric = eatNumericToken($traverser, $eatNumber, $eatIdentifier);
+
+        assertMatch($actualNumeric, $numeric);
         assertMatch($traverser->eatAll(), $rest);
     }
 }
