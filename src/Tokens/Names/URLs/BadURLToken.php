@@ -5,12 +5,19 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
 /**
  * A {@see BadURLToken} is a {@see URLToken} that terminates with invalid data.
  */
 class BadURLToken implements AnyURLToken
 {
+    /**
+     * @var         IdentifierToken
+     * `IdentifierToken`
+     */
+    private $_identifier;
+
     /**
      * @var         WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
@@ -36,6 +43,10 @@ class BadURLToken implements AnyURLToken
     private $_stringValue;
 
     /**
+     * @param       IdentifierToken                         $identifier
+     * `IdentifierToken`
+     * @TODOC
+     *
      * @param       WhitespaceToken|NULL                    $whitespaceBefore
      * `WhitespaceToken|NULL`
      * @TODOC
@@ -49,10 +60,12 @@ class BadURLToken implements AnyURLToken
      * @TODOC
      */
     public function __construct(
+        IdentifierToken $identifier,
         ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
         BadURLRemnantsToken $badURLRemnants
     ){
+        $this->_identifier = $identifier;
         $this->_whitespaceBefore = $whitespaceBefore;
         $this->_pieces = $pieces;
         $this->_badURLRemnants = $badURLRemnants;
@@ -73,9 +86,21 @@ class BadURLToken implements AnyURLToken
     public function equals($other): Bool{
         return
             $other instanceof self &&
+            match($this->_identifier, $other->_identifier) &&
             match($this->_whitespaceBefore, $other->_whitespaceBefore) &&
             match($this->_pieces, $other->_pieces) &&
             match($this->_badURLRemnants, $other->_badURLRemnants);
+    }
+
+    /**
+     * @TODOC
+     *
+     * @return      IdentifierToken
+     * `IdentifierToken`
+     * @TODOC
+     */
+    public function identifier(): IdentifierToken{
+        return $this->_identifier;
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 use function implode;
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 /**
@@ -19,6 +20,12 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
  */
 class URLToken implements AnyURLToken
 {
+    /**
+     * @var         IdentifierToken
+     * `IdentifierToken`
+     */
+    private $_identifier;
+
     /**
      * @var         WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
@@ -50,6 +57,10 @@ class URLToken implements AnyURLToken
     private $_stringValue;
 
     /**
+     * @param       IdentifierToken                         $identifier
+     * `IdentifierToken`
+     * @TODOC
+     *
      * @param       WhitespaceToken|NULL                    $whitespaceBefore
      * `WhitespaceToken|NULL`
      * @TODOC
@@ -67,11 +78,13 @@ class URLToken implements AnyURLToken
      * @TODOC
      */
     public function __construct(
+        IdentifierToken $identifier,
         ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
         ?WhitespaceToken $whitespaceAfter,
         Bool $precedesEOF
     ){
+        $this->_identifier = $identifier;
         $this->_whitespaceBefore = $whitespaceBefore;
         $this->_pieces = $pieces;
         $this->_whitespaceAfter = $whitespaceAfter;
@@ -81,7 +94,8 @@ class URLToken implements AnyURLToken
     /** @inheritDoc */
     public function __toString(): String{
         if($this->_stringValue === NULL){
-            $this->_stringValue = "url(" .
+            $this->_stringValue =
+                $this->_identifier . "(" .
                 $this->_whitespaceBefore .
                 implode("", $this->_pieces) .
                 $this->_whitespaceAfter .
@@ -94,6 +108,7 @@ class URLToken implements AnyURLToken
     public function equals($other): Bool{
         return
             $other instanceof self &&
+            match($this->_identifier, $other->_identifier) &&
             match($this->_whitespaceBefore, $other->_whitespaceBefore) &&
             match($this->_pieces, $other->_pieces) &&
             match($this->_whitespaceAfter, $other->_whitespaceAfter) &&
@@ -103,11 +118,22 @@ class URLToken implements AnyURLToken
     /**
      * @TODOC
      *
+     * @return      IdentifierToken
+     * `IdentifierToken`
+     * @TODOC
+     */
+    public function identifier(): IdentifierToken{
+        return $this->_identifier;
+    }
+
+    /**
+     * @TODOC
+     *
      * @return      WhitespaceToken|NULL
      * `WhitespaceToken|NULL`
      * @TODOC
      */
-    public function getWhitespaceBefore(): ?WhitespaceToken{
+    public function whitespaceBefore(): ?WhitespaceToken{
         return $this->_whitespaceBefore;
     }
 
@@ -118,7 +144,7 @@ class URLToken implements AnyURLToken
      * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      */
-    public function getPieces(): Array{
+    public function pieces(): Array{
         return $this->_pieces;
     }
 
@@ -129,7 +155,7 @@ class URLToken implements AnyURLToken
      * `WhitespaceToken|NULL`
      * @TODOC
      */
-    public function getWhitespaceAfter(): ?WhitespaceToken{
+    public function whitespaceAfter(): ?WhitespaceToken{
         return $this->_whitespaceAfter;
     }
 

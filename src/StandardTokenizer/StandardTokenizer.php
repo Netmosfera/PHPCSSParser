@@ -88,9 +88,13 @@ class StandardTokenizer
             return eatBadURLRemnantsToken($traverser, $this->eatAnyEscape);
         };
 
-        $this->eatURLToken = function(Traverser $traverser): ?AnyURLToken{
+        $this->eatURLToken = function(
+            Traverser $traverser,
+            IdentifierToken $URL
+        ): ?AnyURLToken{
             return eatURLToken(
                 $traverser,
+                $URL,
                 $this->whitespaceRegexSet,
                 $this->URLTokenBlacklistedCodePointsRegExpSet,
                 $this->eatValidEscape,

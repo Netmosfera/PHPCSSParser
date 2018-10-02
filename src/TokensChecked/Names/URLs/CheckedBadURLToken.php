@@ -3,6 +3,7 @@
 namespace Netmosfera\PHPCSSAST\TokensChecked\Names\URLs;
 
 use function Netmosfera\PHPCSSAST\isArraySequence;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
@@ -14,6 +15,7 @@ use TypeError;
 class CheckedBadURLToken extends BadURLToken
 {
     public function __construct(
+        IdentifierToken $identifier,
         ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
         BadURLRemnantsToken $badURLRemnants
@@ -36,6 +38,10 @@ class CheckedBadURLToken extends BadURLToken
             }
         }
 
+        if($identifier->name()->intendedValue() !== "url"){
+            throw new InvalidToken("Identifier's intended value must match `url`");
+        }
+
         foreach($pieces as $offset => $piece){
             if($piece instanceof URLBitToken){
                 $nextPiece = $pieces[$offset + 1] ?? NULL;
@@ -48,6 +54,6 @@ class CheckedBadURLToken extends BadURLToken
             }
         }
 
-        parent::__construct($whitespaceBefore, $pieces, $badURLRemnants);
+        parent::__construct($identifier, $whitespaceBefore, $pieces, $badURLRemnants);
     }
 }

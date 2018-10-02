@@ -2,9 +2,7 @@
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
-use Closure;
 use function dechex;
-use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -20,8 +18,13 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
+use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatIdentifierTokenFunction;
+use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatURLTokenFailingFunction;
+use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatURLTokenFunction;
 use PHPUnit\Framework\TestCase;
 use IntlChar;
+use Closure;
 
 /**
  * Tests in this file:
@@ -34,43 +37,6 @@ use IntlChar;
  */
 class eatIdentifierLikeTokenTest extends TestCase
 {
-    private function eatURLTokenFailingFunction(): Closure{
-        return function(Traverser $traverser): ?IdentifierToken{
-            self::fail();
-        };
-    }
-
-    private function eatURLTokenFunction(?URLToken $URLToken): Closure{
-        return function(Traverser $traverser) use($URLToken): ?URLToken{
-            if($URLToken === NULL){
-                return NULL;
-            }else{
-                $stringValue = (String)$URLToken;
-                return $traverser->eatStr($stringValue) === NULL ? NULL : $URLToken;
-            }
-        };
-    }
-
-    private function eatIdentifierTokenFailingFunction(): Closure{
-        return function(Traverser $traverser): ?IdentifierToken{
-            self::fail();
-        };
-    }
-
-    private function eatIdentifierFunction(?IdentifierToken $identifier): Closure{
-        return function(Traverser $traverser) use($identifier): ?IdentifierToken{
-            if($identifier === NULL){
-                return NULL;
-            }else{
-                $stringValue = (String)$identifier;
-                return $traverser->eatStr($stringValue) === NULL ? NULL : $identifier;
-            }
-        };
-    }
-
-
-    //------------------------------------------------------------------------------------
-
     public function data1(){
         return cartesianProduct(ANY_UTF8(), ["+33.123", ""]);
     }
@@ -79,14 +45,9 @@ class eatIdentifierLikeTokenTest extends TestCase
     public function test1(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $rest);
         $expected = NULL;
-        $eatIdentifierToken = function(Traverser $traverser){
-            return NULL;
-        };
-        $eatURLToken = function(Traverser $traverser){
-            self::fail();
-        };
-        $actual = eatIdentifierLikeToken(
-            $traverser, $eatIdentifierToken, "\f", $eatURLToken);
+        $eatIdentifier = eatIdentifierTokenFunction(NULL);
+        $eatURL = eatURLTokenFailingFunction();
+        $actual = eatIdentifierLikeToken($traverser, $eatIdentifier, "\f", $eatURL);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -98,17 +59,12 @@ class eatIdentifierLikeTokenTest extends TestCase
     /** @dataProvider data2 */
     public function test2(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "identifier_name" . $rest);
-        $expected = new CheckedIdentifierToken(new CheckedNameToken(
-            [new CheckedNameBitToken("identifier_name")]));
-        $eatIdentifierToken = function(Traverser $traverser) use($expected){
-            assertNotMatch($traverser->eatStr("identifier_name"), NULL);
-            return $expected;
-        };
-        $eatURLToken = function(Traverser $traverser){
-            self::fail();
-        };
-        $actual = eatIdentifierLikeToken(
-            $traverser, $eatIdentifierToken, "\f", $eatURLToken);
+        $nameBit = new CheckedNameBitToken("identifier_name");
+        $name = new CheckedNameToken([$nameBit]);
+        $expected = new CheckedIdentifierToken($name);
+        $eatIdentifier = eatIdentifierTokenFunction($expected);
+        $eatURL = eatURLTokenFailingFunction();
+        $actual = eatIdentifierLikeToken($traverser, $eatIdentifier, "\f", $eatURL);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -119,19 +75,12 @@ class eatIdentifierLikeTokenTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(String $prefix, IdentifierToken $URLIdentifier, String $rest){
-        $traverser = getTraverser($prefix, "url(\f\f\fpath\f\f\f\f)" . $rest);
-        $expected = new CheckedURLToken(NULL,
-            [new CheckedURLBitToken("works")], NULL, FALSE);
-        $eatIdentifierToken = function(Traverser $traverser) use($URLIdentifier){
-            assertNotMatch($traverser->eatStr("url"), NULL);
-            return $URLIdentifier;
-        };
-        $eatURLToken = function(Traverser $traverser) use($expected){
-            assertNotMatch($traverser->eatStr("\f\f\fpath\f\f\f\f)"), NULL);
-            return $expected;
-        };
-        $actual = eatIdentifierLikeToken(
-            $traverser, $eatIdentifierToken, "\f", $eatURLToken);
+        $URLBit = new CheckedURLBitToken("works");
+        $expected = new CheckedURLToken($URLIdentifier, NULL, [$URLBit], NULL, FALSE);
+        $traverser = getTraverser($prefix, $expected . $rest);
+        $eatIdentifier = eatIdentifierTokenFunction($URLIdentifier);
+        $eatURL = eatURLTokenFunction($expected);
+        $actual = eatIdentifierLikeToken($traverser, $eatIdentifier, "\f", $eatURL);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }

@@ -2,6 +2,9 @@
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -65,7 +68,11 @@ class eatURLTokenTest extends TestCase
         $eatEscape = function(Traverser $traverser){
             self::fail();
         };
-        $actual = eatURLToken($traverser, "\f", "", $eatEscape, $eatRemnants);
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+
+        $actual = eatURLToken($traverser, $URLID, "\f", "", $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $startWS . $stringDelimiter . $rest);
     }
@@ -78,14 +85,18 @@ class eatURLTokenTest extends TestCase
     public function test1(String $prefix, String $startWS){
         $traverser = getTraverser($prefix, $startWS);
         $startWS = $startWS === "" ? NULL : new CheckedWhitespaceToken($startWS);
-        $expected = new CheckedURLToken($startWS, [], NULL, TRUE);
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+
+        $expected = new CheckedURLToken($URLID, $startWS, [], NULL, TRUE);
         $eatRemnants = function(Traverser $traverser){
             self::fail();
         };
         $eatEscape = function(Traverser $traverser){
             self::fail();
         };
-        $actual = eatURLToken($traverser, "\f", "", $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", "", $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), "");
     }
@@ -98,14 +109,18 @@ class eatURLTokenTest extends TestCase
     public function test2(String $prefix, String $startWS, String $rest){
         $traverser = getTraverser($prefix, $startWS . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
-        $expected = new CheckedURLToken($startWS, [], NULL, FALSE);
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+
+        $expected = new CheckedURLToken($URLID, $startWS, [], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){
             self::fail();
         };
         $eatEscape = function(Traverser $traverser){
             self::fail();
         };
-        $actual = eatURLToken($traverser, "\f", "", $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", "", $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -120,7 +135,11 @@ class eatURLTokenTest extends TestCase
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $remnantsBit = new CheckedBadURLRemnantsBitToken("(irrelevant");
         $remnants = new CheckedBadURLRemnantsToken([$remnantsBit], FALSE);
-        $expected = new CheckedBadURLToken($startWS, [], $remnants);
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+
+        $expected = new CheckedBadURLToken($URLID, $startWS, [], $remnants);
         $eatEscape = function(Traverser $traverser){
             assertNotMatch($traverser->createBranch()->eatStr("\\\n"), NULL);
             return NULL;
@@ -129,7 +148,7 @@ class eatURLTokenTest extends TestCase
             assertNotMatch($traverser->eatStr("\\\n"), NULL);
             return $remnants;
         };
-        $actual = eatURLToken($traverser, "\f", "0-9", $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", "0-9", $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -144,7 +163,11 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $ve . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $escape = new CheckedCodePointEscapeToken("66ff", NULL);
-        $expected = new CheckedURLToken($startWS, [$escape], NULL, FALSE);
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+
+        $expected = new CheckedURLToken($URLID, $startWS, [$escape], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){
             self::fail();
         };
@@ -152,7 +175,7 @@ class eatURLTokenTest extends TestCase
             assertNotMatch($traverser->eatStr($ve), NULL);
             return $escape;
         };
-        $actual = eatURLToken($traverser, "\f", "0-9", $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", "0-9", $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -168,7 +191,11 @@ class eatURLTokenTest extends TestCase
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $remnantsBit = new CheckedBadURLRemnantsBitToken("(irrelevant");
         $remnants = new CheckedBadURLRemnantsToken([$remnantsBit], FALSE);
-        $expected = new CheckedBadURLToken($startWS, [], $remnants);
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+
+        $expected = new CheckedBadURLToken($URLID, $startWS, [], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ic){
             assertNotMatch($traverser->eatStr($ic), NULL);
             return $remnants;
@@ -176,7 +203,7 @@ class eatURLTokenTest extends TestCase
         $eatEscape = function(Traverser $traverser){
             self::fail();
         };
-        $actual = eatURLToken($traverser, "\f", "0-9", $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", "0-9", $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -191,7 +218,11 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $URLBit = new CheckedURLBitToken($vs);
-        $expected = new CheckedURLToken($startWS, [$URLBit], NULL, FALSE);
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+
+        $expected = new CheckedURLToken($URLID, $startWS, [$URLBit], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){
             self::fail();
         };
@@ -199,7 +230,7 @@ class eatURLTokenTest extends TestCase
             self::fail();
         };
         $disallowedChars = "0-9" . preg_quote("()\\\"'\f");
-        $actual = eatURLToken($traverser, "\f", $disallowedChars, $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", $disallowedChars, $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -215,7 +246,10 @@ class eatURLTokenTest extends TestCase
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $endWS = $endWS === "" ? NULL :new CheckedWhitespaceToken($endWS);
         $URLBit = new CheckedURLBitToken($vs);
-        $expected = new CheckedURLToken($startWS, [$URLBit], $endWS, TRUE);
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+        $expected = new CheckedURLToken($URLID, $startWS, [$URLBit], $endWS, TRUE);
         $eatRemnants = function(Traverser $traverser){
             self::fail();
         };
@@ -223,7 +257,7 @@ class eatURLTokenTest extends TestCase
             self::fail();
         };
         $disallowedChars = "0-9" . preg_quote("()\\\"'\f");
-        $actual = eatURLToken($traverser, "\f", $disallowedChars, $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", $disallowedChars, $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), "");
     }
@@ -238,7 +272,10 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . $endWS . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $endWS = $endWS === "" ? NULL :new CheckedWhitespaceToken($endWS);
-        $expected = new CheckedURLToken($startWS, [new CheckedURLBitToken($vs)],
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+        $expected = new CheckedURLToken($URLID, $startWS, [new CheckedURLBitToken($vs)],
             $endWS, FALSE);
         $eatRemnants = function(Traverser $traverser){
             self::fail();
@@ -247,7 +284,7 @@ class eatURLTokenTest extends TestCase
             self::fail();
         };
         $disallowedChars = "0-9" . preg_quote("()\\\"'\f");
-        $actual = eatURLToken($traverser, "\f", $disallowedChars, $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", $disallowedChars, $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -264,7 +301,11 @@ class eatURLTokenTest extends TestCase
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $remnants = new CheckedBadURLRemnantsToken(
             [new CheckedBadURLRemnantsBitToken("(irrelevant")], FALSE);
-        $expected = new CheckedBadURLToken($startWS,
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+
+        $expected = new CheckedBadURLToken($URLID, $startWS,
             [new CheckedURLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ie){
             assertNotMatch($traverser->eatStr($ie), NULL);
@@ -275,7 +316,7 @@ class eatURLTokenTest extends TestCase
             return NULL;
         };
         $disallowedChars = "0-9" . preg_quote("()\\\"'\f");
-        $actual = eatURLToken($traverser, "\f", $disallowedChars, $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", $disallowedChars, $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -291,7 +332,9 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . $ve . ")" . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $escape = new CheckedCodePointEscapeToken("FFaaCC", NULL);
-        $expected = new CheckedURLToken(
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+        $expected = new CheckedURLToken( $URLID,
             $startWS, [new CheckedURLBitToken($vs), $escape], NULL, FALSE);
         $eatRemnants = function(Traverser $traverser){
             self::fail();
@@ -301,7 +344,7 @@ class eatURLTokenTest extends TestCase
             return $escape;
         };
         $disallowedChars = "0-9" . preg_quote("()\\\"'\f");
-        $actual = eatURLToken($traverser, "\f", $disallowedChars, $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", $disallowedChars, $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -318,7 +361,10 @@ class eatURLTokenTest extends TestCase
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $remnants = new CheckedBadURLRemnantsToken(
             [new CheckedBadURLRemnantsBitToken("(irrelevant")], FALSE);
-        $expected = new CheckedBadURLToken($startWS,
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
+
+        $expected = new CheckedBadURLToken($URLID, $startWS,
             [new CheckedURLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ic){
             assertNotMatch($traverser->eatStr($ic), NULL);
@@ -328,7 +374,7 @@ class eatURLTokenTest extends TestCase
             self::fail();
         };
         $disallowedChars = "0-9" . preg_quote("()\\\"'\f");
-        $actual = eatURLToken($traverser, "\f", $disallowedChars, $eatEscape, $eatRemnants);
+        $actual = eatURLToken($traverser, $URLID, "\f", $disallowedChars, $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }
@@ -344,7 +390,10 @@ class eatURLTokenTest extends TestCase
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $remnants = new CheckedBadURLRemnantsToken(
             [new CheckedBadURLRemnantsBitToken("(irrelevant")], FALSE);
-        $expected = new CheckedBadURLToken(
+
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken(
+            [new CheckedNameBitToken("url")]));
+        $expected = new CheckedBadURLToken($URLID,
             $startWS, [new CheckedURLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants){
             assertNotMatch($traverser->eatStr("\f remnants"), NULL);
@@ -354,7 +403,7 @@ class eatURLTokenTest extends TestCase
             self::fail();
         };
         $disallowedChars = "0-9" . preg_quote("()\\\"'\f");
-        $actual = eatURLToken($traverser, "\f", $disallowedChars,
+        $actual = eatURLToken($traverser, $URLID, "\f", $disallowedChars,
             $eatEscape, $eatRemnants);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -391,9 +440,10 @@ class eatURLTokenTest extends TestCase
         };
         $eatEscape = makeEatEscapeFunctionFromEscapeList($escapes);
         $disallowedChars = "@" . preg_quote("()\\\"'\f");
+        $URLID = new CheckedIdentifierToken(new CheckedNameToken([new CheckedNameBitToken("url")]));
         $expected = eatURLToken(
-            $traverser, "\f", $disallowedChars, $eatEscape, $eatRemnants);
-        $actual = new CheckedURLToken($startWS, $pieces, $endWS, FALSE);
+            $traverser, $URLID, "\f", $disallowedChars, $eatEscape, $eatRemnants);
+        $actual = new CheckedURLToken($URLID, $startWS, $pieces, $endWS, FALSE);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
     }

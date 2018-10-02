@@ -36,4 +36,5 @@ require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatEscapeTokenFunction.inc.php
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatIdentifierTokenFailingFunction.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatIdentifierTokenFunction.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatNameTokenFunction.inc.php");
+require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatURLTokenFailingFunction.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatURLTokenFunction.inc.php");

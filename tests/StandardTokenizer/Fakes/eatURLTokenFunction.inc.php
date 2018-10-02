@@ -11,7 +11,9 @@ function eatURLTokenFunction(?URLToken $URLToken): Closure{
         if($URLToken === NULL){
             return NULL;
         }else{
-            $stringValue = (String)$URLToken;
+            $stringValue = $URLToken->whitespaceBefore();
+            $stringValue .= implode("", $URLToken->pieces());
+            $stringValue .= $URLToken->whitespaceAfter() . ")";
             return $traverser->eatStr($stringValue) === NULL ? NULL : $URLToken;
         }
     };
