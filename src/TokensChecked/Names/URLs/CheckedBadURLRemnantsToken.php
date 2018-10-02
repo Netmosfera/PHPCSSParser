@@ -57,7 +57,7 @@ class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
         if((
             $firstPiece instanceof BadURLRemnantsBitToken &&
             preg_match(
-                '/^[' . SpecData::URLTOKEN_BIT_CP_NOT_SET . ']/usD',
+                '/^[' . SpecData::URLTOKEN_BIT_CP_SET . ']/usD',
                 (String)$firstPiece
             ) === 1
         ) || (

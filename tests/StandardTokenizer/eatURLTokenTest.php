@@ -118,7 +118,7 @@ class eatURLTokenTest extends TestCase
     public function test3(String $prefix, String $startWS, String $rest){
         $traverser = getTraverser($prefix, $startWS . "\\\n" . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
-        $remnantsBit = new CheckedBadURLRemnantsBitToken("irrelevant");
+        $remnantsBit = new CheckedBadURLRemnantsBitToken("(irrelevant");
         $remnants = new CheckedBadURLRemnantsToken([$remnantsBit], FALSE);
         $expected = new CheckedBadURLToken($startWS, [], $remnants);
         $eatEscape = function(Traverser $traverser){
@@ -166,7 +166,7 @@ class eatURLTokenTest extends TestCase
         $ic = "6 invalid code point";
         $traverser = getTraverser($prefix, $startWS . $ic . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
-        $remnantsBit = new CheckedBadURLRemnantsBitToken("irrelevant");
+        $remnantsBit = new CheckedBadURLRemnantsBitToken("(irrelevant");
         $remnants = new CheckedBadURLRemnantsToken([$remnantsBit], FALSE);
         $expected = new CheckedBadURLToken($startWS, [], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ic){
@@ -263,7 +263,7 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . $ie . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $remnants = new CheckedBadURLRemnantsToken(
-            [new CheckedBadURLRemnantsBitToken("irrelevant")], FALSE);
+            [new CheckedBadURLRemnantsBitToken("(irrelevant")], FALSE);
         $expected = new CheckedBadURLToken($startWS,
             [new CheckedURLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ie){
@@ -317,7 +317,7 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . $ic . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $remnants = new CheckedBadURLRemnantsToken(
-            [new CheckedBadURLRemnantsBitToken("irrelevant")], FALSE);
+            [new CheckedBadURLRemnantsBitToken("(irrelevant")], FALSE);
         $expected = new CheckedBadURLToken($startWS,
             [new CheckedURLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants, $ic){
@@ -343,7 +343,7 @@ class eatURLTokenTest extends TestCase
         $traverser = getTraverser($prefix, $startWS . $vs . "\f remnants" . $rest);
         $startWS = $startWS === "" ? NULL :new CheckedWhitespaceToken($startWS);
         $remnants = new CheckedBadURLRemnantsToken(
-            [new CheckedBadURLRemnantsBitToken("irrelevant")], FALSE);
+            [new CheckedBadURLRemnantsBitToken("(irrelevant")], FALSE);
         $expected = new CheckedBadURLToken(
             $startWS, [new CheckedURLBitToken($vs)], $remnants);
         $eatRemnants = function(Traverser $traverser) use($remnants){

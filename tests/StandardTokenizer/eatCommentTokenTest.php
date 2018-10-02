@@ -18,6 +18,18 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatCommentTokenTest extends TestCase
 {
+    public function commentTexts(){
+        $sequences[] = "";
+        $sequences[] = "comment text";
+        $sequences[] = "\t \n \r \r\n \f";
+        $sequences[] = "sample \u{2764} string";
+        $sequences[] = "comment terminating with incomplete comment-end *";
+        $sequences[] = "comment text can contain /* without causing a parse error";
+        return $sequences;
+    }
+
+    //------------------------------------------------------------------------------------
+
     public function data1(){
         $rest[] = "";
         $rest[] = "not \u{2764} a \u{2764} comment";
@@ -62,15 +74,5 @@ class eatCommentTokenTest extends TestCase
         $actual = eatCommentToken($traverser);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
-    }
-
-    public function commentTexts(){
-        $sequences[] = "";
-        $sequences[] = "comment text";
-        $sequences[] = "\t \n \r \r\n \f";
-        $sequences[] = "sample \u{2764} string";
-        $sequences[] = "comment terminating with incomplete comment-end *";
-        $sequences[] = "comment text can contain /* without causing a parse error";
-        return $sequences;
     }
 }

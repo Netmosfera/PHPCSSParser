@@ -2,6 +2,8 @@
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
+use Closure;
+use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatNameTokenFunction;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
@@ -30,9 +32,7 @@ class eatHashTokenTest extends TestCase
     public function test1(String $prefix, String $rest){
         $traverser = getTraverser($prefix, $rest);
         $expected = NULL;
-        $eatName = function(Traverser $traverser): ?NameToken{
-            return NULL;
-        };
+        $eatName = eatNameTokenFunction(NULL);
         $actual = eatHashToken($traverser, $eatName);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);
@@ -46,9 +46,7 @@ class eatHashTokenTest extends TestCase
     public function test2(String $prefix, String $rest){
         $traverser = getTraverser($prefix, "#" . $rest);
         $expected = NULL;
-        $eatName = function(Traverser $traverser): ?NameToken{
-            return NULL;
-        };
+        $eatName = eatNameTokenFunction(NULL);
         $actual = eatHashToken($traverser, $eatName);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), "#" . $rest);
@@ -63,9 +61,7 @@ class eatHashTokenTest extends TestCase
         $traverser = getTraverser($prefix, "#hash" . $rest);
         $name = new CheckedNameToken([new CheckedNameBitToken("hash")]);
         $expected = new CheckedHashToken($name);
-        $eatName = function(Traverser $traverser) use($name): ?NameToken{
-            return $traverser->eatStr("hash") === NULL ? NULL : $name;
-        };
+        $eatName = eatNameTokenFunction($name);
         $actual = eatHashToken($traverser, $eatName);
         assertMatch($actual, $expected);
         assertMatch($traverser->eatAll(), $rest);

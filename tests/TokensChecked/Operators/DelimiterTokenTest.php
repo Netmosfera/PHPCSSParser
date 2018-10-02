@@ -16,10 +16,7 @@ class DelimiterTokenTest extends TestCase
     public function test1(){
         $delimiter1 = new CheckedDelimiterToken("@");
         $delimiter2 = new CheckedDelimiterToken("@");
-
         assertMatch($delimiter1, $delimiter2);
-
-        assertMatch("@", (String)$delimiter1);
-        assertMatch((String)$delimiter1, (String)$delimiter2);
+        assertMatch((String)$delimiter1, "@");
     }
 }

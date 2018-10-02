@@ -224,12 +224,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Netmosfera/Sniffs.git",
-                "reference": "8eb9ffec04b31c936ac816bd10d8f0624495647c"
+                "reference": "0bbc8fa5b92530a12ddf5847a2c52ee5360e1be6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Netmosfera/Sniffs/zipball/8eb9ffec04b31c936ac816bd10d8f0624495647c",
-                "reference": "8eb9ffec04b31c936ac816bd10d8f0624495647c",
+                "url": "https://api.github.com/repos/Netmosfera/Sniffs/zipball/0bbc8fa5b92530a12ddf5847a2c52ee5360e1be6",
+                "reference": "0bbc8fa5b92530a12ddf5847a2c52ee5360e1be6",
                 "shasum": ""
             },
             "require": {
@@ -239,14 +239,14 @@
             "type": "phpcodesniffer-standard",
             "autoload": {
                 "psr-4": {
-                    "Netmosfera\\Sniffs\\": "src/"
+                    "Netmosfera\\NetmosferaSniffs\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
-            "time": "2018-10-01T04:16:01+00:00"
+            "time": "2018-10-02T00:14:52+00:00"
         },
         {
             "name": "phar-io/manifest",
@@ -1548,16 +1548,16 @@
         },
         {
             "name": "slevomat/coding-standard",
-            "version": "4.8.3",
+            "version": "4.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/slevomat/coding-standard.git",
-                "reference": "32e1ca205fc34920f323582ed29c0602e3897ae3"
+                "reference": "bc8a02f25e03eb5481c4976cc615621cdd75aef9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/32e1ca205fc34920f323582ed29c0602e3897ae3",
-                "reference": "32e1ca205fc34920f323582ed29c0602e3897ae3",
+                "url": "https://api.github.com/repos/slevomat/coding-standard/zipball/bc8a02f25e03eb5481c4976cc615621cdd75aef9",
+                "reference": "bc8a02f25e03eb5481c4976cc615621cdd75aef9",
                 "shasum": ""
             },
             "require": {
@@ -1583,7 +1583,7 @@
                 "MIT"
             ],
             "description": "Slevomat Coding Standard for PHP_CodeSniffer complements Consistence Coding Standard by providing sniffs with additional checks.",
-            "time": "2018-09-25T21:21:11+00:00"
+            "time": "2018-10-01T20:16:49+00:00"
         },
         {
             "name": "squizlabs/php_codesniffer",

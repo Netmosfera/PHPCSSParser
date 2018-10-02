@@ -2,7 +2,9 @@
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
+use Closure;
 use function dechex;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertNotMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -32,6 +34,43 @@ use IntlChar;
  */
 class eatIdentifierLikeTokenTest extends TestCase
 {
+    private function eatURLTokenFailingFunction(): Closure{
+        return function(Traverser $traverser): ?IdentifierToken{
+            self::fail();
+        };
+    }
+
+    private function eatURLTokenFunction(?URLToken $URLToken): Closure{
+        return function(Traverser $traverser) use($URLToken): ?URLToken{
+            if($URLToken === NULL){
+                return NULL;
+            }else{
+                $stringValue = (String)$URLToken;
+                return $traverser->eatStr($stringValue) === NULL ? NULL : $URLToken;
+            }
+        };
+    }
+
+    private function eatIdentifierTokenFailingFunction(): Closure{
+        return function(Traverser $traverser): ?IdentifierToken{
+            self::fail();
+        };
+    }
+
+    private function eatIdentifierFunction(?IdentifierToken $identifier): Closure{
+        return function(Traverser $traverser) use($identifier): ?IdentifierToken{
+            if($identifier === NULL){
+                return NULL;
+            }else{
+                $stringValue = (String)$identifier;
+                return $traverser->eatStr($stringValue) === NULL ? NULL : $identifier;
+            }
+        };
+    }
+
+
+    //------------------------------------------------------------------------------------
+
     public function data1(){
         return cartesianProduct(ANY_UTF8(), ["+33.123", ""]);
     }
