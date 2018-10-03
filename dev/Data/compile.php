@@ -1,76 +1,80 @@
 <?php declare(strict_types = 1);
 
+use Netmosfera\PHPCSSAST\SpecData;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getDigitsSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getLettersSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNonASCIIsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNameItemsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getHexDigitsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getStringBitSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getUCLettersSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getLCLettersSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getURLTokenBitSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getWhitespacesSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNameStartersSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNonPrintablesSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getStringDelimiterSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getNewlineSeqsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getBadURLRemnantsBitSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getValidEscapeStartersSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getURLTokenBitDisallowedSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getEncodedCodePointEscapeSet;
+use function Netmosfera\PHPCSSASTDev\Data\cp;
 
 require __DIR__ . "/../../vendor/autoload.php";
 
-$data = (object)[];
+$MAKEMAP = [];
 
-$data->DIGITS_SET = getDigitsSet()->getRegExp();
+$MAKEMAP["DIGITS_REGEX_SET"] = getDigitsSet()->regexp();
+SpecData::DIGITS_REGEX_SET;
 
-$data->HEX_DIGITS_SET = getHexDigitsSet()->getRegExp();
+$MAKEMAP["HEX_DIGITS_REGEX_SET"] = getHexDigitsSet()->regexp();
+SpecData::HEX_DIGITS_REGEX_SET;
 
-$data->LETTERS_SET = getLettersSet()->getRegExp();
-$data->LETTERS_LC_SET = getLCLettersSet()->getRegExp();
-$data->LETTERS_UC_SET = getUCLettersSet()->getRegExp();
+$MAKEMAP["NAME_STARTERS_REGEX_SET"] = getNameStartersSet()->regexp();
+SpecData::NAME_STARTERS_REGEX_SET;
 
-$data->NAME_STARTERS_SET = getNameStartersSet()->getRegExp();
-$data->NAME_ITEMS_SET = getNameItemsSet()->getRegExp();
+$MAKEMAP["NAME_COMPONENTS_REGEX_SET"] = getNameItemsSet()->regexp();
+SpecData::NAME_COMPONENTS_REGEX_SET;
 
-$data->WHITESPACES_SET = getWhitespacesSet()->getRegExp();
-$data->WHITESPACES_SEQS_SET = getWhitespaceSeqsSet()->getRegExp();
+$MAKEMAP["WHITESPACES_REGEX_SET"] = getWhitespacesSet()->regexp();
+SpecData::WHITESPACES_REGEX_SET;
 
-$data->NEWLINES_SET = getNewlinesSet()->getRegExp();
-$data->NEWLINES_SEQS_SET = getNewlineSeqsSet()->getRegExp();
+$MAKEMAP["WHITESPACES_REGEX_SEQS"] = getWhitespaceSeqsSet()->getRegExp();
+SpecData::WHITESPACES_REGEX_SEQS;
 
-$data->NON_ASCII_SET = getNonASCIIsSet()->getRegExp();
+$MAKEMAP["NEWLINES_REGEX_SET"] = getNewlinesSet()->regexp();
+SpecData::NEWLINES_REGEX_SET;
 
-$data->NON_PRINTABLES_SET = getNonPrintablesSet()->getRegExp();
+$MAKEMAP["NEWLINES_REGEX_SEQS"] = getNewlineSeqsSet()->getRegExp();
+SpecData::NEWLINES_REGEX_SEQS;
 
-$data->STRING_DELIMITERS_SET = getStringDelimiterSet()->getRegExp();
+$MAKEMAP["ENCODED_CP_ESCAPE_REGEX_SET"] = getEncodedCodePointEscapeSet()->regexp();
+SpecData::ENCODED_CP_ESCAPE_REGEX_SET;
 
-$data->VALID_ESCAPE_STARTERS_SET = getValidEscapeStartersSet()->getRegExp();
-$data->ENCODED_ESCAPE_SET = getEncodedCodePointEscapeSet()->getRegExp();
+$MAKEMAP["STRING_BIT_CPS_REGEX_SET"] = getStringBitSet()->regexp();
+SpecData::STRING_BIT_CPS_REGEX_SET;
 
-$data->STRING_BIT_CP_SET = getStringBitSet()->getRegExp();
+$MAKEMAP["URL_TOKEN_BIT_CPS_REGEX_SET"] = getURLTokenBitSet()->regexp();
+SpecData::URL_TOKEN_BIT_CPS_REGEX_SET;
 
-$data->URLTOKEN_BIT_CP_SET = getURLTokenBitSet()->getRegExp();
-$data->URLTOKEN_BIT_CP_NOT_SET = getURLTokenBitDisallowedSet()->getRegExp();
+$MAKEMAP["URL_TOKEN_BIT_NOT_CPS_REGEX_SET"] = getURLTokenBitDisallowedSet()->regexp();
+SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET;
 
+$MAKEMAP["BAD_URL_REMNANTS_BIT_CPS_REGEX_SET"] = getBadURLRemnantsBitSet()->regexp();
+SpecData::BAD_URL_REMNANTS_BIT_CPS_REGEX_SET;
 
-$data->BAD_URL_REMNANTS_BIT_SET = getBadURLRemnantsBitSet()->getRegExp();
+$MAKEMAP["NEWLINE"] = (String)cp("\n");
+SpecData::NEWLINE;
 
-$data = (array)$data;
+$MAKEMAP["REPLACEMENT_CHARACTER"] = (String)cp("\u{FFFD}");
+SpecData::REPLACEMENT_CHARACTER;
 
-$keys = array_keys($data);
-$keyLength = strlen(array_reduce($keys, function ($a, $b){
+$keyLength = strlen(array_reduce(array_keys($MAKEMAP), function($a, $b){
     return strlen($a) > strlen($b) ? $a : $b;
 }, ""));
 
 $fields = [];
-foreach($data as $name => $value){
-    $field  = "    public const ";
+foreach($MAKEMAP as $name => $value){
+    $field  = "    ";
+    $field .= "public const ";
     $field .= str_pad($name, $keyLength, " ", STR_PAD_RIGHT);
-    $field .= " = \"" . $value . "\";";
+    $field .= " = " . var_export($value, TRUE) . ";";
     $fields[] = $field;
 }
 
@@ -80,12 +84,10 @@ $source .= "namespace Netmosfera\\PHPCSSAST;\n\n";
 $source .= "class SpecData\n";
 $source .= "{\n";
 $source .= implode("\n", $fields) . "\n";
-$source .= "    public const REPLACEMENT_CHARACTER = \"\\u{FFFD}\"; \n";
-$source .= "    public const WHITESPACE = \" \"; \n";
 $source .= "}\n\n";
 $source .= "// phpcs:enable\n";
 
-$dest = __DIR__ . "/../../src/SpecData.php";
-file_put_contents($dest, $source);
+$destinationFile = __DIR__ . "/../../src/SpecData.php";
+file_put_contents($destinationFile, $source);
 
-echo $dest . "\n";
+echo "DONE";

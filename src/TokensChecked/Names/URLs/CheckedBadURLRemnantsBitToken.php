@@ -11,7 +11,7 @@ class CheckedBadURLRemnantsBitToken extends BadURLRemnantsBitToken
     public function __construct(String $text){
         if(
             preg_match(
-                '/^[' . SpecData::BAD_URL_REMNANTS_BIT_SET . ']+$/usD',
+                '/^[' . SpecData::BAD_URL_REMNANTS_BIT_CPS_REGEX_SET . ']+$/usD',
                 $text
             ) === 0
         ){

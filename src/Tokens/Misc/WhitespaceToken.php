@@ -52,8 +52,8 @@ class WhitespaceToken implements Token
         if($this->_normalizedObject === NULL){
             $this->_normalizedObject = new WhitespaceToken(
                 preg_replace(
-                    '/' . SpecData::WHITESPACES_SEQS_SET . '/usD',
-                    SpecData::WHITESPACE,
+                    '/' . SpecData::NEWLINES_REGEX_SEQS . '/usD',
+                    SpecData::NEWLINE,
                     $this->_text
                 )
             );

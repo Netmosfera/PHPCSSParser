@@ -8,24 +8,28 @@ use function dechex;
 
 class CodePoint
 {
-    private $code;
+    private $_code;
 
     public function __construct(Int $code){
         if($code < 0 || $code > IntlChar::CODEPOINT_MAX){
             throw new Error("Invalid code point");
         }
-        $this->code = $code;
+        $this->_code = $code;
     }
 
-    public function getCode(): Int{
-        return $this->code;
+    public function __toString(): String{
+        return IntlChar::chr($this->_code);
     }
 
-    public function getHexCode(): String{
-        return dechex($this->code);
+    public function regexp(): String{
+        if((String)$this === "\0"){
+            return '\\x{' . dechex($this->_code) . '}';
+        }else{
+            return preg_quote((String)$this, "/");
+        }
     }
 
-    public function getString(): String{
-        return IntlChar::chr($this->code);
+    public function code(): Int{
+        return $this->_code;
     }
 }

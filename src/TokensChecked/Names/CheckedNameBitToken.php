@@ -11,7 +11,7 @@ class CheckedNameBitToken extends NameBitToken
     public function __construct(String $text){
         if(
             preg_match(
-                '/^[' . SpecData::NAME_ITEMS_SET . ']+$/usD',
+                '/^[' . SpecData::NAME_COMPONENTS_REGEX_SET . ']+$/usD',
                 $text
             ) === 0
         ){

@@ -11,7 +11,7 @@ class CheckedWhitespaceToken extends WhitespaceToken
     public function __construct(String $text){
         if(
             preg_match(
-                '/^[' . SpecData::WHITESPACES_SET . ']+$/usD',
+                '/^[' . SpecData::WHITESPACES_REGEX_SET . ']+$/usD',
                 $text
             ) === 0
         ){

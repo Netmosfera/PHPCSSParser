@@ -11,7 +11,7 @@ class CheckedContinuationEscapeToken extends ContinuationEscapeToken
     public function __construct(String $codePoint){
         if(
             preg_match(
-                '/^(?:' . SpecData::NEWLINES_SEQS_SET . ')$/usD',
+                '/^(?:' . SpecData::NEWLINES_REGEX_SEQS . ')$/usD',
                 $codePoint
             ) === 0
         ){

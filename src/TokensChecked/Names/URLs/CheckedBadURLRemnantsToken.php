@@ -7,6 +7,7 @@ use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
@@ -50,14 +51,21 @@ class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
             }
         }
 
-        // @TODO if the last $pieces is eofescape,
-        // then $precedesEOF must be true
+        if(
+            end($pieces) instanceof EOFEscapeToken &&
+            $precedesEOF === FALSE
+        ){
+            throw new InvalidToken(sprintf(
+                "A URLToken that ends with a `%s` must be `\$precedesEOF`",
+                EOFEscapeToken::CLASS
+            ));
+        }
 
         $firstPiece = $pieces[0];
         if((
             $firstPiece instanceof BadURLRemnantsBitToken &&
             preg_match(
-                '/^[' . SpecData::URLTOKEN_BIT_CP_SET . ']/usD',
+                '/^[' . SpecData::URL_TOKEN_BIT_CPS_REGEX_SET . ']/usD',
                 (String)$firstPiece
             ) === 1
         ) || (

@@ -37,13 +37,14 @@ class TextSet implements IteratorAggregate
     }
 
     public function getRegExp(): String{
-        static $s = [
+        return implode("|", array_keys($this->texts));
+        $s = [
             "\x0",  "\x1",  "\x2",  "\x3",  "\x4",  "\x5",  "\x6", "\x7",  "\x8",
             "\x9",  "\xa",  "\xb",  "\xc",  "\xd",  "\xe",  "\xf",  "\x10", "\x11",
             "\x12", "\x13", "\x14", "\x15", "\x16", "\x17", "\x18", "\x19", "\x1a",
             "\x1b", "\x1c", "\x1d", "\x1e", "\x1f", "\x7f",
         ];
-        static $r = [
+        $r = [
             '\\x{0}',  '\\x{1}',  '\\x{2}',  '\\x{3}',  '\\x{4}',  '\\x{5}',  '\\x{6}',
             '\\x{7}',  '\\x{8}',  '\\x{9}',  '\\x{a}',  '\\x{b}',  '\\x{c}',  '\\x{d}',
             '\\x{e}',  '\\x{f}',  '\\x{10}', '\\x{11}', '\\x{12}', '\\x{13}', '\\x{14}',

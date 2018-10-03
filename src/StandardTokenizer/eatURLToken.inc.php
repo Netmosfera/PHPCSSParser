@@ -69,9 +69,7 @@ function eatURLToken(
             }
         }
 
-        if($traverser->createBranch()->eatExp(
-            '[' . $blacklistCPsRegexSet . ']'
-        ) !== NULL){
+        if($traverser->createBranch()->eatExp('[' . $blacklistCPsRegexSet . ']') !== NULL){
             $remnants = $eatBadURLRemnantsFunction($traverser);
             return new CheckedBadURLToken($URL, $wsBefore, $pieces, $remnants);
         }

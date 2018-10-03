@@ -11,7 +11,7 @@ class CheckedStringBitToken extends StringBitToken
     public function __construct(String $text){
         if(
             preg_match(
-                '/^[' . SpecData::STRING_BIT_CP_SET . ']+$/usD',
+                '/^[' . SpecData::STRING_BIT_CPS_REGEX_SET . ']+$/usD',
                 $text
             ) === 0
         ){

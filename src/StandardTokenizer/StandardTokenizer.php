@@ -57,16 +57,16 @@ class StandardTokenizer
     private $eatValidEscape;
 
     public function __construct(){
-        $this->nameStartRegExpSet = SpecData::NAME_STARTERS_SET;
-        $this->nameRegExpSet = SpecData::NAME_ITEMS_SET;
-        $this->hexDigitRegExpSet = SpecData::HEX_DIGITS_SET;
-        $this->whitespaceRegExp = SpecData::WHITESPACES_SEQS_SET;
-        $this->whitespaceRegexSet = SpecData::WHITESPACES_SET;
-        $this->newlineRegExp = SpecData::NEWLINES_SEQS_SET;
-        $this->newlineRegExpSet = SpecData::NEWLINES_SET;
-        $this->digitRegExpSet = SpecData::DIGITS_SET;
+        $this->nameStartRegExpSet = SpecData::NAME_STARTERS_REGEX_SET;
+        $this->nameRegExpSet = SpecData::NAME_COMPONENTS_REGEX_SET;
+        $this->hexDigitRegExpSet = SpecData::HEX_DIGITS_REGEX_SET;
+        $this->whitespaceRegExp = SpecData::WHITESPACES_REGEX_SEQS;
+        $this->whitespaceRegexSet = SpecData::WHITESPACES_REGEX_SET;
+        $this->newlineRegExp = SpecData::NEWLINES_REGEX_SEQS;
+        $this->newlineRegExpSet = SpecData::NEWLINES_REGEX_SET;
+        $this->digitRegExpSet = SpecData::DIGITS_REGEX_SET;
         $this->URLTokenBlacklistedCodePointsRegExpSet =
-            SpecData::URLTOKEN_BIT_CP_NOT_SET;
+            SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET;
 
         //----------------------------------------------------------------------
 

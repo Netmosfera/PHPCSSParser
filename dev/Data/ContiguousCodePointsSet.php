@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSASTDev\Data;
 
+use function dechex;
 use Error;
 use IntlChar;
 use Iterator;
@@ -9,39 +10,42 @@ use IteratorAggregate;
 
 class ContiguousCodePointsSet implements IteratorAggregate
 {
-    private $start;
-    private $end;
+    private $_start;
 
-    public function __construct(CodePoint $start, ?CodePoint $end = NULL){
-        $end = $end ?? $start;
+    private $_end;
 
-        if($start->getCode() > $end->getCode()){
+    /**
+     * @param       CodePoint                               $start
+     * `CodePoint`
+     * Start code point; inclusive.
+     *
+     * @param       CodePoint                               $end
+     * `CodePoint`
+     * End code point; inclusive.
+     */
+    public function __construct(CodePoint $start, CodePoint $end){
+        if($start->code() > $end->code()){
             throw new Error("Invalid code point range");
         }
-
-        $this->start = $start;
-        $this->end = $end;
+        $this->_start = $start;
+        $this->_end = $end;
     }
 
     public function getIterator(): Iterator{
-        for($o = $this->start; $o <= $this->end; $o++){
+        for($o = $this->_start; $o <= $this->_end; $o++){
             yield IntlChar::chr($o);
         }
     }
 
-    public function getRegExp(): String{
-        return sprintf(
-            '\x{%s}-\x{%s}',
-            $this->start->getHexCode(),
-            $this->end->getHexCode()
-        );
+    public function regexp(): String{
+        return $this->_start->regexp() . "-" . $this->_end->regexp();
     }
 
-    public function getStart(): CodePoint{
-        return $this->start;
+    public function start(): CodePoint{
+        return $this->_start;
     }
 
-    public function getEnd(): CodePoint{
-        return $this->end;
+    public function end(): CodePoint{
+        return $this->_end;
     }
 }

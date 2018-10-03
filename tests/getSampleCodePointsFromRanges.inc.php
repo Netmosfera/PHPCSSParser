@@ -8,10 +8,10 @@ use function PHPToolBucket\Testing\getBoundariesByRange;
 
 function getSampleCodePointsFromRanges(CompressedCodePointSet $set){
     $characters = [];
-    foreach($set->getRanges() as $range){
+    foreach($set->ranges() as $range){
         array_push($characters, ...getBoundariesByRange(
-            $range->getStart()->getCode(),
-            $range->getEnd()->getCode(),
+            $range->start()->code(),
+            $range->end()->code(),
             function($o){ return IntlChar::chr($o); }
         ));
     }
