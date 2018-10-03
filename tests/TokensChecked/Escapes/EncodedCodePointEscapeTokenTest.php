@@ -2,13 +2,13 @@
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
 
-use Netmosfera\PHPCSSAST\SpecData;
 use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getEncodedCodePointEscapeSet;
-use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
+use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
@@ -23,7 +23,7 @@ class EncodedCodePointEscapeTokenTest extends TestCase
 {
     public function data1(){
         $set = getEncodedCodePointEscapeSet();
-        return cartesianProduct(getCodePointsFromRanges($set));
+        return cartesianProduct(getSampleCodePointsFromRanges($set));
     }
 
     /** @dataProvider data1 */
@@ -44,7 +44,7 @@ class EncodedCodePointEscapeTokenTest extends TestCase
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->removeAll(getEncodedCodePointEscapeSet());
-        $seqs = getCodePointsFromRanges($set);
+        $seqs = getSampleCodePointsFromRanges($set);
         $seqs[] = ""; // invalid length
         $seqs[] = "xx"; // invalid length
         $seqs[] = "\u{2764}\u{2764}"; // invalid length

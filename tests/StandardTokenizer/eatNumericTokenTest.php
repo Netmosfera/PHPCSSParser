@@ -63,7 +63,7 @@ class eatNumericTokenTest extends TestCase
     }
 
     public function data3(){
-        return cartesianProduct(ANY_UTF8(), ANY_UTF8("@ not starting with name code point"));
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("@ not starting with name CP"));
     }
 
     /** @dataProvider data3 */
@@ -84,7 +84,7 @@ class eatNumericTokenTest extends TestCase
     }
 
     public function data4(){
-        return cartesianProduct(ANY_UTF8(), ANY_UTF8("@ not starting with name code point or %"));
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("@ not starting with name CP or %"));
     }
 
     /** @dataProvider data4 */

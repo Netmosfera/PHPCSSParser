@@ -6,6 +6,7 @@ use Closure;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsBitToken;
@@ -24,7 +25,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
   */
 class eatBadURLRemnantsTokenTest extends TestCase
 {
-    private $remnantsBeginBit = "( begin bad { } \u{2764} \" URL \u{2764} ' remnants ( url(";
+    private $remnantsBeginBit = "( start bad {} \u{2764} \" URL \u{2764} ' remnants url(";
 
     private $remnantsBit = "bad { } \u{2764} \" URL \u{2764} ' remnants ( url(";
 
@@ -38,12 +39,14 @@ class eatBadURLRemnantsTokenTest extends TestCase
             // BadURLRemnantsBit can *not* appear after another one, only escapes can
             $data[] = new CheckedContinuationEscapeToken("\n");
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
         }else{
             assert($afterPiece instanceof EscapeToken);
             // After a EscapeToken can appear anything
             $data[] = new CheckedBadURLRemnantsBitToken($this->remnantsBit);
             $data[] = new CheckedContinuationEscapeToken("\n");
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
         }
         return $data;
     }
@@ -62,10 +65,11 @@ class eatBadURLRemnantsTokenTest extends TestCase
     public function test1(String $prefix, Array $pieces, String $rest){
         $escape1 = new CheckedContinuationEscapeToken("\n");
         $escape2 = new CheckedEncodedCodePointEscapeToken("@");
+        $escape3 = new CheckedCodePointEscapeToken("Fac", NULL);
         $badURLRemnants = new CheckedBadURLRemnantsToken($pieces, FALSE);
 
         $traverser = getTraverser($prefix, $badURLRemnants . $rest);
-        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2]);
+        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2, $escape3]);
         $actualBadURLRemnants = eatBadURLRemnantsToken($traverser, $eatEscape);
 
         assertMatch($actualBadURLRemnants, $badURLRemnants);
@@ -83,10 +87,11 @@ class eatBadURLRemnantsTokenTest extends TestCase
     public function test2(String $prefix, Array $pieces){
         $escape1 = new CheckedContinuationEscapeToken("\n");
         $escape2 = new CheckedEncodedCodePointEscapeToken("@");
+        $escape3 = new CheckedCodePointEscapeToken("Fac", NULL);
         $badURLRemnants = new CheckedBadURLRemnantsToken($pieces, TRUE);
 
         $traverser = getTraverser($prefix, $badURLRemnants . "");
-        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2]);
+        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2, $escape3]);
         $actualBadURLRemnants = eatBadURLRemnantsToken($traverser, $eatEscape);
 
         assertMatch($actualBadURLRemnants, $badURLRemnants);

@@ -8,7 +8,7 @@ use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getNewlineSeqsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
-use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
+use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
@@ -39,7 +39,7 @@ class ContinuationEscapeTokenTest extends TestCase
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->removeAll(getNewlinesSet());
-        $seqs = getCodePointsFromRanges($set);
+        $seqs = getSampleCodePointsFromRanges($set);
         $seqs[] = "\r\n\r\n";
         $seqs[] = "\n\n";
         $seqs[] = "f";

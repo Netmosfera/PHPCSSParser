@@ -10,7 +10,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
-use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatEscapeTokenFunction;
+use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatValidEscapeTokenFunction;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatIdentifierToken;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
@@ -37,17 +37,17 @@ class eatIdentifierTokenTest extends TestCase
             $data[] = new CheckedNameBitToken("--N");
             $data[] = new CheckedNameBitToken("--NN");
             $data[] = new CheckedNameBitToken("--NNN");
-            $data[] = new CheckedCodePointEscapeToken("2764", NULL);
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedCodePointEscapeToken("2764", NULL);
         }elseif($afterPiece instanceof CheckedNameBitToken){
             // CheckedNameBitToken can *not* appear after another one, only escapes can
-            $data[] = new CheckedCodePointEscapeToken("2764", NULL);
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedCodePointEscapeToken("2764", NULL);
         }else{
             assert($afterPiece instanceof EscapeToken);
             // After a ValidEscapeToken can appear anything
-            $data[] = new CheckedCodePointEscapeToken("2764", NULL);
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedCodePointEscapeToken("2764", NULL);
             $data[] = new CheckedNameBitToken("N");
             $data[] = new CheckedNameBitToken("NN");
             $data[] = new CheckedNameBitToken("NNN");
@@ -73,7 +73,7 @@ class eatIdentifierTokenTest extends TestCase
         $identifier = new CheckedIdentifierToken($name);
 
         $traverser = getTraverser($prefix, $identifier . $rest);
-        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2]);
+        $eatEscape = eatValidEscapeTokenFunction([$escape1, $escape2]);
         $actualIdentifier = eatIdentifierToken($traverser, "S", "N", $eatEscape);
 
         assertMatch($actualIdentifier, $identifier);

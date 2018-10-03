@@ -6,7 +6,7 @@ use IntlChar;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use function PHPToolBucket\Testing\getBoundariesByRange;
 
-function getCodePointsFromRanges(CompressedCodePointSet $set){
+function getSampleCodePointsFromRanges(CompressedCodePointSet $set){
     $characters = [];
     foreach($set->getRanges() as $range){
         array_push($characters, ...getBoundariesByRange(

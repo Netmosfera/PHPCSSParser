@@ -6,7 +6,7 @@ use function Netmosfera\PHPCSSASTDev\Data\cp;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
+use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatNumberToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
@@ -42,7 +42,7 @@ class eatNumberTokenTest extends TestCase
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->remove(cp("5")); // excluded as this would be part of the integer
-        $sequences = getCodePointsFromRanges($set);
+        $sequences = getSampleCodePointsFromRanges($set);
         $sequences = array_merge($sequences, ANY_UTF8("not starting with a continuation"));
         $sequences[] = ".a"; // makes sure it doesn't eat incomplete decimals
         $sequences[] = "ea"; // makes sure it doesn't eat incomplete E_PART
@@ -56,7 +56,7 @@ class eatNumberTokenTest extends TestCase
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->remove(cp("5")); // excluded as this would be part of the decimal part
-        $sequences = getCodePointsFromRanges($set);
+        $sequences = getSampleCodePointsFromRanges($set);
         $sequences = array_merge($sequences, ANY_UTF8("not starting with a continuation"));
         $sequences[] = ".55"; // makes sure it doesn't eat decimals twice
         $sequences[] = "ea"; // makes sure it doesn't eat an incomplete E_PART
@@ -70,7 +70,7 @@ class eatNumberTokenTest extends TestCase
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->remove(cp("5")); // excluded as this would be part of the exponent
-        $sequences = getCodePointsFromRanges($set);
+        $sequences = getSampleCodePointsFromRanges($set);
         $sequences = array_merge($sequences, ANY_UTF8("not starting with a continuation"));
         $sequences[] = ".55"; // makes sure it doesn't eat decimals twice
         $sequences[] = "E55"; // makes sure it doesn't eat e-part twice
@@ -83,7 +83,7 @@ class eatNumberTokenTest extends TestCase
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->remove(cp("5"));
-        $sequences = getCodePointsFromRanges($set);
+        $sequences = getSampleCodePointsFromRanges($set);
         $sequences = array_merge($sequences, ANY_UTF8("not starting with a digit"));
         $sequences[] = ".55"; // makes sure it doesn't eat decimals after two .
         $sequences[] = "E55"; // makes sure it doesn't eat e-part after no number
@@ -109,7 +109,7 @@ class eatNumberTokenTest extends TestCase
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->remove(cp("5"));
-        $sequences = getCodePointsFromRanges($set);
+        $sequences = getSampleCodePointsFromRanges($set);
         $sequences = array_merge($sequences, ANY_UTF8("not starting with a digit"));
         $sequences[] = ".a"; // makes sure it doesn't eat invalid decimals
         $sequences[] = "E55"; // makes sure it doesn't eat e-part after no number
@@ -145,8 +145,8 @@ class eatNumberTokenTest extends TestCase
     }
 
     /** @dataProvider data3 */
-    public function test3(String $prefix, String $sign, String $wholes, String $decimals, String $eLetter, String $eSign, String $eExponent, String $rest){
-        $number = new CheckedNumberToken($sign, $wholes, $decimals, $eLetter, $eSign, $eExponent);
+    public function test3(String $prefix, String $sign, String $wholes, String $decimals, String $eIndicator, String $eSign, String $eExponent, String $rest){
+        $number = new CheckedNumberToken($sign, $wholes, $decimals, $eIndicator, $eSign, $eExponent);
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -188,8 +188,8 @@ class eatNumberTokenTest extends TestCase
     }
 
     /** @dataProvider data5 */
-    public function test5(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $eDigits, String $rest){
-        $number = new CheckedNumberToken($sign, $digits, "", $eLetter, $eSign, $eDigits);
+    public function test5(String $prefix, String $sign, String $digits, String $eIndicator, String $eSign, String $eDigits, String $rest){
+        $number = new CheckedNumberToken($sign, $digits, "", $eIndicator, $eSign, $eDigits);
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -231,8 +231,8 @@ class eatNumberTokenTest extends TestCase
     }
 
     /** @dataProvider data7 */
-    public function test7(String $prefix, String $sign, String $digits, String $eLetter, String $eSign, String $eDigits, String $rest){
-        $number = new CheckedNumberToken($sign, "", $digits, $eLetter, $eSign, $eDigits);
+    public function test7(String $prefix, String $sign, String $digits, String $eIndicator, String $eSign, String $eDigits, String $rest){
+        $number = new CheckedNumberToken($sign, "", $digits, $eIndicator, $eSign, $eDigits);
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");

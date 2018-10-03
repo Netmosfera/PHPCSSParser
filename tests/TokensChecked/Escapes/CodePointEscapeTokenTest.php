@@ -4,7 +4,6 @@ namespace Netmosfera\PHPCSSASTTests\TokensChecked\Escapes;
 
 use function array_shift;
 use function iterator_to_array;
-use Netmosfera\PHPCSSAST\SpecData;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -12,6 +11,7 @@ use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
+use Netmosfera\PHPCSSAST\SpecData;
 use PHPUnit\Framework\TestCase;
 use IntlChar;
 

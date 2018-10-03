@@ -3,6 +3,7 @@
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
@@ -10,7 +11,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToke
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getHexDigitsSet;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatValidEscapeToken;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
-use function Netmosfera\PHPCSSASTTests\getCodePointsFromRanges;
+use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
@@ -19,7 +20,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  * Tests in this file:
  *
  * #0 | NULL if not starting with backslash
- * #1 | NULL if EOF
+ * #1 | NULL if EOF escape
  * #2 | Token if hex digits
  * #3 | Token if code point
  * #4 | NULL if continuation
@@ -27,15 +28,17 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class eatValidEscapeTokenTest extends TestCase
 {
     public function data0(){
-        return cartesianProduct(ANY_UTF8(), ["not escape", ""]);
+        return cartesianProduct(ANY_UTF8(), ANY_UTF8("not starting with backslash"));
     }
 
     /** @dataProvider data0 */
     public function test0(String $prefix, String $rest){
+        $escape = NULL;
+
         $traverser = getTraverser($prefix, $rest);
-        $expected = NULL;
-        $actual = eatValidEscapeToken($traverser, "D", "\t", "\f");
-        assertMatch($actual, $expected);
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\f");
+
+        assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), $rest);
     }
 
@@ -45,10 +48,12 @@ class eatValidEscapeTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $prefix){
+        $escape = NULL;
+
         $traverser = getTraverser($prefix, "\\");
-        $expected = NULL;
-        $actual = eatValidEscapeToken($traverser, "D", "\t", "\f");
-        assertMatch($actual, $expected);
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\f");
+
+        assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), "\\");
     }
 
@@ -56,18 +61,19 @@ class eatValidEscapeTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             ["D", "DD", "DDD", "DDDD", "DDDDD", "DDDDDD"],
-            ["", "\t"],
-            ["", "sample \u{2764} string"]
+            [NULL, new CheckedWhitespaceToken("\t")],
+            ANY_UTF8("not starting with a hex digit")
         );
     }
 
     /** @dataProvider data2 */
-    public function test2(String $prefix, String $hexDigits, String $ws, String $rest){
-        $traverser = getTraverser($prefix, "\\" . $hexDigits . $ws . $rest);
-        $expected = new CheckedCodePointEscapeToken($hexDigits,
-            $ws === "" ? NULL : new CheckedWhitespaceToken($ws));
-        $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");
-        assertMatch($actual, $expected);
+    public function test2(String $prefix, String $hexDigits, ?WhitespaceToken $whitespace, String $rest){
+        $escape = new CheckedCodePointEscapeToken($hexDigits, $whitespace);
+
+        $traverser = getTraverser($prefix, $escape . $rest);
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\n");
+
+        assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), $rest);
     }
 
@@ -76,20 +82,21 @@ class eatValidEscapeTokenTest extends TestCase
         $set->selectAll();
         $set->removeAll(getHexDigitsSet());
         $set->removeAll(getNewlinesSet());
-        $sequences = getCodePointsFromRanges($set);
         return cartesianProduct(
             ANY_UTF8(),
-            $sequences,
+            getSampleCodePointsFromRanges($set),
             ANY_UTF8()
         );
     }
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $codePoint, String $rest){
-        $traverser = getTraverser($prefix, "\\" . $codePoint . $rest);
-        $expected = new CheckedEncodedCodePointEscapeToken($codePoint);
-        $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");
-        assertMatch($actual, $expected);
+        $escape = new CheckedEncodedCodePointEscapeToken($codePoint);
+
+        $traverser = getTraverser($prefix, $escape . $rest);
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\n");
+
+        assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), $rest);
     }
 
@@ -99,10 +106,12 @@ class eatValidEscapeTokenTest extends TestCase
 
     /** @dataProvider data4 */
     public function test4(String $prefix, String $rest){
+        $escape = NULL;
+
         $traverser = getTraverser($prefix, "\\" . "\n" . $rest);
-        $expected = NULL;
-        $actual = eatValidEscapeToken($traverser, "D", "\t", "\n");
-        assertMatch($actual, $expected);
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\n");
+
+        assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), "\\" . "\n" . $rest);
     }
 }

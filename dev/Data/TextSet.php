@@ -2,7 +2,9 @@
 
 namespace Netmosfera\PHPCSSASTDev\Data;
 
+use function is_string;
 use IteratorAggregate;
+use TypeError;
 use Iterator;
 
 class TextSet implements IteratorAggregate
@@ -10,17 +12,31 @@ class TextSet implements IteratorAggregate
     private $texts;
 
     public function __construct(Array $texts){
-        $this->texts = $texts;
+        $textSet = [];
+        foreach($texts as $text){
+            if(is_string($text) === FALSE){
+                throw new TypeError();
+            }
+            $textSet[$text] = TRUE;
+        }
+
+        // lengthier texts appear first
+        uksort($textSet, function($a , $b){
+            $aLength = mb_strlen($a);
+            $bLength = mb_strlen($b);
+            return $bLength - $aLength;
+        });
+
+        $this->texts = $textSet;
     }
 
     public function getIterator(): Iterator{
-        yield from $this->texts;
+        foreach($this->texts as $text => $_){
+            yield $text;
+        }
     }
 
     public function getRegExp(): String{
-
-        // @TODO this must return larger texts first
-
         static $s = [
             "\x0",  "\x1",  "\x2",  "\x3",  "\x4",  "\x5",  "\x6", "\x7",  "\x8",
             "\x9",  "\xa",  "\xb",  "\xc",  "\xd",  "\xe",  "\xf",  "\x10", "\x11",
@@ -34,8 +50,9 @@ class TextSet implements IteratorAggregate
             '\\x{15}', '\\x{16}', '\\x{17}', '\\x{18}', '\\x{19}', '\\x{1a}', '\\x{1b}',
             '\\x{1c}', '\\x{1d}', '\\x{1e}', '\\x{1f}', '\\x{7f}',
         ];
+
         $texts = [];
-        foreach($this->texts as $text){
+        foreach($this->texts as $text => $_){
             $texts[] = str_replace($s, $r, $text);
         }
         return implode("|", $texts);
