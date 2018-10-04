@@ -2,17 +2,16 @@
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Misc;
 
-use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getWhitespacesSet;
-use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
-use function Netmosfera\PHPCSSASTTests\assertThrowsType;
-use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\SpecData;
+use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
+use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getNewlineSeqsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getNewlineSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getWhitespacesSet;
+use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
+use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**
@@ -28,6 +27,12 @@ class WhitespaceTokenTest extends TestCase
         $newlines = getNewlineSeqsSet();
         foreach($whitespaces as $WS){
             $normalizedWS = $newlines->contains($WS) ? SpecData::NEWLINE : $WS;
+            yield [$WS, $normalizedWS];
+            yield ["   " . $WS, "   " . $normalizedWS];
+            yield [$WS . "   ", $normalizedWS . "   "];
+            yield ["   " . $WS . "   ", "   " . $normalizedWS . "   "];
+            $WS = $WS . $WS;
+            $normalizedWS = $normalizedWS . $normalizedWS;
             yield [$WS, $normalizedWS];
             yield ["   " . $WS, "   " . $normalizedWS];
             yield [$WS . "   ", $normalizedWS . "   "];
