@@ -6,4 +6,4 @@
 
 // @TODO check that all regexps are in single quotes
 
-// @TODO make eatNumberToken eatIdentifierToken eatStringToken tests less pedantic
+// @TODO make eatStringToken tests less pedantic
