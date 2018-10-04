@@ -2,7 +2,18 @@
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Misc;
 
+use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getWhitespacesSet;
+use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
+use function Netmosfera\PHPCSSASTTests\assertThrowsType;
+use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
 use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\SpecData;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getNewlineSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**
  * Tests in this file:
@@ -12,7 +23,44 @@ use PHPUnit\Framework\TestCase;
  */
 class WhitespaceTokenTest extends TestCase
 {
-    // @TODO
+    public function data1(){
+        $whitespaces = getWhitespaceSeqsSet();
+        $newlines = getNewlineSeqsSet();
+        foreach($whitespaces as $WS){
+            $normalizedWS = $newlines->contains($WS) ? SpecData::NEWLINE : $WS;
+            yield [$WS, $normalizedWS];
+            yield ["   " . $WS, "   " . $normalizedWS];
+            yield [$WS . "   ", $normalizedWS . "   "];
+            yield ["   " . $WS . "   ", "   " . $normalizedWS . "   "];
+        }
+    }
 
-    public function test(){ self::assertTrue(TRUE); }
+    /** @dataProvider data1 */
+    public function test1(String $WS, String $normalizedWS){
+        $whitespace1 = new CheckedWhitespaceToken($WS);
+        $whitespace2 = new CheckedWhitespaceToken($WS);
+        $normalizedWhitespace = new CheckedWhitespaceToken($normalizedWS);
+        assertMatch($whitespace1, $whitespace2);
+        assertMatch((String)$whitespace1, $WS);
+        assertMatch($whitespace1->normalize(), $normalizedWhitespace);
+    }
+
+    public function data2(){
+        $set = new CompressedCodePointSet();
+        $set->selectAll();
+        $set->removeAll(getWhitespacesSet());
+        foreach(getSampleCodePointsFromRanges($set) as $codePoint){
+            yield [$codePoint];
+            yield ["   " . $codePoint];
+            yield [$codePoint . "   "];
+            yield ["   " . $codePoint . "   "];
+        }
+    }
+
+    /** @dataProvider data2 */
+    public function test2(String $value){
+        assertThrowsType(InvalidToken::CLASS, function() use($value){
+            new CheckedWhitespaceToken($value);
+        });
+    }
 }

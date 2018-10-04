@@ -50,8 +50,7 @@ class URLBitTokenTest extends TestCase
         $set = new CompressedCodePointSet();
         $set->selectAll();
         $set->removeAll(getURLTokenBitSet());
-        $restricted = getSampleCodePointsFromRanges($set);
-        foreach($restricted as $codePoint){
+        foreach(getSampleCodePointsFromRanges($set) as $codePoint){
             yield [$codePoint];
             yield ["aaa" . $codePoint];
             yield [$codePoint . "aaa"];
