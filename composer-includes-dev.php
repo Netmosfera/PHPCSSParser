@@ -24,9 +24,9 @@ require(__DIR__ . "/tests/assertNotMatch.inc.php");
 require(__DIR__ . "/tests/assertThrowsType.inc.php");
 require(__DIR__ . "/tests/cartesianProduct.inc.php");
 require(__DIR__ . "/tests/getSampleCodePointsFromRanges.inc.php");
+require(__DIR__ . "/tests/groupByOffset.inc.php");
+require(__DIR__ . "/tests/makePiecesSample.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/getTraverser.inc.php");
-require(__DIR__ . "/tests/StandardTokenizer/makeEatEscapeFunctionFromEscapeList.inc.php");
-require(__DIR__ . "/tests/StandardTokenizer/makePiecesSample.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatEscapeTokenFailingFunction.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatEscapeTokenFunction.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatIdentifierTokenFailingFunction.inc.php");
@@ -36,3 +36,5 @@ require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatNumberTokenFunction.inc.php
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatURLTokenFailingFunction.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatURLTokenFunction.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatValidEscapeTokenFunction.inc.php");
+require(__DIR__ . "/tests/TokensChecked/makeStringPieceAfterPieceFunction.inc.php");
+require(__DIR__ . "/tests/TokensChecked/piecesIntendedValue.inc.php");

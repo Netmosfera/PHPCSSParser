@@ -7,3 +7,7 @@
 // @TODO check that all regexps are in single quotes
 
 // @TODO make eatStringToken tests less pedantic
+
+// @TODO the tests in NameTokenTest, StringTokenTest, BadStringTokenTest,
+// URLTokenTest, BadURLTokenTest and BadURLRemnantsTokenTest
+// are essentially the same: merge them in a single class

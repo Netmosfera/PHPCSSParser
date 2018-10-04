@@ -29,6 +29,12 @@ class BadStringToken implements AnyStringToken
     private $_pieces;
 
     /**
+     * @var         String|NULL
+     * `String|NULL`
+     */
+    private $_intendedValue;
+
+    /**
      * @param       String                                  $delimiter
      * `String`
      * @TODOC
@@ -75,5 +81,16 @@ class BadStringToken implements AnyStringToken
      */
     public function pieces(): Array{
         return $this->_pieces;
+    }
+
+    /** @inheritDoc */
+    function intendedValue(): String{
+        if($this->_intendedValue === NULL){
+            $this->_intendedValue = "";
+            foreach($this->_pieces as $piece){
+                $this->_intendedValue .= $piece->intendedValue();
+            }
+        }
+        return $this->_intendedValue;
     }
 }

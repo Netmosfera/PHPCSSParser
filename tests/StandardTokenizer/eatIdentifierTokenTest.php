@@ -12,6 +12,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatValidEscapeTokenFunction;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatIdentifierToken;
+use function Netmosfera\PHPCSSASTTests\makePiecesSample;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;

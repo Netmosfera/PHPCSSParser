@@ -3,11 +3,11 @@
 namespace Netmosfera\PHPCSSAST\TokensChecked\Names\URLs;
 
 use function Netmosfera\PHPCSSAST\isArraySequence;
-use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use TypeError;

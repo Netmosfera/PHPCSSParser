@@ -2,8 +2,8 @@
 
 namespace Netmosfera\PHPCSSASTDev\Data;
 
-use function array_key_exists;
 use function is_string;
+use function array_key_exists;
 use IteratorAggregate;
 use TypeError;
 use Iterator;

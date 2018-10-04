@@ -2,7 +2,6 @@
 
 namespace Netmosfera\PHPCSSASTDev\Data;
 
-use function dechex;
 use Error;
 use IntlChar;
 use Iterator;

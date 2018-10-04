@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "c8b3ed00702aac8c622b61241d02a107",
+    "content-hash": "644bcc3c26103765e7a2b80f2da301c5",
     "packages": [
         {
             "name": "php-tool-bucket/compressed-int-set",
@@ -649,7 +649,7 @@
         },
         {
             "name": "phpunit/php-code-coverage",
-            "version": "dev-master",
+            "version": "6.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/php-code-coverage.git",
@@ -1857,7 +1857,6 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "phpunit/php-code-coverage": 20,
         "php-tool-bucket/incload": 20,
         "php-tool-bucket/testing": 20,
         "netmosfera/sniffs": 20

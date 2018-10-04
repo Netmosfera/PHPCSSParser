@@ -13,7 +13,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": ">=7 <8",
-        "phpunit/php-code-coverage": "dev-master",
         "php-tool-bucket/incload": "dev-master",
         "php-tool-bucket/testing": "dev-master",
         "netmosfera/sniffs": "dev-master",

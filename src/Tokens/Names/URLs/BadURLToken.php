@@ -4,8 +4,8 @@ namespace Netmosfera\PHPCSSAST\Tokens\Names\URLs;
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 /**
  * A {@see BadURLToken} is a {@see URLToken} that terminates with invalid data.

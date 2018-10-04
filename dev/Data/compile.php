@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-use Netmosfera\PHPCSSAST\SpecData;
+use function Netmosfera\PHPCSSASTDev\Data\cp;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getDigitsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNameItemsSet;
@@ -14,7 +14,7 @@ use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getBadURLRemnantsBitSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getURLTokenBitDisallowedSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getEncodedCodePointEscapeSet;
-use function Netmosfera\PHPCSSASTDev\Data\cp;
+use Netmosfera\PHPCSSAST\SpecData;
 
 require __DIR__ . "/../../vendor/autoload.php";
 
