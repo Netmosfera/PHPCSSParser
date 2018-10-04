@@ -24,35 +24,33 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatIdentifierTokenTest extends TestCase
 {
-    private function piecesAfter($afterPiece){
-        if($afterPiece === NULL){
-            // IdentifierToken must not start with digit or - followed by a digit
-            $data[] = new CheckedNameBitToken("S");
-            $data[] = new CheckedNameBitToken("SN");
-            $data[] = new CheckedNameBitToken("SNN");
-            $data[] = new CheckedNameBitToken("-S");
-            $data[] = new CheckedNameBitToken("-SN");
-            $data[] = new CheckedNameBitToken("-SNN");
-            $data[] = new CheckedNameBitToken("--");
-            $data[] = new CheckedNameBitToken("--N");
-            $data[] = new CheckedNameBitToken("--NN");
-            $data[] = new CheckedNameBitToken("--NNN");
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("2764", NULL);
-        }elseif($afterPiece instanceof CheckedNameBitToken){
-            // CheckedNameBitToken can *not* appear after another one, only escapes can
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("2764", NULL);
-        }else{
-            assert($afterPiece instanceof EscapeToken);
-            // After a ValidEscapeToken can appear anything
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("2764", NULL);
-            $data[] = new CheckedNameBitToken("N");
-            $data[] = new CheckedNameBitToken("NN");
-            $data[] = new CheckedNameBitToken("NNN");
-        }
-        return $data;
+    private function piecesAfter(){
+        return function($afterPiece, Bool $isLast){
+            if($afterPiece === NULL){
+                $data[] = new CheckedNameBitToken("S");
+                $data[] = new CheckedNameBitToken("SN");
+                $data[] = new CheckedNameBitToken("SNN");
+                $data[] = new CheckedNameBitToken("-S");
+                $data[] = new CheckedNameBitToken("-SN");
+                $data[] = new CheckedNameBitToken("-SNN");
+                $data[] = new CheckedNameBitToken("--");
+                $data[] = new CheckedNameBitToken("--N");
+                $data[] = new CheckedNameBitToken("--NN");
+                $data[] = new CheckedNameBitToken("--NNN");
+                $data[] = new CheckedEncodedCodePointEscapeToken("@");
+                $data[] = new CheckedCodePointEscapeToken("2764", NULL);
+            }elseif($afterPiece instanceof CheckedNameBitToken){
+                $data[] = new CheckedEncodedCodePointEscapeToken("@");
+                $data[] = new CheckedCodePointEscapeToken("2764", NULL);
+            }elseif($afterPiece instanceof EscapeToken){
+                $data[] = new CheckedEncodedCodePointEscapeToken("@");
+                $data[] = new CheckedCodePointEscapeToken("2764", NULL);
+                $data[] = new CheckedNameBitToken("N");
+                $data[] = new CheckedNameBitToken("NN");
+                $data[] = new CheckedNameBitToken("NNN");
+            }
+            return $data;
+        };
     }
 
     //------------------------------------------------------------------------------------
@@ -60,7 +58,7 @@ class eatIdentifierTokenTest extends TestCase
     public function data1(){
         return cartesianProduct(
             ANY_UTF8(),
-            makePiecesSample(Closure::fromCallable([$this, "piecesAfter"]), FALSE),
+            makePiecesSample($this->piecesAfter(), FALSE),
             ANY_UTF8("not starting with N (a name code point)")
         );
     }

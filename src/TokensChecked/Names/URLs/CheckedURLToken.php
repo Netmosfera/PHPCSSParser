@@ -18,7 +18,7 @@ class CheckedURLToken extends URLToken
         ?WhitespaceToken $whitespaceBefore,
         Array $pieces,
         ?WhitespaceToken $whitespaceAfter,
-        Bool $precedesEOF
+        Bool $EOFTerminated
     ){
         if(isArraySequence($pieces) === FALSE){
             throw new TypeError(
@@ -59,7 +59,7 @@ class CheckedURLToken extends URLToken
             $whitespaceBefore,
             $pieces,
             $whitespaceAfter,
-            $precedesEOF
+            $EOFTerminated
         );
     }
 }

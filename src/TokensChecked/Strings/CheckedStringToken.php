@@ -15,7 +15,7 @@ class CheckedStringToken extends StringToken
     public function __construct(
         String $delimiter,
         Array $pieces,
-        Bool $precedesEOF
+        Bool $EOFTerminated
     ){
         if(isArraySequence($pieces) === FALSE){
             throw new TypeError(
@@ -49,14 +49,14 @@ class CheckedStringToken extends StringToken
 
         if(
             end($pieces) instanceof EOFEscapeToken &&
-            $precedesEOF === FALSE
+            $EOFTerminated === FALSE
         ){
             throw new InvalidToken(sprintf(
-                "A string that ends with a `%s` must be `\$precedesEOF`",
+                "A string that ends with a `%s` must be `\$EOFTerminated`",
                 EOFEscapeToken::CLASS
             ));
         }
 
-        parent::__construct($delimiter, $pieces, $precedesEOF);
+        parent::__construct($delimiter, $pieces, $EOFTerminated);
     }
 }

@@ -34,7 +34,7 @@ class BadURLToken implements AnyURLToken
      * @var         BadURLRemnantsToken
      * `BadURLRemnantsToken`
      */
-    private $_badURLRemnants;
+    private $_remnants;
 
     /**
      * @var         String|NULL
@@ -68,7 +68,7 @@ class BadURLToken implements AnyURLToken
         $this->_identifier = $identifier;
         $this->_whitespaceBefore = $whitespaceBefore;
         $this->_pieces = $pieces;
-        $this->_badURLRemnants = $badURLRemnants;
+        $this->_remnants = $badURLRemnants;
     }
 
     /** @inheritDoc */
@@ -77,7 +77,7 @@ class BadURLToken implements AnyURLToken
             $this->_stringValue = "url(" .
                 $this->_whitespaceBefore .
                 implode("", $this->_pieces) .
-                $this->_badURLRemnants;
+                $this->_remnants;
         }
         return $this->_stringValue;
     }
@@ -89,7 +89,7 @@ class BadURLToken implements AnyURLToken
             match($this->_identifier, $other->_identifier) &&
             match($this->_whitespaceBefore, $other->_whitespaceBefore) &&
             match($this->_pieces, $other->_pieces) &&
-            match($this->_badURLRemnants, $other->_badURLRemnants);
+            match($this->_remnants, $other->_remnants);
     }
 
     /**
@@ -133,6 +133,6 @@ class BadURLToken implements AnyURLToken
      * @TODOC
      */
     public function remnants(): BadURLRemnantsToken{
-        return $this->_badURLRemnants;
+        return $this->_remnants;
     }
 }

@@ -31,60 +31,35 @@ class eatStringTokenTest extends TestCase
 {
     private $stringBit = "string \u{2764} bit";
 
-    private function piecesAfterPiece($afterPiece){
-        if($afterPiece === NULL){
-            // StringToken may start with anything
-            $data[] = new CheckedStringBitToken($this->stringBit);
-            $data[] = new CheckedContinuationEscapeToken("\n");
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
-        }elseif($afterPiece instanceof StringBitToken){
-            // StringBitToken can *not* appear after another one, only escapes can
-            $data[] = new CheckedContinuationEscapeToken("\n");
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
-        }else{
-            assert($afterPiece instanceof EscapeToken);
-            // After a EscapeToken can appear anything
-            $data[] = new CheckedStringBitToken($this->stringBit);
-            $data[] = new CheckedContinuationEscapeToken("\n");
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
-        }
-        return $data;
-    }
-
-    private function piecesAfterPieceWithEOFEscape($afterPiece, Bool $isLast){
-        if($afterPiece === NULL && $isLast){
-            // Only piece
-            $data[] = new CheckedStringBitToken($this->stringBit);
-            $data[] = new CheckedContinuationEscapeToken("\n");
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
-            $data[] = new CheckedEOFEscapeToken();
-        }elseif($afterPiece === NULL && $isLast === FALSE){
-            // First of 2+
-            $data[] = new CheckedStringBitToken($this->stringBit);
-            $data[] = new CheckedContinuationEscapeToken("\n");
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
-        }elseif($afterPiece instanceof StringBitToken){
-            $data[] = new CheckedContinuationEscapeToken("\n");
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
-            if($isLast){
-                $data[] = new CheckedEOFEscapeToken();
+    private function piecesAfterPiece(Bool $EOFTerminated){
+        return function($afterPiece, Bool $isLast) use($EOFTerminated){
+            $data = [];
+            if($afterPiece === NULL){
+                $data[] = new CheckedStringBitToken($this->stringBit);
+                $data[] = new CheckedContinuationEscapeToken("\n");
+                $data[] = new CheckedEncodedCodePointEscapeToken("@");
+                $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
+                if($EOFTerminated && $isLast){
+                    $data[] = new CheckedEOFEscapeToken();
+                }
+            }elseif($afterPiece instanceof StringBitToken){
+                $data[] = new CheckedContinuationEscapeToken("\n");
+                $data[] = new CheckedEncodedCodePointEscapeToken("@");
+                $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
+                if($EOFTerminated && $isLast){
+                    $data[] = new CheckedEOFEscapeToken();
+                }
+            }elseif($afterPiece instanceof EscapeToken){
+                $data[] = new CheckedStringBitToken($this->stringBit);
+                $data[] = new CheckedContinuationEscapeToken("\n");
+                $data[] = new CheckedEncodedCodePointEscapeToken("@");
+                $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
+                if($EOFTerminated && $isLast){
+                    $data[] = new CheckedEOFEscapeToken();
+                }
             }
-        }elseif($afterPiece instanceof EscapeToken){
-            $data[] = new CheckedStringBitToken($this->stringBit);
-            $data[] = new CheckedContinuationEscapeToken("\n");
-            $data[] = new CheckedEncodedCodePointEscapeToken("@");
-            $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
-            if($isLast){
-                $data[] = new CheckedEOFEscapeToken();
-            }
-        }
-        return $data ?? [];
+            return $data;
+        };
     }
 
     //------------------------------------------------------------------------------------
@@ -93,7 +68,7 @@ class eatStringTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             ["\"", "'"],
-            makePiecesSample(Closure::fromCallable([$this, "piecesAfterPiece"])),
+            makePiecesSample($this->piecesAfterPiece(FALSE)),
             ANY_UTF8()
         );
     }
@@ -117,7 +92,7 @@ class eatStringTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             ["\"", "'"],
-            makePiecesSample(Closure::fromCallable([$this, "piecesAfterPieceWithEOFEscape"]))
+            makePiecesSample($this->piecesAfterPiece(TRUE))
         );
     }
 
@@ -141,7 +116,7 @@ class eatStringTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             ["\"", "'"],
-            makePiecesSample(Closure::fromCallable([$this, "piecesAfterPiece"])),
+            makePiecesSample($this->piecesAfterPiece(FALSE)),
             ANY_UTF8()
         );
     }

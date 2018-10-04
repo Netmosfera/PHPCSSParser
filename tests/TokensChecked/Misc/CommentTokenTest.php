@@ -25,14 +25,14 @@ class CommentTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(String $comment, Bool $precedesEOF){
-        $comment1 = new CheckedCommentToken($comment, $precedesEOF);
-        $comment2 = new CheckedCommentToken($comment, $precedesEOF);
+    public function test1(String $comment, Bool $EOFTerminated){
+        $comment1 = new CheckedCommentToken($comment, $EOFTerminated);
+        $comment2 = new CheckedCommentToken($comment, $EOFTerminated);
         assertMatch($comment1, $comment2);
-        $commentEnd = $precedesEOF ? "" : "*/";
+        $commentEnd = $EOFTerminated ? "" : "*/";
         assertMatch((String)$comment1, "/*" . $comment . $commentEnd);
         assertMatch($comment1->text(), $comment);
-        assertMatch($comment1->precedesEOF(), $precedesEOF);
+        assertMatch($comment1->EOFTerminated(), $EOFTerminated);
     }
 
     public function data2(){

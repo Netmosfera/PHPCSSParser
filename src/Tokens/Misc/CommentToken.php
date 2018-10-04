@@ -22,7 +22,7 @@ class CommentToken implements Token
      * @var         Bool
      * `Bool`
      */
-    private $_precedesEOF;
+    private $_EOFTerminated;
 
     /**
      * @var         String
@@ -35,20 +35,20 @@ class CommentToken implements Token
      * `String`
      * The comment's text.
      *
-     * @param       Bool                                    $precedesEOF
+     * @param       Bool                                    $EOFTerminated
      * `Bool`
      * Whether the comment is unterminated.
      */
-    public function __construct(String $text, Bool $precedesEOF){
+    public function __construct(String $text, Bool $EOFTerminated){
         $this->_text = $text;
-        $this->_precedesEOF = $precedesEOF;
+        $this->_EOFTerminated = $EOFTerminated;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
         if($this->_stringValue === NULL){
             $this->_stringValue = "/*" . $this->_text;
-            $this->_stringValue .= $this->_precedesEOF ? "" : "*/";
+            $this->_stringValue .= $this->_EOFTerminated ? "" : "*/";
         }
         return $this->_stringValue;
     }
@@ -58,7 +58,7 @@ class CommentToken implements Token
         return
             $other instanceof self &&
             match($other->_text, $this->_text) &&
-            match($other->_precedesEOF, $this->_precedesEOF);
+            match($other->_EOFTerminated, $this->_EOFTerminated);
     }
 
     /**
@@ -79,7 +79,7 @@ class CommentToken implements Token
      * `Bool`
      * Returns {@see TRUE} if the comment is unterminated.
      */
-    public function precedesEOF(): Bool{
-        return $this->_precedesEOF;
+    public function EOFTerminated(): Bool{
+        return $this->_EOFTerminated;
     }
 }

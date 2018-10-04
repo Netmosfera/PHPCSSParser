@@ -4,11 +4,12 @@ namespace Netmosfera\PHPCSSAST\Tokens\Strings;
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 
 /**
  * A {@see StringToken} is text delimited by `'` or `"`.
  */
-class StringToken implements AnyStringToken
+class StringToken implements AnyStringToken, EvaluableToken
 {
     /**
      * @var         String
@@ -26,7 +27,13 @@ class StringToken implements AnyStringToken
      * @var         Bool
      * `Bool`
      */
-    private $_precedesEOF;
+    private $_EOFTerminated;
+
+    /**
+     * @var         String|NULL
+     * `String|NULL`
+     */
+    private $_intendedValue;
 
     /**
      * @param       String                                  $delimiter
@@ -37,18 +44,18 @@ class StringToken implements AnyStringToken
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      *
-     * @param       Bool                                    $precedesEOF
+     * @param       Bool                                    $EOFTerminated
      * `Bool`
      * @TODOC
      */
     public function __construct(
         String $delimiter,
         Array $pieces,
-        Bool $precedesEOF
+        Bool $EOFTerminated
     ){
         $this->_delimiter = $delimiter;
         $this->_pieces = $pieces;
-        $this->_precedesEOF = $precedesEOF;
+        $this->_EOFTerminated = $EOFTerminated;
     }
 
     /** @inheritDoc */
@@ -56,7 +63,7 @@ class StringToken implements AnyStringToken
         return
             $this->_delimiter .
             implode("", $this->_pieces) .
-            ($this->_precedesEOF ? "" : $this->_delimiter);
+            ($this->_EOFTerminated ? "" : $this->_delimiter);
     }
 
     /** @inheritDoc */
@@ -65,7 +72,7 @@ class StringToken implements AnyStringToken
             $other instanceof self &&
             match($this->_delimiter, $other->_delimiter) &&
             match($this->_pieces, $other->_pieces) &&
-            match($this->_precedesEOF, $other->_precedesEOF);
+            match($this->_EOFTerminated, $other->_EOFTerminated);
     }
 
     /**
@@ -75,7 +82,7 @@ class StringToken implements AnyStringToken
      * `String`
      * @TODOC
      */
-    public function getDelimiter(): String{
+    public function delimiter(): String{
         return $this->_delimiter;
     }
 
@@ -86,7 +93,7 @@ class StringToken implements AnyStringToken
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      */
-    public function getPieces(): Array{
+    public function pieces(): Array{
         return $this->_pieces;
     }
 
@@ -97,7 +104,18 @@ class StringToken implements AnyStringToken
      * `Bool`
      * @TODOC
      */
-    public function precedesEOF(): Bool{
-        return $this->_precedesEOF;
+    public function EOFTerminated(): Bool{
+        return $this->_EOFTerminated;
+    }
+
+    /** @inheritDoc */
+    function intendedValue(): String{
+        if($this->_intendedValue === NULL){
+            $this->_intendedValue = "";
+            foreach($this->_pieces as $piece){
+                $this->_intendedValue .= $piece->intendedValue();
+            }
+        }
+        return $this->_intendedValue;
     }
 }
