@@ -58,7 +58,7 @@ class eatNumberTokenTest extends TestCase
         $set->remove(cp("5")); // excluded as this would be part of the decimal part
         $sequences = getSampleCodePointsFromRanges($set);
         $sequences = array_merge($sequences, ANY_UTF8("not starting with a continuation"));
-        $sequences[] = ".55"; // makes sure it doesn't eat decimals twice
+        $sequences[] = ".555"; // makes sure it doesn't eat decimals twice
         $sequences[] = "ea"; // makes sure it doesn't eat an incomplete E_PART
         $sequences[] = "Ea"; // makes sure it doesn't eat an incomplete E_PART
         $sequences[] = "e+a"; // makes sure it doesn't eat an incomplete E_PART
@@ -72,8 +72,8 @@ class eatNumberTokenTest extends TestCase
         $set->remove(cp("5")); // excluded as this would be part of the exponent
         $sequences = getSampleCodePointsFromRanges($set);
         $sequences = array_merge($sequences, ANY_UTF8("not starting with a continuation"));
-        $sequences[] = ".55"; // makes sure it doesn't eat decimals twice
-        $sequences[] = "E55"; // makes sure it doesn't eat e-part twice
+        $sequences[] = ".555"; // makes sure it doesn't eat decimals twice
+        $sequences[] = "E555"; // makes sure it doesn't eat e-part twice
         return $sequences;
     }
 
@@ -85,8 +85,8 @@ class eatNumberTokenTest extends TestCase
         $set->remove(cp("5"));
         $sequences = getSampleCodePointsFromRanges($set);
         $sequences = array_merge($sequences, ANY_UTF8("not starting with a digit"));
-        $sequences[] = ".55"; // makes sure it doesn't eat decimals after two .
-        $sequences[] = "E55"; // makes sure it doesn't eat e-part after no number
+        $sequences[] = ".555"; // makes sure it doesn't eat decimals after two .
+        $sequences[] = "E555"; // makes sure it doesn't eat e-part after no number
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
@@ -112,7 +112,7 @@ class eatNumberTokenTest extends TestCase
         $sequences = getSampleCodePointsFromRanges($set);
         $sequences = array_merge($sequences, ANY_UTF8("not starting with a digit"));
         $sequences[] = ".a"; // makes sure it doesn't eat invalid decimals
-        $sequences[] = "E55"; // makes sure it doesn't eat e-part after no number
+        $sequences[] = "E555"; // makes sure it doesn't eat e-part after no number
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
@@ -135,18 +135,15 @@ class eatNumberTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
-            ["5", "55", "555"],
-            ["5", "55", "555"],
             ["e", "E"],
             $this->optionalSign(),
-            ["5", "55", "555"],
             $this->restAfterEPart()
         );
     }
 
     /** @dataProvider data3 */
-    public function test3(String $prefix, String $sign, String $wholes, String $decimals, String $eIndicator, String $eSign, String $eExponent, String $rest){
-        $number = new CheckedNumberToken($sign, $wholes, $decimals, $eIndicator, $eSign, $eExponent);
+    public function test3(String $prefix, String $sign, String $eIndicator, String $eSign, String $rest){
+        $number = new CheckedNumberToken($sign, "555", "555", $eIndicator, $eSign, "555");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -159,14 +156,13 @@ class eatNumberTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
-            ["5", "55", "555"],
             $this->restAfterDecimalPart()
         );
     }
 
     /** @dataProvider data4 */
-    public function test4(String $prefix, String $sign, String $digits, String $rest){
-        $number = new CheckedNumberToken($sign, $digits, $digits, "", "", "");
+    public function test4(String $prefix, String $sign, String $rest){
+        $number = new CheckedNumberToken($sign, "555", "555", "", "", "");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -179,17 +175,15 @@ class eatNumberTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
-            ["5", "55", "555"],
             ["e", "E"],
             $this->optionalSign(),
-            ["5", "55", "555"],
             $this->restAfterEPart()
         );
     }
 
     /** @dataProvider data5 */
-    public function test5(String $prefix, String $sign, String $digits, String $eIndicator, String $eSign, String $eDigits, String $rest){
-        $number = new CheckedNumberToken($sign, $digits, "", $eIndicator, $eSign, $eDigits);
+    public function test5(String $prefix, String $sign, String $eIndicator, String $eSign, String $rest){
+        $number = new CheckedNumberToken($sign, "555", "", $eIndicator, $eSign, "555");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -202,14 +196,13 @@ class eatNumberTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
-            ["5", "55", "555"],
             $this->restAfterWholePart()
         );
     }
 
     /** @dataProvider data6 */
-    public function test6(String $prefix, String $sign, String $digits, String $rest){
-        $number = new CheckedNumberToken($sign, $digits, "", "", "", "");
+    public function test6(String $prefix, String $sign, String $rest){
+        $number = new CheckedNumberToken($sign, "555", "", "", "", "");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -222,17 +215,15 @@ class eatNumberTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
-            ["5", "55", "555"],
             ["e", "E"],
             $this->optionalSign(),
-            ["5", "55", "555"],
             $this->restAfterEPart()
         );
     }
 
     /** @dataProvider data7 */
-    public function test7(String $prefix, String $sign, String $digits, String $eIndicator, String $eSign, String $eDigits, String $rest){
-        $number = new CheckedNumberToken($sign, "", $digits, $eIndicator, $eSign, $eDigits);
+    public function test7(String $prefix, String $sign, String $eIndicator, String $eSign, String $rest){
+        $number = new CheckedNumberToken($sign, "", "555", $eIndicator, $eSign, "555");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -245,14 +236,13 @@ class eatNumberTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             $this->optionalSign(),
-            ["5", "55", "555"],
             $this->restAfterDecimalPart()
         );
     }
 
     /** @dataProvider data8 */
-    public function test8(String $prefix, String $sign, String $digits, String $rest){
-        $number = new CheckedNumberToken($sign, "", $digits, "", "", "");
+    public function test8(String $prefix, String $sign, String $rest){
+        $number = new CheckedNumberToken($sign, "", "555", "", "", "");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");

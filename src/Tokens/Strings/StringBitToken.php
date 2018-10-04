@@ -51,17 +51,6 @@ class StringBitToken implements EvaluableToken
      * `String`
      * @TODOC
      */
-    public function text(): String{
-        return $this->_text;
-    }
-
-    /**
-     * @TODOC
-     *
-     * @return      String
-     * `String`
-     * @TODOC
-     */
     public function intendedValue(): String{
         if($this->_intendedValue === NULL){
             $this->_intendedValue = str_replace(
