@@ -12,6 +12,5 @@ function isArraySequence(Array $array): Bool{
     end($array);
     $lastIndex = key($array);
 
-
     return $lastIndex + 1 === count($array);
 }

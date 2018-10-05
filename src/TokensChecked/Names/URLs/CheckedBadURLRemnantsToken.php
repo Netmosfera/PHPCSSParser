@@ -17,29 +17,15 @@ use function preg_match;
 class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
 {
     public function __construct(Array $pieces, Bool $EOFTerminated){
-        if(isArraySequence($pieces) === FALSE){
-            throw new TypeError(
-                "The given `\$pieces` is not an array sequence"
-            );
-        }
-
-        foreach($pieces as $offset => $piece){
-            if(
-                !$piece instanceof BadURLRemnantsBitToken &&
-                !$piece instanceof EscapeToken
-            ){
-                throw new TypeError(sprintf(
-                    "\$pieces must be an array of `%s`",
-                    BadURLRemnantsBitToken::CLASS . "|" . EscapeToken::CLASS
-                ));
-            }
-        }
+        assert(isArraySequence($pieces));
 
         if(count($pieces) === 0){
             throw new InvalidToken("The token cannot be empty");
         }
 
         foreach($pieces as $offset => $piece){
+            assert($piece instanceof BadURLRemnantsBitToken || $piece instanceof EscapeToken);
+
             if($piece instanceof BadURLRemnantsBitToken){
                 $nextPiece = $pieces[$offset + 1] ?? NULL;
                 if($nextPiece instanceof BadURLRemnantsBitToken){

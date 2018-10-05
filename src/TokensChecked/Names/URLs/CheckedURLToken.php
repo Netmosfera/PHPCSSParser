@@ -20,29 +20,15 @@ class CheckedURLToken extends URLToken
         ?WhitespaceToken $whitespaceAfter,
         Bool $EOFTerminated
     ){
-        if(isArraySequence($pieces) === FALSE){
-            throw new TypeError(
-                "The given `\$pieces` is not an array sequence"
-            );
-        }
-
-        foreach($pieces as $offset => $piece){
-            if(
-                !$piece instanceof URLBitToken &&
-                !$piece instanceof ValidEscapeToken
-            ){
-                throw new TypeError(sprintf(
-                    "\$pieces must be an array of `%s`",
-                    URLBitToken::CLASS . "|" . ValidEscapeToken::CLASS
-                ));
-            }
-        }
+        assert(isArraySequence($pieces));
 
         if($identifier->name()->intendedValue() !== "url"){
             throw new InvalidToken("Identifier's intended value must match `url`");
         }
 
         foreach($pieces as $offset => $piece){
+            assert($piece instanceof URLBitToken || $piece instanceof ValidEscapeToken);
+
             if($piece instanceof URLBitToken){
                 $nextPiece = $pieces[$offset + 1] ?? NULL;
                 if($nextPiece instanceof URLBitToken){

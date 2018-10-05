@@ -2,15 +2,13 @@
 
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
-use Closure;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatValidEscapeTokenFunction;
+use function Netmosfera\PHPCSSASTTests\TokensChecked\makeIdentifierPieceAfterPieceFunction;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatIdentifierToken;
 use function Netmosfera\PHPCSSASTTests\makePiecesSample;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -25,41 +23,10 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatIdentifierTokenTest extends TestCase
 {
-    private function piecesAfter(){
-        return function($afterPiece, Bool $isLast){
-            if($afterPiece === NULL){
-                $data[] = new CheckedNameBitToken("S");
-                $data[] = new CheckedNameBitToken("SN");
-                $data[] = new CheckedNameBitToken("SNN");
-                $data[] = new CheckedNameBitToken("-S");
-                $data[] = new CheckedNameBitToken("-SN");
-                $data[] = new CheckedNameBitToken("-SNN");
-                $data[] = new CheckedNameBitToken("--");
-                $data[] = new CheckedNameBitToken("--N");
-                $data[] = new CheckedNameBitToken("--NN");
-                $data[] = new CheckedNameBitToken("--NNN");
-                $data[] = new CheckedEncodedCodePointEscapeToken("@");
-                $data[] = new CheckedCodePointEscapeToken("2764", NULL);
-            }elseif($afterPiece instanceof CheckedNameBitToken){
-                $data[] = new CheckedEncodedCodePointEscapeToken("@");
-                $data[] = new CheckedCodePointEscapeToken("2764", NULL);
-            }elseif($afterPiece instanceof EscapeToken){
-                $data[] = new CheckedEncodedCodePointEscapeToken("@");
-                $data[] = new CheckedCodePointEscapeToken("2764", NULL);
-                $data[] = new CheckedNameBitToken("N");
-                $data[] = new CheckedNameBitToken("NN");
-                $data[] = new CheckedNameBitToken("NNN");
-            }
-            return $data;
-        };
-    }
-
-    //------------------------------------------------------------------------------------
-
     public function data1(){
         return cartesianProduct(
             ANY_UTF8(),
-            makePiecesSample($this->piecesAfter(), FALSE),
+            makePiecesSample(makeIdentifierPieceAfterPieceFunction(), FALSE),
             ANY_UTF8("not starting with N (a name code point)")
         );
     }

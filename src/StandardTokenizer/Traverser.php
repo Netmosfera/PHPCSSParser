@@ -3,7 +3,6 @@
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 use Error;
-use function mb_substr;
 use function preg_quote;
 use function preg_last_error;
 
@@ -84,9 +83,11 @@ class Traverser
             $this->offset
         );
 
+        // @codeCoverageIgnoreStart
         if($result === FALSE){
             throw new Error("PCRE ERROR: " . preg_last_error());
         }
+        // @codeCoverageIgnoreEnd
 
         if($result === 1){
             $this->setOffset($this->offset + strlen($matches[0]));
@@ -107,22 +108,6 @@ class Traverser
             return $string;
         }
         return NULL;
-    }
-
-    public function eatLength(Int $length): ?String{
-        if($length < 0){
-            throw new Error("Invalid length");
-        }
-        if($length === 0){
-            return "";
-        }
-        $remaining = substr($this->data, $this->offset);
-        $string = mb_substr($remaining, 0, $length);
-        if(mb_strlen($string) !== $length){
-            return NULL;
-        }
-        $this->setOffset($this->offset + strlen($string));
-        return $string;
     }
 
     public function eatAll(): String{

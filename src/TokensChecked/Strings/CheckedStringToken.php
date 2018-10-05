@@ -17,25 +17,11 @@ class CheckedStringToken extends StringToken
         Array $pieces,
         Bool $EOFTerminated
     ){
-        if(isArraySequence($pieces) === FALSE){
-            throw new TypeError(
-                "The given `\$pieces` is not an array sequence"
-            );
-        }
+        assert(isArraySequence($pieces));
 
         foreach($pieces as $offset => $piece){
-            if(
-                !$piece instanceof StringBitToken &&
-                !$piece instanceof EscapeToken
-            ){
-                throw new TypeError(sprintf(
-                    "\$pieces must be an array of `%s`",
-                    StringBitToken::CLASS . "|" . EscapeToken::CLASS
-                ));
-            }
-        }
+            assert($piece instanceof StringBitToken || $piece instanceof EscapeToken);
 
-        foreach($pieces as $offset => $piece){
             if($piece instanceof StringBitToken){
                 $nextPiece = $pieces[$offset + 1] ?? NULL;
                 if($nextPiece instanceof StringBitToken){

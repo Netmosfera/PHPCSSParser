@@ -36,5 +36,7 @@ require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatNumberTokenFunction.inc.php
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatURLTokenFailingFunction.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatURLTokenFunction.inc.php");
 require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatValidEscapeTokenFunction.inc.php");
+require(__DIR__ . "/tests/TokensChecked/makeBadURLRemnantsPieceAfterPieceFunction.inc.php");
+require(__DIR__ . "/tests/TokensChecked/makeIdentifierPieceAfterPieceFunction.inc.php");
 require(__DIR__ . "/tests/TokensChecked/makeStringPieceAfterPieceFunction.inc.php");
 require(__DIR__ . "/tests/TokensChecked/piecesIntendedValue.inc.php");

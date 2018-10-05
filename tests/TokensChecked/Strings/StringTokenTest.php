@@ -15,8 +15,6 @@ use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use PHPUnit\Framework\TestCase;
-use TypeError;
-use stdClass;
 
 /**
  * Tests in this file:
@@ -67,25 +65,6 @@ class StringTokenTest extends TestCase
         assertMatch($string1->intendedValue(), $intendedValue);
         assertMatch($string1->EOFTerminated(), TRUE);
         assertMatch($string1->pieces(), $pieces2);
-    }
-
-    public function data3(){
-        yield [[
-            0 => new CheckedEncodedCodePointEscapeToken("@"),
-            1 => new CheckedEncodedCodePointEscapeToken("@"),
-            3 => new CheckedEncodedCodePointEscapeToken("@"),
-            2 => new CheckedEncodedCodePointEscapeToken("@"),
-        ], FALSE];
-        yield [[
-            new stdClass()
-        ], FALSE];
-    }
-
-    /** @dataProvider data3 */
-    public function test3(Array $pieces, Bool $EOFTerminated){
-        assertThrowsType(TypeError::CLASS, function() use($pieces, $EOFTerminated){
-            new CheckedStringToken("'", $pieces, $EOFTerminated);
-        });
     }
 
     public function data4(){
