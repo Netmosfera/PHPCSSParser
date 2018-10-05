@@ -38,16 +38,6 @@ class StandardTokenizer
     private $eatAtKeywordToken;
     private $eatCommentToken;
 
-    private $nameStartRegExpSet;
-    private $nameRegExpSet;
-    private $hexDigitRegExpSet;
-    private $whitespaceRegExp;
-    private $whitespaceRegexSet;
-    private $newlineRegExp;
-    private $newlineRegExpSet;
-    private $digitRegExpSet;
-    private $URLTokenBlacklistedCodePointsRegExpSet;
-
     private $eatNumberToken;
     private $eatNameToken;
     private $eatBadURLRemnants;
@@ -57,27 +47,14 @@ class StandardTokenizer
     private $eatValidEscape;
 
     public function __construct(){
-        $this->nameStartRegExpSet = SpecData::NAME_STARTERS_REGEX_SET;
-        $this->nameRegExpSet = SpecData::NAME_COMPONENTS_REGEX_SET;
-        $this->hexDigitRegExpSet = SpecData::HEX_DIGITS_REGEX_SET;
-        $this->whitespaceRegExp = SpecData::WHITESPACES_REGEX_SEQS;
-        $this->whitespaceRegexSet = SpecData::WHITESPACES_REGEX_SET;
-        $this->newlineRegExp = SpecData::NEWLINES_REGEX_SEQS;
-        $this->newlineRegExpSet = SpecData::NEWLINES_REGEX_SET;
-        $this->digitRegExpSet = SpecData::DIGITS_REGEX_SET;
-        $this->URLTokenBlacklistedCodePointsRegExpSet =
-            SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET;
-
-        //----------------------------------------------------------------------
-
         $this->eatNumberToken = function(Traverser $traverser): ?NumberToken{
-            return eatNumberToken($traverser, $this->digitRegExpSet);
+            return eatNumberToken($traverser, SpecData::DIGITS_REGEX_SET);
         };
 
         $this->eatNameToken = function(Traverser $traverser): ?NameToken{
             return eatNameToken(
                 $traverser,
-                $this->nameRegExpSet,
+                SpecData::NAME_COMPONENTS_REGEX_SET,
                 $this->eatValidEscape
             );
         };
@@ -95,8 +72,8 @@ class StandardTokenizer
             return eatURLToken(
                 $traverser,
                 $URL,
-                $this->whitespaceRegexSet,
-                $this->URLTokenBlacklistedCodePointsRegExpSet,
+                SpecData::WHITESPACES_REGEX_SET,
+                SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET,
                 $this->eatValidEscape,
                 $this->eatBadURLRemnants
             );
@@ -111,7 +88,7 @@ class StandardTokenizer
         $this->eatNullEscape = function(
             Traverser $traverser
         ): ?ValidEscapeToken{
-            return eatNullEscapeToken($traverser, $this->newlineRegExp);
+            return eatNullEscapeToken($traverser, SpecData::NEWLINES_REGEX_SEQS);
         };
 
         $this->eatValidEscape = function(
@@ -119,9 +96,9 @@ class StandardTokenizer
         ): ?ValidEscapeToken{
             return eatValidEscapeToken(
                 $traverser,
-                $this->hexDigitRegExpSet,
-                $this->whitespaceRegExp,
-                $this->newlineRegExpSet
+                SpecData::HEX_DIGITS_REGEX_SET,
+                SpecData::WHITESPACES_REGEX_SEQS,
+                SpecData::NEWLINES_REGEX_SET
             );
         };
 
@@ -130,8 +107,8 @@ class StandardTokenizer
         ): ?IdentifierToken{
             return eatIdentifierToken(
                 $traverser,
-                $this->nameStartRegExpSet,
-                $this->nameRegExpSet,
+                SpecData::NAME_STARTERS_REGEX_SET,
+                SpecData::NAME_COMPONENTS_REGEX_SET,
                 $this->eatValidEscape
             );
         };
@@ -142,7 +119,7 @@ class StandardTokenizer
             return eatIdentifierLikeToken(
                 $traverser,
                 $this->eatIdentifierToken,
-                $this->whitespaceRegexSet,
+                SpecData::WHITESPACES_REGEX_SET,
                 $this->eatURLToken
             );
         };
@@ -150,7 +127,7 @@ class StandardTokenizer
         $this->eatWhitespaceToken = function(
             Traverser $traverser
         ): ?WhitespaceToken{
-            return eatWhitespaceToken($traverser, $this->whitespaceRegexSet);
+            return eatWhitespaceToken($traverser, SpecData::WHITESPACES_REGEX_SET);
         };
 
         $this->eatNumericToken = function(Traverser $traverser): ?NumericToken{
@@ -168,7 +145,7 @@ class StandardTokenizer
         $this->eatStringToken = function(Traverser $traverser): ?StringToken{
             return eatStringToken(
                 $traverser,
-                $this->newlineRegExpSet,
+                SpecData::NEWLINES_REGEX_SET,
                 $this->eatAnyEscape
             );
         };

@@ -3,12 +3,8 @@
 namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedBadStringToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSASTTests\TokensChecked\makeStringPieceAfterPieceFunction;
 use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatEscapeTokenFunction;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatStringToken;
@@ -37,13 +33,10 @@ class eatStringTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $prefix, String $delimiter, Array $pieces, String $rest){
-        $escape1 = new CheckedContinuationEscapeToken("\n");
-        $escape2 = new CheckedEncodedCodePointEscapeToken("@");
-        $escape3 = new CheckedCodePointEscapeToken("Fac", NULL);
         $string = new CheckedStringToken($delimiter, $pieces, FALSE);
 
         $traverser = getTraverser($prefix, $string . $rest);
-        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2, $escape3]);
+        $eatEscape = eatEscapeTokenFunction($pieces);
         $actualString = eatStringToken($traverser, "\f", $eatEscape);
 
         assertMatch($actualString, $string);
@@ -60,14 +53,10 @@ class eatStringTokenTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $delimiter, Array $pieces){
-        $escape1 = new CheckedContinuationEscapeToken("\n");
-        $escape2 = new CheckedEncodedCodePointEscapeToken("@");
-        $escape3 = new CheckedCodePointEscapeToken("Fac", NULL);
-        $escape4 = new EOFEscapeToken();
         $string = new CheckedStringToken($delimiter, $pieces, TRUE);
 
         $traverser = getTraverser($prefix, $string . "");
-        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2, $escape3, $escape4]);
+        $eatEscape = eatEscapeTokenFunction($pieces);
         $actualString = eatStringToken($traverser, "\f", $eatEscape);
 
         assertMatch($actualString, $string);
@@ -85,13 +74,10 @@ class eatStringTokenTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $delimiter, Array $pieces, String $rest){
-        $escape1 = new CheckedContinuationEscapeToken("\n");
-        $escape2 = new CheckedEncodedCodePointEscapeToken("@");
-        $escape3 = new CheckedCodePointEscapeToken("Fac", NULL);
         $string = new CheckedBadStringToken($delimiter, $pieces);
 
         $traverser = getTraverser($prefix, $string . "\f" . $rest);
-        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2, $escape3]);
+        $eatEscape = eatEscapeTokenFunction($pieces);
         $actualString = eatStringToken($traverser, "\f", $eatEscape);
 
         assertMatch($actualString, $string);

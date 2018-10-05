@@ -33,13 +33,11 @@ class eatIdentifierTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $prefix, Array $pieces, String $rest){
-        $escape1 = new CheckedCodePointEscapeToken("2764", NULL);
-        $escape2 = new CheckedEncodedCodePointEscapeToken("@");
         $name = new CheckedNameToken($pieces);
         $identifier = new CheckedIdentifierToken($name);
 
         $traverser = getTraverser($prefix, $identifier . $rest);
-        $eatEscape = eatValidEscapeTokenFunction([$escape1, $escape2]);
+        $eatEscape = eatValidEscapeTokenFunction($pieces);
         $actualIdentifier = eatIdentifierToken($traverser, "S", "N", $eatEscape);
 
         assertMatch($actualIdentifier, $identifier);

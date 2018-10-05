@@ -18,14 +18,18 @@ function makeStringPieceAfterPieceFunction(Bool $EOFTerminated){
             $data[] = new CheckedStringBitToken($stringBit);
             $data[] = new CheckedContinuationEscapeToken("\n");
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedEncodedCodePointEscapeToken("\0");
             $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
+            $data[] = new CheckedCodePointEscapeToken("0", NULL);
             if($EOFTerminated && $isLast){
                 $data[] = new CheckedEOFEscapeToken();
             }
         }elseif($afterPiece instanceof StringBitToken){
             $data[] = new CheckedContinuationEscapeToken("\n");
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedEncodedCodePointEscapeToken("\0");
             $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
+            $data[] = new CheckedCodePointEscapeToken("0", NULL);
             if($EOFTerminated && $isLast){
                 $data[] = new CheckedEOFEscapeToken();
             }
@@ -33,7 +37,9 @@ function makeStringPieceAfterPieceFunction(Bool $EOFTerminated){
             $data[] = new CheckedStringBitToken($stringBit);
             $data[] = new CheckedContinuationEscapeToken("\n");
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedEncodedCodePointEscapeToken("\0");
             $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
+            $data[] = new CheckedCodePointEscapeToken("0", NULL);
             if($EOFTerminated && $isLast){
                 $data[] = new CheckedEOFEscapeToken();
             }

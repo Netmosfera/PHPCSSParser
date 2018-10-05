@@ -47,6 +47,9 @@ function eatStringToken(
         $escape = $eatEscape($traverser);
         if($escape !== NULL){
             $pieces[] = $escape;
+            continue;
         }
+
+        assert(FALSE);
     }
 }

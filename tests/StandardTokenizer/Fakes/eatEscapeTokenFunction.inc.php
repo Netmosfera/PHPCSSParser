@@ -9,10 +9,11 @@ use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 function eatEscapeTokenFunction(Array $escapes): Closure{
     return function(Traverser $traverser) use($escapes): ?EscapeToken{
         foreach($escapes as $escape){
-            assert($escape instanceof EscapeToken);
-            $stringValue = (String)$escape;
-            if($traverser->eatStr($stringValue) !== NULL){
-                return $escape;
+            if($escape instanceof EscapeToken){
+                $stringValue = (String)$escape;
+                if($traverser->eatStr($stringValue) !== NULL){
+                    return $escape;
+                }
             }
         }
         return NULL;

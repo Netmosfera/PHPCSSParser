@@ -4,10 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSASTTests\TokensChecked\makeBadURLRemnantsPieceAfterPieceFunction;
 use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatEscapeTokenFunction;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatBadURLRemnantsToken;
@@ -34,13 +31,10 @@ class eatBadURLRemnantsTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $prefix, Array $pieces, String $rest){
-        $escape1 = new CheckedContinuationEscapeToken("\n");
-        $escape2 = new CheckedEncodedCodePointEscapeToken("@");
-        $escape3 = new CheckedCodePointEscapeToken("Fac", NULL);
         $badURLRemnants = new CheckedBadURLRemnantsToken($pieces, FALSE);
 
         $traverser = getTraverser($prefix, $badURLRemnants . $rest);
-        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2, $escape3]);
+        $eatEscape = eatEscapeTokenFunction($pieces);
         $actualBadURLRemnants = eatBadURLRemnantsToken($traverser, $eatEscape);
 
         assertMatch($actualBadURLRemnants, $badURLRemnants);
@@ -56,15 +50,11 @@ class eatBadURLRemnantsTokenTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(String $prefix, Array $pieces){
-        $escape1 = new CheckedContinuationEscapeToken("\n");
-        $escape2 = new CheckedEncodedCodePointEscapeToken("@");
-        $escape3 = new CheckedCodePointEscapeToken("Fac", NULL);
-        $escape4 = new EOFEscapeToken();
         $EOFTerminated = end($pieces) instanceof EOFEscapeToken;
         $badURLRemnants = new CheckedBadURLRemnantsToken($pieces, $EOFTerminated);
 
         $traverser = getTraverser($prefix, $badURLRemnants . "");
-        $eatEscape = eatEscapeTokenFunction([$escape1, $escape2, $escape3, $escape4]);
+        $eatEscape = eatEscapeTokenFunction($pieces);
         $actualBadURLRemnants = eatBadURLRemnantsToken($traverser, $eatEscape);
 
         assertMatch($actualBadURLRemnants, $badURLRemnants);
