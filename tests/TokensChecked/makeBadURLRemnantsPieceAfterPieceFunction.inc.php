@@ -25,7 +25,9 @@ function makeBadURLRemnantsPieceAfterPieceFunction(Bool $EOFTerminated){
         }elseif($afterPiece instanceof BadURLRemnantsBitToken){
             $data[] = new CheckedContinuationEscapeToken("\n");
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedEncodedCodePointEscapeToken("\0");
             $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
+            $data[] = new CheckedCodePointEscapeToken("0", NULL);
             if($EOFTerminated && $isLast){
                 $data[] = new CheckedEOFEscapeToken();
             }
@@ -33,7 +35,9 @@ function makeBadURLRemnantsPieceAfterPieceFunction(Bool $EOFTerminated){
             $data[] = new CheckedBadURLRemnantsBitToken($remnantsBit);
             $data[] = new CheckedContinuationEscapeToken("\n");
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
+            $data[] = new CheckedEncodedCodePointEscapeToken("\0");
             $data[] = new CheckedCodePointEscapeToken("Fac", NULL);
+            $data[] = new CheckedCodePointEscapeToken("0", NULL);
             if($EOFTerminated && $isLast){
                 $data[] = new CheckedEOFEscapeToken();
             }
