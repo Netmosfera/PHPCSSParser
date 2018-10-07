@@ -30,9 +30,15 @@ class CheckedStringToken extends StringToken
                     ));
                 }
             }
-        }
 
-        // @TODO eofescape must be allowed only as last element
+            $isLast = $offset === (count($pieces) - 1);
+            if($piece instanceof EOFEscapeToken && $isLast === FALSE){
+                throw new InvalidToken(sprintf(
+                    "`%s` is only allowed as last element of `\$pieces`",
+                    EOFEscapeToken::CLASS
+                ));
+            }
+        }
 
         if(
             end($pieces) instanceof EOFEscapeToken &&

@@ -2,6 +2,8 @@
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Strings;
 
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringBitToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\groupByOffset;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -9,10 +11,7 @@ use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\makePiecesSample;
 use function Netmosfera\PHPCSSASTTests\TokensChecked\piecesIntendedValue;
 use function Netmosfera\PHPCSSASTTests\TokensChecked\makeStringPieceAfterPieceFunction;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringToken;
-use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use PHPUnit\Framework\TestCase;
 
@@ -20,8 +19,10 @@ use PHPUnit\Framework\TestCase;
  * Tests in this file:
  *
  * #1 | test getters
- * #2 | test terminated with eof getters
- * #3 | test invalid
+ * #2 | test eof-terminated getters
+ * #3 | test contiguous bits
+ * #4 | test eofescape not last
+ * #5 | test last eofescape enforces terminated with eof flag
   */
 class StringTokenTest extends TestCase
 {
@@ -67,24 +68,28 @@ class StringTokenTest extends TestCase
         assertMatch($string1->pieces(), $pieces2);
     }
 
-    public function data3(){
-        yield [[
-            new CheckedEncodedCodePointEscapeToken("@"),
-            new StringBitToken("abc"),
-            new StringBitToken("def"),
-            new CheckedEncodedCodePointEscapeToken("@"),
-        ], FALSE];
-
-        yield [[
-            new StringBitToken("abc"),
-            new EOFEscapeToken(),
-        ], FALSE];
+    public function test3(){
+        $pieces[] = new CheckedStringBitToken("foo");
+        $pieces[] = new CheckedStringBitToken("bar");
+        assertThrowsType(InvalidToken::CLASS, function() use($pieces){
+            new CheckedStringToken("'", $pieces, FALSE);
+        });
     }
 
-    /** @dataProvider data3 */
-    public function test3(array $pieces, Bool $EOFTerminated){
-        assertThrowsType(InvalidToken::CLASS, function() use($pieces, $EOFTerminated){
-            new CheckedStringToken("'", $pieces, $EOFTerminated);
+    public function test4(){
+        $pieces[] = new CheckedStringBitToken("foo");
+        $pieces[] = new EOFEscapeToken();
+        $pieces[] = new CheckedStringBitToken("bar");
+        assertThrowsType(InvalidToken::CLASS, function() use($pieces){
+            new CheckedStringToken("'", $pieces, FALSE);
+        });
+    }
+
+    public function test5(){
+        $pieces[] = new CheckedStringBitToken("foo");
+        $pieces[] = new EOFEscapeToken();
+        assertThrowsType(InvalidToken::CLASS, function() use($pieces){
+            new CheckedStringToken("'", $pieces, FALSE);
         });
     }
 }
