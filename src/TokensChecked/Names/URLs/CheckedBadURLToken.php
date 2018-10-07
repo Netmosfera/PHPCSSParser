@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSAST\TokensChecked\Names\URLs;
 
+use function strtolower;
 use function Netmosfera\PHPCSSAST\isArraySequence;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
@@ -10,7 +11,6 @@ use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
-use TypeError;
 
 class CheckedBadURLToken extends BadURLToken
 {
@@ -22,8 +22,8 @@ class CheckedBadURLToken extends BadURLToken
     ){
         assert(isArraySequence($pieces));
 
-        if($identifier->name()->intendedValue() !== "url"){
-            throw new InvalidToken("Identifier's intended value must match `url`");
+        if(strtolower($identifier->name()->intendedValue()) !== "url"){
+            throw new InvalidToken("Identifier's lowercased intended value must match `url`");
         }
 
         foreach($pieces as $offset => $piece){

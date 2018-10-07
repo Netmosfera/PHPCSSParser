@@ -74,7 +74,8 @@ class BadURLToken implements AnyURLToken
     /** @inheritDoc */
     public function __toString(): String{
         if($this->_stringValue === NULL){
-            $this->_stringValue = "url(" .
+            $this->_stringValue =
+                $this->_identifier . "(" .
                 $this->_whitespaceBefore .
                 implode("", $this->_pieces) .
                 $this->_remnants;

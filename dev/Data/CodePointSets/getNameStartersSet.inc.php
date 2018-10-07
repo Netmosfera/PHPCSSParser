@@ -6,7 +6,7 @@ use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSASTDev\Data\ContiguousCodePointsSet;
 use function Netmosfera\PHPCSSASTDev\Data\cp;
 
-function getNameStartersSet(){
+function getNameStartersSet(): CompressedCodePointSet{
     $set = new CompressedCodePointSet();
     $set->add(cp("_"));
     $set->addAll(new ContiguousCodePointsSet(cp("a"), cp("z")));

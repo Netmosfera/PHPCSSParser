@@ -67,7 +67,7 @@ class StringTokenTest extends TestCase
         assertMatch($string1->pieces(), $pieces2);
     }
 
-    public function data4(){
+    public function data3(){
         yield [[
             new CheckedEncodedCodePointEscapeToken("@"),
             new StringBitToken("abc"),
@@ -81,8 +81,8 @@ class StringTokenTest extends TestCase
         ], FALSE];
     }
 
-    /** @dataProvider data4 */
-    public function test4(Array $pieces, Bool $EOFTerminated){
+    /** @dataProvider data3 */
+    public function test3(Array $pieces, Bool $EOFTerminated){
         assertThrowsType(InvalidToken::CLASS, function() use($pieces, $EOFTerminated){
             new CheckedStringToken("'", $pieces, $EOFTerminated);
         });

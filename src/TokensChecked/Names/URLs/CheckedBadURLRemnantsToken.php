@@ -2,7 +2,6 @@
 
 namespace Netmosfera\PHPCSSAST\TokensChecked\Names\URLs;
 
-use TypeError;
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
@@ -34,6 +33,14 @@ class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
                         BadURLRemnantsBitToken::CLASS
                     ));
                 }
+            }
+
+            $isLast = $offset === (count($pieces) - 1);
+            if($piece instanceof EOFEscapeToken && $isLast === FALSE){
+                throw new InvalidToken(sprintf(
+                    "`%s` is only allowed as last element of `\$pieces`",
+                    EOFEscapeToken::CLASS
+                ));
             }
         }
 

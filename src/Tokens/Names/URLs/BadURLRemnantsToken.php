@@ -56,6 +56,17 @@ class BadURLRemnantsToken implements Token
     /**
      * @TODOC
      *
+     * @return      BadURLRemnantsBitToken[]|EscapeToken[]
+     * `Array<Int, BadURLRemnantsBitToken|EscapeToken>`
+     * @TODOC
+     */
+    public function pieces(): Array{
+        return $this->_pieces;
+    }
+
+    /**
+     * @TODOC
+     *
      * @return      Bool
      * `Bool`
      * @TODOC

@@ -38,12 +38,12 @@ class CompressedCodePointSet implements IteratorAggregate
         }
     }
 
-    public function contains(String $codePoint){
+    public function contains(String $codePoint): Bool{
         return $this->_data->contains(IntlChar::ord($codePoint));
     }
 
     /** @return ContiguousCodePointsSet[] */
-    public function ranges(){
+    public function ranges(): Iterable{
         foreach($this->_data->ranges as $start => $end){
             yield new ContiguousCodePointsSet(
                 new CodePoint($start),

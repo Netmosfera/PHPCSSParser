@@ -9,7 +9,6 @@ use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
-use TypeError;
 
 class CheckedURLToken extends URLToken
 {
@@ -22,8 +21,8 @@ class CheckedURLToken extends URLToken
     ){
         assert(isArraySequence($pieces));
 
-        if($identifier->name()->intendedValue() !== "url"){
-            throw new InvalidToken("Identifier's intended value must match `url`");
+        if(strtolower($identifier->name()->intendedValue()) !== "url"){
+            throw new InvalidToken("Identifier's lowercased intended value must match `url`");
         }
 
         foreach($pieces as $offset => $piece){

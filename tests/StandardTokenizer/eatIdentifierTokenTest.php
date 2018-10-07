@@ -5,8 +5,6 @@ namespace Netmosfera\PHPCSSASTTests\StandardTokenizer;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 use function Netmosfera\PHPCSSASTTests\StandardTokenizer\Fakes\eatValidEscapeTokenFunction;
 use function Netmosfera\PHPCSSASTTests\TokensChecked\makeIdentifierPieceAfterPieceFunction;
 use function Netmosfera\PHPCSSAST\StandardTokenizer\eatIdentifierToken;

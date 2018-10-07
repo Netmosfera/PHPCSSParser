@@ -8,7 +8,6 @@ use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
-use TypeError;
 
 class CheckedStringToken extends StringToken
 {
@@ -32,6 +31,8 @@ class CheckedStringToken extends StringToken
                 }
             }
         }
+
+        // @TODO eofescape must be allowed only as last element
 
         if(
             end($pieces) instanceof EOFEscapeToken &&

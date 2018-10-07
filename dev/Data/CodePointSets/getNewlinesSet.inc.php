@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSASTDev\Data\CodePointSets;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use function Netmosfera\PHPCSSASTDev\Data\cp;
 
-function getNewlinesSet(){
+function getNewlinesSet(): CompressedCodePointSet{
     $set = new CompressedCodePointSet();
     $set->add(cp("\n"));
     $set->add(cp("\r"));

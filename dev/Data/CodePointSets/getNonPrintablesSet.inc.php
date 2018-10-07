@@ -6,7 +6,7 @@ use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSASTDev\Data\ContiguousCodePointsSet;
 use function Netmosfera\PHPCSSASTDev\Data\cp;
 
-function getNonPrintablesSet(){
+function getNonPrintablesSet(): CompressedCodePointSet{
     $set = new CompressedCodePointSet();
     $set->addAll(new ContiguousCodePointsSet(cp("\u{0}"), cp("\u{8}")));
     $set->add(cp("\u{B}"));

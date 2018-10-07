@@ -2,13 +2,14 @@
 
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
-use function Netmosfera\PHPCSSASTTests\assertMatch;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
+use function Netmosfera\PHPCSSASTTests\TokensChecked\makeIdentifierPieceAfterPieceFunction;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\makePiecesSample;
+use function Netmosfera\PHPCSSASTTests\groupByOffset;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**
  * Tests in this file:
@@ -18,44 +19,24 @@ use PHPUnit\Framework\TestCase;
  */
 class IdentifierTokenTest extends TestCase
 {
-    public function data1(){
-        // --
-        $names[] = [new CheckedNameBitToken("--")];
-
-        // - followed by valid escape
-        $names[] = [
-            new CheckedNameBitToken("-"),
-            new CheckedEncodedCodePointEscapeToken("x")
-        ];
-
-        // - followed by name-start code point
-        $names[] = [new CheckedNameBitToken("-a")];
-        $names[] = [new CheckedNameBitToken("-A")];
-        $names[] = [new CheckedNameBitToken("-_")];
-        $names[] = [new CheckedNameBitToken("-\u{2764}")];
-
-        // a name-start code point
-        $names[] = [new CheckedNameBitToken("a")];
-        $names[] = [new CheckedNameBitToken("A")];
-        $names[] = [new CheckedNameBitToken("_")];
-        $names[] = [new CheckedNameBitToken("\u{2764}")];
-
-        // a valid escape
-        $names[] = [new CheckedEncodedCodePointEscapeToken("x")];
-
-        return cartesianProduct($names);
+    function data1(){
+        $pieces1 = makePiecesSample(makeIdentifierPieceAfterPieceFunction(), FALSE);
+        $pieces2 = makePiecesSample(makeIdentifierPieceAfterPieceFunction(), FALSE);
+        $groupedPieces = groupByOffset($pieces1, $pieces2);
+        return cartesianProduct($groupedPieces);
     }
 
     /** @dataProvider data1 */
-    public function test1(Array $name){
-        $name1 = new CheckedNameToken($name);
-        $name2 = new CheckedNameToken($name);
+    public function test1(Array $groupedPieces){
+        [$pieces1, $pieces2] = $groupedPieces;
+        $name1 = new CheckedNameToken($pieces1);
+        $name2 = new CheckedNameToken($pieces2);
         $identifier1 = new CheckedIdentifierToken($name1);
         $identifier2 = new CheckedIdentifierToken($name2);
         assertMatch($identifier1, $identifier2);
-        assertMatch((String)$identifier2, (String)$identifier1);
-        assertMatch($identifier2->name(), $identifier1->name());
+        assertMatch((String)$identifier1, implode("", $pieces1));
+        assertMatch($identifier1->name(), $name2);
     }
 
-    // @TODO invalids
+    // @TODO test invalid cases
 }

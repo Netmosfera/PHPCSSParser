@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST;
 use Generator;
 use function is_object;
 
-function match($a, $b){
+function match($a, $b): Bool{
     if($a === NULL || $b === NULL || is_scalar($a) || is_scalar($b)){
         return $a === $b;
     }

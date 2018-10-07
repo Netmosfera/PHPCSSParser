@@ -8,6 +8,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToke
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 
 function makeIdentifierPieceAfterPieceFunction(){
+    // @TODO this does not cover - followed by escape
     return function($afterPiece, Bool $isLast){
         $data = [];
         if($afterPiece === NULL){

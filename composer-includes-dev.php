@@ -39,4 +39,6 @@ require(__DIR__ . "/tests/StandardTokenizer/Fakes/eatValidEscapeTokenFunction.in
 require(__DIR__ . "/tests/TokensChecked/makeBadURLRemnantsPieceAfterPieceFunction.inc.php");
 require(__DIR__ . "/tests/TokensChecked/makeIdentifierPieceAfterPieceFunction.inc.php");
 require(__DIR__ . "/tests/TokensChecked/makeStringPieceAfterPieceFunction.inc.php");
+require(__DIR__ . "/tests/TokensChecked/makeURLPieceAfterPieceFunction.inc.php");
 require(__DIR__ . "/tests/TokensChecked/piecesIntendedValue.inc.php");
+require(__DIR__ . "/tests/TokensChecked/sampleURLIdentifiers.inc.php");

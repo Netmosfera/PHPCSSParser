@@ -6,7 +6,7 @@ use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSASTDev\Data\ContiguousCodePointsSet;
 use function Netmosfera\PHPCSSASTDev\Data\cp;
 
-function getHexDigitsSet(){
+function getHexDigitsSet(): CompressedCodePointSet{
     $set = new CompressedCodePointSet();
     $set->addAll(new ContiguousCodePointsSet(cp("0"), cp("9")));
     $set->addAll(new ContiguousCodePointsSet(cp("a"), cp("f")));

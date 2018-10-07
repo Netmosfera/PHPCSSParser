@@ -27,20 +27,20 @@ class BadStringTokenTest extends TestCase
         $pieces1 = makePiecesSample(makeStringPieceAfterPieceFunction(FALSE));
         $pieces2 = makePiecesSample(makeStringPieceAfterPieceFunction(FALSE));
         $groupedPieces = groupByOffset($pieces1, $pieces2);
-        return cartesianProduct(["\"", "'"], $groupedPieces);
+        return cartesianProduct($groupedPieces);
     }
 
     /** @dataProvider data1 */
-    public function test1(String $delimiter, Array $groupedPieces){
+    public function test1(Array $groupedPieces){
         [$pieces1, $pieces2] = $groupedPieces;
         $intendedValue = piecesIntendedValue($pieces1);
-        $string1 = new CheckedBadStringToken($delimiter, $pieces1);
-        $string2 = new CheckedBadStringToken($delimiter, $pieces2);
-        assertMatch($string1, $string2);
-        assertMatch((String)$string1, $delimiter . implode("", $pieces1));
-        assertMatch($string1->delimiter(), $delimiter);
-        assertMatch($string1->intendedValue(), $intendedValue);
-        assertMatch($string1->pieces(), $pieces2);
+        $badString1 = new CheckedBadStringToken("'", $pieces1);
+        $badString2 = new CheckedBadStringToken("'", $pieces2);
+        assertMatch($badString1, $badString2);
+        assertMatch((String)$badString1, "'" . implode("", $pieces1));
+        assertMatch($badString1->delimiter(), "'");
+        assertMatch($badString1->intendedValue(), $intendedValue);
+        assertMatch($badString1->pieces(), $pieces2);
     }
 
     public function data2(){

@@ -11,12 +11,16 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 /**
  * A {@see URLToken} is `url(` followed by words and delimiters, and finally by `)`.
  *
- * The code `url(path/image.gif)` represents a single {@see URLToken}, unlike
- * `url('path/image.gif')` that is instead a sequence of three tokens:
+ * A {@see URLToken} is a special token that allows URLs to appear unquoted. For example
+ * the CSS code `url(path/image.gif)` represents a single {@see URLToken}, as opposed to
+ * `url('path/image.gif')` which is is instead a sequence of three tokens:
  *
  * - {@see FunctionToken} `url(`
  * - {@see StringToken} `'path/image.gif'`
  * - {@see RightParenthesisToken} `)`
+ *
+ * A {@see URLToken} may also appear without the final `)`, when it is interrupted by
+ * `EOF`; this is considered a parse error, however.
  */
 class URLToken implements AnyURLToken
 {
