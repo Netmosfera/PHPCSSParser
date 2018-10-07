@@ -3,19 +3,23 @@
 namespace Netmosfera\PHPCSSASTTests\TokensChecked\Names;
 
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\groupByOffset;
+use function Netmosfera\PHPCSSASTTests\assertThrowsType;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\makePiecesSample;
 use function Netmosfera\PHPCSSASTTests\TokensChecked\piecesIntendedValue;
 use function Netmosfera\PHPCSSASTTests\TokensChecked\makeIdentifierPieceAfterPieceFunction;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
+use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use PHPUnit\Framework\TestCase;
 
 /**
  * Tests in this file:
  *
  * #1 | test getters
- * #2 | test invalid
+ * #2 | test empty pieces
+ * #3 | test contiguous bits
  */
 class NameTokenTest extends TestCase
 {
@@ -38,5 +42,17 @@ class NameTokenTest extends TestCase
         assertMatch($name1->pieces(), $pieces2);
     }
 
-    // @TODO test invalid cases
+    public function test2(){
+        assertThrowsType(InvalidToken::CLASS, function(){
+            new CheckedNameToken([]);
+        });
+    }
+
+    public function test3(){
+        $pieces[] = new CheckedNameBitToken("foo");
+        $pieces[] = new CheckedNameBitToken("bar");
+        assertThrowsType(InvalidToken::CLASS, function() use($pieces){
+            new CheckedNameToken($pieces);
+        });
+    }
 }

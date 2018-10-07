@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
  * Tests in this file:
  *
  * #1 | test getters
- * #2 | test invalid
+ * #2 | test contiguous bits
  */
 class BadStringTokenTest extends TestCase
 {

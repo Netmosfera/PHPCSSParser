@@ -28,15 +28,12 @@ class CheckedIdentifierToken extends IdentifierToken
                     $stringifiedFirstPiece
                 ) === 0
             ){
-                // It's valid if
-
-                // "--", optionally followed by zero or more name-code-points
-
-                // "-" is followed by one name-start-code-point,
-                // optionally followed by zero or more name-code-points
-
-                // starts with one name-start-code-point,
-                // optionally followed by zero or more name-code-points
+                // It's valid if starts with:
+                // - "--", optionally followed by zero or more name-code-points
+                // - "-" is followed by one name-start-code-point,
+                //   optionally followed by zero or more name-code-points
+                // - starts with one name-start-code-point,
+                //   optionally followed by zero or more name-code-points
                 throw new InvalidToken();
             }
         }

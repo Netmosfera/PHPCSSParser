@@ -25,6 +25,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  *
  * #1 | test getters
  * #2 | test identifier's intended value does not match "url"
+ * #3 | test contiguous bits
  */
 class BadURLTokenTest extends TestCase
 {
