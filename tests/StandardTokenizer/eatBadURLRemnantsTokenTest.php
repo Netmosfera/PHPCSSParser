@@ -30,7 +30,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(String $prefix, Array $pieces, String $rest){
+    public function test1(String $prefix, array $pieces, String $rest){
         $badURLRemnants = new CheckedBadURLRemnantsToken($pieces, FALSE);
 
         $traverser = getTraverser($prefix, $badURLRemnants . $rest);
@@ -49,7 +49,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    public function test2(String $prefix, Array $pieces){
+    public function test2(String $prefix, array $pieces){
         $EOFTerminated = end($pieces) instanceof EOFEscapeToken;
         $badURLRemnants = new CheckedBadURLRemnantsToken($pieces, $EOFTerminated);
 

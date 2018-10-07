@@ -31,7 +31,7 @@ class BadStringTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(Array $groupedPieces){
+    public function test1(array $groupedPieces){
         [$pieces1, $pieces2] = $groupedPieces;
         $intendedValue = piecesIntendedValue($pieces1);
         $badString1 = new CheckedBadStringToken("'", $pieces1);
@@ -53,7 +53,7 @@ class BadStringTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    public function test2(Array $pieces){
+    public function test2(array $pieces){
         assertThrowsType(InvalidToken::CLASS, function() use($pieces){
             new CheckedBadStringToken("'", $pieces);
         });

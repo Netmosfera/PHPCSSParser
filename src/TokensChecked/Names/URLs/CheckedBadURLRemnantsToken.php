@@ -15,7 +15,7 @@ use function preg_match;
 
 class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
 {
-    public function __construct(Array $pieces, Bool $EOFTerminated){
+    public function __construct(array $pieces, Bool $EOFTerminated){
         assert(isArraySequence($pieces));
 
         if(count($pieces) === 0){

@@ -13,7 +13,7 @@ class CheckedStringToken extends StringToken
 {
     public function __construct(
         String $delimiter,
-        Array $pieces,
+        array $pieces,
         Bool $EOFTerminated
     ){
         assert(isArraySequence($pieces));

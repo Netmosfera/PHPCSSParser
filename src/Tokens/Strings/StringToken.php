@@ -50,7 +50,7 @@ class StringToken implements AnyStringToken, EvaluableToken
      */
     public function __construct(
         String $delimiter,
-        Array $pieces,
+        array $pieces,
         Bool $EOFTerminated
     ){
         $this->_delimiter = $delimiter;
@@ -93,7 +93,7 @@ class StringToken implements AnyStringToken, EvaluableToken
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      */
-    public function pieces(): Array{
+    public function pieces(): array{
         return $this->_pieces;
     }
 

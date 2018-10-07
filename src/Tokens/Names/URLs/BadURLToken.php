@@ -62,7 +62,7 @@ class BadURLToken implements AnyURLToken
     public function __construct(
         IdentifierToken $identifier,
         ?WhitespaceToken $whitespaceBefore,
-        Array $pieces,
+        array $pieces,
         BadURLRemnantsToken $badURLRemnants
     ){
         $this->_identifier = $identifier;
@@ -122,7 +122,7 @@ class BadURLToken implements AnyURLToken
      * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      */
-    public function pieces(): Array{
+    public function pieces(): array{
         return $this->_pieces;
     }
 

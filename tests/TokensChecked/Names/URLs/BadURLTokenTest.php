@@ -38,7 +38,7 @@ class BadURLTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(Array $identifiers, Array $groupedPieces){
+    public function test1(array $identifiers, array $groupedPieces){
         [$identifier1, $identifier2] = $identifiers;
         [$pieces1, $pieces2] = $groupedPieces;
         $wsBefore1 = new CheckedWhitespaceToken(" \r\n\t\f");

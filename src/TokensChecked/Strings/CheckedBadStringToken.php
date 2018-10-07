@@ -7,11 +7,10 @@ use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
-use TypeError;
 
 class CheckedBadStringToken extends BadStringToken
 {
-    public function __construct(String $delimiter, Array $pieces){
+    public function __construct(String $delimiter, array $pieces){
         assert(isArraySequence($pieces));
 
         foreach($pieces as $offset => $piece){

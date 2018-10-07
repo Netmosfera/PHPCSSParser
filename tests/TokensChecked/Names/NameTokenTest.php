@@ -31,7 +31,7 @@ class NameTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(Array $groupedPieces){
+    public function test1(array $groupedPieces){
         [$pieces1, $pieces2] = $groupedPieces;
         $intendedValue = piecesIntendedValue($pieces1);
         $name1 = new CheckedNameToken($pieces1);

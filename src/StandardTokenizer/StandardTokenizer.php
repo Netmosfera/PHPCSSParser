@@ -161,7 +161,7 @@ class StandardTokenizer
         };
     }
 
-    public function tokenize(String $CSSCode): Array{
+    public function tokenize(String $CSSCode): array{
         $traverser = new Traverser($CSSCode);
 
         $tokens = [];

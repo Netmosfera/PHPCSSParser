@@ -12,7 +12,7 @@ class TextSet implements IteratorAggregate
 {
     private $texts;
 
-    public function __construct(Array $texts){
+    public function __construct(array $texts){
         $textSet = [];
         foreach($texts as $text){
             if(is_string($text) === FALSE){

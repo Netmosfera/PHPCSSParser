@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSASTTests;
 use function iterator_to_array;
 
 function cartesianProduct(Iterable $array, Iterable ...$arrays){
-    $cartesian = function(Array $rows, Array $arrays) use(&$cartesian){
+    $cartesian = function(array $rows, array $arrays) use(&$cartesian){
         if($arrays === []){
             return $rows;
         }

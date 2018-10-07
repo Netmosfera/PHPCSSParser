@@ -15,7 +15,7 @@ class CheckedURLToken extends URLToken
     public function __construct(
         IdentifierToken $identifier,
         ?WhitespaceToken $whitespaceBefore,
-        Array $pieces,
+        array $pieces,
         ?WhitespaceToken $whitespaceAfter,
         Bool $EOFTerminated
     ){

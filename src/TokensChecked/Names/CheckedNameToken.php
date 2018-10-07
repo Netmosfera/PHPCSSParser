@@ -10,7 +10,7 @@ use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 
 class CheckedNameToken extends NameToken
 {
-    public function __construct(Array $pieces){
+    public function __construct(array $pieces){
         assert(isArraySequence($pieces));
 
         if(count($pieces) === 0){

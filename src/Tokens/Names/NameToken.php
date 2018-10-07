@@ -37,7 +37,7 @@ class NameToken implements EvaluableToken
      * `Array<Int, NameBitToken|ValidEscapeToken>`
      * The {@see NameToken}'s components.
      */
-    public function __construct(Array $pieces){
+    public function __construct(array $pieces){
         $this->_pieces = $pieces;
     }
 
@@ -74,7 +74,7 @@ class NameToken implements EvaluableToken
      * `Array<Int, NameBitToken|ValidEscapeToken>`
      * Returns the {@see NameToken}'s components.
      */
-    public function pieces(): Array{
+    public function pieces(): array{
         return $this->_pieces;
     }
 }

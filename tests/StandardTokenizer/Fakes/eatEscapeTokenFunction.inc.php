@@ -6,7 +6,7 @@ use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 
-function eatEscapeTokenFunction(Array $escapes): Closure{
+function eatEscapeTokenFunction(array $escapes): Closure{
     return function(Traverser $traverser) use($escapes): ?EscapeToken{
         foreach($escapes as $escape){
             if($escape instanceof EscapeToken){

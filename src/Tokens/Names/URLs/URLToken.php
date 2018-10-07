@@ -84,7 +84,7 @@ class URLToken implements AnyURLToken
     public function __construct(
         IdentifierToken $identifier,
         ?WhitespaceToken $whitespaceBefore,
-        Array $pieces,
+        array $pieces,
         ?WhitespaceToken $whitespaceAfter,
         Bool $EOFTerminated
     ){
@@ -148,7 +148,7 @@ class URLToken implements AnyURLToken
      * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      */
-    public function pieces(): Array{
+    public function pieces(): array{
         return $this->_pieces;
     }
 

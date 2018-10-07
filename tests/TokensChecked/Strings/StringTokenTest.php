@@ -33,7 +33,7 @@ class StringTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(String $delimiter, Array $groupedPieces){
+    public function test1(String $delimiter, array $groupedPieces){
         [$pieces1, $pieces2] = $groupedPieces;
         $intendedValue = piecesIntendedValue($pieces1);
         $string1 = new CheckedStringToken($delimiter, $pieces1, FALSE);
@@ -54,7 +54,7 @@ class StringTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    public function test2(String $delimiter, Array $groupedPieces){
+    public function test2(String $delimiter, array $groupedPieces){
         [$pieces1, $pieces2] = $groupedPieces;
         $intendedValue = piecesIntendedValue($pieces1);
         $string1 = new CheckedStringToken($delimiter, $pieces1, TRUE);
@@ -82,7 +82,7 @@ class StringTokenTest extends TestCase
     }
 
     /** @dataProvider data3 */
-    public function test3(Array $pieces, Bool $EOFTerminated){
+    public function test3(array $pieces, Bool $EOFTerminated){
         assertThrowsType(InvalidToken::CLASS, function() use($pieces, $EOFTerminated){
             new CheckedStringToken("'", $pieces, $EOFTerminated);
         });

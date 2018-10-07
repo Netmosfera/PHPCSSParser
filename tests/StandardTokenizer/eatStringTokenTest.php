@@ -32,7 +32,7 @@ class eatStringTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(String $prefix, String $delimiter, Array $pieces, String $rest){
+    public function test1(String $prefix, String $delimiter, array $pieces, String $rest){
         $string = new CheckedStringToken($delimiter, $pieces, FALSE);
 
         $traverser = getTraverser($prefix, $string . $rest);
@@ -52,7 +52,7 @@ class eatStringTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    public function test2(String $prefix, String $delimiter, Array $pieces){
+    public function test2(String $prefix, String $delimiter, array $pieces){
         $string = new CheckedStringToken($delimiter, $pieces, TRUE);
 
         $traverser = getTraverser($prefix, $string . "");
@@ -73,7 +73,7 @@ class eatStringTokenTest extends TestCase
     }
 
     /** @dataProvider data3 */
-    public function test3(String $prefix, String $delimiter, Array $pieces, String $rest){
+    public function test3(String $prefix, String $delimiter, array $pieces, String $rest){
         $string = new CheckedBadStringToken($delimiter, $pieces);
 
         $traverser = getTraverser($prefix, $string . "\f" . $rest);

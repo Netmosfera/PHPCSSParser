@@ -33,7 +33,7 @@ class BadURLRemnantsToken implements Token
      * `Bool`
      * @TODOC
      */
-    public function __construct(Array $pieces, Bool $EOFTerminated){
+    public function __construct(array $pieces, Bool $EOFTerminated){
         $this->_pieces = $pieces;
         $this->_EOFTerminated = $EOFTerminated;
     }
@@ -60,7 +60,7 @@ class BadURLRemnantsToken implements Token
      * `Array<Int, BadURLRemnantsBitToken|EscapeToken>`
      * @TODOC
      */
-    public function pieces(): Array{
+    public function pieces(): array{
         return $this->_pieces;
     }
 

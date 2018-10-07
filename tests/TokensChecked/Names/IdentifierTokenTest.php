@@ -30,7 +30,7 @@ class IdentifierTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(Array $groupedPieces){
+    public function test1(array $groupedPieces){
         [$pieces1, $pieces2] = $groupedPieces;
         $name1 = new CheckedNameToken($pieces1);
         $name2 = new CheckedNameToken($pieces2);
@@ -64,7 +64,7 @@ class IdentifierTokenTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    public function test2(Array $pieces){
+    public function test2(array $pieces){
         $name = new CheckedNameToken($pieces);
         assertThrowsType(InvalidToken::CLASS, function() use($name){
             new CheckedIdentifierToken($name);

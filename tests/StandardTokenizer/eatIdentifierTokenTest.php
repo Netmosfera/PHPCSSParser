@@ -30,7 +30,7 @@ class eatIdentifierTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(String $prefix, Array $pieces, String $rest){
+    public function test1(String $prefix, array $pieces, String $rest){
         $name = new CheckedNameToken($pieces);
         $identifier = new CheckedIdentifierToken($name);
 

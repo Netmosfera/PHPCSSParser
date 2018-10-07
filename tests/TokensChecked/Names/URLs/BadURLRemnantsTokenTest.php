@@ -37,7 +37,7 @@ class BadURLRemnantsTokenTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    public function test1(Array $groupedPieces){
+    public function test1(array $groupedPieces){
         [$pieces1, $pieces2] = $groupedPieces;
         $name1 = new CheckedBadURLRemnantsToken($pieces1, FALSE);
         $name2 = new CheckedBadURLRemnantsToken($pieces2, FALSE);

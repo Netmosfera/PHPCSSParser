@@ -17,7 +17,7 @@ class CheckedBadURLToken extends BadURLToken
     public function __construct(
         IdentifierToken $identifier,
         ?WhitespaceToken $whitespaceBefore,
-        Array $pieces,
+        array $pieces,
         BadURLRemnantsToken $badURLRemnants
     ){
         assert(isArraySequence($pieces));

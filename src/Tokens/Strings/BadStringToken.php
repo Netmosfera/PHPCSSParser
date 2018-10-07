@@ -43,7 +43,7 @@ class BadStringToken implements AnyStringToken
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      */
-    public function __construct(String $delimiter, Array $pieces){
+    public function __construct(String $delimiter, array $pieces){
         $this->_delimiter = $delimiter;
         $this->_pieces = $pieces;
     }
@@ -79,7 +79,7 @@ class BadStringToken implements AnyStringToken
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      */
-    public function pieces(): Array{
+    public function pieces(): array{
         return $this->_pieces;
     }
 
