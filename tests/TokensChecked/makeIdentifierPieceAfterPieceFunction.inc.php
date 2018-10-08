@@ -8,7 +8,6 @@ use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToke
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 
 function makeIdentifierPieceAfterPieceFunction(){
-    // @TODO this does not cover - followed by escape
     return function($afterPiece, Bool $isLast){
         $data = [];
         if($afterPiece === NULL){
@@ -24,6 +23,10 @@ function makeIdentifierPieceAfterPieceFunction(){
             $data[] = new CheckedNameBitToken("--NNN");
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
             $data[] = new CheckedCodePointEscapeToken("2764", NULL);
+            if($isLast === FALSE){
+                // This is used to test "-" followed by escape (alone it is invalid)
+                $data[] = new CheckedNameBitToken("-");
+            }
         }elseif($afterPiece instanceof CheckedNameBitToken){
             $data[] = new CheckedEncodedCodePointEscapeToken("@");
             $data[] = new CheckedCodePointEscapeToken("2764", NULL);
