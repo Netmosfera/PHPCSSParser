@@ -76,7 +76,7 @@ class Traverser
 
     private function execRegexp(String $regexp): ?String{
         $result = preg_match(
-            "/\G(" . $regexp . ")/usD",
+            '/\G(' . $regexp . ')/usD',
             $this->data,
             $matches,
             0,

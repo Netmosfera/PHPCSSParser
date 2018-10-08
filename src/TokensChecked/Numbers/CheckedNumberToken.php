@@ -24,9 +24,9 @@ class CheckedNumberToken extends NumberToken
 
             ($sign !== "" && $sign !== "+" && $sign !== "-") ||
             ($ESign !== "" && $ESign !== "+" && $ESign !== "-") ||
-            (preg_match("/^(|[0-9]+)$/usD", $wholes) === 0) ||
-            (preg_match("/^(|[0-9]+)$/usD", $decimals) === 0) ||
-            (preg_match("/^(|[0-9]+)$/usD", $EExponent) === 0) ||
+            (preg_match('/^(|[0-9]+)$/usD', $wholes) === 0) ||
+            (preg_match('/^(|[0-9]+)$/usD', $decimals) === 0) ||
+            (preg_match('/^(|[0-9]+)$/usD', $EExponent) === 0) ||
             FALSE
         ){
             throw new InvalidToken();
