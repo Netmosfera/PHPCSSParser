@@ -46,7 +46,6 @@ class BadStringTokenTest extends TestCase
 
     public function test2(){
         $pieces[] = new CheckedStringBitToken("foo");
-        $pieces[] = new EOFEscapeToken();
         $pieces[] = new CheckedStringBitToken("bar");
         assertThrowsType(InvalidToken::CLASS, function() use($pieces){
             /** @var CheckedStringBitToken[]|EOFEscapeToken[] $pieces */
