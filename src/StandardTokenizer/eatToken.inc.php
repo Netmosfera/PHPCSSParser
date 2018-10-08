@@ -42,7 +42,7 @@ function eatToken(
     }
 
     $savePoint = $traverser->savepoint();
-    $codePoint = $traverser->eatLength(1);
+    $codePoint = $traverser->eatExp(".");
     if($codePoint === ":"){ return $colonToken; }
     if($codePoint === ","){ return $commaToken; }
     if($codePoint === "{"){ return $leftCurlyBracketToken; }
@@ -83,5 +83,5 @@ function eatToken(
     $token = $eatCommentToken($traverser);
     if($token !== NULL){ return $token; }
 
-    return new CheckedDelimiterToken($traverser->eatLength(1));
+    return new CheckedDelimiterToken($traverser->eatExp("."));
 }
