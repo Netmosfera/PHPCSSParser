@@ -8,6 +8,7 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 class CheckedWhitespaceToken extends WhitespaceToken
 {
+    /** @inheritDoc */
     public function __construct(String $text){
         if(preg_match('/^[' . SpecData::WHITESPACES_REGEX_SET . ']+$/usD', $text) === 0){
             throw new InvalidToken();

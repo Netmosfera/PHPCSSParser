@@ -25,7 +25,7 @@ class NameBitToken implements EvaluableToken
     private $_intendedValue;
 
     /**
-     * @param       String                                  $text
+     * @param       String $text
      * `String`
      * The sequence of {@see SpecData::NAME_ITEMS_SET} code points.
      */

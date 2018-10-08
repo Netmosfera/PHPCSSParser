@@ -8,6 +8,7 @@ use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 
 class CheckedStringBitToken extends StringBitToken
 {
+    /** @inheritDoc */
     public function __construct(String $text){
         if(
             preg_match(

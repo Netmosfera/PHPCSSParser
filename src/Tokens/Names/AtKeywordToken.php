@@ -17,7 +17,7 @@ class AtKeywordToken implements Token
     private $_identifier;
 
     /**
-     * @param       IdentifierToken                         $identifier
+     * @param       IdentifierToken $identifier
      * `IdentifierToken`
      * The {@see IdentifierToken} to become a {@see AtKeywordToken}.
      */

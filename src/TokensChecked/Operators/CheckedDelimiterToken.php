@@ -8,6 +8,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 
 class CheckedDelimiterToken extends DelimiterToken
 {
+    /** @inheritDoc */
     public function __construct(String $delimiter){
 
         // @TBD make this stricter? some characters can never appear as this

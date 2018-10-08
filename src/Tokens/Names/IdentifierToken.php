@@ -20,7 +20,7 @@ class IdentifierToken implements IdentifierLikeToken
     private $_name;
 
     /**
-     * @param       NameToken                               $name
+     * @param       NameToken $name
      * `NameToken`
      * The {@see NameToken} to become a {@see IdentifierToken}.
      */

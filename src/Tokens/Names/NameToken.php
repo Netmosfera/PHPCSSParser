@@ -33,7 +33,7 @@ class NameToken implements EvaluableToken
     private $stringified;
 
     /**
-     * @param       NameBitToken[]|ValidEscapeToken[]       $pieces
+     * @param       NameBitToken[]|ValidEscapeToken[] $pieces
      * `Array<Int, NameBitToken|ValidEscapeToken>`
      * The {@see NameToken}'s components.
      */

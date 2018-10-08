@@ -14,11 +14,11 @@ class ContiguousCodePointsSet implements IteratorAggregate
     private $_end;
 
     /**
-     * @param       CodePoint                               $start
+     * @param       CodePoint $start
      * `CodePoint`
      * Start code point; inclusive.
      *
-     * @param       CodePoint                               $end
+     * @param       CodePoint $end
      * `CodePoint`
      * End code point; inclusive.
      */

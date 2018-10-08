@@ -8,6 +8,7 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 
 class CheckedEncodedCodePointEscapeToken extends EncodedCodePointEscapeToken
 {
+    /** @inheritDoc */
     public function __construct(String $codePoint){
         if(
             preg_match(

@@ -8,6 +8,7 @@ use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
 
 class CheckedURLBitToken extends URLBitToken
 {
+    /** @inheritDoc */
     public function __construct(String $text){
         if(
             preg_match(

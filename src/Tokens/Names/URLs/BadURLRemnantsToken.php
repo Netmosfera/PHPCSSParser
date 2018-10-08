@@ -25,11 +25,11 @@ class BadURLRemnantsToken implements Token
     private $_EOFTerminated;
 
     /**
-     * @param       BadURLRemnantsBitToken[]|EscapeToken[]  $pieces
+     * @param       BadURLRemnantsBitToken[]|EscapeToken[] $pieces
      * `Array<Int, BadURLRemnantsBitToken|EscapeToken>`
      * @TODOC
      *
-     * @param       Bool                                    $EOFTerminated
+     * @param       Bool $EOFTerminated
      * `Bool`
      * @TODOC
      */

@@ -24,7 +24,7 @@ class URLBitToken implements EvaluableToken
     private $value;
 
     /**
-     * @param       String                                  $text
+     * @param       String $text
      * `String`
      * @TODOC
      */

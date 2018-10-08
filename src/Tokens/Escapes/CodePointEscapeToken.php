@@ -38,11 +38,11 @@ class CodePointEscapeToken implements ValidEscapeToken
     private $_intendedValue;
 
     /**
-     * @param       String                                  $hexDigits
+     * @param       String $hexDigits
      * `String`
      * @TODOC
      *
-     * @param       WhitespaceToken|NULL                    $terminator
+     * @param       WhitespaceToken|NULL $terminator
      * `WhitespaceToken|NULL`
      * @TODOC
      */

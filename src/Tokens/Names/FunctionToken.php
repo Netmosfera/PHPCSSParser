@@ -16,7 +16,7 @@ class FunctionToken implements IdentifierLikeToken
     private $_identifier;
 
     /**
-     * @param       IdentifierToken                         $identifier
+     * @param       IdentifierToken $identifier
      * `IdentifierToken`
      * The {@see IdentifierToken} to become a {@see FunctionToken}.
      */

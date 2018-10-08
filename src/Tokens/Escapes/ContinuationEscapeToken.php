@@ -28,7 +28,7 @@ class ContinuationEscapeToken implements NullEscapeToken
     private $_codePoint;
 
     /**
-     * @param       String                                  $codePoint
+     * @param       String $codePoint
      * `String`
      * @TODOC
      */

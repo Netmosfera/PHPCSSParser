@@ -24,7 +24,7 @@ class BadURLRemnantsBitToken implements EvaluableToken
     private $_intendedValue;
 
     /**
-     * @param       String                                  $text
+     * @param       String $text
      * `String`
      * @TODOC
      */

@@ -22,7 +22,7 @@ class DelimiterToken implements Token
     private $_delimiter;
 
     /**
-     * @param       String                                  $delimiter
+     * @param       String $delimiter
      * `String`
      * The delimiter code point.
      */

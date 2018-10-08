@@ -16,7 +16,7 @@ class PercentageToken implements NumericToken
     private $_number;
 
     /**
-     * @param       NumberToken                             $number
+     * @param       NumberToken $number
      * `NumberToken`
      * The {@see NumberToken} that is to represent a percentage.
      */

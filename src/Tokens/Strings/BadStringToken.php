@@ -37,7 +37,7 @@ class BadStringToken implements AnyStringToken
     private $_intendedValue;
 
     /**
-     * @param       String                                  $delimiter
+     * @param       String $delimiter
      * `String`
      * @TODOC
      *

@@ -10,6 +10,7 @@ use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 
 class CheckedNameToken extends NameToken
 {
+    /** @inheritDoc */
     public function __construct(array $pieces){
         assert(isArraySequence($pieces));
 

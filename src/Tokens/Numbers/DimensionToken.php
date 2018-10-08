@@ -23,11 +23,11 @@ class DimensionToken implements NumericToken
     private $_unit;
 
     /**
-     * @param       NumberToken                             $number
+     * @param       NumberToken $number
      * `NumberToken`
      * The number.
      *
-     * @param       IdentifierToken                         $unit
+     * @param       IdentifierToken $unit
      * `IdentifierToken`
      * The unit of measurement.
      */

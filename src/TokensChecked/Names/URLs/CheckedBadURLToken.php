@@ -14,6 +14,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 
 class CheckedBadURLToken extends BadURLToken
 {
+    /** @inheritDoc */
     public function __construct(
         IdentifierToken $identifier,
         ?WhitespaceToken $whitespaceBefore,

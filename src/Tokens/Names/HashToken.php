@@ -17,7 +17,7 @@ class HashToken implements Token
     private $_name;
 
     /**
-     * @param       NameToken                               $name
+     * @param       NameToken $name
      * `NameToken`
      * The {@see NameToken} to become a {@see HashToken}.
      */

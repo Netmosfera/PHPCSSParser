@@ -21,7 +21,7 @@ class EncodedCodePointEscapeToken implements ValidEscapeToken
     private $_codePoint;
 
     /**
-     * @param       String                                  $codePoint
+     * @param       String $codePoint
      * `String`
      * @TODOC
      */

@@ -43,19 +43,19 @@ class BadURLToken implements AnyURLToken
     private $_stringValue;
 
     /**
-     * @param       IdentifierToken                         $identifier
+     * @param       IdentifierToken $identifier
      * `IdentifierToken`
      * @TODOC
      *
-     * @param       WhitespaceToken|NULL                    $whitespaceBefore
+     * @param       WhitespaceToken|NULL $whitespaceBefore
      * `WhitespaceToken|NULL`
      * @TODOC
      *
-     * @param       URLBitToken[]|ValidEscapeToken[]        $pieces
+     * @param       URLBitToken[]|ValidEscapeToken[] $pieces
      * `Array<Int, URLBitToken|ValidEscapeToken>`
      * @TODOC
      *
-     * @param       BadURLRemnantsToken                     $badURLRemnants
+     * @param       BadURLRemnantsToken $badURLRemnants
      * `BadURLRemnantsToken`
      * @TODOC
      */

@@ -11,6 +11,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 
 class CheckedBadStringToken extends BadStringToken
 {
+    /** @inheritDoc */
     public function __construct(String $delimiter, array $pieces){
         assert(isArraySequence($pieces));
 

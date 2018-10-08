@@ -8,6 +8,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 
 class CheckedNameBitToken extends NameBitToken
 {
+    /** @inheritDoc */
     public function __construct(String $text){
         if(
             preg_match(

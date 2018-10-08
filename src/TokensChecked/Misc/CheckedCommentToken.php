@@ -8,6 +8,7 @@ use function strpos;
 
 class CheckedCommentToken extends CommentToken
 {
+    /** @inheritDoc */
     public function __construct(String $text, Bool $EOFTerminated){
         if(strpos($text, "*/") !== FALSE){
             throw new InvalidToken();

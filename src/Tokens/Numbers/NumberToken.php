@@ -64,27 +64,27 @@ class NumberToken implements NumericToken
     private $_numberValue;
 
     /**
-     * @param       String                                  $sign
+     * @param       String $sign
      * `String`
      * The number's sign; it is `"+"`, `"-"` or `""`.
      *
-     * @param       String                                  $wholes
+     * @param       String $wholes
      * `String`
      * The number's whole part; it is any sequence of digits or `""`.
      *
-     * @param       String                                  $decimals
+     * @param       String $decimals
      * `String`
      * The number's decimal part; it is any sequence of digits or `""`.
      *
-     * @param       String                                  $EIndicator
+     * @param       String $EIndicator
      * `String`
      * The "E" indicator; it is `"E"`, `"e"` or `""`.
      *
-     * @param       String                                  $ESign
+     * @param       String $ESign
      * `String`
      * The E-notation's exponent's sign; it is `"+"`, `"-"` or `""`.
      *
-     * @param       String                                  $EExponent
+     * @param       String $EExponent
      * `String`
      * The E-notation's exponent; it is any sequence of digits or `""`.
      */

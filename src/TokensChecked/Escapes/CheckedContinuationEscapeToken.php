@@ -8,6 +8,7 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
 
 class CheckedContinuationEscapeToken extends ContinuationEscapeToken
 {
+    /** @inheritDoc */
     public function __construct(String $codePoint){
         if(
             preg_match(

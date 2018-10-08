@@ -36,15 +36,15 @@ class StringToken implements AnyStringToken, EvaluableToken
     private $_intendedValue;
 
     /**
-     * @param       String                                  $delimiter
+     * @param       String $delimiter
      * `String`
      * @TODOC
      *
-     * @param       StringBitToken[]|EscapeToken[]          $pieces
+     * @param       StringBitToken[]|EscapeToken[] $pieces
      * `Array<Int, StringBitToken|EscapeToken>`
      * @TODOC
      *
-     * @param       Bool                                    $EOFTerminated
+     * @param       Bool $EOFTerminated
      * `Bool`
      * @TODOC
      */

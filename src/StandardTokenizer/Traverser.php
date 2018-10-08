@@ -19,10 +19,10 @@ class Traverser
     private $preview;
 
     /**
-     * @param       String                                  $data
+     * @param       String $data
      * {@TODOC}
      *
-     * @param       Bool                                    $showPreview
+     * @param       Bool $showPreview
      * If set to `TRUE` will preview the result of `substr($data, $offset)` in
      * `$preview`. Enabling this has no purpose except for debugging. Keeping it
      * enabled will slow down the operations, so it must be enabled only if

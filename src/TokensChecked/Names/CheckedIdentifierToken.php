@@ -10,6 +10,7 @@ use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
 class CheckedIdentifierToken extends IdentifierToken
 {
+    /** @inheritDoc */
     public function __construct(NameToken $name){
         $pieces = $name->pieces();
         $firstPiece = $pieces[0];

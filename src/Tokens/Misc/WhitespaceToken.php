@@ -27,7 +27,7 @@ class WhitespaceToken implements Token
     private $_normalizedObject;
 
     /**
-     * @param       String                                  $text
+     * @param       String $text
      * `String`
      * The whitespace sequence.
      */

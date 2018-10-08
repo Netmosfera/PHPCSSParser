@@ -7,6 +7,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 
 class CheckedNumberToken extends NumberToken
 {
+    /** @inheritDoc */
     public function __construct(
         String $sign,
         String $wholes,

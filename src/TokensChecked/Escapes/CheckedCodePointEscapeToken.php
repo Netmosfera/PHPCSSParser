@@ -9,6 +9,7 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 
 class CheckedCodePointEscapeToken extends CodePointEscapeToken
 {
+    /** @inheritDoc */
     public function __construct(
         String $hexDigits,
         ?WhitespaceToken $terminator

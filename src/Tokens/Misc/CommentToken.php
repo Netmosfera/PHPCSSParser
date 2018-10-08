@@ -31,11 +31,11 @@ class CommentToken implements Token
     private $_stringValue;
 
     /**
-     * @param       String                                  $text
+     * @param       String $text
      * `String`
      * The comment's text.
      *
-     * @param       Bool                                    $EOFTerminated
+     * @param       Bool $EOFTerminated
      * `Bool`
      * Whether the comment is unterminated.
      */

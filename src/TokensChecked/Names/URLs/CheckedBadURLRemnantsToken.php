@@ -15,6 +15,7 @@ use function preg_match;
 
 class CheckedBadURLRemnantsToken extends BadURLRemnantsToken
 {
+    /** @inheritDoc */
     public function __construct(array $pieces, Bool $EOFTerminated){
         assert(isArraySequence($pieces));
 

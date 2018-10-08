@@ -11,6 +11,7 @@ use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 
 class CheckedStringToken extends StringToken
 {
+    /** @inheritDoc */
     public function __construct(
         String $delimiter,
         array $pieces,

@@ -8,6 +8,7 @@ use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 
 class CheckedBadURLRemnantsBitToken extends BadURLRemnantsBitToken
 {
+    /** @inheritDoc */
     public function __construct(String $text){
         if(
             preg_match(
