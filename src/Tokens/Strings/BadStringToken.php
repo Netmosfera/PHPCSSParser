@@ -3,7 +3,9 @@
 namespace Netmosfera\PHPCSSAST\Tokens\Strings;
 
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 
 /**
  * A {@see BadStringToken} is {@see StringToken} terminated with a newline.
@@ -39,8 +41,8 @@ class BadStringToken implements AnyStringToken
      * `String`
      * @TODOC
      *
-     * @param       StringBitToken[]|EscapeToken[]          $pieces
-     * `Array<Int, StringBitToken|EscapeToken>`
+     * @param       StringBitToken[]|ValidEscapeToken[]|ContinuationEscapeToken[] $pieces
+     * `Array<Int, StringBitToken|ValidEscapeToken|ContinuationEscapeToken>`
      * @TODOC
      */
     public function __construct(String $delimiter, array $pieces){
