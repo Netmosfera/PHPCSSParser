@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSASTDev\Data;
 
+use phpDocumentor\Reflection\Types\Iterable_;
 use PHPToolBucket\CompressedIntSet\CompressedIntSet;
 use IteratorAggregate;
 use Iterator;
@@ -21,6 +22,14 @@ class CompressedCodePointSet implements IteratorAggregate
             $this->_data->equals($other->_data);
     }
 
+    public function count(): Int{
+        $count = 0;
+        foreach($this as $c){
+            $count++;
+        }
+        return $count;
+    }
+
     public function regexp(): String{
         $regexp = "";
         foreach($this->ranges() as $range){
@@ -32,14 +41,55 @@ class CompressedCodePointSet implements IteratorAggregate
     public function getIterator(): Iterator{
         foreach($this->_data->ranges as $start => $end){
             do{
-                yield IntlChar::chr($start);
+                yield new CodePoint($start);
                 $start++;
             }while($start <= $end);
         }
     }
 
-    public function contains(String $codePoint): Bool{
-        return $this->_data->contains(IntlChar::ord($codePoint));
+    public function contains($codePoint): Bool{
+        if($codePoint instanceof CodePoint === FALSE){
+            return FALSE;
+        }
+        /** @var CodePoint $codePoint */
+        return $this->_data->contains($codePoint->code());
+    }
+
+    public function containsAll(Iterable $elements): Bool{
+        if($elements instanceof ContiguousCodePointsSet){
+            foreach($this->_data->ranges as $eStart => $eEnd){
+                if(
+                    $elements->start()->code() >= $eStart &&
+                    $elements->end()->code() <= $eEnd
+                ){
+                    return TRUE;
+                }
+            }
+            return FALSE;
+        }elseif($elements instanceof CompressedCodePointSet){
+            foreach($elements->ranges() as $range){
+                if($this->containsAll($range) === FALSE){
+                    return FALSE;
+                }
+            }
+            return TRUE;
+        }else{
+            foreach($elements as $element){
+                if($this->contains($element) === FALSE){
+                    return FALSE;
+                }
+            }
+            return TRUE;
+        }
+    }
+
+    public function containsNone(Iterable $elements): Bool{
+        foreach($elements as $element){
+            if($this->contains($element)){
+                return FALSE;
+            }
+        }
+        return TRUE;
     }
 
     /** @return ContiguousCodePointsSet[] */
@@ -56,6 +106,8 @@ class CompressedCodePointSet implements IteratorAggregate
         $this->_data->addRange(0, IntlChar::CODEPOINT_MAX);
     }
 
+    //------------------------------------------------------------------------------------
+
     public function addAll(Iterable/* Mixed, CodePoint */ $elements){
         if($elements instanceof ContiguousCodePointsSet){
             $this->_data->addRange(
@@ -69,9 +121,7 @@ class CompressedCodePointSet implements IteratorAggregate
         }else{
             foreach($elements as $element){
                 assert($element instanceof CodePoint);
-                $this->addAll(
-                    new ContiguousCodePointsSet($element, $element)
-                );
+                $this->_data->add($element->code());
             }
         }
     }
@@ -79,6 +129,8 @@ class CompressedCodePointSet implements IteratorAggregate
     public function add(CodePoint $codePoint){
         $this->addAll([$codePoint]);
     }
+
+    //------------------------------------------------------------------------------------
 
     public function removeAll(Iterable $elements){
         if($elements instanceof ContiguousCodePointsSet){

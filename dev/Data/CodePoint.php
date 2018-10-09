@@ -22,11 +22,7 @@ class CodePoint
     }
 
     public function regexp(): String{
-        if((String)$this === "\0"){
-            return '\\x{' . dechex($this->_code) . '}';
-        }else{
-            return preg_quote((String)$this, "/");
-        }
+        return '\\x{' . dechex($this->_code) . '}';
     }
 
     public function code(): Int{

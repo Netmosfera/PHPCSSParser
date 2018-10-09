@@ -31,9 +31,28 @@ class ContiguousCodePointsSet implements IteratorAggregate
     }
 
     public function getIterator(): Iterator{
-        for($o = $this->_start; $o <= $this->_end; $o++){
-            yield IntlChar::chr($o);
+        $start = $this->_start->code();
+        $end = $this->_end->code();
+        do{
+            yield new CodePoint($start);
+            $start++;
+        }while($start <= $end);
+    }
+
+    public function containsNone(Iterable $elements){
+        foreach($elements as $element){
+            if($element instanceof CodePoint){
+                continue;
+            }
+            /** @var CodePoint $element */
+            if(
+                $element->code() >= $this->start()->code() &&
+                $element->code() <= $this->end()->code()
+            ){
+                return FALSE;
+            }
         }
+        return TRUE;
     }
 
     public function regexp(): String{

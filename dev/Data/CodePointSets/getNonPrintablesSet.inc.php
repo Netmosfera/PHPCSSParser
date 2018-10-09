@@ -12,5 +12,6 @@ function getNonPrintablesSet(): CompressedCodePointSet{
     $set->add(cp("\u{B}"));
     $set->addAll(new ContiguousCodePointsSet(cp("\u{E}"), cp("\u{1F}")));
     $set->add(cp("\u{7F}"));
+    $set->remove(cp("\u{0}")); // remove null because that counts as replacement character
     return $set;
 }
