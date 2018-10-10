@@ -2,7 +2,6 @@
 
 namespace Netmosfera\PHPCSSASTDev\Data;
 
-use phpDocumentor\Reflection\Types\Iterable_;
 use PHPToolBucket\CompressedIntSet\CompressedIntSet;
 use IteratorAggregate;
 use Iterator;
@@ -28,6 +27,13 @@ class CompressedCodePointSet implements IteratorAggregate
             $count++;
         }
         return $count;
+    }
+
+    public function isASCIIOnly(): Bool{
+        return $this->containsNone(new ContiguousCodePointsSet(
+            new CodePoint(128),
+            new CodePoint(IntlChar::CODEPOINT_MAX)
+        ));
     }
 
     public function regexp(): String{
