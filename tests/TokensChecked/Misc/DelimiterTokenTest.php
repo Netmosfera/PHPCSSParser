@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSASTTests\TokensChecked\Operators;
+namespace Netmosfera\PHPCSSASTTests\TokensChecked\Misc;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\TokensChecked\Operators\CheckedDelimiterToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**

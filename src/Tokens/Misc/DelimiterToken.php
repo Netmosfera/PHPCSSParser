@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSAST\Tokens\Operators;
+namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Token;

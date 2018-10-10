@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSAST\TokensChecked\Operators;
+namespace Netmosfera\PHPCSSAST\TokensChecked\Misc;
 
 use function mb_strlen;
-use Netmosfera\PHPCSSAST\Tokens\Operators\DelimiterToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\TokensChecked\InvalidToken;
 
 class CheckedDelimiterToken extends DelimiterToken

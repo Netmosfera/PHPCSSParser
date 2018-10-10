@@ -26,6 +26,7 @@ use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
 
 class StandardTokenizer
 {
@@ -166,15 +167,15 @@ class StandardTokenizer
 
         $tokens = [];
 
-        $colonToken = new ColonToken();
-        $commaToken = new CommaToken();
-        $leftCurlyBracketToken = new LeftCurlyBracketToken();
-        $leftParenthesisToken = new LeftParenthesisToken();
-        $leftSquareBracketToken = new LeftSquareBracketToken();
-        $rightCurlyBracketToken = new RightCurlyBracketToken();
-        $rightParenthesisToken = new RightParenthesisToken();
-        $rightSquareBracketToken = new RightSquareBracketToken();
-        $semicolonToken = new SemicolonToken();
+        $colonToken = new CheckedDelimiterToken(":");
+        $commaToken = new CheckedDelimiterToken(",");
+        $leftCurlyBracketToken = new CheckedDelimiterToken("{");
+        $leftParenthesisToken = new CheckedDelimiterToken("(");
+        $leftSquareBracketToken = new CheckedDelimiterToken("[");
+        $rightCurlyBracketToken = new CheckedDelimiterToken("}");
+        $rightParenthesisToken = new CheckedDelimiterToken(")");
+        $rightSquareBracketToken = new CheckedDelimiterToken("]");
+        $semicolonToken = new CheckedDelimiterToken(";");
 
         while($traverser->isEOF() === FALSE){
             $tokens[] = eatToken(
