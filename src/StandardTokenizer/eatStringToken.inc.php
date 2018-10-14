@@ -10,10 +10,10 @@ use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringBitToken;
 
 function eatStringToken(
     Traverser $traverser,
-    String $newlineRegExpSet,
-    Closure $eatEscape
+    String $newlineRegexSet,
+    Closure $eatEscapeToken
 ): ?AnyStringToken{
-    $delimiter = $traverser->eatExp('\'|"');
+    $delimiter = $traverser->eatPattern('\'|"');
 
     if($delimiter === NULL){
         return NULL;
@@ -28,23 +28,23 @@ function eatStringToken(
             return new CheckedStringToken($delimiter, $pieces, TRUE);
         }
 
-        if($traverser->eatStr($delimiter) === $delimiter){
+        if($traverser->eatString($delimiter) === $delimiter){
             return new CheckedStringToken($delimiter, $pieces, FALSE);
         }
 
-        if($traverser->createBranch()->eatExp('[' . $newlineRegExpSet . ']')){
+        if($traverser->createBranch()->eatPattern('[' . $newlineRegexSet . ']')){
             return new CheckedBadStringToken($delimiter, $pieces);
         }
 
-        $stringPiece = $traverser->eatExp(
-            '[^' . $newlineRegExpSet . $eDelimiter . '\\\\]+'
+        $stringPiece = $traverser->eatPattern(
+            '[^' . $newlineRegexSet . $eDelimiter . '\\\\]+'
         );
         if($stringPiece !== NULL){
             $pieces[] = new CheckedStringBitToken($stringPiece);
             continue;
         }
 
-        $escape = $eatEscape($traverser);
+        $escape = $eatEscapeToken($traverser);
         if($escape !== NULL){
             $pieces[] = $escape;
             continue;

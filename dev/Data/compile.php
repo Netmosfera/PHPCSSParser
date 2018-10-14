@@ -1,5 +1,8 @@
 <?php declare(strict_types = 1);
 
+use Netmosfera\PHPCSSASTDev\Data\CodePoint;
+use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
+use Netmosfera\PHPCSSASTDev\Data\ContiguousCodePointsSet;
 use function Netmosfera\PHPCSSASTDev\Data\cp;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getDigitsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
@@ -18,52 +21,49 @@ use Netmosfera\PHPCSSAST\SpecData;
 
 require __DIR__ . "/../../vendor/autoload.php";
 
+$multibytes = new CompressedCodePointSet();
+$multibytes->selectAll();
+$multibytes->removeAll(new ContiguousCodePointsSet(new CodePoint(0), new CodePoint(255)));
+
 $MAKEMAP = [];
 
 $MAKEMAP["DIGITS_REGEX_SET"] = getDigitsSet()->regexp();
-SpecData::DIGITS_REGEX_SET;
 
 $MAKEMAP["HEX_DIGITS_REGEX_SET"] = getHexDigitsSet()->regexp();
-SpecData::HEX_DIGITS_REGEX_SET;
 
 $MAKEMAP["NAME_STARTERS_REGEX_SET"] = getNameStartersSet()->regexp();
-SpecData::NAME_STARTERS_REGEX_SET;
 
 $MAKEMAP["NAME_COMPONENTS_REGEX_SET"] = getNameItemsSet()->regexp();
-SpecData::NAME_COMPONENTS_REGEX_SET;
+
+$nsb = getNameStartersSet();
+$nsb->removeAll($multibytes);
+$MAKEMAP["NAME_STARTERS_BYTES_REGEX_SET"] = $nsb->regexp();
+
+$nsb = getNameItemsSet();
+$nsb->removeAll($multibytes);
+$MAKEMAP["NAME_COMPONENTS_BYTES_REGEX_SET"] = $nsb->regexp();
 
 $MAKEMAP["WHITESPACES_REGEX_SET"] = getWhitespacesSet()->regexp();
-SpecData::WHITESPACES_REGEX_SET;
 
 $MAKEMAP["WHITESPACES_REGEX_SEQS"] = getWhitespaceSeqsSet()->getRegExp();
-SpecData::WHITESPACES_REGEX_SEQS;
 
 $MAKEMAP["NEWLINES_REGEX_SET"] = getNewlinesSet()->regexp();
-SpecData::NEWLINES_REGEX_SET;
 
 $MAKEMAP["NEWLINES_REGEX_SEQS"] = getNewlineSeqsSet()->getRegExp();
-SpecData::NEWLINES_REGEX_SEQS;
 
 $MAKEMAP["ENCODED_CP_ESCAPE_REGEX_SET"] = getEncodedCodePointEscapeSet()->regexp();
-SpecData::ENCODED_CP_ESCAPE_REGEX_SET;
 
 $MAKEMAP["STRING_BIT_CPS_REGEX_SET"] = getStringBitSet()->regexp();
-SpecData::STRING_BIT_CPS_REGEX_SET;
 
 $MAKEMAP["URL_TOKEN_BIT_CPS_REGEX_SET"] = getURLTokenBitSet()->regexp();
-SpecData::URL_TOKEN_BIT_CPS_REGEX_SET;
 
 $MAKEMAP["URL_TOKEN_BIT_NOT_CPS_REGEX_SET"] = getURLTokenBitDisallowedSet()->regexp();
-SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET;
 
 $MAKEMAP["BAD_URL_REMNANTS_BIT_CPS_REGEX_SET"] = getBadURLRemnantsBitSet()->regexp();
-SpecData::BAD_URL_REMNANTS_BIT_CPS_REGEX_SET;
 
 $MAKEMAP["NEWLINE"] = (String)cp("\n");
-SpecData::NEWLINE;
 
 $MAKEMAP["REPLACEMENT_CHARACTER"] = (String)cp("\u{FFFD}");
-SpecData::REPLACEMENT_CHARACTER;
 
 $keyLength = strlen(array_reduce(array_keys($MAKEMAP), function($a, $b){
     return strlen($a) > strlen($b) ? $a : $b;

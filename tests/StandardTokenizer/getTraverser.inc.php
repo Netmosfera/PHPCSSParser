@@ -6,6 +6,6 @@ use Netmosfera\PHPCSSAST\StandardTokenizer\Traverser;
 
 function getTraverser(String $prefix, String $continuation){
     $traverser = new Traverser($prefix . $continuation, TRUE);
-    assert($traverser->eatStr($prefix) === $prefix);
+    assert($traverser->eatString($prefix) === $prefix);
     return $traverser;
 }

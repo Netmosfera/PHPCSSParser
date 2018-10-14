@@ -10,22 +10,13 @@ use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\CommaToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumericToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
 
 class StandardTokenizer
@@ -55,7 +46,7 @@ class StandardTokenizer
         $this->eatNameToken = function(Traverser $traverser): ?NameToken{
             return eatNameToken(
                 $traverser,
-                SpecData::NAME_COMPONENTS_REGEX_SET,
+                SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
                 $this->eatValidEscape
             );
         };
@@ -108,8 +99,8 @@ class StandardTokenizer
         ): ?IdentifierToken{
             return eatIdentifierToken(
                 $traverser,
-                SpecData::NAME_STARTERS_REGEX_SET,
-                SpecData::NAME_COMPONENTS_REGEX_SET,
+                SpecData::NAME_STARTERS_BYTES_REGEX_SET,
+                SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
                 $this->eatValidEscape
             );
         };
@@ -120,7 +111,6 @@ class StandardTokenizer
             return eatIdentifierLikeToken(
                 $traverser,
                 $this->eatIdentifierToken,
-                SpecData::WHITESPACES_REGEX_SET,
                 $this->eatURLToken
             );
         };

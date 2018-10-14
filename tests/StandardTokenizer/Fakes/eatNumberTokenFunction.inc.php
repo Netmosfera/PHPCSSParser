@@ -12,7 +12,7 @@ function eatNumberTokenFunction(?NumberToken $number): Closure{
             return NULL;
         }else{
             $stringValue = (String)$number;
-            return $traverser->eatStr($stringValue) === NULL ? NULL : $number;
+            return $traverser->eatString($stringValue) === NULL ? NULL : $number;
         }
     };
 }

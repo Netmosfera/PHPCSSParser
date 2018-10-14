@@ -8,37 +8,32 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 
 function eatNameToken(
     Traverser $traverser,
-    String $nameRegExpSet,
-    Closure $eatEscapeFunction
+    String $nameRegexSet,
+    Closure $eatEscapeToken
 ): ?CheckedNameToken{
 
-    $nameStart = $traverser->eatExp('[' . $nameRegExpSet . ']+');
+    $nameStart = $traverser->eatPattern('[' . $nameRegexSet . ']+');
 
-    if($nameStart !== NULL){
+    if(isset($nameStart)){
         $pieces = [new CheckedNameBitToken($nameStart)];
     }else{
-        $escape = $eatEscapeFunction($traverser);
-
+        $escape = $eatEscapeToken($traverser);
         if($escape === NULL){
             return NULL;
         }
-
         $pieces = [$escape];
     }
 
     while(TRUE){
-        $piece =
-            $traverser->eatExp('[' . $nameRegExpSet . ']+') ??
-            $eatEscapeFunction($traverser);
-
+        $bit = $traverser->eatPattern('[' . $nameRegexSet . ']+');
+        if(isset($bit)){
+            $piece = new CheckedNameBitToken($bit);
+        }else{
+            $piece = $eatEscapeToken($traverser);
+        }
         if($piece === NULL){
             return new CheckedNameToken($pieces);
         }
-
-        if(is_string($piece)){
-            $piece = new CheckedNameBitToken($piece);
-        }
-
         $pieces[] = $piece;
     }
 }

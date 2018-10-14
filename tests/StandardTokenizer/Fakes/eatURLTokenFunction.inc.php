@@ -14,7 +14,7 @@ function eatURLTokenFunction(?URLToken $URL): Closure{
             $stringValue = $URL->whitespaceBefore();
             $stringValue .= implode("", $URL->pieces());
             $stringValue .= $URL->whitespaceAfter() . ")";
-            return $traverser->eatStr($stringValue) === NULL ? NULL : $URL;
+            return $traverser->eatString($stringValue) === NULL ? NULL : $URL;
         }
     };
 }

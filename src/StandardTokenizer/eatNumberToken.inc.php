@@ -6,26 +6,26 @@ use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 
 function eatNumberToken(
     Traverser $traverser,
-    String $digitRegExpSet
+    String $digitRegexSet
 ): ?CheckedNumberToken{
 
     $xx = $traverser->createBranch();
 
-    if($xx->eatExp('\+|-') !== NULL){
-        if($xx->eatExp('[' . $digitRegExpSet . ']') !== NULL){
+    if($xx->eatPattern('\+|-') !== NULL){
+        if($xx->eatPattern('[' . $digitRegexSet . ']') !== NULL){
             goto EAT_NUMBER;
         }
         if(
-            ($xx->eatStr(".")) !== NULL &&
-            ($xx->eatExp('[' . $digitRegExpSet . ']')) !== NULL
+            ($xx->eatString(".")) !== NULL &&
+            ($xx->eatPattern('[' . $digitRegexSet . ']')) !== NULL
         ){
             goto EAT_NUMBER;
         }
-    }elseif($xx->eatStr(".") !== NULL){
-        if($xx->eatExp('[' . $digitRegExpSet . ']') !== NULL){
+    }elseif($xx->eatString(".") !== NULL){
+        if($xx->eatPattern('[' . $digitRegexSet . ']') !== NULL){
             goto EAT_NUMBER;
         }
-    }elseif($xx->eatExp('[' . $digitRegExpSet . ']') !== NULL){
+    }elseif($xx->eatPattern('[' . $digitRegexSet . ']') !== NULL){
         goto EAT_NUMBER;
     }
     return NULL;
@@ -40,22 +40,22 @@ function eatNumberToken(
 
     EAT_NUMBER:
 
-    $sign = $traverser->eatExp('\+|-') ?? "";
+    $sign = $traverser->eatPattern('\+|-') ?? "";
 
-    $wholes = $traverser->eatExp('[' . $digitRegExpSet . ']+') ?? "";
+    $wholes = $traverser->eatPattern('[' . $digitRegexSet . ']+') ?? "";
 
     $dt = $traverser->createBranch();
-    if($dt->eatStr(".") !== NULL){
-        $decimals = $dt->eatExp('[' . $digitRegExpSet . ']+') ?? "";
+    if($dt->eatString(".") !== NULL){
+        $decimals = $dt->eatPattern('[' . $digitRegexSet . ']+') ?? "";
         if($decimals !== ""){ $traverser->importBranch($dt); }
     }else{
         $decimals = "";
     }
 
     $et = $traverser->createBranch();
-    $expLetter = $et->eatExp('e|E') ?? "";
-    $expSign = $et->eatExp('\+|-') ?? "";
-    $exponent = $et->eatExp('[' . $digitRegExpSet . ']+') ?? "";
+    $expLetter = $et->eatPattern('e|E') ?? "";
+    $expSign = $et->eatPattern('\+|-') ?? "";
+    $exponent = $et->eatPattern('[' . $digitRegexSet . ']+') ?? "";
     if($expLetter !== "" && $exponent !== ""){
         $traverser->importBranch($et);
     }else{

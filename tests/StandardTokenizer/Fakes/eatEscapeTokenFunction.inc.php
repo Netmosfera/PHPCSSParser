@@ -11,7 +11,7 @@ function eatEscapeTokenFunction(array $escapes): Closure{
         foreach($escapes as $escape){
             if($escape instanceof EscapeToken){
                 $stringValue = (String)$escape;
-                if($traverser->eatStr($stringValue) !== NULL){
+                if($traverser->eatString($stringValue) !== NULL){
                     return $escape;
                 }
             }

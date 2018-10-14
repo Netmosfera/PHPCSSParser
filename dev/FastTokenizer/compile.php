@@ -3,14 +3,20 @@
 namespace Netmosfera\PHPCSSASTDev\FastTokenizer;
 
 use function iterator_to_array;
+use Netmosfera\PHPCSSASTDev\Data\CodePoint;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getNewlineSeqsSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
 use function Netmosfera\PHPCSSASTDev\Data\cp;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getDigitsSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNameItemsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getHexDigitsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNonASCIIsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getWhitespacesSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNameStartersSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNonPrintablesSet;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
+use Netmosfera\PHPCSSASTDev\Data\TextSet;
 
 require __DIR__ . "/../../vendor/autoload.php";
 
@@ -19,62 +25,39 @@ require __DIR__ . "/../../vendor/autoload.php";
     // Define tokens:
     //------------------------------------------------------------------------------------
 
-    $alphaHexDigits = getHexDigitsSet();
-    $alphaHexDigits->removeAll(getDigitsSet());
+    $groups["NAME"] = getNameItemsSet();
+    $groups["NAME"]->removeAll(getNonASCIIsSet());
 
-    // ASCII CHARACTERS
-    $groups["A"] = getNameStartersSet();
-    $groups["A"]->removeAll($alphaHexDigits);
-    $groups["A"]->removeAll(getNonASCIIsSet());
+    $groups["NAME_STARTER"] = getNameStartersSet();
+    $groups["NAME_STARTER"]->removeAll(getNonASCIIsSet());
 
-    // DELIMITERS
+    $groups["HEX_DIGIT"] = getHexDigitsSet();
+
+    $groups["DIGIT"] = getDigitsSet();
+
+    $groups["NEWLINE"] = getNewlineSeqsSet();
+
+    $groups["WHITESPACE"] = getWhitespaceSeqsSet();
+
+    $groups["NONPRINTABLE"] = getNonPrintablesSet();
+
     $delimitersAsArray = str_split("\"\\:;,{}[]()'#@+-*/%><.?!&=$^~|`");
     assert(array_unique($delimitersAsArray) === $delimitersAsArray);
-    $groups["S"] = new CompressedCodePointSet();
+    $groups["DELIMITER"] = new CompressedCodePointSet();
     foreach($delimitersAsArray as $delimiter){
-        $groups["S"]->add(cp($delimiter));
+        $groups["DELIMITER"]->add(cp($delimiter));
     }
 
-    // ALPHABETIC HEX DIGITS
-    $groups["H"] = $alphaHexDigits;
+    /** @var CompressedCodePointSet[]|TextSet[] $groups */
 
-    // WHITESPACE
-    $groups["W"] = getWhitespacesSet();
-
-    // DIGITS
-    $groups["D"] = getDigitsSet();
-
-    // NONPRINTABLE CHARACTERS
-    $groups["I"] = getNonPrintablesSet();
-
-    // NON-ASCII CHARACTERS
-    $nonASCII = getNonASCIIsSet();
-
-    /** @var CompressedCodePointSet[] $groups */
-
-    verifyGroupsDoNotOverlap(array_merge($groups, [$nonASCII]));
-    verifyUnicodeCovered(array_merge($groups, [$nonASCII]));
-
-    //------------------------------------------------------------------------------------
-    // Generate the recognize-token set-arrays
-    //------------------------------------------------------------------------------------
-
-    $recognizeGroups = [];
-    foreach($groups as $nameOfGroup => $codePointsOfGroup){
-        $recognizeGroups[$nameOfGroup] = keyze(iterator_to_array($codePointsOfGroup, FALSE));
+    foreach($groups as $groupName => $sequences){
+        $groups[$groupName] = [];
+        foreach($sequences as $sequence){
+            $groups[$groupName][] = (String)$sequence;
+        }
     }
 
-    $recognizeNonASCIIPattern = "/^[" . $nonASCII->regexp() . "]/usD";
-
-    //------------------------------------------------------------------------------------
-    // Generate the splitter
-    //------------------------------------------------------------------------------------
-
-    foreach($groups as $codePointsOfGroup){
-        $splitterPieces[] = "[" . $codePointsOfGroup->regexp() . "]+";
-    }
-    $splitterPieces[] = "[" . $nonASCII->regexp() . "]+";
-    $splitter = "/(" . implode("|", $splitterPieces) . ")/usD";
+    /** @var String[][] $groups */
 
     //------------------------------------------------------------------------------------
     // Save the data
@@ -84,9 +67,33 @@ require __DIR__ . "/../../vendor/autoload.php";
     $source .= "namespace Netmosfera\\PHPCSSAST\FastTokenizer;\n\n";
     $source .= "class Data\n";
     $source .= "{\n";
-    $source .= "    public const SPLIT = " . var_export($splitter, TRUE) . ";\n";
-    $source .= "    public const RECOGNIZE_GROUPS = " . var_export($recognizeGroups, TRUE) . ";\n";
-    $source .= "    public const RECOGNIZE_NON_ASCII = " . var_export($recognizeNonASCIIPattern, TRUE) . ";\n";
+
+    //------------------------------------------------------------------------------------
+
+    $groupID = 0;
+    foreach($groups as $constantName => $_){
+        $source .= "    public const " . $constantName . " = " . (2 ** $groupID++) . ";\n";
+    }
+
+    //------------------------------------------------------------------------------------
+
+    $map = [];
+    $classifySequences = range(chr(1), chr(127));
+    $classifySequences[] = "\r\n";
+    foreach($classifySequences as $sequence){
+        $map[$sequence] = 0;
+        $groupID = 0;
+        foreach($groups as $groupName => $groupSet){
+            if(in_array($sequence, $groupSet)){
+                $map[$sequence] |= 2 ** $groupID;
+            }
+            $groupID++;
+        }
+    }
+    $source .= "    public const CODE_POINT_TYPES = " . var_export($map, TRUE) . ";\n";
+
+    //------------------------------------------------------------------------------------
+
     $source .= "}\n";
 
     $destinationFile = __DIR__ . "/../../src/FastTokenizer/Data.php";

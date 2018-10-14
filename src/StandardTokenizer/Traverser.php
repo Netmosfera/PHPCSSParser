@@ -12,7 +12,7 @@ class Traverser
 
     private $data;
 
-    private $offset;
+    private $index;
 
     private $showPreview;
 
@@ -36,8 +36,15 @@ class Traverser
         $this->setOffset(0);
     }
 
+    private function setOffset(Int $offset){
+        $this->index = $offset;
+        if($this->showPreview){
+            $this->preview = substr($this->data, $this->index);
+        }
+    }
+
     public function savepoint(){
-        return $this->offset;
+        return $this->index;
     }
 
     public function rollback($savepoint){
@@ -51,7 +58,7 @@ class Traverser
                 "traverser with the same origin"
             );
         }
-        $this->offset = $traverser->offset;
+        $this->index = $traverser->index;
         $this->preview = $traverser->preview;
     }
 
@@ -59,58 +66,47 @@ class Traverser
         return clone $this;
     }
 
-    private function setOffset(Int $offset){
-        $this->offset = $offset;
-        if($this->showPreview){
-            $this->preview = substr($this->data, $this->offset);
-        }
-    }
-
     public function isEOF(): Bool{
-        return $this->offset === strlen($this->data);
+        return $this->index === strlen($this->data);
     }
 
     public function escapeRegexp(String $string): String{
         return preg_quote($string, "/");
     }
 
-    private function execRegexp(String $regexp): ?String{
-        $result = preg_match(
-            '/\G(' . $regexp . ')/usD',
-            $this->data,
-            $matches,
-            0,
-            $this->offset
-        );
-
-        // @codeCoverageIgnoreStart
+    public function eatPattern(String $pattern): ?String{
+        $pattern = '/\G(' . $pattern . ')/sD';
+        $result = preg_match($pattern, $this->data, $matches, 0, $this->index);
         if($result === FALSE){
             throw new Error("PCRE ERROR: " . preg_last_error());
         }
-        // @codeCoverageIgnoreEnd
-
         if($result === 1){
-            $this->setOffset($this->offset + strlen($matches[0]));
+            $this->setOffset($this->index + strlen($matches[0]));
             return $matches[0];
         }
-
         return NULL;
     }
 
-    public function eatExp(String $regexp): ?String{
-        return $this->execRegexp($regexp);
+    public function eatLength(Int $length): ?String{
+        $trim = substr($this->data, $this->index, $length * 4);
+        $string = mb_substr($trim, 0, $length);
+        if(mb_strlen($string) === $length){
+            $this->setOffset($this->index + strlen($string));
+            return $string;
+        }
+        return NULL;
     }
 
-    public function eatStr(String $string): ?String{
+    public function eatString(String $string): ?String{
         $length = strlen($string);
-        if(substr($this->data, $this->offset, $length) === $string){
-            $this->setOffset($this->offset + $length);
+        if(substr($this->data, $this->index, $length) === $string){
+            $this->setOffset($this->index + $length);
             return $string;
         }
         return NULL;
     }
 
     public function eatAll(): String{
-        return $this->eatExp(".*");
+        return $this->eatPattern(".*");
     }
 }

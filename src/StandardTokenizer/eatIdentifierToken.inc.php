@@ -9,55 +9,47 @@ use Closure;
 
 function eatIdentifierToken(
     Traverser $traverser,
-    String $nameStartRegExpSet,
-    String $nameRegExpSet,
-    Closure $eatEscapeFunction
+    String $nameStartRegexSet,
+    String $nameRegexSet,
+    Closure $eatEscapeToken
 ): ?CheckedIdentifierToken{
-    $nscp = $nameStartRegExpSet;
-    $ncp = $nameRegExpSet;
+    $nscp = $nameStartRegexSet;
+    $ncp = $nameRegexSet;
 
     // (namestartcp|escape)
     // -(namestartcp|escape)
     // --(namecp|escape)
 
-    $identifierStart = $traverser->eatExp(
+    $startBit = $traverser->eatPattern(
         '-?[' . $nscp . '][' . $ncp . ']*|--[' . $ncp . ']*'
     );
 
-    if($identifierStart !== NULL){
-        $pieces = [new CheckedNameBitToken($identifierStart)];
+    if(isset($startBit)){
+        $pieces = [new CheckedNameBitToken($startBit)];
     }else{
-        $tt = $traverser->createBranch();
-
+        $startEscapeBranch = $traverser->createBranch();
         $pieces = [];
-
-        if($tt->eatStr("-") !== NULL){
+        if($startEscapeBranch->eatString("-") !== NULL){
             $pieces[] = new CheckedNameBitToken("-");
         }
-
-        $escape = $eatEscapeFunction($tt);
-
+        $escape = $eatEscapeToken($startEscapeBranch);
         if($escape === NULL){
             return NULL;
         }
-
         $pieces[] = $escape;
-
-        $traverser->importBranch($tt);
+        $traverser->importBranch($startEscapeBranch);
     }
 
-    for(;;){
-        $piece = $traverser->eatExp('[' . $ncp . ']+') ??
-            $eatEscapeFunction($traverser);
-
+    while(TRUE){
+        $bit = $traverser->eatPattern('[' . $ncp . ']+');
+        if(isset($bit)){
+            $piece = new CheckedNameBitToken($bit);
+        }else{
+            $piece = $eatEscapeToken($traverser);
+        }
         if($piece === NULL){
             return new CheckedIdentifierToken(new CheckedNameToken($pieces));
         }
-
-        if(is_string($piece)){
-            $piece = new CheckedNameBitToken($piece);
-        }
-
         $pieces[] = $piece;
     }
 }

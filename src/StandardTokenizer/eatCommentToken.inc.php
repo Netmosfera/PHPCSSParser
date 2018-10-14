@@ -8,11 +8,11 @@ use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
 function eatCommentToken(Traverser $traverser): ?CheckedCommentToken{
     $inCommentTraverser = $traverser->createBranch();
 
-    if($inCommentTraverser->eatStr("/*") === NULL){
+    if($inCommentTraverser->eatString("/*") === NULL){
         return NULL;
     }
 
-    $text = $inCommentTraverser->eatExp('.*?[*][\/]|.*');
+    $text = $inCommentTraverser->eatPattern('.*?[*][\/]|.*');
 
     $EOFTerminated = TRUE;
     if(mb_substr($text, -2) === "*/"){

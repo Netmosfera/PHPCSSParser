@@ -20,8 +20,6 @@ require(__DIR__ . "/dev/Data/CodePointSets/getValidEscapeStartersSet.inc.php");
 require(__DIR__ . "/dev/Data/CodePointSets/getWhitespacesSet.inc.php");
 require(__DIR__ . "/dev/Examples/ANY_UTF8.inc.php");
 require(__DIR__ . "/dev/FastTokenizer/keyze.inc.php");
-require(__DIR__ . "/dev/FastTokenizer/verifyGroupsDoNotOverlap.inc.php");
-require(__DIR__ . "/dev/FastTokenizer/verifyUnicodeCovered.inc.php");
 require(__DIR__ . "/tests/assertMatch.inc.php");
 require(__DIR__ . "/tests/assertNotMatch.inc.php");
 require(__DIR__ . "/tests/assertThrowsType.inc.php");

@@ -9,14 +9,14 @@ use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToke
 
 function eatValidEscapeToken(
     Traverser $traverser,
-    String $hexDigitRegExpSet,
-    String $whitespaceRegExp,
-    String $newlineRegExpSet
+    String $hexDigitRegexSet,
+    String $whitespaceRegex,
+    String $newlineRegexSet
 ): ?ValidEscapeToken{
 
     $beforeBackslash = $traverser->savepoint();
 
-    if($traverser->eatStr("\\") === NULL){
+    if($traverser->eatString("\\") === NULL){
         return NULL;
     }
 
@@ -25,15 +25,31 @@ function eatValidEscapeToken(
         return NULL;
     }
 
-    $hexDigits = $traverser->eatExp('[' . $hexDigitRegExpSet . ']{1,6}');
+    $hexDigits = $traverser->eatPattern('[' . $hexDigitRegexSet . ']{1,6}');
+
     if($hexDigits !== NULL){
-        $whitespace = $traverser->eatExp($whitespaceRegExp);
-        $whitespace = $whitespace === NULL ? NULL :
-            new CheckedWhitespaceToken($whitespace);
+        $whitespaceText = $traverser->eatPattern($whitespaceRegex);
+
+        if(isset($whitespaceText)){
+            $whitespace = new CheckedWhitespaceToken($whitespaceText);
+        }else{
+            $whitespace = NULL;
+        }
+
         return new CheckedCodePointEscapeToken($hexDigits, $whitespace);
     }
 
-    $codePoint = $traverser->eatExp('[^' . $newlineRegExpSet . ']');
+    // $codePoint = $traverser->eatPattern('[^' . $newlineRegexSet . ']');
+
+    $beforeNewline = $traverser->createBranch();
+    $codePoint = $beforeNewline->eatLength(1);
+    $ws = ["\n" => TRUE, "\r" => TRUE, "\f" => TRUE];
+    if(isset($ws[$codePoint])){
+        $codePoint = NULL;
+    }else{
+        $traverser->importBranch($beforeNewline);
+    }
+
     if($codePoint !== NULL){
         return new CheckedEncodedCodePointEscapeToken($codePoint);
     }

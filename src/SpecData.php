@@ -10,6 +10,8 @@ class SpecData
     public const HEX_DIGITS_REGEX_SET               = '\\x{30}-\\x{39}\\x{61}-\\x{66}\\x{41}-\\x{46}';
     public const NAME_STARTERS_REGEX_SET            = '\\x{5f}-\\x{5f}\\x{61}-\\x{7a}\\x{41}-\\x{5a}\\x{80}-\\x{10ffff}\\x{0}-\\x{0}';
     public const NAME_COMPONENTS_REGEX_SET          = '\\x{2d}-\\x{2d}\\x{5f}-\\x{5f}\\x{61}-\\x{7a}\\x{41}-\\x{5a}\\x{80}-\\x{10ffff}\\x{0}-\\x{0}\\x{30}-\\x{39}';
+    public const NAME_STARTERS_BYTES_REGEX_SET      = '\\x{5f}-\\x{5f}\\x{61}-\\x{7a}\\x{41}-\\x{5a}\\x{0}-\\x{0}\\x{80}-\\x{ff}';
+    public const NAME_COMPONENTS_BYTES_REGEX_SET    = '\\x{2d}-\\x{2d}\\x{5f}-\\x{5f}\\x{61}-\\x{7a}\\x{41}-\\x{5a}\\x{0}-\\x{0}\\x{30}-\\x{39}\\x{80}-\\x{ff}';
     public const WHITESPACES_REGEX_SET              = '\\x{20}-\\x{20}\\x{9}-\\x{a}\\x{c}-\\x{d}';
     public const WHITESPACES_REGEX_SEQS             = '
 ||

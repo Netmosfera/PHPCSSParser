@@ -3,19 +3,10 @@
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 use Closure;
-use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\Tokens\Token;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\CommaToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
 
 function eatToken(
@@ -43,7 +34,7 @@ function eatToken(
     }
 
     $savePoint = $traverser->savepoint();
-    $codePoint = $traverser->eatExp(".");
+    $codePoint = $traverser->eatPattern(".");
     if($codePoint === ":"){ return $colonToken; }
     if($codePoint === ","){ return $commaToken; }
     if($codePoint === "{"){ return $leftCurlyBracketToken; }
@@ -55,34 +46,48 @@ function eatToken(
     if($codePoint === ";"){ return $semicolonToken; }
     $traverser->rollback($savePoint);
 
-    if($traverser->eatStr("<!--") !== NULL){
+    if($traverser->eatString("<!--") !== NULL){
         return new CDOToken();
     }
 
-    if($traverser->eatStr("-->") !== NULL){
+    if($traverser->eatString("-->") !== NULL){
         return new CDCToken();
     }
 
     $token = $eatIdentifierLikeToken($traverser);
-    if($token !== NULL){ return $token; }
+    if(isset($token)){
+        return $token;
+    }
 
     $token = $eatWhitespaceToken($traverser);
-    if($token !== NULL){ return $token; }
+    if(isset($token)){
+        return $token;
+    }
 
     $token = $eatNumericToken($traverser);
-    if($token !== NULL){ return $token; }
+    if(isset($token)){
+        return $token;
+    }
 
     $token = $eatHashToken($traverser);
-    if($token !== NULL){ return $token; }
+    if(isset($token)){
+        return $token;
+    }
 
     $token = $eatStringToken($traverser);
-    if($token !== NULL){ return $token; }
+    if(isset($token)){
+        return $token;
+    }
 
     $token = $eatAtKeywordToken($traverser);
-    if($token !== NULL){ return $token; }
+    if(isset($token)){
+        return $token;
+    }
 
     $token = $eatCommentToken($traverser);
-    if($token !== NULL){ return $token; }
+    if(isset($token)){
+        return $token;
+    }
 
-    return new CheckedDelimiterToken($traverser->eatExp("."));
+    return new CheckedDelimiterToken($traverser->eatPattern("."));
 }

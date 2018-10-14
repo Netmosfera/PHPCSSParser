@@ -12,7 +12,7 @@ function eatNameTokenFunction(?NameToken $name): Closure{
             return NULL;
         }else{
             $stringValue = (String)$name;
-            return $traverser->eatStr($stringValue) === NULL ? NULL : $name;
+            return $traverser->eatString($stringValue) === NULL ? NULL : $name;
         }
     };
 }

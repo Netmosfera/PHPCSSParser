@@ -12,7 +12,7 @@ function eatIdentifierTokenFunction(?IdentifierToken $identifier): Closure{
             return NULL;
         }else{
             $stringValue = (String)$identifier;
-            return $traverser->eatStr($stringValue) === NULL ? NULL : $identifier;
+            return $traverser->eatString($stringValue) === NULL ? NULL : $identifier;
         }
     };
 }

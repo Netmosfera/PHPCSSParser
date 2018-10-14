@@ -74,7 +74,7 @@ class eatIdentifierLikeTokenTest extends TestCase
         $traverser = getTraverser($prefix, $rest);
         $eatIdentifier = eatIdentifierTokenFunction(NULL);
         $eatURL = eatURLTokenFailingFunction();
-        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, "\f", $eatURL);
+        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, $eatURL);
 
         assertMatch($actualIdentifierLike, $identifierLike);
         assertMatch($traverser->eatAll(), $rest);
@@ -93,7 +93,7 @@ class eatIdentifierLikeTokenTest extends TestCase
         $traverser = getTraverser($prefix, $identifierLike . $rest);
         $eatIdentifier = eatIdentifierTokenFunction($identifierLike);
         $eatURL = eatURLTokenFailingFunction();
-        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, "\f", $eatURL);
+        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, $eatURL);
 
         assertMatch($actualIdentifierLike, $identifierLike);
         assertMatch($traverser->eatAll(), $rest);
@@ -115,7 +115,7 @@ class eatIdentifierLikeTokenTest extends TestCase
         $traverser = getTraverser($prefix, $identifierLike . $rest);
         $eatIdentifier = eatIdentifierTokenFunction($identifier);
         $eatURL = eatURLTokenFunction($identifierLike);
-        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, "\f", $eatURL);
+        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, $eatURL);
 
         assertMatch($actualIdentifierLike, $identifierLike);
         assertMatch($traverser->eatAll(), $rest);
@@ -136,7 +136,7 @@ class eatIdentifierLikeTokenTest extends TestCase
         $traverser = getTraverser($prefix, $identifierLike . $rest);
         $eatIdentifier = eatIdentifierTokenFunction($URLIdentifier);
         $eatURL = eatURLTokenFunction(NULL);
-        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, "\f", $eatURL);
+        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, $eatURL);
 
         assertMatch($actualIdentifierLike, $identifierLike);
         assertMatch($traverser->eatAll(), $rest);
@@ -156,7 +156,7 @@ class eatIdentifierLikeTokenTest extends TestCase
         $traverser = getTraverser($prefix, $identifierLike . $rest);
         $eatIdentifier = eatIdentifierTokenFunction($identifier);
         $eatURLToken = eatURLTokenFailingFunction();
-        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, "\f", $eatURLToken);
+        $actualIdentifierLike = eatIdentifierLikeToken($traverser, $eatIdentifier, $eatURLToken);
 
         assertMatch($actualIdentifierLike, $identifierLike);
         assertMatch($traverser->eatAll(), $rest);

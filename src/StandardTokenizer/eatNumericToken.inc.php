@@ -9,21 +9,21 @@ use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedPercentageToken;
 
 function eatNumericToken(
     Traverser $traverser,
-    Closure $eatNumberTokenFunction,
-    Closure $eatIdentifierTokenFunction
+    Closure $eatNumberToken,
+    Closure $eatIdentifierToken
 ): ?NumericToken{
 
-    $number = $eatNumberTokenFunction($traverser);
+    $number = $eatNumberToken($traverser);
 
     if($number === NULL){
         return NULL;
     }
 
-    if($traverser->eatStr("%") !== NULL){
+    if($traverser->eatString("%") !== NULL){
         return new CheckedPercentageToken($number);
     }
 
-    $identifier = $eatIdentifierTokenFunction($traverser);
+    $identifier = $eatIdentifierToken($traverser);
     if($identifier !== NULL){
         return new CheckedDimensionToken($number, $identifier);
     }
