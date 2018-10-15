@@ -10,7 +10,9 @@ use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedPercentageToken;
 function eatNumericToken(
     Traverser $traverser,
     Closure $eatNumberToken,
-    Closure $eatIdentifierToken
+    Closure $eatIdentifierToken,
+    String $PercentageTokenClass = CheckedPercentageToken::CLASS,
+    String $DimensionTokenClass = CheckedDimensionToken::CLASS
 ): ?NumericToken{
 
     $number = $eatNumberToken($traverser);
@@ -20,12 +22,12 @@ function eatNumericToken(
     }
 
     if($traverser->eatString("%") !== NULL){
-        return new CheckedPercentageToken($number);
+        return new $PercentageTokenClass($number);
     }
 
     $identifier = $eatIdentifierToken($traverser);
     if($identifier !== NULL){
-        return new CheckedDimensionToken($number, $identifier);
+        return new $DimensionTokenClass($number, $identifier);
     }
 
     return $number;

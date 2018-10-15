@@ -5,6 +5,7 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 use Error;
 use function preg_quote;
 use function preg_last_error;
+use const PREG_UNMATCHED_AS_NULL;
 
 class Traverser
 {
@@ -33,7 +34,10 @@ class Traverser
         $this->data = $data;
         $this->showPreview = $showPreview;
         $this->preview = NULL;
-        $this->setOffset(0);
+        $this->index = 0;
+        if($this->showPreview){
+            $this->preview = substr($this->data, $this->index);
+        }
     }
 
     private function setOffset(Int $offset){
@@ -48,7 +52,10 @@ class Traverser
     }
 
     public function rollback($savepoint){
-        $this->setOffset($savepoint);
+        $this->index = $savepoint;
+        if($this->showPreview){
+            $this->preview = substr($this->data, $this->index);
+        }
     }
 
     public function importBranch(Traverser $traverser){
@@ -81,8 +88,27 @@ class Traverser
             throw new Error("PCRE ERROR: " . preg_last_error());
         }
         if($result === 1){
-            $this->setOffset($this->index + strlen($matches[0]));
+            $this->index = $this->index + strlen($matches[0]);
+            if($this->showPreview){
+                $this->preview = substr($this->data, $this->index);
+            }
             return $matches[0];
+        }
+        return NULL;
+    }
+
+    public function eatPatterns(String $patterns): ?array{
+        $patterns = '/\G(' . $patterns . ')/sDx';
+        $result = preg_match($patterns, $this->data, $matches, PREG_UNMATCHED_AS_NULL, $this->index);
+        if($result === FALSE){
+            throw new Error("PCRE ERROR: " . preg_last_error());
+        }
+        if($result === 1){
+            $this->index = $this->index + strlen($matches[0]);
+            if($this->showPreview){
+                $this->preview = substr($this->data, $this->index);
+            }
+            return $matches;
         }
         return NULL;
     }
@@ -91,7 +117,10 @@ class Traverser
         $trim = substr($this->data, $this->index, $length * 4);
         $string = mb_substr($trim, 0, $length);
         if(mb_strlen($string) === $length){
-            $this->setOffset($this->index + strlen($string));
+            $this->index = $this->index + strlen($string);
+            if($this->showPreview){
+                $this->preview = substr($this->data, $this->index);
+            }
             return $string;
         }
         return NULL;
@@ -100,7 +129,10 @@ class Traverser
     public function eatString(String $string): ?String{
         $length = strlen($string);
         if(substr($this->data, $this->index, $length) === $string){
-            $this->setOffset($this->index + $length);
+            $this->index = $this->index + $length;
+            if($this->showPreview){
+                $this->preview = substr($this->data, $this->index);
+            }
             return $string;
         }
         return NULL;

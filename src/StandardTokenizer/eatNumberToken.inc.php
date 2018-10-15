@@ -2,72 +2,56 @@
 
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 
 function eatNumberToken(
     Traverser $traverser,
-    String $digitRegexSet
-): ?CheckedNumberToken{
+    String $digitRegexSet,
+    String $NumberTokenClass = CheckedNumberToken::CLASS
+): ?NumberToken{
 
-    $xx = $traverser->createBranch();
+    $matches = $traverser->eatPatterns("
+        (?P<sign>[-+]?)
+        (?:
+            (?P<wholes>[" . $digitRegexSet . "]+)\.(?P<decimals>[" . $digitRegexSet . "]+)|
+            (?P<only_wholes>[" . $digitRegexSet . "]+)|
+            \.(?P<only_decimals>[" . $digitRegexSet . "]+)
+        )
+        (?:
+            (?P<e_e>[eE])
+            (?P<e_sign>[-+]?)
+            (?P<e_digits>[" . $digitRegexSet . "]+)
+        )?
+    ");
 
-    if($xx->eatPattern('\+|-') !== NULL){
-        if($xx->eatPattern('[' . $digitRegexSet . ']') !== NULL){
-            goto EAT_NUMBER;
-        }
-        if(
-            ($xx->eatString(".")) !== NULL &&
-            ($xx->eatPattern('[' . $digitRegexSet . ']')) !== NULL
-        ){
-            goto EAT_NUMBER;
-        }
-    }elseif($xx->eatString(".") !== NULL){
-        if($xx->eatPattern('[' . $digitRegexSet . ']') !== NULL){
-            goto EAT_NUMBER;
-        }
-    }elseif($xx->eatPattern('[' . $digitRegexSet . ']') !== NULL){
-        goto EAT_NUMBER;
+    if($matches === NULL){
+        return NULL;
     }
-    return NULL;
 
-
-
-
-
-
-
-
-
-    EAT_NUMBER:
-
-    $sign = $traverser->eatPattern('\+|-') ?? "";
-
-    $wholes = $traverser->eatPattern('[' . $digitRegexSet . ']+') ?? "";
-
-    $dt = $traverser->createBranch();
-    if($dt->eatString(".") !== NULL){
-        $decimals = $dt->eatPattern('[' . $digitRegexSet . ']+') ?? "";
-        if($decimals !== ""){ $traverser->importBranch($dt); }
-    }else{
+    if(isset($matches["wholes"])){
+        $wholes = $matches["wholes"];
+        $decimals = $matches["decimals"];
+    }elseif(isset($matches["only_wholes"])){
+        $wholes = $matches["only_wholes"];
         $decimals = "";
-    }
-
-    $et = $traverser->createBranch();
-    $expLetter = $et->eatPattern('e|E') ?? "";
-    $expSign = $et->eatPattern('\+|-') ?? "";
-    $exponent = $et->eatPattern('[' . $digitRegexSet . ']+') ?? "";
-    if($expLetter !== "" && $exponent !== ""){
-        $traverser->importBranch($et);
     }else{
-        $expLetter = $expSign = $exponent = "";
+        $wholes = "";
+        $decimals = $matches["only_decimals"];
     }
 
-    return new CheckedNumberToken(
-        $sign,
+    if(isset($matches["e_e"]) === FALSE){
+        $matches["e_e"] = "";
+        $matches["e_sign"] = "";
+        $matches["e_digits"] = "";
+    }
+
+    return new $NumberTokenClass(
+        $matches["sign"],
         $wholes,
         $decimals,
-        $expLetter,
-        $expSign,
-        $exponent
+        $matches["e_e"],
+        $matches["e_sign"],
+        $matches["e_digits"]
     );
 }

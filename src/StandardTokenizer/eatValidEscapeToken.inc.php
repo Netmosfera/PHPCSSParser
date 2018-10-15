@@ -11,7 +11,10 @@ function eatValidEscapeToken(
     Traverser $traverser,
     String $hexDigitRegexSet,
     String $whitespaceRegex,
-    String $newlineRegexSet
+    String $newlineRegexSet,
+    String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS,
+    String $CodePointEscapeTokenClass = CheckedCodePointEscapeToken::CLASS,
+    String $EncodedCodePointEscapeTokenClass = CheckedEncodedCodePointEscapeToken::CLASS
 ): ?ValidEscapeToken{
 
     $beforeBackslash = $traverser->savepoint();
@@ -27,19 +30,17 @@ function eatValidEscapeToken(
 
     $hexDigits = $traverser->eatPattern('[' . $hexDigitRegexSet . ']{1,6}');
 
-    if($hexDigits !== NULL){
+    if(isset($hexDigits)){
         $whitespaceText = $traverser->eatPattern($whitespaceRegex);
 
         if(isset($whitespaceText)){
-            $whitespace = new CheckedWhitespaceToken($whitespaceText);
+            $whitespace = new $WhitespaceTokenClass($whitespaceText);
         }else{
             $whitespace = NULL;
         }
 
-        return new CheckedCodePointEscapeToken($hexDigits, $whitespace);
+        return new $CodePointEscapeTokenClass($hexDigits, $whitespace);
     }
-
-    // $codePoint = $traverser->eatPattern('[^' . $newlineRegexSet . ']');
 
     $beforeNewline = $traverser->createBranch();
     $codePoint = $beforeNewline->eatLength(1);
@@ -51,7 +52,7 @@ function eatValidEscapeToken(
     }
 
     if($codePoint !== NULL){
-        return new CheckedEncodedCodePointEscapeToken($codePoint);
+        return new $EncodedCodePointEscapeTokenClass($codePoint);
     }
 
     $traverser->rollback($beforeBackslash);

@@ -4,9 +4,9 @@ namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Token;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDCToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDOToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
 
 function eatToken(
@@ -26,7 +26,8 @@ function eatToken(
     DelimiterToken $rightCurlyBracketToken,
     DelimiterToken $rightParenthesisToken,
     DelimiterToken $rightSquareBracketToken,
-    DelimiterToken $semicolonToken
+    DelimiterToken $semicolonToken,
+    String $DelimiterTokenClass = CheckedDelimiterToken::CLASS
 ): ?Token{
 
     if($traverser->isEOF()){
@@ -34,7 +35,7 @@ function eatToken(
     }
 
     $savePoint = $traverser->savepoint();
-    $codePoint = $traverser->eatPattern(".");
+    $codePoint = $traverser->eatLength(1);
     if($codePoint === ":"){ return $colonToken; }
     if($codePoint === ","){ return $commaToken; }
     if($codePoint === "{"){ return $leftCurlyBracketToken; }
@@ -46,12 +47,8 @@ function eatToken(
     if($codePoint === ";"){ return $semicolonToken; }
     $traverser->rollback($savePoint);
 
-    if($traverser->eatString("<!--") !== NULL){
-        return new CDOToken();
-    }
-
     if($traverser->eatString("-->") !== NULL){
-        return new CDCToken();
+        return new CheckedCDCToken(); // @TODO as param
     }
 
     $token = $eatIdentifierLikeToken($traverser);
@@ -74,12 +71,12 @@ function eatToken(
         return $token;
     }
 
-    $token = $eatStringToken($traverser);
+    $token = $eatAtKeywordToken($traverser);
     if(isset($token)){
         return $token;
     }
 
-    $token = $eatAtKeywordToken($traverser);
+    $token = $eatStringToken($traverser);
     if(isset($token)){
         return $token;
     }
@@ -89,5 +86,9 @@ function eatToken(
         return $token;
     }
 
-    return new CheckedDelimiterToken($traverser->eatPattern("."));
+    if($traverser->eatString("<!--") !== NULL){
+        return new CheckedCDOToken(); // @TODO as param
+    }
+
+    return new $DelimiterTokenClass($traverser->eatPattern("."));
 }

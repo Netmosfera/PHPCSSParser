@@ -16,7 +16,11 @@ function eatURLToken(
     String $whitespaceRegexSet,
     String $blacklistedCodePointsRegexSet,
     Closure $eatEscapeToken,
-    Closure $eatBadURLRemnantsToken
+    Closure $eatBadURLRemnantsToken,
+    String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS,
+    String $URLBitTokenClass = CheckedURLBitToken::CLASS,
+    String $URLTokenClass = CheckedURLToken::CLASS,
+    String $BadURLTokenClass = CheckedBadURLToken::CLASS
 ): ?AnyURLToken{
 
     // @TODO inject delimiters
@@ -24,7 +28,7 @@ function eatURLToken(
     if($wsBefore === NULL){
         return NULL;
     }
-    $wsBefore = $wsBefore === "" ? NULL : new CheckedWhitespaceToken($wsBefore);
+    $wsBefore = $wsBefore === "" ? NULL : new $WhitespaceTokenClass($wsBefore);
 
     // @TODO assert that $blacklistCPsRegexSet contains \ )
     // and the other delimiters used in this function
@@ -35,26 +39,26 @@ function eatURLToken(
 
     while(TRUE){
         if($traverser->isEOF()){
-            return new CheckedURLToken($URL, $wsBefore, $pieces, NULL, TRUE);
+            return new $URLTokenClass($URL, $wsBefore, $pieces, NULL, TRUE);
         }
 
         if($traverser->eatString(")") !== NULL){
-            return new CheckedURLToken($URL, $wsBefore, $pieces, NULL, FALSE);
+            return new $URLTokenClass($URL, $wsBefore, $pieces, NULL, FALSE);
         }
 
         $finishTraverser = $traverser->createBranch();
         $wsAfter = $finishTraverser->eatPattern('[' . $whitespaceRegexSet . ']*');
         if($wsAfter !== ""){
-            $wsAfter = new CheckedWhitespaceToken($wsAfter);
+            $wsAfter = new $WhitespaceTokenClass($wsAfter);
             if($finishTraverser->isEOF()){
                 $traverser->importBranch($finishTraverser);
-                return new CheckedURLToken($URL, $wsBefore, $pieces, $wsAfter, TRUE);
+                return new $URLTokenClass($URL, $wsBefore, $pieces, $wsAfter, TRUE);
             }elseif($finishTraverser->eatString(")") !== NULL){
                 $traverser->importBranch($finishTraverser);
-                return new CheckedURLToken($URL, $wsBefore, $pieces, $wsAfter, FALSE);
+                return new $URLTokenClass($URL, $wsBefore, $pieces, $wsAfter, FALSE);
             }
             $remnants = $eatBadURLRemnantsToken($traverser);
-            return new CheckedBadURLToken($URL, $wsBefore, $pieces, $remnants);
+            return new $BadURLTokenClass($URL, $wsBefore, $pieces, $remnants);
         }
 
         if($traverser->createBranch()->eatString("\\") !== NULL){
@@ -64,19 +68,19 @@ function eatURLToken(
                 continue;
             }else{
                 $remnants = $eatBadURLRemnantsToken($traverser);
-                return new CheckedBadURLToken($URL, $wsBefore, $pieces, $remnants);
+                return new $BadURLTokenClass($URL, $wsBefore, $pieces, $remnants);
             }
         }
 
         if($traverser->createBranch()->eatPattern('[' . $blacklistedCodePointsRegexSet . ']') !== NULL){
             $remnants = $eatBadURLRemnantsToken($traverser);
-            return new CheckedBadURLToken($URL, $wsBefore, $pieces, $remnants);
+            return new $BadURLTokenClass($URL, $wsBefore, $pieces, $remnants);
         }
 
         $piece = $traverser->eatPattern('[^' . $blacklistedCodePointsRegexSet . ']+');
         // This must include everything but the CPs already handled
         // in the previous steps, therefore it can never be empty
         assert($piece !== NULL);
-        $pieces[] = new CheckedURLBitToken($piece);
+        $pieces[] = new $URLBitTokenClass($piece);
     }
 }

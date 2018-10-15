@@ -10,7 +10,8 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedFunctionToken;
 function eatIdentifierLikeToken(
     Traverser $traverser,
     Closure $eatIdentifierToken,
-    Closure $eatURLToken
+    Closure $eatURLToken,
+    String $FunctionTokenClass = CheckedFunctionToken::CLASS
 ): ?IdentifierLikeToken{
     $identifier = $eatIdentifierToken($traverser);
     if($identifier === NULL){
@@ -26,5 +27,5 @@ function eatIdentifierLikeToken(
             return $URLToken;
         }
     }
-    return new CheckedFunctionToken($identifier);
+    return new $FunctionTokenClass($identifier);
 }

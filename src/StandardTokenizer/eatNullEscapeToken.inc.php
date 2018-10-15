@@ -8,7 +8,9 @@ use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
 
 function eatNullEscapeToken(
     Traverser $traverser,
-    String $newlineRegex
+    String $newlineRegex,
+    String $EOFEscapeTokenClass = CheckedEOFEscapeToken::CLASS,
+    String $ContinuationEscapeTokenClass = CheckedContinuationEscapeToken::CLASS
 ): ?NullEscapeToken{
 
     $beforeBackslash = $traverser->savepoint();
@@ -18,12 +20,12 @@ function eatNullEscapeToken(
     }
 
     if($traverser->isEOF()){
-        return new CheckedEOFEscapeToken();
+        return new $EOFEscapeTokenClass();
     }
 
     $newline = $traverser->eatPattern($newlineRegex);
     if($newline !== NULL){
-        return new CheckedContinuationEscapeToken($newline);
+        return new $ContinuationEscapeTokenClass($newline);
     }
 
     $traverser->rollback($beforeBackslash);

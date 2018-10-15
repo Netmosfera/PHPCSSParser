@@ -3,10 +3,23 @@
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 use Netmosfera\PHPCSSAST\SpecData;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\DimensionToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\PercentageToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
@@ -40,21 +53,31 @@ class StandardTokenizer
 
     public function __construct(){
         $this->eatNumberToken = function(Traverser $traverser): ?NumberToken{
-            return eatNumberToken($traverser, SpecData::DIGITS_REGEX_SET);
+            return eatNumberToken(
+                $traverser,
+                SpecData::DIGITS_REGEX_SET,
+                NumberToken::CLASS
+            );
         };
 
         $this->eatNameToken = function(Traverser $traverser): ?NameToken{
             return eatNameToken(
                 $traverser,
                 SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
-                $this->eatValidEscape
+                $this->eatValidEscape,
+                NameBitToken::CLASS,
+                NameToken::CLASS
             );
         };
 
         $this->eatBadURLRemnants = function(
             Traverser $traverser
         ): BadURLRemnantsToken{
-            return eatBadURLRemnantsToken($traverser, $this->eatAnyEscape);
+            return eatBadURLRemnantsToken(
+                $traverser,
+                $this->eatAnyEscape,
+                BadURLRemnantsToken::CLASS
+            );
         };
 
         $this->eatURLToken = function(
@@ -67,7 +90,11 @@ class StandardTokenizer
                 SpecData::WHITESPACES_REGEX_SET,
                 SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET,
                 $this->eatValidEscape,
-                $this->eatBadURLRemnants
+                $this->eatBadURLRemnants,
+                WhitespaceToken::CLASS,
+                URLBitToken::CLASS,
+                URLToken::CLASS,
+                BadURLToken::CLASS
             );
         };
 
@@ -80,7 +107,12 @@ class StandardTokenizer
         $this->eatNullEscape = function(
             Traverser $traverser
         ): ?ValidEscapeToken{
-            return eatNullEscapeToken($traverser, SpecData::NEWLINES_REGEX_SEQS);
+            return eatNullEscapeToken(
+                $traverser,
+                SpecData::NEWLINES_REGEX_SEQS,
+                EOFEscapeToken::CLASS,
+                ContinuationEscapeToken::CLASS
+            );
         };
 
         $this->eatValidEscape = function(
@@ -90,7 +122,10 @@ class StandardTokenizer
                 $traverser,
                 SpecData::HEX_DIGITS_REGEX_SET,
                 SpecData::WHITESPACES_REGEX_SEQS,
-                SpecData::NEWLINES_REGEX_SET
+                SpecData::NEWLINES_REGEX_SET,
+                WhitespaceToken::CLASS,
+                CodePointEscapeToken::CLASS,
+                EncodedCodePointEscapeToken::CLASS
             );
         };
 
@@ -101,7 +136,10 @@ class StandardTokenizer
                 $traverser,
                 SpecData::NAME_STARTERS_BYTES_REGEX_SET,
                 SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
-                $this->eatValidEscape
+                $this->eatValidEscape,
+                NameBitToken::CLASS,
+                NameToken::CLASS,
+                IdentifierToken::CLASS
             );
         };
 
@@ -111,44 +149,63 @@ class StandardTokenizer
             return eatIdentifierLikeToken(
                 $traverser,
                 $this->eatIdentifierToken,
-                $this->eatURLToken
+                $this->eatURLToken,
+                FunctionToken::CLASS
             );
         };
 
         $this->eatWhitespaceToken = function(
             Traverser $traverser
         ): ?WhitespaceToken{
-            return eatWhitespaceToken($traverser, SpecData::WHITESPACES_REGEX_SET);
+            return eatWhitespaceToken(
+                $traverser,
+                SpecData::WHITESPACES_REGEX_SET,
+                WhitespaceToken::CLASS
+            );
         };
 
         $this->eatNumericToken = function(Traverser $traverser): ?NumericToken{
             return eatNumericToken(
                 $traverser,
                 $this->eatNumberToken,
-                $this->eatIdentifierToken
+                $this->eatIdentifierToken,
+                PercentageToken::CLASS,
+                DimensionToken::CLASS
             );
         };
 
         $this->eatHashToken = function(Traverser $traverser): ?HashToken{
-            return eatHashToken($traverser, $this->eatNameToken);
+            return eatHashToken(
+                $traverser,
+                $this->eatNameToken,
+                HashToken::CLASS
+            );
         };
 
         $this->eatStringToken = function(Traverser $traverser): ?StringToken{
             return eatStringToken(
                 $traverser,
                 SpecData::NEWLINES_REGEX_SET,
-                $this->eatAnyEscape
+                $this->eatAnyEscape,
+                StringBitToken::CLASS
             );
         };
 
         $this->eatAtKeywordToken = function(
             Traverser $traverser
         ): ?AtKeywordToken{
-            return eatAtKeywordToken($traverser, $this->eatIdentifierToken);
+            return eatAtKeywordToken(
+                $traverser,
+                $this->eatIdentifierToken,
+                AtKeywordToken::CLASS
+            );
         };
 
         $this->eatCommentToken = function(Traverser $traverser): ?CommentToken{
-            return eatCommentToken($traverser);
+            return eatCommentToken(
+                $traverser,
+                CommentToken::CLASS
+            );
         };
     }
 
@@ -157,15 +214,15 @@ class StandardTokenizer
 
         $tokens = [];
 
-        $colonToken = new CheckedDelimiterToken(":");
-        $commaToken = new CheckedDelimiterToken(",");
-        $leftCurlyBracketToken = new CheckedDelimiterToken("{");
-        $leftParenthesisToken = new CheckedDelimiterToken("(");
-        $leftSquareBracketToken = new CheckedDelimiterToken("[");
-        $rightCurlyBracketToken = new CheckedDelimiterToken("}");
-        $rightParenthesisToken = new CheckedDelimiterToken(")");
-        $rightSquareBracketToken = new CheckedDelimiterToken("]");
-        $semicolonToken = new CheckedDelimiterToken(";");
+        $colonToken = new DelimiterToken(":");
+        $commaToken = new DelimiterToken(",");
+        $leftCurlyBracketToken = new DelimiterToken("{");
+        $leftParenthesisToken = new DelimiterToken("(");
+        $leftSquareBracketToken = new DelimiterToken("[");
+        $rightCurlyBracketToken = new DelimiterToken("}");
+        $rightParenthesisToken = new DelimiterToken(")");
+        $rightSquareBracketToken = new DelimiterToken("]");
+        $semicolonToken = new DelimiterToken(";");
 
         while($traverser->isEOF() === FALSE){
             $tokens[] = eatToken(
@@ -185,7 +242,8 @@ class StandardTokenizer
                 $rightCurlyBracketToken,
                 $rightParenthesisToken,
                 $rightSquareBracketToken,
-                $semicolonToken
+                $semicolonToken,
+                DelimiterToken::CLASS
             );
         }
 

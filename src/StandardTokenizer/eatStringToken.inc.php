@@ -11,7 +11,10 @@ use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringBitToken;
 function eatStringToken(
     Traverser $traverser,
     String $newlineRegexSet,
-    Closure $eatEscapeToken
+    Closure $eatEscapeToken,
+    String $StringBitTokenClass = CheckedStringBitToken::CLASS,
+    String $StringTokenClass = CheckedStringToken::CLASS,
+    String $BadStringTokenClass = CheckedBadStringToken::CLASS
 ): ?AnyStringToken{
     $delimiter = $traverser->eatPattern('\'|"');
 
@@ -25,22 +28,22 @@ function eatStringToken(
 
     for(;;){
         if($traverser->isEOF()){
-            return new CheckedStringToken($delimiter, $pieces, TRUE);
+            return new $StringTokenClass($delimiter, $pieces, TRUE);
         }
 
         if($traverser->eatString($delimiter) === $delimiter){
-            return new CheckedStringToken($delimiter, $pieces, FALSE);
+            return new $StringTokenClass($delimiter, $pieces, FALSE);
         }
 
         if($traverser->createBranch()->eatPattern('[' . $newlineRegexSet . ']')){
-            return new CheckedBadStringToken($delimiter, $pieces);
+            return new $BadStringTokenClass($delimiter, $pieces);
         }
 
         $stringPiece = $traverser->eatPattern(
             '[^' . $newlineRegexSet . $eDelimiter . '\\\\]+'
         );
         if($stringPiece !== NULL){
-            $pieces[] = new CheckedStringBitToken($stringPiece);
+            $pieces[] = new $StringBitTokenClass($stringPiece);
             continue;
         }
 

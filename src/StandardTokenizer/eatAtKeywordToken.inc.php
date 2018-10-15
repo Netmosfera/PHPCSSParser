@@ -8,14 +8,15 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedAtKeywordToken;
 
 function eatAtKeywordToken(
     Traverser $traverser,
-    Closure $eatIdentifierToken
+    Closure $eatIdentifierToken,
+    String $AtKeywordTokenClass = CheckedAtKeywordToken::CLASS
 ): ?AtKeywordToken{
     $atKeywordTraverser = $traverser->createBranch();
     if($atKeywordTraverser->eatString("@") !== NULL){
         $identifier = $eatIdentifierToken($atKeywordTraverser);
         if(isset($identifier)){
             $traverser->importBranch($atKeywordTraverser);
-            return new CheckedAtKeywordToken($identifier);
+            return new $AtKeywordTokenClass($identifier);
         }
     }
     return NULL;
