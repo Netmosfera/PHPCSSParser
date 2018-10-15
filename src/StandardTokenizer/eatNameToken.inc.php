@@ -21,7 +21,7 @@ function eatNameToken(
         $pieces = [new $NameBitTokenClass($nameStart)];
     }else{
         $escape = $eatEscapeToken($traverser);
-        if($escape === NULL){
+        if(isset($escape));else{
             return NULL;
         }
         $pieces = [$escape];
@@ -34,7 +34,7 @@ function eatNameToken(
         }else{
             $piece = $eatEscapeToken($traverser);
         }
-        if($piece === NULL){
+        if(isset($piece));else{
             return new $NameTokenClass($pieces);
         }
         $pieces[] = $piece;

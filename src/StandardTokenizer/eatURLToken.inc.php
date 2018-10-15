@@ -25,10 +25,14 @@ function eatURLToken(
 
     // @TODO inject delimiters
     $wsBefore = $traverser->eatPattern('[' . $whitespaceRegexSet . ']*+(?!["\'])');
-    if($wsBefore === NULL){
+    if(isset($wsBefore));else{
         return NULL;
     }
-    $wsBefore = $wsBefore === "" ? NULL : new $WhitespaceTokenClass($wsBefore);
+    if($wsBefore === ""){
+        $wsBefore = NULL;
+    }else{
+        $wsBefore = new $WhitespaceTokenClass($wsBefore);
+    }
 
     // @TODO assert that $blacklistCPsRegexSet contains \ )
     // and the other delimiters used in this function
@@ -38,7 +42,7 @@ function eatURLToken(
     $pieces = [];
 
     while(TRUE){
-        if($traverser->isEOF()){
+        if(isset($traverser->data[$traverser->index]));else{
             return new $URLTokenClass($URL, $wsBefore, $pieces, NULL, TRUE);
         }
 
@@ -50,10 +54,11 @@ function eatURLToken(
         $wsAfter = $finishTraverser->eatPattern('[' . $whitespaceRegexSet . ']*');
         if($wsAfter !== ""){
             $wsAfter = new $WhitespaceTokenClass($wsAfter);
-            if($finishTraverser->isEOF()){
+            if(isset($finishTraverser->data[$finishTraverser->index]));else{
                 $traverser->importBranch($finishTraverser);
                 return new $URLTokenClass($URL, $wsBefore, $pieces, $wsAfter, TRUE);
-            }elseif($finishTraverser->eatString(")") !== NULL){
+            }
+            if($finishTraverser->eatString(")") !== NULL){
                 $traverser->importBranch($finishTraverser);
                 return new $URLTokenClass($URL, $wsBefore, $pieces, $wsAfter, FALSE);
             }
@@ -63,7 +68,7 @@ function eatURLToken(
 
         if($traverser->createBranch()->eatString("\\") !== NULL){
             $escape = $eatEscapeToken($traverser);
-            if($escape !== NULL){
+            if(isset($escape)){
                 $pieces[] = $escape;
                 continue;
             }else{
@@ -80,7 +85,7 @@ function eatURLToken(
         $piece = $traverser->eatPattern('[^' . $blacklistedCodePointsRegexSet . ']+');
         // This must include everything but the CPs already handled
         // in the previous steps, therefore it can never be empty
-        assert($piece !== NULL);
+        assert(isset($piece));
         $pieces[] = new $URLBitTokenClass($piece);
     }
 }

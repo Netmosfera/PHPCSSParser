@@ -14,7 +14,7 @@ function eatIdentifierLikeToken(
     String $FunctionTokenClass = CheckedFunctionToken::CLASS
 ): ?IdentifierLikeToken{
     $identifier = $eatIdentifierToken($traverser);
-    if($identifier === NULL){
+    if(isset($identifier));else{
         return NULL;
     }
     if($traverser->eatString("(") === NULL){

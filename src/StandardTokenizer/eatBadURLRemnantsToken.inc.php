@@ -15,7 +15,7 @@ function eatBadURLRemnantsToken(
 ): BadURLRemnantsToken{
     $pieces = [];
     while(TRUE){
-        if($traverser->isEOF()){
+        if(isset($traverser->data[$traverser->index]));else{
             return new $BadURLRemnantsTokenClass($pieces, TRUE);
         }
         if($traverser->eatString(")") !== NULL){
@@ -27,7 +27,7 @@ function eatBadURLRemnantsToken(
         }else{
             $piece = $eatEscapeToken($traverser);
         }
-        if(isset($piece) === FALSE){
+        if(isset($piece));else{
             throw new Error();
         }
         $pieces[] = $piece;

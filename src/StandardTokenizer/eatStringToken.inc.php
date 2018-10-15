@@ -18,16 +18,14 @@ function eatStringToken(
 ): ?AnyStringToken{
     $delimiter = $traverser->eatPattern('\'|"');
 
-    if($delimiter === NULL){
+    if(isset($delimiter));else{
         return NULL;
     }
-
-    $eDelimiter = $traverser->escapeRegexp($delimiter);
 
     $pieces = [];
 
     for(;;){
-        if($traverser->isEOF()){
+        if(isset($traverser->data[$traverser->index]));else{
             return new $StringTokenClass($delimiter, $pieces, TRUE);
         }
 
@@ -40,15 +38,15 @@ function eatStringToken(
         }
 
         $stringPiece = $traverser->eatPattern(
-            '[^' . $newlineRegexSet . $eDelimiter . '\\\\]+'
+            '[^' . $newlineRegexSet . $delimiter . '\\\\]+'
         );
-        if($stringPiece !== NULL){
+        if(isset($stringPiece)){
             $pieces[] = new $StringBitTokenClass($stringPiece);
             continue;
         }
 
         $escape = $eatEscapeToken($traverser);
-        if($escape !== NULL){
+        if(isset($escape)){
             $pieces[] = $escape;
             continue;
         }

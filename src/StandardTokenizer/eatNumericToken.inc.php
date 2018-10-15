@@ -17,7 +17,7 @@ function eatNumericToken(
 
     $number = $eatNumberToken($traverser);
 
-    if($number === NULL){
+    if(isset($number));else{
         return NULL;
     }
 
@@ -26,7 +26,7 @@ function eatNumericToken(
     }
 
     $identifier = $eatIdentifierToken($traverser);
-    if($identifier !== NULL){
+    if(isset($identifier)){
         return new $DimensionTokenClass($number, $identifier);
     }
 

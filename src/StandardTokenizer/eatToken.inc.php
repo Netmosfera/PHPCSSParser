@@ -30,11 +30,11 @@ function eatToken(
     String $DelimiterTokenClass = CheckedDelimiterToken::CLASS
 ): ?Token{
 
-    if($traverser->isEOF()){
+    if(isset($traverser->data[$traverser->index]));else{
         return NULL;
     }
 
-    $savePoint = $traverser->savepoint();
+    $savePoint = $traverser->index;
     $codePoint = $traverser->eatLength(1);
     if($codePoint === ":"){ return $colonToken; }
     if($codePoint === ","){ return $commaToken; }
@@ -45,7 +45,7 @@ function eatToken(
     if($codePoint === ")"){ return $rightParenthesisToken; }
     if($codePoint === "]"){ return $rightSquareBracketToken; }
     if($codePoint === ";"){ return $semicolonToken; }
-    $traverser->rollback($savePoint);
+    $traverser->index = $savePoint;
 
     if($traverser->eatString("-->") !== NULL){
         return new CheckedCDCToken(); // @TODO as param

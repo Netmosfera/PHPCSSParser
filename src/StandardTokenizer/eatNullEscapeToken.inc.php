@@ -13,21 +13,21 @@ function eatNullEscapeToken(
     String $ContinuationEscapeTokenClass = CheckedContinuationEscapeToken::CLASS
 ): ?NullEscapeToken{
 
-    $beforeBackslash = $traverser->savepoint();
+    $beforeBackslash = $traverser->index;
 
     if($traverser->eatString("\\") === NULL){
         return NULL;
     }
 
-    if($traverser->isEOF()){
+    if(isset($traverser->data[$traverser->index]));else{
         return new $EOFEscapeTokenClass();
     }
 
     $newline = $traverser->eatPattern($newlineRegex);
-    if($newline !== NULL){
+    if(isset($newline)){
         return new $ContinuationEscapeTokenClass($newline);
     }
 
-    $traverser->rollback($beforeBackslash);
+    $traverser->index = $beforeBackslash;
     return NULL;
 }

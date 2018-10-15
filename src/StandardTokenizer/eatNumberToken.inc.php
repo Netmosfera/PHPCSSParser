@@ -25,7 +25,7 @@ function eatNumberToken(
         )?
     ");
 
-    if($matches === NULL){
+    if(isset($matches));else{
         return NULL;
     }
 
@@ -40,7 +40,7 @@ function eatNumberToken(
         $decimals = $matches["only_decimals"];
     }
 
-    if(isset($matches["e_e"]) === FALSE){
+    if(isset($matches["e_e"]));else{
         $matches["e_e"] = "";
         $matches["e_sign"] = "";
         $matches["e_digits"] = "";

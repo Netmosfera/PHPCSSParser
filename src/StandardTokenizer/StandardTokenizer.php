@@ -224,7 +224,7 @@ class StandardTokenizer
         $rightSquareBracketToken = new DelimiterToken("]");
         $semicolonToken = new DelimiterToken(";");
 
-        while($traverser->isEOF() === FALSE){
+        while(isset($traverser->data[$traverser->index])){
             $tokens[] = eatToken(
                 $traverser,
                 $this->eatIdentifierLikeToken,

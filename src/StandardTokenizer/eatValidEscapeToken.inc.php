@@ -17,14 +17,14 @@ function eatValidEscapeToken(
     String $EncodedCodePointEscapeTokenClass = CheckedEncodedCodePointEscapeToken::CLASS
 ): ?ValidEscapeToken{
 
-    $beforeBackslash = $traverser->savepoint();
+    $beforeBackslash = $traverser->index;
 
     if($traverser->eatString("\\") === NULL){
         return NULL;
     }
 
-    if($traverser->isEOF()){
-        $traverser->rollback($beforeBackslash);
+    if(isset($traverser->data[$traverser->index]));else{
+        $traverser->index = $beforeBackslash;
         return NULL;
     }
 
@@ -51,10 +51,10 @@ function eatValidEscapeToken(
         $traverser->importBranch($beforeNewline);
     }
 
-    if($codePoint !== NULL){
+    if(isset($codePoint)){
         return new $EncodedCodePointEscapeTokenClass($codePoint);
     }
 
-    $traverser->rollback($beforeBackslash);
+    $traverser->index = $beforeBackslash;
     return NULL;
 }

@@ -3,7 +3,6 @@
 namespace Netmosfera\PHPCSSAST\StandardTokenizer;
 
 use Error;
-use function preg_quote;
 use function preg_last_error;
 use const PREG_UNMATCHED_AS_NULL;
 
@@ -11,9 +10,11 @@ class Traverser
 {
     private $originator;
 
-    private $data;
+    public $data;
 
-    private $index;
+    public $index;
+
+    private $debugIndex;
 
     private $showPreview;
 
@@ -34,28 +35,31 @@ class Traverser
         $this->data = $data;
         $this->showPreview = $showPreview;
         $this->preview = NULL;
+        if($this->showPreview){
+            unset($this->index); // enables __get and __set
+        }
         $this->index = 0;
-        if($this->showPreview){
-            $this->preview = substr($this->data, $this->index);
+    }
+
+    public function __get($property){
+        if($property === "index"){
+            return $this->debugIndex;
+        }else{
+            throw new Error();
         }
     }
 
-    private function setOffset(Int $offset){
-        $this->index = $offset;
-        if($this->showPreview){
-            $this->preview = substr($this->data, $this->index);
+    public function __set($property, $value){
+        if($property === "index"){
+            $this->debugIndex = $value;
+            $this->preview = substr($this->data, $value);
+        }else{
+            throw new Error();
         }
-    }
-
-    public function savepoint(){
-        return $this->index;
     }
 
     public function rollback($savepoint){
         $this->index = $savepoint;
-        if($this->showPreview){
-            $this->preview = substr($this->data, $this->index);
-        }
     }
 
     public function importBranch(Traverser $traverser){
@@ -73,14 +77,6 @@ class Traverser
         return clone $this;
     }
 
-    public function isEOF(): Bool{
-        return $this->index === strlen($this->data);
-    }
-
-    public function escapeRegexp(String $string): String{
-        return preg_quote($string, "/");
-    }
-
     public function eatPattern(String $pattern): ?String{
         $pattern = '/\G(' . $pattern . ')/sD';
         $result = preg_match($pattern, $this->data, $matches, 0, $this->index);
@@ -89,9 +85,6 @@ class Traverser
         }
         if($result === 1){
             $this->index = $this->index + strlen($matches[0]);
-            if($this->showPreview){
-                $this->preview = substr($this->data, $this->index);
-            }
             return $matches[0];
         }
         return NULL;
@@ -105,9 +98,6 @@ class Traverser
         }
         if($result === 1){
             $this->index = $this->index + strlen($matches[0]);
-            if($this->showPreview){
-                $this->preview = substr($this->data, $this->index);
-            }
             return $matches;
         }
         return NULL;
@@ -118,9 +108,6 @@ class Traverser
         $string = mb_substr($trim, 0, $length);
         if(mb_strlen($string) === $length){
             $this->index = $this->index + strlen($string);
-            if($this->showPreview){
-                $this->preview = substr($this->data, $this->index);
-            }
             return $string;
         }
         return NULL;
@@ -130,9 +117,6 @@ class Traverser
         $length = strlen($string);
         if(substr($this->data, $this->index, $length) === $string){
             $this->index = $this->index + $length;
-            if($this->showPreview){
-                $this->preview = substr($this->data, $this->index);
-            }
             return $string;
         }
         return NULL;
