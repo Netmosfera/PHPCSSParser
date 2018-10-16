@@ -1,6 +1,6 @@
 <?php
 
-use Netmosfera\PHPCSSAST\StandardTokenizer\StandardTokenizer;
+use Netmosfera\PHPCSSAST\Tokenizer\StandardTokenizer;
 
 require(__DIR__ . "/vendor/autoload.php");
 

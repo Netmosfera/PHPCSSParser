@@ -30,7 +30,7 @@ class NameToken implements EvaluableToken
      * @var         String|NULL
      * `String|NULL`
      */
-    private $stringified;
+    private $_stringified;
 
     /**
      * @param       NameBitToken[]|ValidEscapeToken[] $pieces
@@ -43,10 +43,10 @@ class NameToken implements EvaluableToken
 
     /** @inheritDoc */
     public function __toString(): String{
-        if($this->stringified === NULL){
-            $this->stringified = implode("", $this->_pieces);
+        if($this->_stringified === NULL){
+            $this->_stringified = implode("", $this->_pieces);
         }
-        return $this->stringified;
+        return $this->_stringified;
     }
 
     /** @inheritDoc */

@@ -15,13 +15,13 @@ class URLBitToken implements EvaluableToken
      * @var         String
      * `String`
      */
-    private $text;
+    private $_text;
 
     /**
      * @var         String|NULL
      * `String|NULL`
      */
-    private $value;
+    private $_value;
 
     /**
      * @param       String $text
@@ -29,30 +29,30 @@ class URLBitToken implements EvaluableToken
      * @TODOC
      */
     public function __construct(String $text){
-        $this->text = $text;
+        $this->_text = $text;
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        return $this->text;
+        return $this->_text;
     }
 
     /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->text, $this->text);
+            match($this->_text, $this->_text);
     }
 
     /** @inheritDoc */
     public function intendedValue(): String{
-        if($this->value === NULL){
-            $this->value = str_replace(
+        if($this->_value === NULL){
+            $this->_value = str_replace(
                 "\0",
                 SpecData::REPLACEMENT_CHARACTER,
-                $this->text
+                $this->_text
             );
         }
-        return $this->value;
+        return $this->_value;
     }
 }
