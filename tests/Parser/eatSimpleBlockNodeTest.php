@@ -2,23 +2,23 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
-use function Netmosfera\PHPCSSASTTests\assertMatch;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSAST\Parser\eatFunctionNode;
-use Netmosfera\PHPCSSAST\Nodes\PreservedToken;
-use Netmosfera\PHPCSSAST\Nodes\FunctionNode;
 use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\Nodes\PreservedToken;
+use Netmosfera\PHPCSSAST\Nodes\SimpleBlockNode;
+use function Netmosfera\PHPCSSAST\Parser\eatSimpleBlockNode;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**
  * Tests in this file:
  *
  * #1 | returns NULL if EOF
- * #2 | returns NULL if not a function-token
+ * #2 | returns NULL if not a start-block delimiter
  * #3 | loop unterminated
  * #4 | loop terminated
  */
-class eatFunctionNodeTest extends TestCase
+class eatSimpleBlockNodeTest extends TestCase
 {
     function data1(){
         return cartesianProduct([FALSE, TRUE]);
@@ -26,28 +26,32 @@ class eatFunctionNodeTest extends TestCase
 
     /** @dataProvider data1 */
     function test1(Bool $testPrefix){
-        $function = NULL;
+        $block = NULL;
 
         $stream = getTokenStream($testPrefix, "");
-        $actualFunction = eatFunctionNode($stream);
+        $actualBlock = eatSimpleBlockNode($stream);
 
-        assertMatch($actualFunction, $function);
+        assertMatch($actualBlock, $block);
         assertMatch(stringifyTokens($stream), "");
     }
 
     function data2(){
-        return cartesianProduct([FALSE, TRUE], ANY_CSS("not starting with function token"));
+        return cartesianProduct(
+            [FALSE, TRUE],
+            ["=", ""],
+            ANY_CSS("not starting with a start-block-delimiter")
+        );
     }
 
     /** @dataProvider data2 */
-    function test2(Bool $testPrefix, String $rest){
-        $function = NULL;
+    function test2(Bool $testPrefix, String $notDelimiter, String $rest){
+        $block = NULL;
 
-        $stream = getTokenStream($testPrefix, $rest);
-        $actualFunction = eatFunctionNode($stream);
+        $stream = getTokenStream($testPrefix, $notDelimiter . $rest);
+        $actualBlock = eatSimpleBlockNode($stream);
 
-        assertMatch($actualFunction, $function);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch($actualBlock, $block);
+        assertMatch(stringifyTokens($stream), $notDelimiter . $rest);
     }
 
     function data3(){
@@ -61,12 +65,12 @@ class eatFunctionNodeTest extends TestCase
 
     /** @dataProvider data3 */
     function test3(Bool $testPrefix, array $componentValues){
-        $function = new FunctionNode(getToken("foo("), $componentValues, TRUE);
+        $block = new SimpleBlockNode("(", $componentValues, TRUE);
 
-        $stream = getTokenStream($testPrefix, $function . "");
-        $actualFunction = eatFunctionNode($stream);
+        $stream = getTokenStream($testPrefix, $block . "");
+        $actualBlock = eatSimpleBlockNode($stream);
 
-        assertMatch($actualFunction, $function);
+        assertMatch($actualBlock, $block);
         assertMatch(stringifyTokens($stream), "");
     }
 
@@ -81,12 +85,12 @@ class eatFunctionNodeTest extends TestCase
 
     /** @dataProvider data4 */
     function test4(Bool $testPrefix, array $componentValues, String $rest){
-        $function = new FunctionNode(getToken("foo("), $componentValues, FALSE);
+        $block = new SimpleBlockNode("(", $componentValues, FALSE);
 
-        $stream = getTokenStream($testPrefix, $function . $rest);
-        $actualFunction = eatFunctionNode($stream);
+        $stream = getTokenStream($testPrefix, $block . $rest);
+        $actualBlock = eatSimpleBlockNode($stream);
 
-        assertMatch($actualFunction, $function);
+        assertMatch($actualBlock, $block);
         assertMatch(stringifyTokens($stream), $rest);
     }
 }

@@ -2,12 +2,14 @@
 
 namespace Netmosfera\PHPCSSAST\Nodes;
 
+use Error;
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 
-class FunctionNode implements ComponentValueNode
+class SimpleBlockNode implements ComponentValueNode
 {
-    private $_token;
+    private $_openDelimiter;
+
+    private $_closeDelimiter;
 
     private $_components;
 
@@ -16,11 +18,11 @@ class FunctionNode implements ComponentValueNode
     private $_stringified;
 
     public function __construct(
-        FunctionToken $token,
+        String $openDelimiter,
         array $components,
         Bool $EOFTerminated
     ){
-        $this->_token = $token;
+        $this->_openDelimiter = $openDelimiter;
         $this->_components = $components; // @TODO can be Tokens or ComponentValueNode (ie a SimpleBlockNode or a FunctionNode)
         $this->_EOFTerminated = $EOFTerminated;
     }
@@ -28,9 +30,11 @@ class FunctionNode implements ComponentValueNode
     /** @inheritDoc */
     public function __toString(): String{
         if($this->_stringified === NULL){
-            $this->_stringified = (String)$this->_token;
+            $this->_stringified = $this->_openDelimiter;
             $this->_stringified .= implode("", $this->_components);
-            $this->_stringified .= $this->_EOFTerminated ? "" : ")";
+            if($this->_EOFTerminated === FALSE){
+                $this->_stringified .= $this->closeDelimiter();
+            }
         }
         return $this->_stringified;
     }
@@ -39,14 +43,28 @@ class FunctionNode implements ComponentValueNode
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($other->_token, $this->_token) &&
+            match($other->_openDelimiter, $this->_openDelimiter) &&
             match($other->_components, $this->_components) &&
             match($other->_EOFTerminated, $this->_EOFTerminated) &&
             TRUE;
     }
 
-    public function token(): FunctionToken{
-        return $this->_token;
+    public function openDelimiter(): String{
+        return $this->_openDelimiter;
+    }
+
+    public function closeDelimiter(): String{
+        if($this->_closeDelimiter === NULL){
+            if($this->_openDelimiter === "("){
+                return $this->_closeDelimiter = ")";
+            }elseif($this->_openDelimiter === "["){
+                return $this->_closeDelimiter = "]";
+            }elseif($this->_openDelimiter === "{"){
+                return $this->_closeDelimiter = "}";
+            }
+            throw new Error("Unknown delimiter");
+        }
+        return $this->_closeDelimiter;
     }
 
     public function components(): array{

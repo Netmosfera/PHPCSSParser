@@ -2,15 +2,11 @@
 
 namespace Netmosfera\PHPCSSAST\Parser;
 
-use Closure;
 use Netmosfera\PHPCSSAST\Nodes\FunctionNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 
-function eatFunctionNode(
-    TokenStream $stream,
-    Closure $eatComponentValueNode
-): ?FunctionNode{
+function eatFunctionNode(TokenStream $stream): ?FunctionNode{
     if(isset($stream->tokens[$stream->index]));else{
         return NULL;
     }
@@ -21,9 +17,9 @@ function eatFunctionNode(
 
     /** @var FunctionToken $functionToken */
 
-    $componentValueNodes = [];
-
     $stream->index++;
+
+    $componentValueNodes = [];
 
     while(TRUE){
         if(isset($stream->tokens[$stream->index]));else{
@@ -37,9 +33,7 @@ function eatFunctionNode(
         }
 
         assert(is_int($oldIndex = $stream->index)); // Does nothing - just saves the index
-
-        $componentValueNodes[] = $eatComponentValueNode($stream);
-
-        assert($stream->index > $oldIndex); // ...so that it can check this
+        $componentValueNodes[] = eatComponentValueNode($stream);
+        assert($stream->index > $oldIndex); // ...so that it can check this.
     }
 }
