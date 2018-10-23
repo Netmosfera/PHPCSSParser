@@ -3,14 +3,14 @@
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
  * A {@see CommentToken} is a programmer-readable explanation or annotation.
  *
  * It can contain any text, except the character `*` followed by `/`.
  */
-class CommentToken implements Token
+class CommentToken implements RootToken
 {
     /**
      * @var         String

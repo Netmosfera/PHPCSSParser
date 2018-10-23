@@ -4,8 +4,8 @@ namespace Netmosfera\PHPCSSAST\Tokens\Strings;
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 
 /**
  * A {@see BadStringToken} is {@see StringToken} terminated with a newline.

@@ -30,7 +30,6 @@ use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
 
 class StandardTokenizer
 {

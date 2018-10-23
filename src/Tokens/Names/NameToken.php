@@ -7,7 +7,7 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 
 /**
- * An {@see NameToken} is a "word" in the CSS language.
+ * A {@see NameToken} is a "word" in the CSS language.
  *
  * It is any sequence of readable characters that is not a number, an escape sequence, an
  * operator or a generic delimiter.

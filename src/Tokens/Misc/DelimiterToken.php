@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
  * A {@see DelimiterToken} represents a generic single-character delimiter.
@@ -13,7 +13,7 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
  *
  * N.B. a delimiter token of value `\` represents a parse-error.
  */
-class DelimiterToken implements Token
+class DelimiterToken implements RootToken
 {
     /**
      * @var         String

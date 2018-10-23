@@ -4,12 +4,11 @@ namespace Netmosfera\PHPCSSAST\Tokens\Strings;
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 
 /**
  * A {@see StringToken} is text delimited by `'` or `"`.
  */
-class StringToken implements AnyStringToken, EvaluableToken
+class StringToken implements AnyStringToken
 {
     /**
      * @var         String

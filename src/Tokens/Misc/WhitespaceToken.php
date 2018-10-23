@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\RootToken;
 use function Netmosfera\PHPCSSAST\match;
 use function preg_replace;
 
@@ -12,7 +12,7 @@ use function preg_replace;
  *
  * The whitespace code points are defined in {@see SpecData::WHITESPACES_SET}.
  */
-class WhitespaceToken implements Token
+class WhitespaceToken implements RootToken
 {
     /**
      * @var         String

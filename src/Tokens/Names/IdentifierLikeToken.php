@@ -2,11 +2,11 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Names;
 
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
  * A {@see IdentifierLikeToken} is an {@see IdentifierToken}, a {@see FunctionToken} or a
  * {@see URLToken}.
  */
-interface IdentifierLikeToken extends Token
+interface IdentifierLikeToken extends RootToken
 {}

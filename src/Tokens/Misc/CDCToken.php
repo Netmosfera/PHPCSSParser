@@ -2,7 +2,7 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
  * A {@see CDCToken} represents the sequence of characters `-->`.
@@ -15,7 +15,7 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
  * body { color: darkblue; }
  * --></style>
  */
-class CDCToken implements Token
+class CDCToken implements RootToken
 {
     /** @inheritDoc */
     public function __toString(): String{
