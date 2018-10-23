@@ -7,7 +7,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Parser\eatComponentValueNode;
-use Netmosfera\PHPCSSAST\Nodes\PreservedToken;
+use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
 use Netmosfera\PHPCSSAST\Nodes\FunctionNode;
 use PHPUnit\Framework\TestCase;
 
@@ -42,7 +42,7 @@ class eatComponentValueNodeTest extends TestCase
 
     /** @dataProvider data2 */
     function test2(Bool $testPrefix, String $rest){
-        $componentValues = [new PreservedToken(getToken("foo"))];
+        $componentValues = [new PreservedTokenNode(getToken("foo"))];
         $componentValue = new FunctionNode(getToken("foo("), $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
@@ -58,7 +58,7 @@ class eatComponentValueNodeTest extends TestCase
 
     /** @dataProvider data3 */
     function test3(Bool $testPrefix, String $rest){
-        $componentValues = [new PreservedToken(getToken("foo"))];
+        $componentValues = [new PreservedTokenNode(getToken("foo"))];
         $componentValue = new SimpleBlockNode("{", $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
@@ -74,7 +74,7 @@ class eatComponentValueNodeTest extends TestCase
 
     /** @dataProvider data4 */
     function test4(Bool $testPrefix, String $rest){
-        $componentValue = new PreservedToken(getToken("123deg"));
+        $componentValue = new PreservedTokenNode(getToken("123deg"));
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
         $actualComponentValue = eatComponentValueNode($stream);

@@ -29,7 +29,6 @@ require(__DIR__ . "/tests/groupByOffset.inc.php");
 require(__DIR__ . "/tests/makePiecesSample.inc.php");
 require(__DIR__ . "/tests/Parser/everySeqFromStart.inc.php");
 require(__DIR__ . "/tests/Parser/getToken.inc.php");
-require(__DIR__ . "/tests/Parser/getTokens.inc.php");
 require(__DIR__ . "/tests/Parser/getTokenStream.inc.php");
 require(__DIR__ . "/tests/Parser/stringifyTokens.inc.php");
 require(__DIR__ . "/tests/Tokenizer/getTraverser.inc.php");

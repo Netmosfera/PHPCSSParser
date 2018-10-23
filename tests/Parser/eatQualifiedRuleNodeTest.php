@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Nodes\PreservedToken;
+use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
 use Netmosfera\PHPCSSAST\Nodes\SimpleBlockNode;
 use Netmosfera\PHPCSSAST\Nodes\QualifiedRuleNode;
 use function Netmosfera\PHPCSSAST\Parser\eatQualifiedRuleNode;
@@ -20,26 +20,26 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class eatQualifiedRuleNodeTest extends TestCase
 {
     function data12(){
-        $preludePieces[] = new PreservedToken(getToken(" "));
-        $preludePieces[] = new PreservedToken(getToken("foo"));
-        $preludePieces[] = new PreservedToken(getToken(" "));
-        $preludePieces[] = new PreservedToken(getToken("+123%"));
-        $preludePieces[] = new PreservedToken(getToken(" "));
+        $preludePieces[] = new PreservedTokenNode(getToken(" "));
+        $preludePieces[] = new PreservedTokenNode(getToken("foo"));
+        $preludePieces[] = new PreservedTokenNode(getToken(" "));
+        $preludePieces[] = new PreservedTokenNode(getToken("+123%"));
+        $preludePieces[] = new PreservedTokenNode(getToken(" "));
         $preludePieces[] = new SimpleBlockNode("(", [
-            new PreservedToken(getToken("+123%")),
-            new PreservedToken(getToken("+123%")),
+            new PreservedTokenNode(getToken("+123%")),
+            new PreservedTokenNode(getToken("+123%")),
         ], FALSE);
-        $preludePieces[] = new PreservedToken(getToken(" "));
+        $preludePieces[] = new PreservedTokenNode(getToken(" "));
         $preludePieces[] = new SimpleBlockNode("[", [
-            new PreservedToken(getToken("+123%")),
-            new PreservedToken(getToken("+123%")),
+            new PreservedTokenNode(getToken("+123%")),
+            new PreservedTokenNode(getToken("+123%")),
         ], FALSE);
-        $preludePieces[] = new PreservedToken(getToken(" "));
-        $preludePieces[] = new PreservedToken(getToken("bar"));
-        $preludePieces[] = new PreservedToken(getToken(" "));
-        $preludePieces[] = new PreservedToken(getToken("+456%"));
-        $preludePieces[] = new PreservedToken(getToken(" "));
-        $preludePieces[] = new PreservedToken(getToken("qux"));
+        $preludePieces[] = new PreservedTokenNode(getToken(" "));
+        $preludePieces[] = new PreservedTokenNode(getToken("bar"));
+        $preludePieces[] = new PreservedTokenNode(getToken(" "));
+        $preludePieces[] = new PreservedTokenNode(getToken("+456%"));
+        $preludePieces[] = new PreservedTokenNode(getToken(" "));
+        $preludePieces[] = new PreservedTokenNode(getToken("qux"));
 
         return cartesianProduct(
             [FALSE, TRUE],
@@ -61,7 +61,7 @@ class eatQualifiedRuleNodeTest extends TestCase
 
     /** @dataProvider data12 */
     function test2(Bool $testPrefix, array $preludePieces){
-        $blockComponents = [new PreservedToken(getToken("foo"))];
+        $blockComponents = [new PreservedTokenNode(getToken("foo"))];
         $block = new SimpleBlockNode("{", $blockComponents, FALSE);
         $qualifiedRule = new QualifiedRuleNode($preludePieces, $block);
 

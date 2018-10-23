@@ -24,7 +24,7 @@ function eatCommentToken(
         $text = mb_substr($text, 0, -2);
     }
 
-    $comment = new CheckedCommentToken($text, $EOFTerminated);
+    $comment = new $CommentTokenClass($text, $EOFTerminated);
 
     $traverser->importBranch($inCommentTraverser);
 

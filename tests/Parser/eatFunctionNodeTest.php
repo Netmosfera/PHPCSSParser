@@ -6,7 +6,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSAST\Parser\eatFunctionNode;
-use Netmosfera\PHPCSSAST\Nodes\PreservedToken;
+use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
 use Netmosfera\PHPCSSAST\Nodes\FunctionNode;
 use PHPUnit\Framework\TestCase;
 
@@ -51,11 +51,11 @@ class eatFunctionNodeTest extends TestCase
     }
 
     function data3(){
-        $componentValues[] = new PreservedToken(getToken("foo"));
-        $componentValues[] = new PreservedToken(getToken("+123%"));
-        $componentValues[] = new PreservedToken(getToken("bar"));
-        $componentValues[] = new PreservedToken(getToken("+456%"));
-        $componentValues[] = new PreservedToken(getToken("qux"));
+        $componentValues[] = new PreservedTokenNode(getToken("foo"));
+        $componentValues[] = new PreservedTokenNode(getToken("+123%"));
+        $componentValues[] = new PreservedTokenNode(getToken("bar"));
+        $componentValues[] = new PreservedTokenNode(getToken("+456%"));
+        $componentValues[] = new PreservedTokenNode(getToken("qux"));
         return cartesianProduct([FALSE, TRUE], everySeqFromStart($componentValues));
     }
 
@@ -71,11 +71,11 @@ class eatFunctionNodeTest extends TestCase
     }
 
     function data4(){
-        $componentValues[] = new PreservedToken(getToken("foo"));
-        $componentValues[] = new PreservedToken(getToken("+123%"));
-        $componentValues[] = new PreservedToken(getToken("bar"));
-        $componentValues[] = new PreservedToken(getToken("+456%"));
-        $componentValues[] = new PreservedToken(getToken("qux"));
+        $componentValues[] = new PreservedTokenNode(getToken("foo"));
+        $componentValues[] = new PreservedTokenNode(getToken("+123%"));
+        $componentValues[] = new PreservedTokenNode(getToken("bar"));
+        $componentValues[] = new PreservedTokenNode(getToken("+456%"));
+        $componentValues[] = new PreservedTokenNode(getToken("qux"));
         return cartesianProduct([FALSE, TRUE], everySeqFromStart($componentValues), ANY_CSS());
     }
 

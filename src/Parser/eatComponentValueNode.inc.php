@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Parser;
 
 use Netmosfera\PHPCSSAST\Nodes\ComponentValueNode;
-use Netmosfera\PHPCSSAST\Nodes\PreservedToken;
+use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
 
 function eatComponentValueNode(TokenStream $stream): ?ComponentValueNode{
     if(isset($stream->tokens[$stream->index]));else{
@@ -20,5 +20,5 @@ function eatComponentValueNode(TokenStream $stream): ?ComponentValueNode{
         return $function;
     }
 
-    return new PreservedToken($stream->tokens[$stream->index++]);
+    return new PreservedTokenNode($stream->tokens[$stream->index++]);
 }

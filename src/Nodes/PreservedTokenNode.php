@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Nodes;
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Token;
 
-class PreservedToken implements ComponentValueNode
+class PreservedTokenNode implements ComponentValueNode
 {
     private $_token;
 
