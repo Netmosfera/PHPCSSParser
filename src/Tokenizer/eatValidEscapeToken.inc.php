@@ -2,19 +2,20 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
+use Netmosfera\PHPCSSAST\SpecData;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 
 function eatValidEscapeToken(
     Traverser $traverser,
-    String $hexDigitRegexSet,
-    String $whitespaceRegex,
-    String $newlineRegexSet,
-    String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS,
-    String $CodePointEscapeTokenClass = CheckedCodePointEscapeToken::CLASS,
-    String $EncodedCodePointEscapeTokenClass = CheckedEncodedCodePointEscapeToken::CLASS
+    String $hexDigitRegexSet = SpecData::HEX_DIGITS_REGEX_SET,
+    String $whitespaceRegex = SpecData::WHITESPACES_REGEX_SEQS,
+    String $newlineRegexSet = "not used",
+    String $WhitespaceTokenClass = WhitespaceToken::CLASS,
+    String $CodePointEscapeTokenClass = CodePointEscapeToken::CLASS,
+    String $EncodedCodePointEscapeTokenClass = EncodedCodePointEscapeToken::CLASS
 ): ?ValidEscapeToken{
 
     $beforeBackslash = $traverser->index;

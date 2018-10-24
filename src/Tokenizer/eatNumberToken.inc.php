@@ -2,13 +2,13 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 
 function eatNumberToken(
     Traverser $traverser,
-    String $digitRegexSet,
-    String $NumberTokenClass = CheckedNumberToken::CLASS
+    String $digitRegexSet = SpecData::DIGITS_REGEX_SET,
+    String $NumberTokenClass = NumberToken::CLASS
 ): ?NumberToken{
 
     $matches = $traverser->eatPatterns("

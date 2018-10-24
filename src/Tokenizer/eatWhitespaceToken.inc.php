@@ -2,13 +2,13 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 
 function eatWhitespaceToken(
     Traverser $traverser,
-    String $whitespaceRegexSet,
-    String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS
+    String $whitespaceRegexSet = SpecData::WHITESPACES_REGEX_SET,
+    String $WhitespaceTokenClass = WhitespaceToken::CLASS
 ): ?WhitespaceToken{
     $whitespaces = $traverser->eatPattern('[' . $whitespaceRegexSet . ']+');
     if(isset($whitespaces)){

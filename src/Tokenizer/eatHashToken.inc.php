@@ -4,13 +4,15 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedHashToken;
 
 function eatHashToken(
     Traverser $traverser,
-    Closure $eatNameToken,
-    String $HashTokenClass = CheckedHashToken::CLASS
+    ?Closure $eatNameToken = NULL,
+    String $HashTokenClass = HashToken::CLASS
 ): ?HashToken{
+    if(isset($eatNameToken));else{
+        $eatNameToken = __NAMESPACE__ . "\\eatNameToken";
+    }
     $hashTraverser = $traverser->createBranch();
     if($hashTraverser->eatString("#") !== NULL){
         $name = $eatNameToken($hashTraverser);

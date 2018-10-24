@@ -3,6 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLToken;
@@ -13,15 +14,21 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLBitToken;
 function eatURLToken(
     Traverser $traverser,
     IdentifierToken $URL,
-    String $whitespaceRegexSet,
-    String $blacklistedCodePointsRegexSet,
-    Closure $eatEscapeToken,
-    Closure $eatBadURLRemnantsToken,
+    String $whitespaceRegexSet = SpecData::WHITESPACES_REGEX_SET,
+    String $blacklistedCodePointsRegexSet = SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET,
+    ?Closure $eatValidEscape = NULL,
+    ?Closure $eatBadURLRemnants = NULL,
     String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS,
     String $URLBitTokenClass = CheckedURLBitToken::CLASS,
     String $URLTokenClass = CheckedURLToken::CLASS,
     String $BadURLTokenClass = CheckedBadURLToken::CLASS
 ): ?AnyURLToken{
+    if(isset($eatValidEscape));else{
+        $eatValidEscape = __NAMESPACE__ . "\\eatValidEscapeToken";
+    }
+    if(isset($eatBadURLRemnants));else{
+        $eatBadURLRemnants = __NAMESPACE__ . "\\eatBadURLRemnantsToken";
+    }
 
     // @TODO inject delimiters
     $wsBefore = $traverser->eatPattern('[' . $whitespaceRegexSet . ']*+(?!["\'])');
@@ -62,23 +69,23 @@ function eatURLToken(
                 $traverser->importBranch($finishTraverser);
                 return new $URLTokenClass($URL, $wsBefore, $pieces, $wsAfter, FALSE);
             }
-            $remnants = $eatBadURLRemnantsToken($traverser);
+            $remnants = $eatBadURLRemnants($traverser);
             return new $BadURLTokenClass($URL, $wsBefore, $pieces, $remnants);
         }
 
         if($traverser->createBranch()->eatString("\\") !== NULL){
-            $escape = $eatEscapeToken($traverser);
+            $escape = $eatValidEscape($traverser);
             if(isset($escape)){
                 $pieces[] = $escape;
                 continue;
             }else{
-                $remnants = $eatBadURLRemnantsToken($traverser);
+                $remnants = $eatBadURLRemnants($traverser);
                 return new $BadURLTokenClass($URL, $wsBefore, $pieces, $remnants);
             }
         }
 
         if($traverser->createBranch()->eatPattern('[' . $blacklistedCodePointsRegexSet . ']') !== NULL){
-            $remnants = $eatBadURLRemnantsToken($traverser);
+            $remnants = $eatBadURLRemnants($traverser);
             return new $BadURLTokenClass($URL, $wsBefore, $pieces, $remnants);
         }
 

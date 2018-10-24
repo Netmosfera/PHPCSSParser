@@ -8,7 +8,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
 
 function eatCommentToken(
     Traverser $traverser,
-    String $CommentTokenClass = CheckedCommentToken::CLASS
+    String $CommentTokenClass = CommentToken::CLASS
 ): ?CommentToken{
     $inCommentTraverser = $traverser->createBranch();
 

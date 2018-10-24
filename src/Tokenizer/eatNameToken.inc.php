@@ -3,24 +3,27 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 
 function eatNameToken(
     Traverser $traverser,
-    String $nameRegexSet,
-    Closure $eatEscapeToken,
-    String $NameBitTokenClass = CheckedNameBitToken::CLASS,
-    String $NameTokenClass = CheckedNameToken::CLASS
+    String $nameRegexSet = SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
+    ?Closure $eatValidEscapeToken = NULL,
+    String $NameBitTokenClass = NameBitToken::CLASS,
+    String $NameTokenClass = NameToken::CLASS
 ): ?NameToken{
+    if(isset($eatValidEscapeToken));else{
+        $eatValidEscapeToken = __NAMESPACE__ . "\\eatValidEscapeToken";
+    }
 
     $nameStart = $traverser->eatPattern('[' . $nameRegexSet . ']+');
 
     if(isset($nameStart)){
         $pieces = [new $NameBitTokenClass($nameStart)];
     }else{
-        $escape = $eatEscapeToken($traverser);
+        $escape = $eatValidEscapeToken($traverser);
         if(isset($escape));else{
             return NULL;
         }
@@ -32,7 +35,7 @@ function eatNameToken(
         if(isset($bit)){
             $piece = new $NameBitTokenClass($bit);
         }else{
-            $piece = $eatEscapeToken($traverser);
+            $piece = $eatValidEscapeToken($traverser);
         }
         if(isset($piece));else{
             return new $NameTokenClass($pieces);

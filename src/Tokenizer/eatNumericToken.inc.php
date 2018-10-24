@@ -4,16 +4,22 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumericToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedDimensionToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedPercentageToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\DimensionToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\PercentageToken;
 
 function eatNumericToken(
     Traverser $traverser,
-    Closure $eatNumberToken,
-    Closure $eatIdentifierToken,
-    String $PercentageTokenClass = CheckedPercentageToken::CLASS,
-    String $DimensionTokenClass = CheckedDimensionToken::CLASS
+    ?Closure $eatNumberToken = NULL,
+    ?Closure $eatIdentifierToken = NULL,
+    String $PercentageTokenClass = PercentageToken::CLASS,
+    String $DimensionTokenClass = DimensionToken::CLASS
 ): ?NumericToken{
+    if(isset($eatNumberToken));else{
+        $eatNumberToken = __NAMESPACE__ . "\\eatNumberToken";
+    }
+    if(isset($eatIdentifierToken));else{
+        $eatIdentifierToken = __NAMESPACE__ . "\\eatIdentifierToken";
+    }
 
     $number = $eatNumberToken($traverser);
 

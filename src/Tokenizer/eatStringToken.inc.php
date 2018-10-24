@@ -3,19 +3,24 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
+use Netmosfera\PHPCSSAST\SpecData;
+use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedBadStringToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 
 function eatStringToken(
     Traverser $traverser,
-    String $newlineRegexSet,
-    Closure $eatEscapeToken,
-    String $StringBitTokenClass = CheckedStringBitToken::CLASS,
-    String $StringTokenClass = CheckedStringToken::CLASS,
-    String $BadStringTokenClass = CheckedBadStringToken::CLASS
+    String $newlineRegexSet = SpecData::NEWLINES_REGEX_SET,
+    ?Closure $eatEscapeToken = NULL,
+    String $StringBitTokenClass = StringBitToken::CLASS,
+    String $StringTokenClass = StringToken::CLASS,
+    String $BadStringTokenClass = BadStringToken::CLASS
 ): ?AnyStringToken{
+    if(isset($eatEscapeToken));else{
+        $eatEscapeToken = __NAMESPACE__ . "\\eatEscapeToken";
+    }
+
     $delimiter = $traverser->eatPattern('\'|"');
 
     if(isset($delimiter));else{

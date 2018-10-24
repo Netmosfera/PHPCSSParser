@@ -3,20 +3,24 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
+use Netmosfera\PHPCSSAST\SpecData;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
 
 function eatIdentifierToken(
     Traverser $traverser,
-    String $nameStartRegexSet,
-    String $nameRegexSet,
-    Closure $eatEscapeToken,
-    String $NameBitTokenClass = CheckedNameBitToken::CLASS,
-    String $NameTokenClass = CheckedNameToken::CLASS,
-    String $IdentifierTokenClass = CheckedIdentifierToken::CLASS
+    String $nameStartRegexSet = SpecData::NAME_STARTERS_BYTES_REGEX_SET,
+    String $nameRegexSet = SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
+    ?Closure $eatValidEscapeToken = NULL,
+    String $NameBitTokenClass = NameBitToken::CLASS,
+    String $NameTokenClass = NameToken::CLASS,
+    String $IdentifierTokenClass = IdentifierToken::CLASS
 ): ?IdentifierToken{
+    if(isset($eatValidEscapeToken));else{
+        $eatValidEscapeToken = __NAMESPACE__ . "\\eatValidEscapeToken";
+    }
+
     $nscp = $nameStartRegexSet;
     $ncp = $nameRegexSet;
 
@@ -36,7 +40,7 @@ function eatIdentifierToken(
         if($startEscapeBranch->eatString("-") !== NULL){
             $pieces[] = new $NameBitTokenClass("-");
         }
-        $escape = $eatEscapeToken($startEscapeBranch);
+        $escape = $eatValidEscapeToken($startEscapeBranch);
         if(isset($escape));else{
             return NULL;
         }
@@ -49,7 +53,7 @@ function eatIdentifierToken(
         if(isset($bit)){
             $piece = new $NameBitTokenClass($bit);
         }else{
-            $piece = $eatEscapeToken($traverser);
+            $piece = $eatValidEscapeToken($traverser);
         }
         if(isset($piece));else{
             return new $IdentifierTokenClass(new $NameTokenClass($pieces));

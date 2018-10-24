@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
+use Closure;
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
@@ -33,179 +34,22 @@ use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 
 class StandardTokenizer
 {
-    private $eatIdentifierToken;
-    private $eatIdentifierLikeToken;
-    private $eatWhitespaceToken;
-    private $eatNumericToken;
-    private $eatHashToken;
-    private $eatStringToken;
-    private $eatAtKeywordToken;
-    private $eatCommentToken;
-
-    private $eatNumberToken;
-    private $eatNameToken;
-    private $eatBadURLRemnants;
-    private $eatURLToken;
-    private $eatAnyEscape;
-    private $eatNullEscape;
-    private $eatValidEscape;
+    private $eatIdentifierLike;
+    private $eatWhitespace;
+    private $eatNumeric;
+    private $eatHash;
+    private $eatString;
+    private $eatAtKeyword;
+    private $eatComment;
 
     public function __construct(){
-        $this->eatNumberToken = function(Traverser $traverser): ?NumberToken{
-            return eatNumberToken(
-                $traverser,
-                SpecData::DIGITS_REGEX_SET,
-                NumberToken::CLASS
-            );
-        };
-
-        $this->eatNameToken = function(Traverser $traverser): ?NameToken{
-            return eatNameToken(
-                $traverser,
-                SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
-                $this->eatValidEscape,
-                NameBitToken::CLASS,
-                NameToken::CLASS
-            );
-        };
-
-        $this->eatBadURLRemnants = function(
-            Traverser $traverser
-        ): BadURLRemnantsToken{
-            return eatBadURLRemnantsToken(
-                $traverser,
-                $this->eatAnyEscape,
-                BadURLRemnantsToken::CLASS
-            );
-        };
-
-        $this->eatURLToken = function(
-            Traverser $traverser,
-            IdentifierToken $URL
-        ): ?AnyURLToken{
-            return eatURLToken(
-                $traverser,
-                $URL,
-                SpecData::WHITESPACES_REGEX_SET,
-                SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET,
-                $this->eatValidEscape,
-                $this->eatBadURLRemnants,
-                WhitespaceToken::CLASS,
-                URLBitToken::CLASS,
-                URLToken::CLASS,
-                BadURLToken::CLASS
-            );
-        };
-
-        $this->eatAnyEscape = function(Traverser $traverser): ?EscapeToken{
-            return
-                ($this->eatValidEscape)($traverser) ??
-                ($this->eatNullEscape)($traverser);
-        };
-
-        $this->eatNullEscape = function(
-            Traverser $traverser
-        ): ?ValidEscapeToken{
-            return eatNullEscapeToken(
-                $traverser,
-                SpecData::NEWLINES_REGEX_SEQS,
-                EOFEscapeToken::CLASS,
-                ContinuationEscapeToken::CLASS
-            );
-        };
-
-        $this->eatValidEscape = function(
-            Traverser $traverser
-        ): ?ValidEscapeToken{
-            return eatValidEscapeToken(
-                $traverser,
-                SpecData::HEX_DIGITS_REGEX_SET,
-                SpecData::WHITESPACES_REGEX_SEQS,
-                SpecData::NEWLINES_REGEX_SET,
-                WhitespaceToken::CLASS,
-                CodePointEscapeToken::CLASS,
-                EncodedCodePointEscapeToken::CLASS
-            );
-        };
-
-        $this->eatIdentifierToken = function(
-            Traverser $traverser
-        ): ?IdentifierToken{
-            return eatIdentifierToken(
-                $traverser,
-                SpecData::NAME_STARTERS_BYTES_REGEX_SET,
-                SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
-                $this->eatValidEscape,
-                NameBitToken::CLASS,
-                NameToken::CLASS,
-                IdentifierToken::CLASS
-            );
-        };
-
-        $this->eatIdentifierLikeToken = function(
-            Traverser $traverser
-        ): ?IdentifierLikeToken{
-            return eatIdentifierLikeToken(
-                $traverser,
-                $this->eatIdentifierToken,
-                $this->eatURLToken,
-                FunctionToken::CLASS
-            );
-        };
-
-        $this->eatWhitespaceToken = function(
-            Traverser $traverser
-        ): ?WhitespaceToken{
-            return eatWhitespaceToken(
-                $traverser,
-                SpecData::WHITESPACES_REGEX_SET,
-                WhitespaceToken::CLASS
-            );
-        };
-
-        $this->eatNumericToken = function(Traverser $traverser): ?NumericToken{
-            return eatNumericToken(
-                $traverser,
-                $this->eatNumberToken,
-                $this->eatIdentifierToken,
-                PercentageToken::CLASS,
-                DimensionToken::CLASS
-            );
-        };
-
-        $this->eatHashToken = function(Traverser $traverser): ?HashToken{
-            return eatHashToken(
-                $traverser,
-                $this->eatNameToken,
-                HashToken::CLASS
-            );
-        };
-
-        $this->eatStringToken = function(Traverser $traverser): ?StringToken{
-            return eatStringToken(
-                $traverser,
-                SpecData::NEWLINES_REGEX_SET,
-                $this->eatAnyEscape,
-                StringBitToken::CLASS
-            );
-        };
-
-        $this->eatAtKeywordToken = function(
-            Traverser $traverser
-        ): ?AtKeywordToken{
-            return eatAtKeywordToken(
-                $traverser,
-                $this->eatIdentifierToken,
-                AtKeywordToken::CLASS
-            );
-        };
-
-        $this->eatCommentToken = function(Traverser $traverser): ?CommentToken{
-            return eatCommentToken(
-                $traverser,
-                CommentToken::CLASS
-            );
-        };
+        $this->eatIdentifierLike = Closure::fromCallable("Netmosfera\\PHPCSSAST\\Tokenizer\\eatIdentifierLikeToken");
+        $this->eatWhitespace = Closure::fromCallable("Netmosfera\\PHPCSSAST\\Tokenizer\\eatWhitespaceToken");
+        $this->eatNumeric = Closure::fromCallable("Netmosfera\\PHPCSSAST\\Tokenizer\\eatNumericToken");
+        $this->eatHash = Closure::fromCallable("Netmosfera\\PHPCSSAST\\Tokenizer\\eatHashToken");
+        $this->eatString = Closure::fromCallable("Netmosfera\\PHPCSSAST\\Tokenizer\\eatStringToken");
+        $this->eatAtKeyword = Closure::fromCallable("Netmosfera\\PHPCSSAST\\Tokenizer\\eatAtKeywordToken");
+        $this->eatComment = Closure::fromCallable("Netmosfera\\PHPCSSAST\\Tokenizer\\eatCommentToken");
     }
 
     public function tokenize(String $CSSCode): array{
@@ -226,13 +70,13 @@ class StandardTokenizer
         while(isset($traverser->data[$traverser->index])){
             $tokens[] = eatToken(
                 $traverser,
-                $this->eatIdentifierLikeToken,
-                $this->eatWhitespaceToken,
-                $this->eatNumericToken,
-                $this->eatHashToken,
-                $this->eatStringToken,
-                $this->eatAtKeywordToken,
-                $this->eatCommentToken,
+                $this->eatIdentifierLike,
+                $this->eatWhitespace,
+                $this->eatNumeric,
+                $this->eatHash,
+                $this->eatString,
+                $this->eatAtKeyword,
+                $this->eatComment,
                 $colonToken,
                 $commaToken,
                 $leftCurlyBracketToken,

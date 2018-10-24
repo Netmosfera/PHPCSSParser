@@ -7,7 +7,6 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDCToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDOToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
 
 function eatToken(
     Traverser $traverser,
@@ -27,7 +26,7 @@ function eatToken(
     DelimiterToken $rightParenthesisToken,
     DelimiterToken $rightSquareBracketToken,
     DelimiterToken $semicolonToken,
-    String $DelimiterTokenClass = CheckedDelimiterToken::CLASS
+    String $DelimiterTokenClass = DelimiterToken::CLASS
 ): ?Token{
 
     if(isset($traverser->data[$traverser->index]));else{

@@ -14,6 +14,7 @@ require(__DIR__ . "/src/Parser/TODOeatRuleNode.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatAtKeywordToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatBadURLRemnantsToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatCommentToken.inc.php");
+require(__DIR__ . "/src/Tokenizer/eatEscapeToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatHashToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatIdentifierLikeToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatIdentifierToken.inc.php");
