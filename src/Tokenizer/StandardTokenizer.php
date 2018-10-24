@@ -121,7 +121,6 @@ class StandardTokenizer
                 $traverser,
                 SpecData::HEX_DIGITS_REGEX_SET,
                 SpecData::WHITESPACES_REGEX_SEQS,
-                SpecData::NEWLINES_REGEX_SET,
                 WhitespaceToken::CLASS,
                 CodePointEscapeToken::CLASS,
                 EncodedCodePointEscapeToken::CLASS

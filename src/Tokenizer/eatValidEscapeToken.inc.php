@@ -11,7 +11,6 @@ function eatValidEscapeToken(
     Traverser $traverser,
     String $hexDigitRegexSet,
     String $whitespaceRegex,
-    String $newlineRegexSet,
     String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS,
     String $CodePointEscapeTokenClass = CheckedCodePointEscapeToken::CLASS,
     String $EncodedCodePointEscapeTokenClass = CheckedEncodedCodePointEscapeToken::CLASS

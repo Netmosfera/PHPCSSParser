@@ -36,7 +36,7 @@ class eatValidEscapeTokenTest extends TestCase
         $escape = NULL;
 
         $traverser = getTraverser($prefix, $rest);
-        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\f");
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t");
 
         assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), $rest);
@@ -51,7 +51,7 @@ class eatValidEscapeTokenTest extends TestCase
         $escape = NULL;
 
         $traverser = getTraverser($prefix, "\\");
-        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\f");
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t");
 
         assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), "\\");
@@ -71,7 +71,7 @@ class eatValidEscapeTokenTest extends TestCase
         $escape = new CheckedCodePointEscapeToken($hexDigits, $whitespace);
 
         $traverser = getTraverser($prefix, $escape . $rest);
-        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\n");
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t");
 
         assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), $rest);
@@ -94,7 +94,7 @@ class eatValidEscapeTokenTest extends TestCase
         $escape = new CheckedEncodedCodePointEscapeToken($codePoint);
 
         $traverser = getTraverser($prefix, $escape . $rest);
-        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\n");
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t");
 
         assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), $rest);
@@ -109,7 +109,7 @@ class eatValidEscapeTokenTest extends TestCase
         $escape = NULL;
 
         $traverser = getTraverser($prefix, "\\" . "\n" . $rest);
-        $actualEscape = eatValidEscapeToken($traverser, "D", "\t", "\n");
+        $actualEscape = eatValidEscapeToken($traverser, "D", "\t");
 
         assertMatch($actualEscape, $escape);
         assertMatch($traverser->eatAll(), "\\" . "\n" . $rest);
