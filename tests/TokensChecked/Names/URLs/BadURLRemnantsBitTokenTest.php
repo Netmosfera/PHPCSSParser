@@ -30,11 +30,11 @@ class BadURLRemnantsBitTokenTest extends TestCase
             yield [$codePoint . "aaa", $codePoint . "aaa"];
             yield ["aaa" . $codePoint . "aaa", "aaa" . $codePoint . "aaa"];
         }
-        yield ["\0", SpecData::REPLACEMENT_CHARACTER];
-        yield ["\0", SpecData::REPLACEMENT_CHARACTER];
-        yield ["aaa\0", "aaa" . SpecData::REPLACEMENT_CHARACTER];
-        yield ["\0aaa", SpecData::REPLACEMENT_CHARACTER . "aaa"];
-        yield ["aaa\0aaa", "aaa" . SpecData::REPLACEMENT_CHARACTER . "aaa"];
+        yield ["\0", SpecData::$instance->REPLACEMENT_CHARACTER];
+        yield ["\0", SpecData::$instance->REPLACEMENT_CHARACTER];
+        yield ["aaa\0", "aaa" . SpecData::$instance->REPLACEMENT_CHARACTER];
+        yield ["\0aaa", SpecData::$instance->REPLACEMENT_CHARACTER . "aaa"];
+        yield ["aaa\0aaa", "aaa" . SpecData::$instance->REPLACEMENT_CHARACTER . "aaa"];
     }
 
     /** @dataProvider data1 */

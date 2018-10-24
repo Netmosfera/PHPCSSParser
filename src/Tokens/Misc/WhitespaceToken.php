@@ -52,8 +52,8 @@ class WhitespaceToken implements RootToken
         if($this->_normalizedObject === NULL){
             $this->_normalizedObject = new WhitespaceToken(
                 preg_replace(
-                    '/' . SpecData::NEWLINES_REGEX_SEQS . '/usD',
-                    SpecData::NEWLINE,
+                    '/' . SpecData::$instance->NEWLINES_REGEX_SEQS . '/usD',
+                    SpecData::$instance->NEWLINE,
                     $this->_text
                 )
             );

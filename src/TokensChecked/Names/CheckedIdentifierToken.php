@@ -25,7 +25,7 @@ class CheckedIdentifierToken extends IdentifierToken
                 }
             }elseif(
                 preg_match(
-                    '/^(?:--|-?[' . SpecData::NAME_STARTERS_REGEX_SET . '])/usD',
+                    '/^(?:--|-?[' . SpecData::$instance->NAME_STARTERS_REGEX_SET . '])/usD',
                     $stringifiedFirstPiece
                 ) === 0
             ){

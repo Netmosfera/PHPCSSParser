@@ -33,7 +33,7 @@ class EncodedCodePointEscapeTokenTest extends TestCase
         assertMatch($escape1, $escape2);
         assertMatch((String)$escape1, "\\" . $codePoint);
         if($codePoint === "\0"){
-            $intendedValue = SpecData::REPLACEMENT_CHARACTER;
+            $intendedValue = SpecData::$instance->REPLACEMENT_CHARACTER;
         }else{
             $intendedValue = $codePoint;
         }

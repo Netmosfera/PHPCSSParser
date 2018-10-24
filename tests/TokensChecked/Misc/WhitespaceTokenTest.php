@@ -26,7 +26,7 @@ class WhitespaceTokenTest extends TestCase
         $whitespaces = getWhitespaceSeqsSet();
         $newlines = getNewlineSeqsSet();
         foreach($whitespaces as $WS){
-            $normalizedWS = $newlines->contains($WS) ? SpecData::NEWLINE : $WS;
+            $normalizedWS = $newlines->contains($WS) ? SpecData::$instance->NEWLINE : $WS;
             yield [$WS, $normalizedWS];
             yield ["   " . $WS, "   " . $normalizedWS];
             yield [$WS . "   ", $normalizedWS . "   "];

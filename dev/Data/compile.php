@@ -17,7 +17,6 @@ use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getBadURLRemnantsBitSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getURLTokenBitDisallowedSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getEncodedCodePointEscapeSet;
-use Netmosfera\PHPCSSAST\SpecData;
 
 require __DIR__ . "/../../vendor/autoload.php";
 
@@ -72,7 +71,7 @@ $keyLength = strlen(array_reduce(array_keys($MAKEMAP), function($a, $b){
 $fields = [];
 foreach($MAKEMAP as $name => $value){
     $field  = "    ";
-    $field .= "public const ";
+    $field .= "public $";
     $field .= str_pad($name, $keyLength, " ", STR_PAD_RIGHT);
     $field .= " = " . var_export($value, TRUE) . ";";
     $fields[] = $field;
@@ -83,8 +82,10 @@ $source .= "// phpcs:disable\n\n";
 $source .= "namespace Netmosfera\\PHPCSSAST;\n\n";
 $source .= "class SpecData\n";
 $source .= "{\n";
-$source .= implode("\n", $fields) . "\n";
+$source .= implode("\n", $fields) . "\n\n";
+$source .= "    public static \$instance;\n";
 $source .= "}\n\n";
+$source .= "SpecData::\$instance = new SpecData();\n\n";
 $source .= "// phpcs:enable\n";
 
 $destinationFile = __DIR__ . "/../../src/SpecData.php";

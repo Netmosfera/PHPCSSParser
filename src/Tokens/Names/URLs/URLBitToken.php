@@ -49,7 +49,7 @@ class URLBitToken implements EvaluableToken
         if($this->_value === NULL){
             $this->_value = str_replace(
                 "\0",
-                SpecData::REPLACEMENT_CHARACTER,
+                SpecData::$instance->REPLACEMENT_CHARACTER,
                 $this->_text
             );
         }

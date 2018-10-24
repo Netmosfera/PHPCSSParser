@@ -49,7 +49,7 @@ class StringBitToken implements EvaluableToken
         if($this->_intendedValue === NULL){
             $this->_intendedValue = str_replace(
                 "\0",
-                SpecData::REPLACEMENT_CHARACTER,
+                SpecData::$instance->REPLACEMENT_CHARACTER,
                 $this->_text
             );
         }

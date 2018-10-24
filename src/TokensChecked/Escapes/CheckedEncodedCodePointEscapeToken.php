@@ -12,7 +12,7 @@ class CheckedEncodedCodePointEscapeToken extends EncodedCodePointEscapeToken
     public function __construct(String $codePoint){
         if(
             preg_match(
-                '/^[' . SpecData::ENCODED_CP_ESCAPE_REGEX_SET . ']$/usD',
+                '/^[' . SpecData::$instance->ENCODED_CP_ESCAPE_REGEX_SET . ']$/usD',
                 $codePoint
             ) === 0
         ){

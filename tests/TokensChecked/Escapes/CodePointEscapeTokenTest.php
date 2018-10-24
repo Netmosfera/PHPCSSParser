@@ -60,7 +60,7 @@ class CodePointEscapeTokenTest extends TestCase
         $escape2 = new CheckedCodePointEscapeToken($hexDigits, $ws2);
         assertMatch($escape1, $escape2);
         $codePoint = IntlChar::chr($escape1->integerValue());
-        $intendedValue = $codePoint ?? SpecData::REPLACEMENT_CHARACTER;
+        $intendedValue = $codePoint ?? SpecData::$instance->REPLACEMENT_CHARACTER;
         $isValid = $codePoint !== NULL;
         assertMatch((String)$escape1, "\\" . $hexDigits . $ws);
         assertMatch($escape1->hexDigits(), $hexDigits);

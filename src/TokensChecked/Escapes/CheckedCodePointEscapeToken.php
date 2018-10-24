@@ -16,7 +16,7 @@ class CheckedCodePointEscapeToken extends CodePointEscapeToken
     ){
         if(
             preg_match(
-                '/^[' . SpecData::HEX_DIGITS_REGEX_SET . ']{1,6}$/usD',
+                '/^[' . SpecData::$instance->HEX_DIGITS_REGEX_SET . ']{1,6}$/usD',
                 $hexDigits
             ) === 0 || (
                 $terminator !== NULL &&

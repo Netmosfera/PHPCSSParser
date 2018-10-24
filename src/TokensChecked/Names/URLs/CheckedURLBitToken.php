@@ -12,7 +12,7 @@ class CheckedURLBitToken extends URLBitToken
     public function __construct(String $text){
         if(
             preg_match(
-                '/^[' . SpecData::URL_TOKEN_BIT_CPS_REGEX_SET . ']+$/usD',
+                '/^[' . SpecData::$instance->URL_TOKEN_BIT_CPS_REGEX_SET . ']+$/usD',
                 $text
             ) === 0
         ){

@@ -72,7 +72,7 @@ class CodePointEscapeToken implements ValidEscapeToken
         if($this->_intendedValue === NULL){
             $this->_intendedValue = IntlChar::chr(
                 $this->integerValue()
-            ) ?? SpecData::REPLACEMENT_CHARACTER;
+            ) ?? SpecData::$instance->REPLACEMENT_CHARACTER;
         }
         return $this->_intendedValue;
     }
