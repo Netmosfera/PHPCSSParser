@@ -7,9 +7,13 @@ use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 
 function eatNumberToken(
     Traverser $traverser,
-    String $digitRegexSet = SpecData::DIGITS_REGEX_SET,
+    ?String $digitRegexSet = NULL,
     String $NumberTokenClass = NumberToken::CLASS
 ): ?NumberToken{
+
+    if(isset($digitRegexSet));else{
+        $digitRegexSet = SpecData::DIGITS_REGEX_SET;
+    }
 
     $matches = $traverser->eatPatterns("
         (?P<sign>[-+]?)

@@ -14,8 +14,8 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLBitToken;
 function eatURLToken(
     Traverser $traverser,
     IdentifierToken $URL,
-    String $whitespaceRegexSet = SpecData::WHITESPACES_REGEX_SET,
-    String $blacklistedCodePointsRegexSet = SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET,
+    ?String $whitespaceRegexSet = NULL,
+    ?String $blacklistedCodePointsRegexSet = NULL,
     ?Closure $eatValidEscape = NULL,
     ?Closure $eatBadURLRemnants = NULL,
     String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS,
@@ -23,9 +23,19 @@ function eatURLToken(
     String $URLTokenClass = CheckedURLToken::CLASS,
     String $BadURLTokenClass = CheckedBadURLToken::CLASS
 ): ?AnyURLToken{
+
+    if(isset($whitespaceRegexSet));else{
+        $whitespaceRegexSet = SpecData::WHITESPACES_REGEX_SET;
+    }
+
+    if(isset($blacklistedCodePointsRegexSet));else{
+        $blacklistedCodePointsRegexSet = SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET;
+    }
+
     if(isset($eatValidEscape));else{
         $eatValidEscape = __NAMESPACE__ . "\\eatValidEscapeToken";
     }
+
     if(isset($eatBadURLRemnants));else{
         $eatBadURLRemnants = __NAMESPACE__ . "\\eatBadURLRemnantsToken";
     }

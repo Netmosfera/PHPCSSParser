@@ -10,13 +10,20 @@ use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
 function eatIdentifierToken(
     Traverser $traverser,
-    String $nameStartRegexSet = SpecData::NAME_STARTERS_BYTES_REGEX_SET,
-    String $nameRegexSet = SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
+    ?String $nameStartRegexSet = NULL,
+    ?String $nameRegexSet = NULL,
     ?Closure $eatValidEscapeToken = NULL,
     String $NameBitTokenClass = NameBitToken::CLASS,
     String $NameTokenClass = NameToken::CLASS,
     String $IdentifierTokenClass = IdentifierToken::CLASS
 ): ?IdentifierToken{
+
+    if(isset($nameStartRegexSet));else{
+        $nameStartRegexSet = SpecData::NAME_STARTERS_BYTES_REGEX_SET;
+    }
+    if(isset($nameRegexSet));else{
+        $nameRegexSet = SpecData::NAME_COMPONENTS_BYTES_REGEX_SET;
+    }
     if(isset($eatValidEscapeToken));else{
         $eatValidEscapeToken = __NAMESPACE__ . "\\eatValidEscapeToken";
     }

@@ -9,11 +9,16 @@ use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 
 function eatNameToken(
     Traverser $traverser,
-    String $nameRegexSet = SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
+    ?String $nameRegexSet = NULL,
     ?Closure $eatValidEscapeToken = NULL,
     String $NameBitTokenClass = NameBitToken::CLASS,
     String $NameTokenClass = NameToken::CLASS
 ): ?NameToken{
+
+    if(isset($nameRegexSet));else{
+        $nameRegexSet = SpecData::NAME_COMPONENTS_BYTES_REGEX_SET;
+    }
+
     if(isset($eatValidEscapeToken));else{
         $eatValidEscapeToken = __NAMESPACE__ . "\\eatValidEscapeToken";
     }

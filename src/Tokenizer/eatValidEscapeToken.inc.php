@@ -18,6 +18,14 @@ function eatValidEscapeToken(
     String $EncodedCodePointEscapeTokenClass = EncodedCodePointEscapeToken::CLASS
 ): ?ValidEscapeToken{
 
+    if(isset($hexDigitRegexSet));else{
+        $hexDigitRegexSet = SpecData::HEX_DIGITS_REGEX_SET;
+    }
+
+    if(isset($whitespaceRegex));else{
+        $whitespaceRegex = SpecData::WHITESPACES_REGEX_SEQS;
+    }
+
     $beforeBackslash = $traverser->index;
 
     if($traverser->eatString("\\") === NULL){

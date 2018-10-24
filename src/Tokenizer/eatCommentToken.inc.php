@@ -4,7 +4,6 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use function mb_substr;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
 
 function eatCommentToken(
     Traverser $traverser,

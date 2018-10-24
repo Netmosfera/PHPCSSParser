@@ -11,12 +11,17 @@ use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 
 function eatStringToken(
     Traverser $traverser,
-    String $newlineRegexSet = SpecData::NEWLINES_REGEX_SET,
+    ?String $newlineRegexSet = NULL,
     ?Closure $eatEscapeToken = NULL,
     String $StringBitTokenClass = StringBitToken::CLASS,
     String $StringTokenClass = StringToken::CLASS,
     String $BadStringTokenClass = BadStringToken::CLASS
 ): ?AnyStringToken{
+
+    if(isset($newlineRegexSet));else{
+        $newlineRegexSet = SpecData::NEWLINES_REGEX_SET;
+    }
+
     if(isset($eatEscapeToken));else{
         $eatEscapeToken = __NAMESPACE__ . "\\eatEscapeToken";
     }

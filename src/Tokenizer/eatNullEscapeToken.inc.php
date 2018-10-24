@@ -9,10 +9,14 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
 
 function eatNullEscapeToken(
     Traverser $traverser,
-    String $newlineRegex = SpecData::NEWLINES_REGEX_SEQS,
+    String $newlineRegex = NULL,
     String $EOFEscapeTokenClass = EOFEscapeToken::CLASS,
     String $ContinuationEscapeTokenClass = ContinuationEscapeToken::CLASS
 ): ?NullEscapeToken{
+
+    if(isset($newlineRegex));else{
+        $newlineRegex = SpecData::NEWLINES_REGEX_SEQS;
+    }
 
     $beforeBackslash = $traverser->index;
 

@@ -10,9 +10,11 @@ function eatWhitespaceToken(
     String $whitespaceRegexSet = SpecData::WHITESPACES_REGEX_SET,
     String $WhitespaceTokenClass = WhitespaceToken::CLASS
 ): ?WhitespaceToken{
+
     $whitespaces = $traverser->eatPattern('[' . $whitespaceRegexSet . ']+');
     if(isset($whitespaces)){
         return new $WhitespaceTokenClass($whitespaces);
     }
+
     return NULL;
 }
