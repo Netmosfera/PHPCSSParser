@@ -38,6 +38,11 @@ class URLBitToken implements EvaluableToken
     }
 
     /** @inheritDoc */
+    public function newlineCount(): Int{
+        return 0;
+    }
+
+    /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&

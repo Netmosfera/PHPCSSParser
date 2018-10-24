@@ -33,6 +33,12 @@ class NameToken implements EvaluableToken
     private $_stringified;
 
     /**
+     * @var         Int
+     * `Int`
+     */
+    private $_newlineCount;
+
+    /**
      * @param       NameBitToken[]|ValidEscapeToken[] $pieces
      * `Array<Int, NameBitToken|ValidEscapeToken>`
      * The {@see NameToken}'s components.
@@ -47,6 +53,18 @@ class NameToken implements EvaluableToken
             $this->_stringified = implode("", $this->_pieces);
         }
         return $this->_stringified;
+    }
+
+    /** @inheritDoc */
+    public function newlineCount(): Int{
+        if($this->_newlineCount === NULL){
+            $count = 0;
+            foreach($this->_pieces as $piece){
+                $count += $piece->newlineCount();
+            }
+            $this->_newlineCount = $count;
+        }
+        return $this->_newlineCount;
     }
 
     /** @inheritDoc */

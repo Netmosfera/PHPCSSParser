@@ -33,6 +33,11 @@ class StringBitToken implements EvaluableToken
     }
 
     /** @inheritDoc */
+    public function newlineCount(): Int{
+        return 0;
+    }
+
+    /** @inheritDoc */
     public function __toString(): String{
         return $this->_text;
     }

@@ -25,6 +25,12 @@ class BadURLRemnantsToken implements Token
     private $_EOFTerminated;
 
     /**
+     * @var         Int
+     * `Int`
+     */
+    private $_newlineCount;
+
+    /**
      * @param       BadURLRemnantsBitToken[]|EscapeToken[] $pieces
      * `Array<Int, BadURLRemnantsBitToken|EscapeToken>`
      * @TODOC
@@ -43,6 +49,18 @@ class BadURLRemnantsToken implements Token
         return
             implode("", $this->_pieces) .
             ($this->_EOFTerminated ? "" : ")");
+    }
+
+    /** @inheritDoc */
+    public function newlineCount(): Int{
+        if($this->_newlineCount === NULL){
+            $count = 0;
+            foreach($this->_pieces as $piece){
+                $count += $piece->newlineCount();
+            }
+            $this->_newlineCount = $count;
+        }
+        return $this->_newlineCount;
     }
 
     /** @inheritDoc */

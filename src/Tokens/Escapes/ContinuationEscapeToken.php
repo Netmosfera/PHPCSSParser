@@ -42,6 +42,11 @@ class ContinuationEscapeToken implements NullEscapeToken
     }
 
     /** @inheritDoc */
+    public function newlineCount(): Int{
+        return 1;
+    }
+
+    /** @inheritDoc */
     public function intendedValue(): String{
         return "";
     }

@@ -7,8 +7,7 @@ use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 use Netmosfera\PHPCSSAST\SpecData;
 
 /**
- * A {@see NameBitToken} is sequence of {@see SpecData::NAME_ITEMS_SET} code
- * points.
+ * @TODOC
  */
 class NameBitToken implements EvaluableToken
 {
@@ -27,7 +26,7 @@ class NameBitToken implements EvaluableToken
     /**
      * @param       String $text
      * `String`
-     * The sequence of {@see SpecData::NAME_ITEMS_SET} code points.
+     * @TODOC
      */
     public function __construct(String $text){
         $this->_text = $text;
@@ -36,6 +35,11 @@ class NameBitToken implements EvaluableToken
     /** @inheritDoc */
     public function __toString(): String{
         return $this->_text;
+    }
+
+    /** @inheritDoc */
+    public function newlineCount(): Int{
+        return 0;
     }
 
     /** @inheritDoc */

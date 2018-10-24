@@ -43,6 +43,12 @@ class BadURLToken implements AnyURLToken
     private $_stringValue;
 
     /**
+     * @var         Int
+     * `Int`
+     */
+    private $_newlineCount;
+
+    /**
      * @param       IdentifierToken $identifier
      * `IdentifierToken`
      * @TODOC
@@ -81,6 +87,18 @@ class BadURLToken implements AnyURLToken
                 $this->_remnants;
         }
         return $this->_stringValue;
+    }
+
+    /** @inheritDoc */
+    public function newlineCount(): Int{
+        if($this->_newlineCount === NULL){
+            $count = $this->_remnants->newlineCount();
+            foreach($this->_pieces as $piece){
+                $count += $piece->newlineCount();
+            }
+            $this->_newlineCount = $count;
+        }
+        return $this->_newlineCount;
     }
 
     /** @inheritDoc */

@@ -19,6 +19,7 @@ use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\DimensionToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\PercentageToken;
+use Netmosfera\PHPCSSAST\Tokens\RootToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
@@ -207,6 +208,7 @@ class StandardTokenizer
         };
     }
 
+    /** @return RootToken[] */
     public function tokenize(String $CSSCode): array{
         $traverser = new Traverser($CSSCode);
 

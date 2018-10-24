@@ -24,6 +24,12 @@ class BadURLRemnantsBitToken implements EvaluableToken
     private $_intendedValue;
 
     /**
+     * @var         Int
+     * `Int`
+     */
+    private $_newlineCount;
+
+    /**
      * @param       String $text
      * `String`
      * @TODOC
@@ -38,6 +44,17 @@ class BadURLRemnantsBitToken implements EvaluableToken
     }
 
     /** @inheritDoc */
+    public function newlineCount(): Int{
+        if($this->_newlineCount === NULL){
+            $this->_newlineCount = preg_match_all(
+                "/(" . SpecData::NEWLINES_REGEX_SEQS. ")/usD",
+                $this->_text
+            );
+        }
+        return $this->_newlineCount;
+    }
+
+    /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&
@@ -45,7 +62,7 @@ class BadURLRemnantsBitToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    public function intendedValue(): String{
+    public function intendedValue(): String{ // @TODO i have no idea why i added this
         if($this->_intendedValue === NULL){
             $this->_intendedValue = str_replace(
                 "\0",

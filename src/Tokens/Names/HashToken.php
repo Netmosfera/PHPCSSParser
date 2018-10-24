@@ -31,6 +31,11 @@ class HashToken implements Token
     }
 
     /** @inheritDoc */
+    public function newlineCount(): Int{
+        return $this->_name->newlineCount();
+    }
+
+    /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&

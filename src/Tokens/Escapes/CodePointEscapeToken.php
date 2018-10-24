@@ -60,6 +60,11 @@ class CodePointEscapeToken implements ValidEscapeToken
     }
 
     /** @inheritDoc */
+    public function newlineCount(): Int{
+        return $this->_terminator === NULL ? 0 : $this->_terminator->newlineCount();
+    }
+
+    /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&

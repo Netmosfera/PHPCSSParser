@@ -30,6 +30,11 @@ class FunctionToken implements IdentifierLikeToken
     }
 
     /** @inheritDoc */
+    public function newlineCount(): Int{
+        return $this->_identifier->newlineCount();
+    }
+
+    /** @inheritDoc */
     public function equals($other): Bool{
         return
             $other instanceof self &&

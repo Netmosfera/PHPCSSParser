@@ -37,6 +37,12 @@ class BadStringToken implements AnyStringToken
     private $_intendedValue;
 
     /**
+     * @var         Int
+     * `Int`
+     */
+    private $_newlineCount;
+
+    /**
      * @param       String $delimiter
      * `String`
      * @TODOC
@@ -53,6 +59,18 @@ class BadStringToken implements AnyStringToken
     /** @inheritDoc */
     public function __toString(): String{
         return $this->_delimiter . implode("", $this->_pieces);
+    }
+
+    /** @inheritDoc */
+    public function newlineCount(): Int{
+        if($this->_newlineCount === NULL){
+            $count = 0;
+            foreach($this->_pieces as $piece){
+                $count += $piece->newlineCount();
+            }
+            $this->_newlineCount = $count;
+        }
+        return $this->_newlineCount;
     }
 
     /** @inheritDoc */

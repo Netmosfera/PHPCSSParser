@@ -2,7 +2,9 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
+use function explode;
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
@@ -31,6 +33,12 @@ class CommentToken implements RootToken
     private $_stringValue;
 
     /**
+     * @var         Int
+     * `Int`
+     */
+    private $_newlineCount;
+
+    /**
      * @param       String $text
      * `String`
      * The comment's text.
@@ -51,6 +59,17 @@ class CommentToken implements RootToken
             $this->_stringValue .= $this->_EOFTerminated ? "" : "*/";
         }
         return $this->_stringValue;
+    }
+
+    /** @inheritDoc */
+    public function newlineCount(): Int{
+        if($this->_newlineCount === NULL){
+            $this->_newlineCount = preg_match_all(
+                "/(" . SpecData::NEWLINES_REGEX_SEQS. ")/usD",
+                $this->_text
+            );
+        }
+        return $this->_newlineCount;
     }
 
     /** @inheritDoc */

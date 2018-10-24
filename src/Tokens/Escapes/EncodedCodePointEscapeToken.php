@@ -35,6 +35,11 @@ class EncodedCodePointEscapeToken implements ValidEscapeToken
     }
 
     /** @inheritDoc */
+    public function newlineCount(): Int{
+        return 0;
+    }
+
+    /** @inheritDoc */
     public function intendedValue(): String{
         return $this->_codePoint === "\0" ?
             SpecData::REPLACEMENT_CHARACTER :

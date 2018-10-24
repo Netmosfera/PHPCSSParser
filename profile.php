@@ -1,6 +1,7 @@
 <?php
 
 use Netmosfera\PHPCSSAST\Tokenizer\StandardTokenizer;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
 require(__DIR__ . "/vendor/autoload.php");
 
@@ -15,3 +16,20 @@ foreach($tokens as $token){
     $rebuild .= (String)$token;
 }
 file_put_contents(__DIR__ . "/tmp/test_rebuilt.css", $rebuild);
+
+
+
+
+$countNewlines = 0;
+foreach($tokens as $token){
+    if($token instanceof IdentifierToken && $token->name()->intendedValue() === "aaaaaaaaaaaaaaaaaaaaaaaaaaaaxxxxxxxxxxxxxxxxxx"){
+        $save = $countNewlines;
+    }
+    $countNewlines += $token->newlineCount();
+}
+echo $countNewlines + 1 . "\n";
+echo $save + 1 . "\n";
+
+
+
+

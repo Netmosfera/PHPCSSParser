@@ -35,6 +35,12 @@ class StringToken implements AnyStringToken
     private $_intendedValue;
 
     /**
+     * @var         Int
+     * `Int`
+     */
+    private $_newlineCount;
+
+    /**
      * @param       String $delimiter
      * `String`
      * @TODOC
@@ -63,6 +69,18 @@ class StringToken implements AnyStringToken
             $this->_delimiter .
             implode("", $this->_pieces) .
             ($this->_EOFTerminated ? "" : $this->_delimiter);
+    }
+
+    /** @inheritDoc */
+    public function newlineCount(): Int{
+        if($this->_newlineCount === NULL){
+            $count = 0;
+            foreach($this->_pieces as $piece){
+                $count += $piece->newlineCount();
+            }
+            $this->_newlineCount = $count;
+        }
+        return $this->_newlineCount;
     }
 
     /** @inheritDoc */

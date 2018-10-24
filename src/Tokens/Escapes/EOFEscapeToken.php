@@ -18,6 +18,11 @@ class EOFEscapeToken implements NullEscapeToken
     }
 
     /** @inheritDoc */
+    public function newlineCount(): Int{
+        return 0;
+    }
+
+    /** @inheritDoc */
     public function intendedValue(): String{
         return "";
     }

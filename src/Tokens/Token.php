@@ -9,4 +9,12 @@ interface Token
 {
     /** @inheritDoc */
     public function __toString(): String;
+
+    /**
+     * Returns the count of newlines appearing in this token.
+     *
+     * @returns     Int
+     * Returns the count of newlines appearing in this token.
+     */
+    function newlineCount(): Int;
 }
