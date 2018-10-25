@@ -81,6 +81,11 @@ class StringToken implements AnyStringToken
     }
 
     /** @inheritDoc */
+    public function isParseError(): Bool{
+        return $this->_EOFTerminated;
+    }
+
+    /** @inheritDoc */
     public function newlineCount(): Int{
         if($this->_newlineCount === NULL){
             $count = 0;

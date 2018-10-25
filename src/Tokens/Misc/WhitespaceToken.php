@@ -47,6 +47,11 @@ class WhitespaceToken implements RootToken
     }
 
     /** @inheritDoc */
+    public function isParseError(): Bool{
+        return FALSE;
+    }
+
+    /** @inheritDoc */
     public function newlineCount(): Int{
         if($this->_newlineCount === NULL){
             $this->_newlineCount = preg_match_all(

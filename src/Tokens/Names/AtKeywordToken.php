@@ -31,6 +31,11 @@ class AtKeywordToken implements RootToken
     }
 
     /** @inheritDoc */
+    public function isParseError(): Bool{
+        return FALSE;
+    }
+
+    /** @inheritDoc */
     public function newlineCount(): Int{
         return $this->_identifier->newlineCount();
     }

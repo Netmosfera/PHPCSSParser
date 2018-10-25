@@ -42,6 +42,11 @@ class DimensionToken implements NumericToken
     }
 
     /** @inheritDoc */
+    public function isParseError(): Bool{
+        return FALSE;
+    }
+
+    /** @inheritDoc */
     public function newlineCount(): Int{
         return $this->_unit->newlineCount();
     }

@@ -6,4 +6,12 @@ namespace Netmosfera\PHPCSSAST\Tokens;
  * @TODOC
  */
 interface RootToken extends Token
-{}
+{
+    /**
+     * Tells whether the token represents a parse error.
+     *
+     * @return      Bool
+     * `Bool`
+     */
+    public function isParseError(): Bool;
+}

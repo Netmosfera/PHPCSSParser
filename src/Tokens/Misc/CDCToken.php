@@ -23,6 +23,11 @@ class CDCToken implements RootToken
     }
 
     /** @inheritDoc */
+    public function isParseError(): Bool{
+        return FALSE;
+    }
+
+    /** @inheritDoc */
     public function newlineCount(): Int{
         return 0;
     }

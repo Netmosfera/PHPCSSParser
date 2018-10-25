@@ -90,6 +90,11 @@ class BadURLToken implements AnyURLToken
     }
 
     /** @inheritDoc */
+    public function isParseError(): Bool{
+        return TRUE;
+    }
+
+    /** @inheritDoc */
     public function newlineCount(): Int{
         if($this->_newlineCount === NULL){
             $count = $this->_remnants->newlineCount();

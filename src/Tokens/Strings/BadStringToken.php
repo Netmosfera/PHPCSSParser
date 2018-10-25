@@ -62,6 +62,11 @@ class BadStringToken implements AnyStringToken
     }
 
     /** @inheritDoc */
+    public function isParseError(): Bool{
+        return TRUE;
+    }
+
+    /** @inheritDoc */
     public function newlineCount(): Int{
         if($this->_newlineCount === NULL){
             $count = 0;

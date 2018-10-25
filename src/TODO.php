@@ -4,8 +4,6 @@
 
 // @TODO check that all functions have the return type
 
-// @TODO add method to determine whether a token represents a parse error
-
 // @TODO use "Tokens" collection in TokenStream
 
 // @TODO make checked versions of the parser's nodes
