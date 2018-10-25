@@ -9,7 +9,7 @@ use Netmosfera\PHPCSSAST\Nodes\SimpleBlockNode;
 use Netmosfera\PHPCSSAST\Nodes\ListOfRulesNode;
 use Netmosfera\PHPCSSAST\Nodes\QualifiedRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
-use Netmosfera\PHPCSSAST\Tokenizer\StandardTokenizer;
+use Netmosfera\PHPCSSAST\Tokenizer\FastTokenizer;
 use function Netmosfera\PHPCSSAST\Parser\eatListOfRulesNode;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
@@ -75,7 +75,7 @@ class eatListOfRulesNodeTest extends TestCase
     function test1(array $pieces){
         $rules = new ListOfRulesNode($pieces, TRUE);
 
-        $tokenizer = new StandardTokenizer(function(array $tokens): Tokens{
+        $tokenizer = new FastTokenizer(function(array $tokens): Tokens{
             return new Tokens($tokens);
         });
 

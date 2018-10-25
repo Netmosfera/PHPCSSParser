@@ -4,10 +4,10 @@ namespace Netmosfera\PHPCSSASTTests\Parser;
 
 use Error;
 use Netmosfera\PHPCSSAST\Tokens\Tokens;
-use Netmosfera\PHPCSSAST\Tokenizer\StandardTokenizer;
+use Netmosfera\PHPCSSAST\Tokenizer\FastTokenizer;
 
 function getToken(String $css){
-    $tokenizer = new StandardTokenizer(function(array $tokens): Tokens{
+    $tokenizer = new FastTokenizer(function(array $tokens): Tokens{
         return new Tokens($tokens);
     });
     $tokens = $tokenizer->tokenize($css)->tokens();

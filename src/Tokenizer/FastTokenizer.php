@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
 use Netmosfera\PHPCSSAST\SpecData;
+use Netmosfera\PHPCSSAST\Tokens\Tokens;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
@@ -32,32 +33,31 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Tokens;
 
-class StandardTokenizer
+class FastTokenizer
 {
-    private $tokensFactory;
+    private $_tokensFactory;
 
-    private $eatIdentifier;
-    private $eatIdentifierLike;
-    private $eatWhitespace;
-    private $eatNumeric;
-    private $eatHash;
-    private $eatString;
-    private $eatAtKeyword;
-    private $eatComment;
-    private $eatNumber;
-    private $eatName;
-    private $eatBadURLRemnants;
-    private $eatURL;
-    private $eatEscape;
-    private $eatNullEscape;
-    private $eatValidEscape;
+    private $_eatIdentifier;
+    private $_eatIdentifierLike;
+    private $_eatWhitespace;
+    private $_eatNumeric;
+    private $_eatHash;
+    private $_eatString;
+    private $_eatAtKeyword;
+    private $_eatComment;
+    private $_eatNumber;
+    private $_eatName;
+    private $_eatBadURLRemnants;
+    private $_eatURL;
+    private $_eatEscape;
+    private $_eatNullEscape;
+    private $_eatValidEscape;
 
     public function __construct(Closure $tokensFactory){
-        $this->tokensFactory = $tokensFactory;
+        $this->_tokensFactory = $tokensFactory;
 
-        $this->eatNumber = function(Traverser $traverser): ?NumberToken{
+        $this->_eatNumber = function(Traverser $traverser): ?NumberToken{
             return eatNumberToken(
                 $traverser,
                 SpecData::DIGITS_REGEX_SET,
@@ -65,27 +65,27 @@ class StandardTokenizer
             );
         };
 
-        $this->eatName = function(Traverser $traverser): ?NameToken{
+        $this->_eatName = function(Traverser $traverser): ?NameToken{
             return eatNameToken(
                 $traverser,
                 SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
-                $this->eatValidEscape,
+                $this->_eatValidEscape,
                 NameBitToken::CLASS,
                 NameToken::CLASS
             );
         };
 
-        $this->eatBadURLRemnants = function(
+        $this->_eatBadURLRemnants = function(
             Traverser $traverser
         ): BadURLRemnantsToken{
             return eatBadURLRemnantsToken(
                 $traverser,
-                $this->eatEscape,
+                $this->_eatEscape,
                 BadURLRemnantsToken::CLASS
             );
         };
 
-        $this->eatURL = function(
+        $this->_eatURL = function(
             Traverser $traverser,
             IdentifierToken $URL
         ): ?AnyURLToken{
@@ -94,8 +94,8 @@ class StandardTokenizer
                 $URL,
                 SpecData::WHITESPACES_REGEX_SET,
                 SpecData::URL_TOKEN_BIT_NOT_CPS_REGEX_SET,
-                $this->eatValidEscape,
-                $this->eatBadURLRemnants,
+                $this->_eatValidEscape,
+                $this->_eatBadURLRemnants,
                 WhitespaceToken::CLASS,
                 URLBitToken::CLASS,
                 URLToken::CLASS,
@@ -103,13 +103,13 @@ class StandardTokenizer
             );
         };
 
-        $this->eatEscape = function(Traverser $traverser): ?EscapeToken{
+        $this->_eatEscape = function(Traverser $traverser): ?EscapeToken{
             return
-                ($this->eatValidEscape)($traverser) ??
-                ($this->eatNullEscape)($traverser);
+                ($this->_eatValidEscape)($traverser) ??
+                ($this->_eatNullEscape)($traverser);
         };
 
-        $this->eatNullEscape = function(
+        $this->_eatNullEscape = function(
             Traverser $traverser
         ): ?ValidEscapeToken{
             return eatNullEscapeToken(
@@ -120,7 +120,7 @@ class StandardTokenizer
             );
         };
 
-        $this->eatValidEscape = function(
+        $this->_eatValidEscape = function(
             Traverser $traverser
         ): ?ValidEscapeToken{
             return eatValidEscapeToken(
@@ -133,32 +133,32 @@ class StandardTokenizer
             );
         };
 
-        $this->eatIdentifier = function(
+        $this->_eatIdentifier = function(
             Traverser $traverser
         ): ?IdentifierToken{
             return eatIdentifierToken(
                 $traverser,
                 SpecData::NAME_STARTERS_BYTES_REGEX_SET,
                 SpecData::NAME_COMPONENTS_BYTES_REGEX_SET,
-                $this->eatValidEscape,
+                $this->_eatValidEscape,
                 NameBitToken::CLASS,
                 NameToken::CLASS,
                 IdentifierToken::CLASS
             );
         };
 
-        $this->eatIdentifierLike = function(
+        $this->_eatIdentifierLike = function(
             Traverser $traverser
         ): ?IdentifierLikeToken{
             return eatIdentifierLikeToken(
                 $traverser,
-                $this->eatIdentifier,
-                $this->eatURL,
+                $this->_eatIdentifier,
+                $this->_eatURL,
                 FunctionToken::CLASS
             );
         };
 
-        $this->eatWhitespace = function(
+        $this->_eatWhitespace = function(
             Traverser $traverser
         ): ?WhitespaceToken{
             return eatWhitespaceToken(
@@ -168,44 +168,44 @@ class StandardTokenizer
             );
         };
 
-        $this->eatNumeric = function(Traverser $traverser): ?NumericToken{
+        $this->_eatNumeric = function(Traverser $traverser): ?NumericToken{
             return eatNumericToken(
                 $traverser,
-                $this->eatNumber,
-                $this->eatIdentifier,
+                $this->_eatNumber,
+                $this->_eatIdentifier,
                 PercentageToken::CLASS,
                 DimensionToken::CLASS
             );
         };
 
-        $this->eatHash = function(Traverser $traverser): ?HashToken{
+        $this->_eatHash = function(Traverser $traverser): ?HashToken{
             return eatHashToken(
                 $traverser,
-                $this->eatName,
+                $this->_eatName,
                 HashToken::CLASS
             );
         };
 
-        $this->eatString = function(Traverser $traverser): ?StringToken{
+        $this->_eatString = function(Traverser $traverser): ?StringToken{
             return eatStringToken(
                 $traverser,
                 SpecData::NEWLINES_REGEX_SET,
-                $this->eatEscape,
+                $this->_eatEscape,
                 StringBitToken::CLASS
             );
         };
 
-        $this->eatAtKeyword = function(
+        $this->_eatAtKeyword = function(
             Traverser $traverser
         ): ?AtKeywordToken{
             return eatAtKeywordToken(
                 $traverser,
-                $this->eatIdentifier,
+                $this->_eatIdentifier,
                 AtKeywordToken::CLASS
             );
         };
 
-        $this->eatComment = function(Traverser $traverser): ?CommentToken{
+        $this->_eatComment = function(Traverser $traverser): ?CommentToken{
             return eatCommentToken(
                 $traverser,
                 CommentToken::CLASS
@@ -232,13 +232,13 @@ class StandardTokenizer
         while(isset($traverser->data[$traverser->index])){
             $tokens[] = eatToken(
                 $traverser,
-                $this->eatIdentifierLike,
-                $this->eatWhitespace,
-                $this->eatNumeric,
-                $this->eatHash,
-                $this->eatString,
-                $this->eatAtKeyword,
-                $this->eatComment,
+                $this->_eatIdentifierLike,
+                $this->_eatWhitespace,
+                $this->_eatNumeric,
+                $this->_eatHash,
+                $this->_eatString,
+                $this->_eatAtKeyword,
+                $this->_eatComment,
                 $colonToken,
                 $commaToken,
                 $leftCurlyBracketToken,
@@ -252,6 +252,6 @@ class StandardTokenizer
             );
         }
 
-        return ($this->tokensFactory)($tokens);
+        return ($this->_tokensFactory)($tokens);
     }
 }
