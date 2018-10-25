@@ -21,12 +21,12 @@ use PHPUnit\Framework\TestCase;
  */
 class eatComponentValueNodeTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         return cartesianProduct([FALSE, TRUE]);
     }
 
     /** @dataProvider data1 */
-    function test1(Bool $testPrefix){
+    public function test1(Bool $testPrefix){
         $componentValue = NULL;
 
         $stream = getTokenStream($testPrefix, "");
@@ -36,12 +36,12 @@ class eatComponentValueNodeTest extends TestCase
         assertMatch(stringifyTokens($stream), "");
     }
 
-    function data2(){
+    public function data2(){
         return cartesianProduct([FALSE, TRUE], ANY_CSS());
     }
 
     /** @dataProvider data2 */
-    function test2(Bool $testPrefix, String $rest){
+    public function test2(Bool $testPrefix, String $rest){
         $componentValues = [new PreservedTokenNode(getToken("foo"))];
         $componentValue = new FunctionNode(getToken("foo("), $componentValues, FALSE);
 
@@ -52,12 +52,12 @@ class eatComponentValueNodeTest extends TestCase
         assertMatch(stringifyTokens($stream), $rest);
     }
 
-    function data3(){
+    public function data3(){
         return cartesianProduct([FALSE, TRUE], ANY_CSS());
     }
 
     /** @dataProvider data3 */
-    function test3(Bool $testPrefix, String $rest){
+    public function test3(Bool $testPrefix, String $rest){
         $componentValues = [new PreservedTokenNode(getToken("foo"))];
         $componentValue = new SimpleBlockNode("{", $componentValues, FALSE);
 
@@ -68,12 +68,12 @@ class eatComponentValueNodeTest extends TestCase
         assertMatch(stringifyTokens($stream), $rest);
     }
 
-    function data4(){
+    public function data4(){
         return cartesianProduct([FALSE, TRUE], ANY_CSS(" not starting with identifier"));
     }
 
     /** @dataProvider data4 */
-    function test4(Bool $testPrefix, String $rest){
+    public function test4(Bool $testPrefix, String $rest){
         $componentValue = new PreservedTokenNode(getToken("123deg"));
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);

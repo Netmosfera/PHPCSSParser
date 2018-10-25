@@ -22,12 +22,12 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatAtRuleNodeTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         return cartesianProduct([FALSE, TRUE]);
     }
 
     /** @dataProvider data1 */
-    function test1(Bool $testPrefix){
+    public function test1(Bool $testPrefix){
         $atRule = NULL;
 
         $stream = getTokenStream($testPrefix, "");
@@ -37,12 +37,12 @@ class eatAtRuleNodeTest extends TestCase
         assertMatch(stringifyTokens($stream), "");
     }
 
-    function data2(){
+    public function data2(){
         return cartesianProduct([FALSE, TRUE], ANY_CSS("not starting with an at-token"));
     }
 
     /** @dataProvider data2 */
-    function test2(Bool $testPrefix, String $rest){
+    public function test2(Bool $testPrefix, String $rest){
         $atRule = NULL;
 
         $stream = getTokenStream($testPrefix, $rest);
@@ -52,7 +52,7 @@ class eatAtRuleNodeTest extends TestCase
         assertMatch(stringifyTokens($stream), $rest);
     }
 
-    function data345(){
+    public function data345(){
         $preludePieces[] = new PreservedTokenNode(getToken(" "));
         $preludePieces[] = new PreservedTokenNode(getToken("foo"));
         $preludePieces[] = new PreservedTokenNode(getToken(" "));
@@ -82,7 +82,7 @@ class eatAtRuleNodeTest extends TestCase
     }
 
     /** @dataProvider data345 */
-    function test3(Bool $testPrefix, array $preludePieces){
+    public function test3(Bool $testPrefix, array $preludePieces){
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, NULL);
 
         $stream = getTokenStream($testPrefix, $atRule . "");
@@ -93,7 +93,7 @@ class eatAtRuleNodeTest extends TestCase
     }
 
     /** @dataProvider data345 */
-    function test4(Bool $testPrefix, array $preludePieces, String $rest){
+    public function test4(Bool $testPrefix, array $preludePieces, String $rest){
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, ";");
 
         $stream = getTokenStream($testPrefix, $atRule . $rest);
@@ -104,7 +104,7 @@ class eatAtRuleNodeTest extends TestCase
     }
 
     /** @dataProvider data345 */
-    function test5(Bool $testPrefix, array $preludePieces, String $rest){
+    public function test5(Bool $testPrefix, array $preludePieces, String $rest){
         $blockComponents = [new PreservedTokenNode(getToken("foo"))];
         $block = new SimpleBlockNode("{", $blockComponents, FALSE);
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, $block);

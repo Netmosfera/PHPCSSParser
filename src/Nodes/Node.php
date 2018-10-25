@@ -4,5 +4,5 @@ namespace Netmosfera\PHPCSSAST\Nodes;
 
 interface Node
 {
-    function __toString(): String;
+    public function __toString(): String;
 }

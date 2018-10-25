@@ -30,7 +30,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class BadURLRemnantsTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $pieces1 = makePiecesSample(makeBadURLRemnantsPieceAfterPieceFunction(FALSE), FALSE);
         $pieces2 = makePiecesSample(makeBadURLRemnantsPieceAfterPieceFunction(FALSE), FALSE);
         $groupedPieces = groupByOffset($pieces1, $pieces2);
@@ -48,7 +48,7 @@ class BadURLRemnantsTokenTest extends TestCase
         assertMatch($name1->pieces(), $pieces2);
     }
 
-    function data2(){
+    public function data2(){
         $pieces1 = makePiecesSample(makeBadURLRemnantsPieceAfterPieceFunction(TRUE), FALSE);
         $pieces2 = makePiecesSample(makeBadURLRemnantsPieceAfterPieceFunction(TRUE), FALSE);
         $groupedPieces = groupByOffset($pieces1, $pieces2);

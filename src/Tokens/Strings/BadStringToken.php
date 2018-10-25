@@ -104,7 +104,7 @@ class BadStringToken implements AnyStringToken
     }
 
     /** @inheritDoc */
-    function intendedValue(): String{
+    public function intendedValue(): String{
         if($this->_intendedValue === NULL){
             $this->_intendedValue = "";
             foreach($this->_pieces as $piece){

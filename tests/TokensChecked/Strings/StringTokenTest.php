@@ -26,7 +26,7 @@ use PHPUnit\Framework\TestCase;
   */
 class StringTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $pieces1 = makePiecesSample(makeStringPieceAfterPieceFunction(FALSE));
         $pieces2 = makePiecesSample(makeStringPieceAfterPieceFunction(FALSE));
         $groupedPieces = groupByOffset($pieces1, $pieces2);
@@ -47,7 +47,7 @@ class StringTokenTest extends TestCase
         assertMatch($string1->pieces(), $pieces2);
     }
 
-    function data2(){
+    public function data2(){
         $pieces1 = makePiecesSample(makeStringPieceAfterPieceFunction(TRUE));
         $pieces2 = makePiecesSample(makeStringPieceAfterPieceFunction(TRUE));
         $groupedPieces = groupByOffset($pieces1, $pieces2);

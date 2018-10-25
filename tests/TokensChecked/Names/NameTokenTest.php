@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
  */
 class NameTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $pieces1 = makePiecesSample(makeIdentifierPieceAfterPieceFunction(), FALSE);  // @TODO make namepiece
         $pieces2 = makePiecesSample(makeIdentifierPieceAfterPieceFunction(), FALSE);
         $groupedPieces = groupByOffset($pieces1, $pieces2);

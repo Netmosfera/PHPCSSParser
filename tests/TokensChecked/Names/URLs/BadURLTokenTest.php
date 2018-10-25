@@ -29,7 +29,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class BadURLTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $identifiers = groupByOffset(sampleURLIdentifiers(), sampleURLIdentifiers());
         $pieces1 = makePiecesSample(makeURLPieceAfterPieceFunction());
         $pieces2 = makePiecesSample(makeURLPieceAfterPieceFunction());

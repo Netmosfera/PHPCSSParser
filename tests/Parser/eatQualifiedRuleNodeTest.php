@@ -19,7 +19,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatQualifiedRuleNodeTest extends TestCase
 {
-    function data12(){
+    public function data12(){
         $preludePieces[] = new PreservedTokenNode(getToken(" "));
         $preludePieces[] = new PreservedTokenNode(getToken("foo"));
         $preludePieces[] = new PreservedTokenNode(getToken(" "));
@@ -49,7 +49,7 @@ class eatQualifiedRuleNodeTest extends TestCase
     }
 
     /** @dataProvider data12 */
-    function test1(Bool $testPrefix, array $preludePieces){
+    public function test1(Bool $testPrefix, array $preludePieces){
         $qualifiedRule = new QualifiedRuleNode($preludePieces, NULL);
 
         $stream = getTokenStream($testPrefix, $qualifiedRule . "");
@@ -60,7 +60,7 @@ class eatQualifiedRuleNodeTest extends TestCase
     }
 
     /** @dataProvider data12 */
-    function test2(Bool $testPrefix, array $preludePieces){
+    public function test2(Bool $testPrefix, array $preludePieces){
         $blockComponents = [new PreservedTokenNode(getToken("foo"))];
         $block = new SimpleBlockNode("{", $blockComponents, FALSE);
         $qualifiedRule = new QualifiedRuleNode($preludePieces, $block);

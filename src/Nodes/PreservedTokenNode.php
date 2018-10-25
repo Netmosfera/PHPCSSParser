@@ -14,7 +14,7 @@ class PreservedTokenNode implements ComponentValueNode
     }
 
     /** @inheritDoc */
-    function __toString(): String{
+    public function __toString(): String{
         return (String)$this->_token;
     }
 

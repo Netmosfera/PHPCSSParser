@@ -20,12 +20,12 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatSimpleBlockNodeTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         return cartesianProduct([FALSE, TRUE]);
     }
 
     /** @dataProvider data1 */
-    function test1(Bool $testPrefix){
+    public function test1(Bool $testPrefix){
         $block = NULL;
 
         $stream = getTokenStream($testPrefix, "");
@@ -35,7 +35,7 @@ class eatSimpleBlockNodeTest extends TestCase
         assertMatch(stringifyTokens($stream), "");
     }
 
-    function data2(){
+    public function data2(){
         return cartesianProduct(
             [FALSE, TRUE],
             ["=", ""],
@@ -44,7 +44,7 @@ class eatSimpleBlockNodeTest extends TestCase
     }
 
     /** @dataProvider data2 */
-    function test2(Bool $testPrefix, String $notDelimiter, String $rest){
+    public function test2(Bool $testPrefix, String $notDelimiter, String $rest){
         $block = NULL;
 
         $stream = getTokenStream($testPrefix, $notDelimiter . $rest);
@@ -54,7 +54,7 @@ class eatSimpleBlockNodeTest extends TestCase
         assertMatch(stringifyTokens($stream), $notDelimiter . $rest);
     }
 
-    function data3(){
+    public function data3(){
         $componentValues[] = new PreservedTokenNode(getToken("foo"));
         $componentValues[] = new PreservedTokenNode(getToken("+123%"));
         $componentValues[] = new PreservedTokenNode(getToken("bar"));
@@ -64,7 +64,7 @@ class eatSimpleBlockNodeTest extends TestCase
     }
 
     /** @dataProvider data3 */
-    function test3(Bool $testPrefix, array $componentValues){
+    public function test3(Bool $testPrefix, array $componentValues){
         $block = new SimpleBlockNode("(", $componentValues, TRUE);
 
         $stream = getTokenStream($testPrefix, $block . "");
@@ -74,7 +74,7 @@ class eatSimpleBlockNodeTest extends TestCase
         assertMatch(stringifyTokens($stream), "");
     }
 
-    function data4(){
+    public function data4(){
         $componentValues[] = new PreservedTokenNode(getToken("foo"));
         $componentValues[] = new PreservedTokenNode(getToken("+123%"));
         $componentValues[] = new PreservedTokenNode(getToken("bar"));
@@ -84,7 +84,7 @@ class eatSimpleBlockNodeTest extends TestCase
     }
 
     /** @dataProvider data4 */
-    function test4(Bool $testPrefix, array $componentValues, String $rest){
+    public function test4(Bool $testPrefix, array $componentValues, String $rest){
         $block = new SimpleBlockNode("(", $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $block . $rest);

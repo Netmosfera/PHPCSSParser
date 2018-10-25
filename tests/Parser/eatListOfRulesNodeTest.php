@@ -20,7 +20,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatListOfRulesNodeTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $pieces[] = new PreservedTokenNode(getToken("\n"));
         $pieces[] = new PreservedTokenNode(getToken("/** comment! */"));
 
@@ -71,7 +71,7 @@ class eatListOfRulesNodeTest extends TestCase
     }
 
     /** @dataProvider data1 */
-    function test1(array $pieces){
+    public function test1(array $pieces){
         $rules = new ListOfRulesNode($pieces, TRUE);
 
         $tokenizer = new CheckedTokenizer();

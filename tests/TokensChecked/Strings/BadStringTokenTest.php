@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
  */
 class BadStringTokenTest extends TestCase
 {
-    function data1(){
+    public function data1(){
         $pieces1 = makePiecesSample(makeStringPieceAfterPieceFunction(FALSE));
         $pieces2 = makePiecesSample(makeStringPieceAfterPieceFunction(FALSE));
         $groupedPieces = groupByOffset($pieces1, $pieces2);
