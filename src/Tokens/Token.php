@@ -14,9 +14,8 @@ interface Token
      * Returns the count of newlines appearing in this token.
      *
      * @returns     Int
+     * `Int`
      * Returns the count of newlines appearing in this token.
      */
     public function newlineCount(): Int;
-
-
 }
