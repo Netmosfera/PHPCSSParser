@@ -21,7 +21,7 @@ class FunctionNode implements ComponentValueNode
         Bool $EOFTerminated
     ){
         $this->_token = $token;
-        $this->_components = $components; // @TODO can be Tokens or ComponentValueNode (ie a SimpleBlockNode or a FunctionNode)
+        $this->_components = $components; // @TODO ComponentValueNode
         $this->_EOFTerminated = $EOFTerminated;
     }
 
