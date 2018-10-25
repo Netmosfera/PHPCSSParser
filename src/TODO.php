@@ -11,5 +11,3 @@
 
 // @TODO comparisons in the tokenizer are only tested between equal objects - need
 // need to test also equivalence between different objects
-
-// @TODO actually implement CheckedTokens collection
