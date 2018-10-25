@@ -13,7 +13,7 @@ interface Token
     /**
      * Returns the count of newlines appearing in this token.
      *
-     * @returns     Int
+     * @return      Int
      * `Int`
      * Returns the count of newlines appearing in this token.
      */
