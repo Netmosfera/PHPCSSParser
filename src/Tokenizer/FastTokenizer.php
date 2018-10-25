@@ -4,7 +4,6 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
 use Netmosfera\PHPCSSAST\Tokens\Tokens;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
@@ -21,6 +20,7 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumericToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
@@ -33,6 +33,7 @@ use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 
 class FastTokenizer
@@ -82,7 +83,8 @@ class FastTokenizer
             return eatBadURLRemnantsToken(
                 $traverser,
                 $this->_eatEscape,
-                BadURLRemnantsToken::CLASS
+                BadURLRemnantsToken::CLASS,
+                BadURLRemnantsBitToken::CLASS
             );
         };
 

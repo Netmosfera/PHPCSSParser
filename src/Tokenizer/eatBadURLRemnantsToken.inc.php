@@ -11,7 +11,8 @@ use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsBitToken;
 function eatBadURLRemnantsToken(
     Traverser $traverser,
     Closure $eatEscapeToken,
-    String $BadURLRemnantsTokenClass = CheckedBadURLRemnantsToken::CLASS
+    String $BadURLRemnantsTokenClass = CheckedBadURLRemnantsToken::CLASS,
+    String $BadURLRemnantsBitTokenClass = CheckedBadURLRemnantsBitToken::CLASS
 ): BadURLRemnantsToken{
     $pieces = [];
     while(TRUE){
@@ -23,7 +24,7 @@ function eatBadURLRemnantsToken(
         }
         $bit = $traverser->eatPattern('[^\\)\\\\]+'); // var_export(preg_quote(")\\"));
         if(isset($bit)){
-            $piece = new CheckedBadURLRemnantsBitToken($bit);
+            $piece = new $BadURLRemnantsBitTokenClass($bit);
         }else{
             $piece = $eatEscapeToken($traverser);
         }

@@ -41,6 +41,7 @@ use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedPercentageToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsBitToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
 
 class CheckedTokenizer
@@ -86,7 +87,8 @@ class CheckedTokenizer
             return eatBadURLRemnantsToken(
                 $traverser,
                 $this->_eatEscape,
-                CheckedBadURLRemnantsToken::CLASS
+                CheckedBadURLRemnantsToken::CLASS,
+                CheckedBadURLRemnantsBitToken::CLASS
             );
         };
 
