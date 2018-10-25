@@ -4,6 +4,7 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
 use Netmosfera\PHPCSSAST\SpecData;
+use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
 use Netmosfera\PHPCSSAST\Tokens\Tokens;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
@@ -191,7 +192,9 @@ class FastTokenizer
                 $traverser,
                 SpecData::NEWLINES_REGEX_SET,
                 $this->_eatEscape,
-                StringBitToken::CLASS
+                StringBitToken::CLASS,
+                StringToken::CLASS,
+                BadStringToken::CLASS
             );
         };
 
