@@ -29,7 +29,13 @@ class Tokens
         return implode("", $this->_tokens); // @TODO memoize
     }
 
-    /** @inheritDoc */
+    /**
+     * @TODOC
+     *
+     * @return      RootToken[]
+     * `Array<Int, RootToken>`
+     * @TODOC
+     */
     public function tokens(): array{
         return $this->_tokens;
     }
