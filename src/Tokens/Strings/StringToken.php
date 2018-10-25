@@ -35,6 +35,12 @@ class StringToken implements AnyStringToken
     private $_intendedValue;
 
     /**
+     * @var         String|NULL
+     * `String|NULL`
+     */
+    private $_stringValue;
+
+    /**
      * @var         Int
      * `Int`
      */
@@ -65,10 +71,13 @@ class StringToken implements AnyStringToken
 
     /** @inheritDoc */
     public function __toString(): String{
-        return
-            $this->_delimiter .
-            implode("", $this->_pieces) .
-            ($this->_EOFTerminated ? "" : $this->_delimiter);
+        if($this->_stringValue === NULL){
+            $stringValue = $this->_delimiter;
+            $stringValue .= implode("", $this->_pieces);
+            $stringValue .= $this->_EOFTerminated ? "" : $this->_delimiter;
+            $this->_stringValue = $stringValue;
+        }
+        return $this->_stringValue;
     }
 
     /** @inheritDoc */
