@@ -58,7 +58,7 @@ class BadURLRemnantsBitToken implements EvaluableToken
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($this->_text, $this->_text);
+            match($this->_text, $other->_text);
     }
 
     /** @inheritDoc */
