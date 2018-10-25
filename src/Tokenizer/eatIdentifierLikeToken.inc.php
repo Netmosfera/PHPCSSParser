@@ -21,7 +21,7 @@ function eatIdentifierLikeToken(
         return $identifier;
     }
     /** @var IdentifierToken $identifier */
-    if($identifier->name()->intendedValue() === "url"){
+    if(strtolower($identifier->name()->intendedValue()) === "url"){
         $URLToken = $eatURLToken($traverser, $identifier);
         if(isset($URLToken)){
             return $URLToken;
