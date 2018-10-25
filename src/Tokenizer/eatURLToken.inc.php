@@ -25,6 +25,8 @@ function eatURLToken(
 
     // @TODO inject delimiters
     $wsBefore = $traverser->eatPattern('[' . $whitespaceRegexSet . ']*+(?!["\'])');
+
+    // @TODO this is wrong:
     if(isset($wsBefore));else{
         return NULL;
     }

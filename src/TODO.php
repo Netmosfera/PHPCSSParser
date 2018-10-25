@@ -6,9 +6,7 @@
 
 // @TODO add method to determine whether a token represents a parse error
 
-// @TODO add "list of tokens" collection (and checked one)
-
-// @TODO use the collection above in TokenStream
+// @TODO use "Tokens" collection in TokenStream
 
 // @TODO make checked versions of the parser's nodes
 
