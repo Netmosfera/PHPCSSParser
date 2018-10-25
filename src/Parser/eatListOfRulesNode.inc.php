@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSAST\Parser;
 
+use Netmosfera\PHPCSSAST\Tokens\Tokens;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
 use Netmosfera\PHPCSSAST\Nodes\ListOfRulesNode;
@@ -9,8 +10,8 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
-function eatListOfRulesNode(array $tokens, Bool $topLevel): ListOfRulesNode{
-    $stream = new TokenStream($tokens);
+function eatListOfRulesNode(Tokens $tokens, Bool $topLevel): ListOfRulesNode{
+    $stream = new TokenStream($tokens->tokens());
 
     $pieces = [];
     while(TRUE){

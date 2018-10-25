@@ -76,7 +76,7 @@ class eatListOfRulesNodeTest extends TestCase
 
         $tokenizer = new CheckedTokenizer();
 
-        $tokens = $tokenizer->tokenize(implode("", $pieces))->tokens();
+        $tokens = $tokenizer->tokenize(implode("", $pieces));
         $actualRules = eatListOfRulesNode($tokens, TRUE);
 
         assertMatch($actualRules, $rules);

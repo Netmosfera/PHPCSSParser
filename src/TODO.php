@@ -4,8 +4,6 @@
 
 // @TODO check that all functions have the return type
 
-// @TODO use "Tokens" collection in TokenStream
-
 // @TODO make checked versions of the parser's nodes
 
 // @TODO null byte swap with the replacement character is the same in many token objects,
