@@ -3,12 +3,12 @@
 namespace Netmosfera\PHPCSSAST\Tokens\Names;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
  * A {@see AtKeywordToken} is an {@see IdentifierToken} preceded by `@`.
  */
-class AtKeywordToken implements Token
+class AtKeywordToken implements RootToken
 {
     /**
      * @var         IdentifierToken

@@ -3,12 +3,12 @@
 namespace Netmosfera\PHPCSSAST\Tokens\Names;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
  * A {@see HashToken} is an {@see NameToken} preceded by `#`.
  */
-class HashToken implements Token
+class HashToken implements RootToken
 {
     /**
      * @var         NameToken
