@@ -2,10 +2,9 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
-use function explode;
-use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
+use function Netmosfera\PHPCSSAST\match;
 
 /**
  * A {@see CommentToken} is a programmer-readable explanation or annotation.
