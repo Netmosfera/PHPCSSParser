@@ -3,13 +3,10 @@
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
 use Error;
-use Netmosfera\PHPCSSAST\Tokens\Tokens;
-use Netmosfera\PHPCSSAST\Tokenizer\FastTokenizer;
+use Netmosfera\PHPCSSAST\Tokenizer\CheckedTokenizer;
 
 function getToken(String $css){
-    $tokenizer = new FastTokenizer(function(array $tokens): Tokens{
-        return new Tokens($tokens);
-    });
+    $tokenizer = new CheckedTokenizer();
     $tokens = $tokenizer->tokenize($css)->tokens();
     if(count($tokens) !== 1){
         throw new Error();

@@ -2,7 +2,6 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
-use Closure;
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Tokens;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
@@ -40,8 +39,6 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 
 class FastTokenizer
 {
-    private $_tokensFactory;
-
     private $_eatIdentifier;
     private $_eatIdentifierLike;
     private $_eatWhitespace;
@@ -58,9 +55,7 @@ class FastTokenizer
     private $_eatNullEscape;
     private $_eatValidEscape;
 
-    public function __construct(Closure $tokensFactory){
-        $this->_tokensFactory = $tokensFactory;
-
+    public function __construct(){
         $this->_eatNumber = function(Traverser $traverser): ?NumberToken{
             return eatNumberToken(
                 $traverser,
@@ -263,6 +258,6 @@ class FastTokenizer
             );
         }
 
-        return ($this->_tokensFactory)($tokens);
+        return new Tokens($tokens);
     }
 }
