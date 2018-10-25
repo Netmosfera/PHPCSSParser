@@ -6,6 +6,8 @@ use Closure;
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\Tokens;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
@@ -233,6 +235,8 @@ class FastTokenizer
         $rightParenthesisToken = new DelimiterToken(")");
         $rightSquareBracketToken = new DelimiterToken("]");
         $semicolonToken = new DelimiterToken(";");
+        $CDOToken = new CDOToken();
+        $CDCToken = new CDCToken();
 
         while(isset($traverser->data[$traverser->index])){
             $tokens[] = eatToken(
@@ -253,6 +257,8 @@ class FastTokenizer
                 $rightParenthesisToken,
                 $rightSquareBracketToken,
                 $semicolonToken,
+                $CDOToken,
+                $CDCToken,
                 DelimiterToken::CLASS
             );
         }

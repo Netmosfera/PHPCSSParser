@@ -4,9 +4,9 @@ namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Token;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDCToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDOToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
 
 function eatToken(
@@ -27,6 +27,8 @@ function eatToken(
     DelimiterToken $rightParenthesisToken,
     DelimiterToken $rightSquareBracketToken,
     DelimiterToken $semicolonToken,
+    CDOToken $CDOToken,
+    CDCToken $CDCToken,
     String $DelimiterTokenClass = CheckedDelimiterToken::CLASS
 ): ?Token{
 
@@ -48,7 +50,7 @@ function eatToken(
     $traverser->index = $savePoint;
 
     if($traverser->eatString("-->") !== NULL){
-        return new CheckedCDCToken(); // @TODO as param
+        return $CDCToken;
     }
 
     $token = $eatIdentifierLikeToken($traverser);
@@ -87,7 +89,7 @@ function eatToken(
     }
 
     if($traverser->eatString("<!--") !== NULL){
-        return new CheckedCDOToken(); // @TODO as param
+        return $CDOToken;
     }
 
     return new $DelimiterTokenClass($traverser->eatPattern("."));

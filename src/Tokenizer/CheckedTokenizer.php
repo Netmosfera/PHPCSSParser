@@ -18,6 +18,8 @@ use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDCToken;
+use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCDOToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedHashToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
@@ -236,6 +238,8 @@ class CheckedTokenizer
         $rightParenthesisToken = new CheckedDelimiterToken(")");
         $rightSquareBracketToken = new CheckedDelimiterToken("]");
         $semicolonToken = new CheckedDelimiterToken(";");
+        $CDOToken = new CheckedCDOToken();
+        $CDCToken = new CheckedCDCToken();
 
         while(isset($traverser->data[$traverser->index])){
             $tokens[] = eatToken(
@@ -256,6 +260,8 @@ class CheckedTokenizer
                 $rightParenthesisToken,
                 $rightSquareBracketToken,
                 $semicolonToken,
+                $CDOToken,
+                $CDCToken,
                 CheckedDelimiterToken::CLASS
             );
         }
