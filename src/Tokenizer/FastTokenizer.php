@@ -21,6 +21,7 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumericToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
@@ -186,7 +187,7 @@ class FastTokenizer
             );
         };
 
-        $this->_eatString = function(Traverser $traverser): ?StringToken{
+        $this->_eatString = function(Traverser $traverser): ?AnyStringToken{
             return eatStringToken(
                 $traverser,
                 SpecData::NEWLINES_REGEX_SET,

@@ -9,12 +9,12 @@ use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
-use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use Netmosfera\PHPCSSAST\TokensChecked\CheckedTokens;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumericToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
@@ -195,7 +195,7 @@ class CheckedTokenizer
             );
         };
 
-        $this->_eatString = function(Traverser $traverser): ?StringToken{
+        $this->_eatString = function(Traverser $traverser): ?AnyStringToken{
             return eatStringToken(
                 $traverser,
                 SpecData::NEWLINES_REGEX_SET,
