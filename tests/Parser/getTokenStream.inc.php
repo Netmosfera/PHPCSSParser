@@ -3,17 +3,20 @@
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Parser\TokenStream;
 use Netmosfera\PHPCSSAST\Tokenizer\StandardTokenizer;
+use Netmosfera\PHPCSSAST\Parser\TokenStream;
+use Netmosfera\PHPCSSAST\Tokens\Tokens;
 
 function getTokenStream(Bool $testPrefix, String $css){
-    $tokenizer = new StandardTokenizer();
+    $tokenizer = new StandardTokenizer(function(array $tokens): Tokens{
+        return new Tokens($tokens);
+    });
 
     $prefix = $testPrefix ? "body{background-color:#BADA55;}" : "";
 
-    $prefixTokens = $tokenizer->tokenize($prefix);
+    $prefixTokens = $tokenizer->tokenize($prefix)->tokens();
 
-    $tokens = $tokenizer->tokenize($prefix . $css);
+    $tokens = $tokenizer->tokenize($prefix . $css)->tokens();
 
     assert(match($prefixTokens, array_slice($tokens, 0, count($prefixTokens))));
 

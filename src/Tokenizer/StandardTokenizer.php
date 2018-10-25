@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
+use Closure;
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
@@ -31,9 +32,12 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Tokens;
 
 class StandardTokenizer
 {
+    private $tokensFactory;
+
     private $eatIdentifier;
     private $eatIdentifierLike;
     private $eatWhitespace;
@@ -50,7 +54,9 @@ class StandardTokenizer
     private $eatNullEscape;
     private $eatValidEscape;
 
-    public function __construct(){
+    public function __construct(Closure $tokensFactory){
+        $this->tokensFactory = $tokensFactory;
+
         $this->eatNumber = function(Traverser $traverser): ?NumberToken{
             return eatNumberToken(
                 $traverser,
@@ -208,7 +214,7 @@ class StandardTokenizer
     }
 
     /** @return RootToken[] */
-    public function tokenize(String $CSSCode): array{
+    public function tokenize(String $CSSCode): Tokens{
         $traverser = new Traverser($CSSCode);
 
         $tokens = [];
@@ -246,6 +252,6 @@ class StandardTokenizer
             );
         }
 
-        return $tokens;
+        return ($this->tokensFactory)($tokens);
     }
 }

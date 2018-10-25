@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
+use Netmosfera\PHPCSSAST\Tokens\Tokens;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\AtRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\SimpleBlockNode;
@@ -74,7 +75,11 @@ class eatListOfRulesNodeTest extends TestCase
     function test1(array $pieces){
         $rules = new ListOfRulesNode($pieces, TRUE);
 
-        $tokens = (new StandardTokenizer())->tokenize(implode("", $pieces));
+        $tokenizer = new StandardTokenizer(function(array $tokens): Tokens{
+            return new Tokens($tokens);
+        });
+
+        $tokens = $tokenizer->tokenize(implode("", $pieces))->tokens();
         $actualRules = eatListOfRulesNode($tokens, TRUE);
 
         assertMatch($actualRules, $rules);
