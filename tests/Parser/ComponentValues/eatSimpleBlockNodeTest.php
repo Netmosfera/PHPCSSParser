@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatSimpleBlockNode;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatSimpleBlockComponentValue;
 use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
 use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
 use function Netmosfera\PHPCSSASTTests\Parser\getTokenStream;
@@ -32,7 +32,7 @@ class eatSimpleBlockNodeTest extends TestCase
         $block = NULL;
 
         $stream = getTokenStream($testPrefix, "");
-        $actualBlock = eatSimpleBlockNode($stream);
+        $actualBlock = eatSimpleBlockComponentValue($stream);
 
         assertMatch($actualBlock, $block);
         assertMatch(stringifyTokens($stream), "");
@@ -51,7 +51,7 @@ class eatSimpleBlockNodeTest extends TestCase
         $block = NULL;
 
         $stream = getTokenStream($testPrefix, $notDelimiter . $rest);
-        $actualBlock = eatSimpleBlockNode($stream);
+        $actualBlock = eatSimpleBlockComponentValue($stream);
 
         assertMatch($actualBlock, $block);
         assertMatch(stringifyTokens($stream), $notDelimiter . $rest);
@@ -71,7 +71,7 @@ class eatSimpleBlockNodeTest extends TestCase
         $block = new SimpleBlockComponentValue("(", $componentValues, TRUE);
 
         $stream = getTokenStream($testPrefix, $block . "");
-        $actualBlock = eatSimpleBlockNode($stream);
+        $actualBlock = eatSimpleBlockComponentValue($stream);
 
         assertMatch($actualBlock, $block);
         assertMatch(stringifyTokens($stream), "");
@@ -91,7 +91,7 @@ class eatSimpleBlockNodeTest extends TestCase
         $block = new SimpleBlockComponentValue("(", $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $block . $rest);
-        $actualBlock = eatSimpleBlockNode($stream);
+        $actualBlock = eatSimpleBlockComponentValue($stream);
 
         assertMatch($actualBlock, $block);
         assertMatch(stringifyTokens($stream), $rest);

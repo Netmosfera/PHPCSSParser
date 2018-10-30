@@ -2,9 +2,9 @@
 
 namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
-use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
+use function Netmosfera\PHPCSSAST\match;
 
 class AtRuleNode implements RuleNode
 {

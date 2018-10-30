@@ -19,6 +19,8 @@ use Netmosfera\PHPCSSAST\Tokens\Escapes\EscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\CommaToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumericToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
@@ -30,11 +32,18 @@ use Netmosfera\PHPCSSAST\Tokens\Numbers\DimensionToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\StringBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
 use Netmosfera\PHPCSSAST\Tokens\Numbers\PercentageToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 
@@ -222,15 +231,15 @@ class FastTokenizer
 
         $tokens = [];
 
-        $colonToken = new DelimiterToken(":");
-        $commaToken = new DelimiterToken(",");
-        $leftCurlyBracketToken = new DelimiterToken("{");
-        $leftParenthesisToken = new DelimiterToken("(");
-        $leftSquareBracketToken = new DelimiterToken("[");
-        $rightCurlyBracketToken = new DelimiterToken("}");
-        $rightParenthesisToken = new DelimiterToken(")");
-        $rightSquareBracketToken = new DelimiterToken("]");
-        $semicolonToken = new DelimiterToken(";");
+        $colonToken = new ColonToken();
+        $commaToken = new CommaToken();
+        $leftCurlyBracketToken = new LeftCurlyBracketToken();
+        $leftParenthesisToken = new LeftParenthesisToken();
+        $leftSquareBracketToken = new LeftSquareBracketToken();
+        $rightCurlyBracketToken = new RightCurlyBracketToken();
+        $rightParenthesisToken = new RightParenthesisToken();
+        $rightSquareBracketToken = new RightSquareBracketToken();
+        $semicolonToken = new SemicolonToken();
         $CDOToken = new CDOToken();
         $CDCToken = new CDCToken();
 

@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatComponentValueNode;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatComponentValue;
 use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
 use function Netmosfera\PHPCSSASTTests\Parser\getTokenStream;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -32,7 +32,7 @@ class eatComponentValueNodeTest extends TestCase
         $componentValue = NULL;
 
         $stream = getTokenStream($testPrefix, "");
-        $actualComponentValue = eatComponentValueNode($stream);
+        $actualComponentValue = eatComponentValue($stream);
 
         assertMatch($actualComponentValue, $componentValue);
         assertMatch(stringifyTokens($stream), "");
@@ -48,7 +48,7 @@ class eatComponentValueNodeTest extends TestCase
         $componentValue = new FunctionComponentValue(getToken("foo("), $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
-        $actualComponentValue = eatComponentValueNode($stream);
+        $actualComponentValue = eatComponentValue($stream);
 
         assertMatch($actualComponentValue, $componentValue);
         assertMatch(stringifyTokens($stream), $rest);
@@ -64,7 +64,7 @@ class eatComponentValueNodeTest extends TestCase
         $componentValue = new SimpleBlockComponentValue("{", $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
-        $actualComponentValue = eatComponentValueNode($stream);
+        $actualComponentValue = eatComponentValue($stream);
 
         assertMatch($actualComponentValue, $componentValue);
         assertMatch(stringifyTokens($stream), $rest);
@@ -79,7 +79,7 @@ class eatComponentValueNodeTest extends TestCase
         $componentValue = getToken("123deg");
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
-        $actualComponentValue = eatComponentValueNode($stream);
+        $actualComponentValue = eatComponentValue($stream);
 
         assertMatch($actualComponentValue, $componentValue);
         assertMatch(stringifyTokens($stream), $rest);

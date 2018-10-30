@@ -9,9 +9,9 @@ require(__DIR__ . "/src/Parser/Algorithms/eatDeclarationInDeclarationsNode.inc.p
 require(__DIR__ . "/src/Parser/Algorithms/eatNotADeclaration.inc.php");
 require(__DIR__ . "/src/Parser/Algorithms/eatOptionalWhitespaceSequence.inc.php");
 require(__DIR__ . "/src/Parser/Algorithms/eatQualifiedRuleNode.inc.php");
-require(__DIR__ . "/src/Parser/ComponentValues/eatComponentValueNode.inc.php");
-require(__DIR__ . "/src/Parser/ComponentValues/eatFunctionNode.inc.php");
-require(__DIR__ . "/src/Parser/ComponentValues/eatSimpleBlockNode.inc.php");
+require(__DIR__ . "/src/Parser/ComponentValues/eatComponentValue.inc.php");
+require(__DIR__ . "/src/Parser/ComponentValues/eatFunctionComponentValue.inc.php");
+require(__DIR__ . "/src/Parser/ComponentValues/eatSimpleBlockComponentValue.inc.php");
 require(__DIR__ . "/src/Parser/ComponentValues/tokensToNodes.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatAtKeywordToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatBadURLRemnantsToken.inc.php");

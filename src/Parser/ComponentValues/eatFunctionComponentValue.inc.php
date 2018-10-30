@@ -3,11 +3,11 @@
 namespace Netmosfera\PHPCSSAST\Parser\ComponentValues;
 
 use Netmosfera\PHPCSSAST\Parser\TokenStream;
-use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
 
-function eatFunctionNode(TokenStream $stream): ?FunctionComponentValue{
+function eatFunctionComponentValue(TokenStream $stream): ?FunctionComponentValue{
     if(isset($stream->tokens[$stream->index]));else{
         return NULL;
     }
@@ -24,13 +24,13 @@ function eatFunctionNode(TokenStream $stream): ?FunctionComponentValue{
         }
 
         $delimiter = $stream->tokens[$stream->index];
-        if($delimiter instanceof DelimiterToken && (String)$delimiter === ")"){
+        if($delimiter instanceof RightParenthesisToken){
             $stream->index++;
             return new FunctionComponentValue($functionToken, $componentValueNodes, FALSE);
         }
 
         assert(is_int($oldIndex = $stream->index)); // Does nothing - just saves the index
-        $componentValueNodes[] = eatComponentValueNode($stream);
+        $componentValueNodes[] = eatComponentValue($stream);
         assert($stream->index > $oldIndex); // ...so that it can check this.
     }
 }

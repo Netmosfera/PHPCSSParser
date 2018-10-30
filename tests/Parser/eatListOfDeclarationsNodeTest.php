@@ -2,22 +2,21 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
-use function file_put_contents;
-use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
-use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarationsNode;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
-use function Netmosfera\PHPCSSAST\Parser\eatListOfDeclarationsNode;
-use function Netmosfera\PHPCSSASTTests\assertMatch;
-use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarationsNode;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
+use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
+use function Netmosfera\PHPCSSAST\Parser\eatListOfDeclarationsNode;
+use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
 use function Netmosfera\PHPCSSASTTests\makePiecesSample;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 class CommentAfterDeclarationBeforeSemicolon extends CommentToken{}
 class WhitespaceAfterDeclarationBeforeSemicolon extends WhitespaceToken{}
@@ -33,34 +32,34 @@ class eatListOfDeclarationsNodeTest extends TestCase
         return function($afterPiece, Bool $isLast){
             $data = [];
             if($afterPiece instanceof CommentAfterDeclarationBeforeSemicolon){
-                $data[] = new DelimiterToken(";");
+                $data[] = new SemicolonToken();
                 $data[] = new CommentAfterDeclarationBeforeSemicolon("bco", FALSE);
                 $data[] = new WhitespaceAfterDeclarationBeforeSemicolon("\t\t");
             }elseif($afterPiece instanceof WhitespaceAfterDeclarationBeforeSemicolon){
-                $data[] = new DelimiterToken(";");
+                $data[] = new SemicolonToken();
                 $data[] = new CommentAfterDeclarationBeforeSemicolon("bco", FALSE);
             }elseif(
                 $afterPiece === NULL ||
                 $afterPiece instanceof AtRuleNode ||
-                $afterPiece instanceof DelimiterToken ||
+                $afterPiece instanceof SemicolonToken ||
                 $afterPiece instanceof CommentToken
             ){
                 $data[] = new DeclarationNode(getToken("background"), [], [], [getToken("red")]);
                 $data[] = new AtRuleNode(getToken("@foo"), [], ";");
-                $data[] = new DelimiterToken(";");
+                $data[] = new SemicolonToken();
                 $data[] = new CommentToken("", FALSE);
                 $data[] = new WhitespaceToken(" ");
                 $data[] = new InvalidDeclarationNode(getTokens("+123")->tokens());
             }elseif($afterPiece instanceof WhitespaceToken){
                 $data[] = new DeclarationNode(getToken("background"), [], [], [getToken("red")]);
                 $data[] = new AtRuleNode(getToken("@foo"), [], ";");
-                $data[] = new DelimiterToken(";");
+                $data[] = new SemicolonToken();
                 $data[] = new CommentToken("", FALSE);
             }elseif(
                 $afterPiece instanceof DeclarationNode ||
                 $afterPiece instanceof InvalidDeclarationNode
             ){
-                $data[] = new DelimiterToken(";");
+                $data[] = new SemicolonToken();
                 $data[] = new CommentAfterDeclarationBeforeSemicolon("bco", FALSE);
                 $data[] = new WhitespaceAfterDeclarationBeforeSemicolon("\t\t");
             }else{

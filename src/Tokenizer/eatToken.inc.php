@@ -6,7 +6,15 @@ use Closure;
 use Netmosfera\PHPCSSAST\Tokens\Token;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\CommaToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
 use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
 
 function eatToken(
@@ -18,15 +26,15 @@ function eatToken(
     Closure $eatStringToken,
     Closure $eatAtKeywordToken,
     Closure $eatCommentToken,
-    DelimiterToken $colonToken,
-    DelimiterToken $commaToken,
-    DelimiterToken $leftCurlyBracketToken,
-    DelimiterToken $leftParenthesisToken,
-    DelimiterToken $leftSquareBracketToken,
-    DelimiterToken $rightCurlyBracketToken,
-    DelimiterToken $rightParenthesisToken,
-    DelimiterToken $rightSquareBracketToken,
-    DelimiterToken $semicolonToken,
+    ColonToken $colonToken,
+    CommaToken $commaToken,
+    LeftCurlyBracketToken $leftCurlyBracketToken,
+    LeftParenthesisToken $leftParenthesisToken,
+    LeftSquareBracketToken $leftSquareBracketToken,
+    RightCurlyBracketToken $rightCurlyBracketToken,
+    RightParenthesisToken $rightParenthesisToken,
+    RightSquareBracketToken $rightSquareBracketToken,
+    SemicolonToken $semicolonToken,
     CDOToken $CDOToken,
     CDCToken $CDCToken,
     String $DelimiterTokenClass = CheckedDelimiterToken::CLASS

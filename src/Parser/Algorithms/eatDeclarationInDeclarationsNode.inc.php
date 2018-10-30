@@ -3,9 +3,10 @@
 namespace Netmosfera\PHPCSSAST\Parser\Algorithms;
 
 use Netmosfera\PHPCSSAST\Parser\NodeStream;
-use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 
 function eatDeclarationInDeclarationsNode(NodeStream $stream): ?DeclarationNode{
     // @TODO assert this cannot start with a whitespace or comment token
@@ -33,7 +34,7 @@ function eatDeclarationInDeclarationsNode(NodeStream $stream): ?DeclarationNode{
         return NULL;
     }
     $colon = $stream->nodes[$stream->index];
-    if($colon instanceof DelimiterToken && (String)$colon === ":"){
+    if($colon instanceof ColonToken){
         $stream->index++;
     }else{
         $stream->index = $beforeAttemptIndex;
@@ -62,7 +63,7 @@ function eatDeclarationInDeclarationsNode(NodeStream $stream): ?DeclarationNode{
         }
 
         $piece = $stream->nodes[$stream->index];
-        if($piece instanceof DelimiterToken && (String)$piece === ";"){
+        if($piece instanceof SemicolonToken){
             $stream->index = $indexBeforeWhitespace;
             return new DeclarationNode(
                 $identifier,

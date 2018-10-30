@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Parser\Algorithms;
 
 use Netmosfera\PHPCSSAST\Parser\NodeStream;
-use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
 
 function eatNotADeclaration(NodeStream $stream): InvalidDeclarationNode{
@@ -21,7 +21,7 @@ function eatNotADeclaration(NodeStream $stream): InvalidDeclarationNode{
         }
 
         $piece = $stream->nodes[$stream->index];
-        if($piece instanceof DelimiterToken && (String)$piece === ";"){
+        if($piece instanceof SemicolonToken){
             $stream->index = $indexBeforeWhitespace;
             return new InvalidDeclarationNode($pieces);
         }

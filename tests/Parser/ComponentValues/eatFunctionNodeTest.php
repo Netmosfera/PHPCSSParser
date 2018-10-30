@@ -2,16 +2,16 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
-use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatFunctionNode;
-use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
-use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
-use function Netmosfera\PHPCSSASTTests\Parser\getTokenStream;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use PHPUnit\Framework\TestCase;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatFunctionComponentValue;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
+use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSASTTests\Parser\getTokenStream;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
 
 /**
  * Tests in this file:
@@ -32,7 +32,7 @@ class eatFunctionNodeTest extends TestCase
         $function = NULL;
 
         $stream = getTokenStream($testPrefix, "");
-        $actualFunction = eatFunctionNode($stream);
+        $actualFunction = eatFunctionComponentValue($stream);
 
         assertMatch($actualFunction, $function);
         assertMatch(stringifyTokens($stream), "");
@@ -47,7 +47,7 @@ class eatFunctionNodeTest extends TestCase
         $function = NULL;
 
         $stream = getTokenStream($testPrefix, $rest);
-        $actualFunction = eatFunctionNode($stream);
+        $actualFunction = eatFunctionComponentValue($stream);
 
         assertMatch($actualFunction, $function);
         assertMatch(stringifyTokens($stream), $rest);
@@ -67,7 +67,7 @@ class eatFunctionNodeTest extends TestCase
         $function = new FunctionComponentValue(getToken("foo("), $componentValues, TRUE);
 
         $stream = getTokenStream($testPrefix, $function . "");
-        $actualFunction = eatFunctionNode($stream);
+        $actualFunction = eatFunctionComponentValue($stream);
 
         assertMatch($actualFunction, $function);
         assertMatch(stringifyTokens($stream), "");
@@ -87,7 +87,7 @@ class eatFunctionNodeTest extends TestCase
         $function = new FunctionComponentValue(getToken("foo("), $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $function . $rest);
-        $actualFunction = eatFunctionNode($stream);
+        $actualFunction = eatFunctionComponentValue($stream);
 
         assertMatch($actualFunction, $function);
         assertMatch(stringifyTokens($stream), $rest);

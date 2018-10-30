@@ -2,15 +2,15 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\Algorithms;
 
-use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
+use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatDeclarationInDeclarationsNode;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
-use function Netmosfera\PHPCSSASTTests\Parser\stringifyNodes;
-use function Netmosfera\PHPCSSASTTests\Parser\getNodeStream;
-use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
-use function Netmosfera\PHPCSSASTTests\Parser\getToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\Parser\getNodeStream;
+use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyNodes;
 
 /**
  * Tests in this file:

@@ -2,14 +2,14 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
-use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValuesSeq;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
+use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
-use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
-use function Netmosfera\PHPCSSASTTests\Parser\getToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
 
 /**
  * Tests in this file:

@@ -3,9 +3,9 @@
 namespace Netmosfera\PHPCSSAST\Parser\Algorithms;
 
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
-use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\Parser\NodeStream;
 
 function eatAtRuleNode(NodeStream $stream): ?AtRuleNode{
@@ -30,7 +30,7 @@ function eatAtRuleNode(NodeStream $stream): ?AtRuleNode{
         $node = $stream->nodes[$stream->index];
         $stream->index++;
 
-        if($node instanceof DelimiterToken && (String)$node === ";"){
+        if($node instanceof SemicolonToken){
             return new AtRuleNode($atKeyword, $preludePieces, ";");
         }
 

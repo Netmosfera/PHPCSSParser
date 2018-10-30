@@ -5,10 +5,10 @@ namespace Netmosfera\PHPCSSAST\Parser;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatAtRuleNode;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatNotADeclaration;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatDeclarationInDeclarationsNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValuesSeq;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarationsNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValuesSeq;
-use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 
 function eatListOfDeclarationsNode(ComponentValuesSeq $nodes): ListOfDeclarationsNode{
@@ -24,7 +24,7 @@ function eatListOfDeclarationsNode(ComponentValuesSeq $nodes): ListOfDeclaration
         if(
             $token instanceof WhitespaceToken ||
             $token instanceof CommentToken ||
-            ($token instanceof DelimiterToken && (String)$token === ";")
+            $token instanceof SemicolonToken
         ){
             $list[] = $token;
             $stream->index++;
