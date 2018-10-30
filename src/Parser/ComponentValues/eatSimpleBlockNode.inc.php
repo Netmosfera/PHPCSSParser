@@ -1,9 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSAST\Parser;
+namespace Netmosfera\PHPCSSAST\Parser\ComponentValues;
 
-use Netmosfera\PHPCSSAST\Nodes\SimpleBlockNode;
+use Netmosfera\PHPCSSAST\Parser\TokenStream;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
 
 function eatSimpleBlockNode(TokenStream $stream): ?SimpleBlockNode{
     if(isset($stream->tokens[$stream->index]));else{

@@ -3,45 +3,29 @@
 namespace Netmosfera\PHPCSSASTTests;
 
 use Closure;
+use function PHPToolBucket\Testing\smartCartesianProduct;
+use function array_unshift;
 
-function makePiecesSample(
-    Closure $getPiecesFunction,
-    Bool $doGiveEmpty = TRUE
-){
+function makePiecesSample(Closure $getPiecesFunction, Bool $doGiveEmpty = TRUE, Int $maxLength = 4){
+    $lengths = [1, 2, $maxLength];
     if($doGiveEmpty){
-        $result[] = [];
+        array_unshift($lengths, 0);
     }
 
-    $isLast = TRUE;
-    $isNotLast = FALSE;
+    $result = [];
+    foreach($lengths as $sequenceLength){
+        $sequences = smartCartesianProduct(function(
+            array $combination,
+            Int $index,
+            Int $maxIndex
+        ) use($getPiecesFunction){
+            $previousElement = $combination === [] ? NULL : end($combination);
+            return $getPiecesFunction($previousElement, $index === $maxIndex);
+        }, $sequenceLength);
 
-    foreach($getPiecesFunction(NULL, $isLast) as $p0){
-        $result[] = [$p0];
-    }
-
-    foreach($getPiecesFunction(NULL, $isNotLast) as $p0){
-        foreach($getPiecesFunction($p0, $isLast) as $p1){
-            $result[] = [$p0, $p1];
+        foreach($sequences as $sequence){
+            $result[] = $sequence;
         }
     }
-
-    foreach($getPiecesFunction(NULL, $isNotLast) as $p0){
-        foreach($getPiecesFunction($p0, $isNotLast) as $p1){
-            foreach($getPiecesFunction($p1, $isLast) as $p2){
-                $result[] = [$p0, $p1, $p2];
-            }
-        }
-    }
-
-    foreach($getPiecesFunction(NULL, $isNotLast) as $p0){
-        foreach($getPiecesFunction($p0, $isNotLast) as $p1){
-            foreach($getPiecesFunction($p1, $isNotLast) as $p2){
-                foreach($getPiecesFunction($p2, $isLast) as $p3){
-                    $result[] = [$p0, $p1, $p2, $p3];
-                }
-            }
-        }
-    }
-
     return $result;
 }

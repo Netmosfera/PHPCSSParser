@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSAST\Nodes;
+namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 
 use Error;
 use function Netmosfera\PHPCSSAST\match;
@@ -22,8 +22,11 @@ class SimpleBlockNode implements ComponentValueNode
         array $components,
         Bool $EOFTerminated
     ){
+        foreach($components as $component){
+            assert($component instanceof ComponentValueNode);
+        }
         $this->_openDelimiter = $openDelimiter;
-        $this->_components = $components; // @TODO can be Tokens or ComponentValueNode (ie a SimpleBlockNode or a FunctionNode)
+        $this->_components = $components;
         $this->_EOFTerminated = $EOFTerminated;
     }
 

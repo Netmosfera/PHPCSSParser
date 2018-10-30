@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSAST\Nodes;
+namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
@@ -20,6 +20,9 @@ class FunctionNode implements ComponentValueNode
         array $components,
         Bool $EOFTerminated
     ){
+        foreach($components as $component){
+            assert($component instanceof ComponentValueNode);
+        }
         $this->_token = $token;
         $this->_components = $components; // @TODO ComponentValueNode
         $this->_EOFTerminated = $EOFTerminated;

@@ -1,26 +1,23 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSAST\Parser;
+namespace Netmosfera\PHPCSSAST\Parser\ComponentValues;
 
-use Netmosfera\PHPCSSAST\Nodes\FunctionNode;
+use Netmosfera\PHPCSSAST\Parser\TokenStream;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionNode;
 
 function eatFunctionNode(TokenStream $stream): ?FunctionNode{
     if(isset($stream->tokens[$stream->index]));else{
         return NULL;
     }
-    if($stream->tokens[$stream->index] instanceof FunctionToken);else{
+    $functionToken = $stream->tokens[$stream->index];
+    if($functionToken instanceof FunctionToken);else{
         return NULL;
     }
-    $functionToken = $stream->tokens[$stream->index];
-
-    /** @var FunctionToken $functionToken */
-
     $stream->index++;
 
     $componentValueNodes = [];
-
     while(TRUE){
         if(isset($stream->tokens[$stream->index]));else{
             return new FunctionNode($functionToken, $componentValueNodes, TRUE);

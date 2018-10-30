@@ -16,7 +16,7 @@ class Tokens
     private $_tokens;
 
     /**
-     * @param       String $text
+     * @param       String $text         // @TODO fix
      * `String`
      * @TODOC
      */

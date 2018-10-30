@@ -7,7 +7,7 @@ use Netmosfera\PHPCSSAST\Tokens\Token;
 class TokenStream
 {
     /**
-     * @var         array|Token[]
+     * @var         Token[]
      * `Array<Int, Token>`
      * @TODOC
      */

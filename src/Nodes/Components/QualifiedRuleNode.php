@@ -1,8 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSAST\Nodes;
+namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
 
 class QualifiedRuleNode implements RuleNode
 {
@@ -14,20 +15,15 @@ class QualifiedRuleNode implements RuleNode
 
     public function __construct(
         array $preludePieces,
-        $terminator
+        SimpleBlockNode $terminator
     ){
-        assert(
-            $terminator instanceof SimpleBlockNode ||
-            $terminator === NULL     // EOF terminated
-        );
         $this->_preludePieces = $preludePieces;
         $this->_terminator = $terminator;
     }
 
-
     public function __toString(): String{
         if($this->_stringified === NULL){
-            $this->_stringified .= implode("", $this->_preludePieces);
+            $this->_stringified = implode("", $this->_preludePieces);
             $this->_stringified .= $this->_terminator;
         }
         return $this->_stringified;

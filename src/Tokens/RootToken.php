@@ -2,10 +2,12 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens;
 
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValueNode;
+
 /**
  * @TODOC
  */
-interface RootToken extends Token
+interface RootToken extends Token, ComponentValueNode
 {
     /**
      * Tells whether the token represents a parse error.
@@ -14,4 +16,6 @@ interface RootToken extends Token
      * `Bool`
      */
     public function isParseError(): Bool;
+
+    // @TODO isParseError() must be is parseErrorInTokenizer()
 }

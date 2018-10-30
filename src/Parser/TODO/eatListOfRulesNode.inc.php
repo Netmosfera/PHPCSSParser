@@ -11,15 +11,15 @@ use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 function eatListOfRulesNode(Tokens $tokens, Bool $topLevel): ListOfRulesNode{
-    $stream = new TokenStream($tokens->tokens());
+    $stream = new NodeStream($tokens->tokens());
 
     $pieces = [];
     while(TRUE){
-        if(isset($stream->tokens[$stream->index]));else{
+        if(isset($stream->nodes[$stream->index]));else{
             return new ListOfRulesNode($pieces, $topLevel);
         }
 
-        $token = $stream->tokens[$stream->index];
+        $token = $stream->nodes[$stream->index];
         if(
             $token instanceof WhitespaceToken ||
             $token instanceof CommentToken || (

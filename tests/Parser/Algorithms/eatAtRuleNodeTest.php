@@ -1,13 +1,17 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSASTTests\Parser;
+namespace Netmosfera\PHPCSSASTTests\Parser\Algorithms;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Nodes\AtRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
-use Netmosfera\PHPCSSAST\Nodes\SimpleBlockNode;
+use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
+use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatAtRuleNode;
+use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyNodes;
+use function Netmosfera\PHPCSSASTTests\Parser\getNodeStream;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSAST\Parser\eatAtRuleNode;
+use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
+use function Netmosfera\PHPCSSASTTests\Parser\getToken;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
@@ -30,11 +34,11 @@ class eatAtRuleNodeTest extends TestCase
     public function test1(Bool $testPrefix){
         $atRule = NULL;
 
-        $stream = getTokenStream($testPrefix, "");
+        $stream = getNodeStream($testPrefix, "");
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyTokens($stream), "");
+        assertMatch(stringifyNodes($stream), "");
     }
 
     public function data2(){
@@ -45,35 +49,17 @@ class eatAtRuleNodeTest extends TestCase
     public function test2(Bool $testPrefix, String $rest){
         $atRule = NULL;
 
-        $stream = getTokenStream($testPrefix, $rest);
+        $stream = getNodeStream($testPrefix, $rest);
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch(stringifyNodes($stream), $rest);
     }
 
     public function data345(){
-        $preludePieces[] = new PreservedTokenNode(getToken(" "));
-        $preludePieces[] = new PreservedTokenNode(getToken("foo"));
-        $preludePieces[] = new PreservedTokenNode(getToken(" "));
-        $preludePieces[] = new PreservedTokenNode(getToken("+123%"));
-        $preludePieces[] = new PreservedTokenNode(getToken(" "));
-        $preludePieces[] = new SimpleBlockNode("(", [
-            new PreservedTokenNode(getToken("+123%")),
-            new PreservedTokenNode(getToken("+123%")),
-        ], FALSE);
-        $preludePieces[] = new PreservedTokenNode(getToken(" "));
-        $preludePieces[] = new SimpleBlockNode("[", [
-            new PreservedTokenNode(getToken("+123%")),
-            new PreservedTokenNode(getToken("+123%")),
-        ], FALSE);
-        $preludePieces[] = new PreservedTokenNode(getToken(" "));
-        $preludePieces[] = new PreservedTokenNode(getToken("bar"));
-        $preludePieces[] = new PreservedTokenNode(getToken(" "));
-        $preludePieces[] = new PreservedTokenNode(getToken("+456%"));
-        $preludePieces[] = new PreservedTokenNode(getToken(" "));
-        $preludePieces[] = new PreservedTokenNode(getToken("qux"));
-
+        $preludePieces = tokensToNodes(getTokens(
+            " foo +123% /* comment */ > .bar [{this is not the block}] * bar -1e-45"
+        ))->nodes();
         return cartesianProduct(
             [FALSE, TRUE],
             everySeqFromStart($preludePieces),
@@ -85,34 +71,33 @@ class eatAtRuleNodeTest extends TestCase
     public function test3(Bool $testPrefix, array $preludePieces){
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, NULL);
 
-        $stream = getTokenStream($testPrefix, $atRule . "");
+        $stream = getNodeStream($testPrefix, $atRule . "");
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyTokens($stream), "");
+        assertMatch(stringifyNodes($stream), "");
     }
 
     /** @dataProvider data345 */
     public function test4(Bool $testPrefix, array $preludePieces, String $rest){
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, ";");
 
-        $stream = getTokenStream($testPrefix, $atRule . $rest);
+        $stream = getNodeStream($testPrefix, $atRule . $rest);
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch(stringifyNodes($stream), $rest);
     }
 
     /** @dataProvider data345 */
     public function test5(Bool $testPrefix, array $preludePieces, String $rest){
-        $blockComponents = [new PreservedTokenNode(getToken("foo"))];
-        $block = new SimpleBlockNode("{", $blockComponents, FALSE);
+        $block = tokensToNodes(getTokens("{test block}"))->nodes()[0];
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, $block);
 
-        $stream = getTokenStream($testPrefix, $atRule . $rest);
+        $stream = getNodeStream($testPrefix, $atRule . $rest);
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch(stringifyNodes($stream), $rest);
     }
 }

@@ -1,8 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSAST\Nodes;
+namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 
 class AtRuleNode implements RuleNode

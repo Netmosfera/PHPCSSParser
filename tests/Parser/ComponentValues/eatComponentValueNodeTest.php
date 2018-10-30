@@ -1,15 +1,17 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSASTTests\Parser;
+namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
-use Netmosfera\PHPCSSAST\Nodes\SimpleBlockNode;
-use function Netmosfera\PHPCSSASTTests\assertMatch;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSAST\Parser\eatComponentValueNode;
-use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
-use Netmosfera\PHPCSSAST\Nodes\FunctionNode;
 use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatComponentValueNode;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
+use function Netmosfera\PHPCSSASTTests\Parser\getTokenStream;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**
  * Tests in this file:
@@ -42,7 +44,7 @@ class eatComponentValueNodeTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(Bool $testPrefix, String $rest){
-        $componentValues = [new PreservedTokenNode(getToken("foo"))];
+        $componentValues = [getToken("foo")];
         $componentValue = new FunctionNode(getToken("foo("), $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
@@ -58,7 +60,7 @@ class eatComponentValueNodeTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(Bool $testPrefix, String $rest){
-        $componentValues = [new PreservedTokenNode(getToken("foo"))];
+        $componentValues = [getToken("foo")];
         $componentValue = new SimpleBlockNode("{", $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
@@ -74,7 +76,7 @@ class eatComponentValueNodeTest extends TestCase
 
     /** @dataProvider data4 */
     public function test4(Bool $testPrefix, String $rest){
-        $componentValue = new PreservedTokenNode(getToken("123deg"));
+        $componentValue = getToken("123deg");
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
         $actualComponentValue = eatComponentValueNode($stream);

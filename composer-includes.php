@@ -2,15 +2,18 @@
 
 require(__DIR__ . "/src/isArraySequence.inc.php");
 require(__DIR__ . "/src/match.inc.php");
-require(__DIR__ . "/src/Parser/eatAtRuleNode.inc.php");
-require(__DIR__ . "/src/Parser/eatComponentValueNode.inc.php");
-require(__DIR__ . "/src/Parser/eatFunctionNode.inc.php");
-require(__DIR__ . "/src/Parser/eatListOfRulesNode.inc.php");
-require(__DIR__ . "/src/Parser/eatQualifiedRuleNode.inc.php");
-require(__DIR__ . "/src/Parser/eatSimpleBlockNode.inc.php");
-require(__DIR__ . "/src/Parser/TODOeatDeclarationNode.inc.php");
-require(__DIR__ . "/src/Parser/TODOeatListOfDeclarationsNode.inc.php");
-require(__DIR__ . "/src/Parser/TODOeatRuleNode.inc.php");
+require(__DIR__ . "/src/Parser/eatListOfDeclarationsNode.inc.php");
+require(__DIR__ . "/src/Parser/Algorithms/eatAtRuleNode.inc.php");
+require(__DIR__ . "/src/Parser/Algorithms/eatDeclarationInDeclarationsNode.inc.php");
+require(__DIR__ . "/src/Parser/Algorithms/eatNotADeclaration.inc.php");
+require(__DIR__ . "/src/Parser/Algorithms/eatOptionalWhitespaceSequence.inc.php");
+require(__DIR__ . "/src/Parser/Algorithms/eatQualifiedRuleNode.inc.php");
+require(__DIR__ . "/src/Parser/ComponentValues/eatComponentValueNode.inc.php");
+require(__DIR__ . "/src/Parser/ComponentValues/eatFunctionNode.inc.php");
+require(__DIR__ . "/src/Parser/ComponentValues/eatSimpleBlockNode.inc.php");
+require(__DIR__ . "/src/Parser/ComponentValues/tokensToNodes.inc.php");
+require(__DIR__ . "/src/Parser/TODO/eatListOfRulesNode.inc.php");
+require(__DIR__ . "/src/Parser/TODO/TODOeatRuleNode.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatAtKeywordToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatBadURLRemnantsToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatCommentToken.inc.php");
