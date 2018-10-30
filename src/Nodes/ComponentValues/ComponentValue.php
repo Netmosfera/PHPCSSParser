@@ -2,5 +2,5 @@
 
 namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 
-interface ComponentValueNode
+interface ComponentValue
 {}

@@ -4,9 +4,9 @@ namespace Netmosfera\PHPCSSAST\Parser\ComponentValues;
 
 use Netmosfera\PHPCSSAST\Parser\TokenStream;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 
-function eatSimpleBlockNode(TokenStream $stream): ?SimpleBlockNode{
+function eatSimpleBlockNode(TokenStream $stream): ?SimpleBlockComponentValue{
     if(isset($stream->tokens[$stream->index]));else{
         return NULL;
     }
@@ -29,7 +29,7 @@ function eatSimpleBlockNode(TokenStream $stream): ?SimpleBlockNode{
 
     while(TRUE){
         if(isset($stream->tokens[$stream->index]));else{
-            return new SimpleBlockNode($stringifiedOpenDelimiter, $componentValueNodes, TRUE);
+            return new SimpleBlockComponentValue($stringifiedOpenDelimiter, $componentValueNodes, TRUE);
         }
 
         $closeDelimiter = $stream->tokens[$stream->index];
@@ -38,7 +38,7 @@ function eatSimpleBlockNode(TokenStream $stream): ?SimpleBlockNode{
             (String)$closeDelimiter === $stringifiedCloseDelimiter
         ){
             $stream->index++;
-            return new SimpleBlockNode($stringifiedOpenDelimiter, $componentValueNodes, FALSE);
+            return new SimpleBlockComponentValue($stringifiedOpenDelimiter, $componentValueNodes, FALSE);
         }
 
         assert(is_int($oldIndex = $stream->index)); // Does nothing - just saves the index

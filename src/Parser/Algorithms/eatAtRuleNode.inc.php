@@ -2,7 +2,7 @@
 
 namespace Netmosfera\PHPCSSAST\Parser\Algorithms;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
@@ -34,7 +34,7 @@ function eatAtRuleNode(NodeStream $stream): ?AtRuleNode{
             return new AtRuleNode($atKeyword, $preludePieces, ";");
         }
 
-        if($node instanceof SimpleBlockNode && $node->openDelimiter() === "{"){
+        if($node instanceof SimpleBlockComponentValue && $node->openDelimiter() === "{"){
             return new AtRuleNode($atKeyword, $preludePieces, $node);
         }
 

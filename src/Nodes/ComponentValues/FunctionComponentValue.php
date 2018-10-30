@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 
-class FunctionNode implements ComponentValueNode
+class FunctionComponentValue implements ComponentValue
 {
     private $_token;
 
@@ -21,7 +21,7 @@ class FunctionNode implements ComponentValueNode
         Bool $EOFTerminated
     ){
         foreach($components as $component){
-            assert($component instanceof ComponentValueNode);
+            assert($component instanceof ComponentValue);
         }
         $this->_token = $token;
         $this->_components = $components; // @TODO ComponentValueNode

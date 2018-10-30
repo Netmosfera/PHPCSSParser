@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSASTTests\Parser;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatQualifiedRuleNode;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -45,7 +45,7 @@ class eatQualifiedRuleNodeTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(Bool $testPrefix, array $preludePieces, String $rest){
-        $block = new SimpleBlockNode("{", [], FALSE);
+        $block = new SimpleBlockComponentValue("{", [], FALSE);
         $qualifiedRule = new QualifiedRuleNode($preludePieces, $block);
 
         $stream = getNodeStream($testPrefix, $qualifiedRule . $rest);

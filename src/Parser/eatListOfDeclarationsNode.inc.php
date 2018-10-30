@@ -7,11 +7,11 @@ use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatNotADeclaration;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatDeclarationInDeclarationsNode;
 use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarationsNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\Nodes;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValuesSeq;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 
-function eatListOfDeclarationsNode(Nodes $nodes): ListOfDeclarationsNode{
+function eatListOfDeclarationsNode(ComponentValuesSeq $nodes): ListOfDeclarationsNode{
     $stream = new NodeStream($nodes->nodes());
 
     $list = [];

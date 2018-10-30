@@ -3,8 +3,8 @@
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionNode;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatComponentValueNode;
 use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
 use function Netmosfera\PHPCSSASTTests\Parser\getTokenStream;
@@ -45,7 +45,7 @@ class eatComponentValueNodeTest extends TestCase
     /** @dataProvider data2 */
     public function test2(Bool $testPrefix, String $rest){
         $componentValues = [getToken("foo")];
-        $componentValue = new FunctionNode(getToken("foo("), $componentValues, FALSE);
+        $componentValue = new FunctionComponentValue(getToken("foo("), $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
         $actualComponentValue = eatComponentValueNode($stream);
@@ -61,7 +61,7 @@ class eatComponentValueNodeTest extends TestCase
     /** @dataProvider data3 */
     public function test3(Bool $testPrefix, String $rest){
         $componentValues = [getToken("foo")];
-        $componentValue = new SimpleBlockNode("{", $componentValues, FALSE);
+        $componentValue = new SimpleBlockComponentValue("{", $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
         $actualComponentValue = eatComponentValueNode($stream);

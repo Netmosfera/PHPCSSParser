@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSASTTests\Parser\Algorithms;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclaration;
+use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatNotADeclaration;
 use function Netmosfera\PHPCSSASTTests\Parser\stringifyNodes;
@@ -21,7 +21,7 @@ class eatNotADeclarationTest extends TestCase
 {
     function test1(){
         $pieces = tokensToNodes(getTokens("foo bar baz"))->nodes();
-        $invalidDeclaration = new InvalidDeclaration($pieces);
+        $invalidDeclaration = new InvalidDeclarationNode($pieces);
         $rest = "  /* dsf */    ; pooooop";
 
         $stream = getNodeStream(TRUE, $invalidDeclaration . $rest);
@@ -33,7 +33,7 @@ class eatNotADeclarationTest extends TestCase
 
     function test2(){
         $pieces = tokensToNodes(getTokens("foo bar baz"))->nodes();
-        $invalidDeclaration = new InvalidDeclaration($pieces);
+        $invalidDeclaration = new InvalidDeclarationNode($pieces);
         $rest = "  /* dsf */    ";
 
         $stream = getNodeStream(TRUE, $invalidDeclaration . $rest);

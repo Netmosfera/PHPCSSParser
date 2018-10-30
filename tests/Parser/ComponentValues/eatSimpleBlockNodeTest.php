@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatSimpleBlockNode;
 use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
 use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
@@ -68,7 +68,7 @@ class eatSimpleBlockNodeTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(Bool $testPrefix, array $componentValues){
-        $block = new SimpleBlockNode("(", $componentValues, TRUE);
+        $block = new SimpleBlockComponentValue("(", $componentValues, TRUE);
 
         $stream = getTokenStream($testPrefix, $block . "");
         $actualBlock = eatSimpleBlockNode($stream);
@@ -88,7 +88,7 @@ class eatSimpleBlockNodeTest extends TestCase
 
     /** @dataProvider data4 */
     public function test4(Bool $testPrefix, array $componentValues, String $rest){
-        $block = new SimpleBlockNode("(", $componentValues, FALSE);
+        $block = new SimpleBlockComponentValue("(", $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $block . $rest);
         $actualBlock = eatSimpleBlockNode($stream);

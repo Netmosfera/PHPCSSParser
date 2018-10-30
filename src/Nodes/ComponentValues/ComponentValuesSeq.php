@@ -4,22 +4,22 @@ namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 
 use function Netmosfera\PHPCSSAST\match;
 
-class Nodes
+class ComponentValuesSeq
 {
     /**
-     * @var         ComponentValueNode[]
+     * @var         ComponentValue[]
      * `Array<Int, ComponentValueNode>`
      */
     private $_nodes;
 
     /**
-     * @param       ComponentValueNode[] $nodes
+     * @param       ComponentValue[] $nodes
      * `Array<Int, ComponentValueNode>`
      * @TODOC
      */
     public function __construct(array $nodes){
         foreach($nodes as $node){
-            assert($node instanceof ComponentValueNode);
+            assert($node instanceof ComponentValue);
         }
         $this->_nodes = $nodes;
 
@@ -38,7 +38,7 @@ class Nodes
     /**
      * @TODOC
      *
-     * @return      ComponentValueNode[]
+     * @return      ComponentValue[]
      * `Array<Int, ComponentValueNode>`
      * @TODOC
      */

@@ -2,17 +2,15 @@
 
 namespace Netmosfera\PHPCSSAST\Parser;
 
-use Netmosfera\PHPCSSAST\Tokens\Tokens;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
-use Netmosfera\PHPCSSAST\Nodes\ListOfRulesNode;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
-use Netmosfera\PHPCSSAST\Nodes\PreservedTokenNode;
+use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatAtRuleNode;
+use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatQualifiedRuleNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
+use Netmosfera\PHPCSSAST\Nodes\ListOfRulesNode;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
 
-function eatListOfRulesNode(Tokens $tokens, Bool $topLevel): ListOfRulesNode{
-    $stream = new NodeStream($tokens->tokens());
-
+function eatListOfRulesNode(NodeStream $stream, Bool $topLevel): ListOfRulesNode{
     $pieces = [];
     while(TRUE){
         if(isset($stream->nodes[$stream->index]));else{
@@ -29,7 +27,7 @@ function eatListOfRulesNode(Tokens $tokens, Bool $topLevel): ListOfRulesNode{
                 )
             )
         ){
-            $pieces[] = new PreservedTokenNode($token);
+            $pieces[] = $token;
             $stream->index++;
             continue;
         }

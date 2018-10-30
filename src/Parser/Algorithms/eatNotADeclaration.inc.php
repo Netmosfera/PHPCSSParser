@@ -4,9 +4,9 @@ namespace Netmosfera\PHPCSSAST\Parser\Algorithms;
 
 use Netmosfera\PHPCSSAST\Parser\NodeStream;
 use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
-use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclaration;
+use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
 
-function eatNotADeclaration(NodeStream $stream): InvalidDeclaration{
+function eatNotADeclaration(NodeStream $stream): InvalidDeclarationNode{
     // @TODO assert this cannot start with a whitespace or comment token
     // as these must be consumed separately before this function is called
 
@@ -17,13 +17,13 @@ function eatNotADeclaration(NodeStream $stream): InvalidDeclaration{
 
         if(isset($stream->nodes[$stream->index]));else{
             $stream->index = $indexBeforeWhitespace;
-            return new InvalidDeclaration($pieces);
+            return new InvalidDeclarationNode($pieces);
         }
 
         $piece = $stream->nodes[$stream->index];
         if($piece instanceof DelimiterToken && (String)$piece === ";"){
             $stream->index = $indexBeforeWhitespace;
-            return new InvalidDeclaration($pieces);
+            return new InvalidDeclarationNode($pieces);
         }
 
         foreach($whitespaceAmidstPieces as $whitespacePiece){

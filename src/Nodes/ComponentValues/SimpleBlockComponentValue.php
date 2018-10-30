@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 use Error;
 use function Netmosfera\PHPCSSAST\match;
 
-class SimpleBlockNode implements ComponentValueNode
+class SimpleBlockComponentValue implements ComponentValue
 {
     private $_openDelimiter;
 
@@ -23,7 +23,7 @@ class SimpleBlockNode implements ComponentValueNode
         Bool $EOFTerminated
     ){
         foreach($components as $component){
-            assert($component instanceof ComponentValueNode);
+            assert($component instanceof ComponentValue);
         }
         $this->_openDelimiter = $openDelimiter;
         $this->_components = $components;

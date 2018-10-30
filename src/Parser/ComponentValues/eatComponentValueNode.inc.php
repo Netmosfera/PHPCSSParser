@@ -3,9 +3,9 @@
 namespace Netmosfera\PHPCSSAST\Parser\ComponentValues;
 
 use Netmosfera\PHPCSSAST\Parser\TokenStream;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValueNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
 
-function eatComponentValueNode(TokenStream $stream): ?ComponentValueNode{
+function eatComponentValueNode(TokenStream $stream): ?ComponentValue{
     if(isset($stream->tokens[$stream->index]));else{
         return NULL;
     }

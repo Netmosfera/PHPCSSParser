@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValueNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
 class DeclarationNode
@@ -36,7 +36,7 @@ class DeclarationNode
         // $definition can be empty -- that also counts as a valid declaration
         // when definition is empty, whitespaceAfterDefinition is also empty
         foreach($definition as $definitionPiece){
-            assert($definitionPiece instanceof ComponentValueNode);
+            assert($definitionPiece instanceof ComponentValue);
         }
 
         // $whitespaceAfterDefinition is a sequence of whitespace and comment tokens

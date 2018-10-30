@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 
 class AtRuleNode implements RuleNode
@@ -22,7 +22,7 @@ class AtRuleNode implements RuleNode
         $terminator
     ){
         assert(
-            $terminator instanceof SimpleBlockNode ||
+            $terminator instanceof SimpleBlockComponentValue ||
             $terminator === ";" ||
             $terminator === NULL     // EOF terminated
         );

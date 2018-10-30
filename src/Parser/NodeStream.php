@@ -2,12 +2,12 @@
 
 namespace Netmosfera\PHPCSSAST\Parser;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValueNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
 
 class NodeStream
 {
     /**
-     * @var         ComponentValueNode[]
+     * @var         ComponentValue[]
      * `Array<Int, ComponentValueNode>`
      * @TODOC
      */

@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use function file_put_contents;
-use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclaration;
+use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
 use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarationsNode;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
 use function Netmosfera\PHPCSSAST\Parser\eatListOfDeclarationsNode;
@@ -50,7 +50,7 @@ class eatListOfDeclarationsNodeTest extends TestCase
                 $data[] = new DelimiterToken(";");
                 $data[] = new CommentToken("", FALSE);
                 $data[] = new WhitespaceToken(" ");
-                $data[] = new InvalidDeclaration(getTokens("+123")->tokens());
+                $data[] = new InvalidDeclarationNode(getTokens("+123")->tokens());
             }elseif($afterPiece instanceof WhitespaceToken){
                 $data[] = new DeclarationNode(getToken("background"), [], [], [getToken("red")]);
                 $data[] = new AtRuleNode(getToken("@foo"), [], ";");
@@ -58,7 +58,7 @@ class eatListOfDeclarationsNodeTest extends TestCase
                 $data[] = new CommentToken("", FALSE);
             }elseif(
                 $afterPiece instanceof DeclarationNode ||
-                $afterPiece instanceof InvalidDeclaration
+                $afterPiece instanceof InvalidDeclarationNode
             ){
                 $data[] = new DelimiterToken(";");
                 $data[] = new CommentAfterDeclarationBeforeSemicolon("bco", FALSE);
@@ -79,6 +79,7 @@ class eatListOfDeclarationsNodeTest extends TestCase
     /** @dataProvider data1 */
     public function test1(array $pieces){
         $list = new ListOfDeclarationsNode($pieces);
+
         $nodes = tokensToNodes(getTokens(implode("", $pieces)));
         $actualList = eatListOfDeclarationsNode($nodes);
 

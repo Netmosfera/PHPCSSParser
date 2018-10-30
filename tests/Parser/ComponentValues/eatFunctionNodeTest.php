@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatFunctionNode;
 use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
 use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
@@ -64,7 +64,7 @@ class eatFunctionNodeTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(Bool $testPrefix, array $componentValues){
-        $function = new FunctionNode(getToken("foo("), $componentValues, TRUE);
+        $function = new FunctionComponentValue(getToken("foo("), $componentValues, TRUE);
 
         $stream = getTokenStream($testPrefix, $function . "");
         $actualFunction = eatFunctionNode($stream);
@@ -84,7 +84,7 @@ class eatFunctionNodeTest extends TestCase
 
     /** @dataProvider data4 */
     public function test4(Bool $testPrefix, array $componentValues, String $rest){
-        $function = new FunctionNode(getToken("foo("), $componentValues, FALSE);
+        $function = new FunctionComponentValue(getToken("foo("), $componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $function . $rest);
         $actualFunction = eatFunctionNode($stream);

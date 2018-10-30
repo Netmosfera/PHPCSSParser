@@ -3,9 +3,9 @@
 namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValueNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
 
-class InvalidDeclaration
+class InvalidDeclarationNode
 {
     private $_pieces;
 
@@ -15,7 +15,7 @@ class InvalidDeclaration
         $this->_pieces = $pieces;
 
         foreach($pieces as $definitionPiece){
-            assert($definitionPiece instanceof ComponentValueNode);
+            assert($definitionPiece instanceof ComponentValue);
         }
     }
 

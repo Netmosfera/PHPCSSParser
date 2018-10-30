@@ -3,9 +3,9 @@
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\Nodes;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionNode;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValuesSeq;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
 use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
 use function Netmosfera\PHPCSSASTTests\Parser\getToken;
@@ -23,11 +23,11 @@ class tokensToNodesTest extends TestCase
         $nodes[] = getToken(" ");
         $nodes[] = getToken("+123.33");
         $nodes[] = getToken(" ");
-        $nodes[] = new FunctionNode(getToken("foo("), [
+        $nodes[] = new FunctionComponentValue(getToken("foo("), [
             getToken("bar"),
             getToken(","),
             getToken(" "),
-            new FunctionNode(getToken("foo("), [
+            new FunctionComponentValue(getToken("foo("), [
                     getToken("bar"),
                     getToken(","),
                     getToken(" "),
@@ -35,11 +35,11 @@ class tokensToNodesTest extends TestCase
             ], FALSE),
             getToken("baz"),
         ], FALSE);
-        $nodes[] = new SimpleBlockNode("{", [
+        $nodes[] = new SimpleBlockComponentValue("{", [
             getToken("bar"),
             getToken(","),
             getToken(" "),
-            new SimpleBlockNode("{", [
+            new SimpleBlockComponentValue("{", [
                 getToken("bar"),
                 getToken(","),
                 getToken(" "),
@@ -48,7 +48,7 @@ class tokensToNodesTest extends TestCase
             getToken("baz"),
         ], FALSE);
 
-        $nodes = new Nodes($nodes); // @TODO checked nodes
+        $nodes = new ComponentValuesSeq($nodes); // @TODO checked nodes
 
         $actualNodes = tokensToNodes(
             getTokens((String)$nodes)
