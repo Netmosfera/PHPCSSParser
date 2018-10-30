@@ -18,12 +18,6 @@ class StringBitToken implements EvaluableToken
     private $_text;
 
     /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_intendedValue;
-
-    /**
      * @param       String $text
      * `String`
      * @TODOC
@@ -51,13 +45,10 @@ class StringBitToken implements EvaluableToken
 
     /** @inheritDoc */
     public function intendedValue(): String{
-        if($this->_intendedValue === NULL){
-            $this->_intendedValue = str_replace(
-                "\0",
-                SpecData::REPLACEMENT_CHARACTER,
-                $this->_text
-            );
-        }
-        return $this->_intendedValue;
+        return str_replace(
+            "\0",
+            SpecData::REPLACEMENT_CHARACTER,
+            $this->_text
+        );
     }
 }

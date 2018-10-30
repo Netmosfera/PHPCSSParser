@@ -26,18 +26,6 @@ class CommentToken implements RootToken
     private $_EOFTerminated;
 
     /**
-     * @var         String
-     * `String`
-     */
-    private $_stringValue;
-
-    /**
-     * @var         Int
-     * `Int`
-     */
-    private $_newlineCount;
-
-    /**
      * @param       String $text
      * `String`
      * The comment's text.
@@ -52,12 +40,8 @@ class CommentToken implements RootToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
-        if($this->_stringValue === NULL){
-            $this->_stringValue = "/*" . $this->_text;
-            $this->_stringValue .= $this->_EOFTerminated ? "" : "*/";
-        }
-        return $this->_stringValue;
+    public function __toString(): String{ // @memo
+        return "/*" . $this->_text . ($this->_EOFTerminated ? "" : "*/");
     }
 
     /** @inheritDoc */
@@ -66,14 +50,11 @@ class CommentToken implements RootToken
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
-        if($this->_newlineCount === NULL){
-            $this->_newlineCount = preg_match_all(
-                "/(" . SpecData::NEWLINES_REGEX_SEQS. ")/usD",
-                $this->_text
-            );
-        }
-        return $this->_newlineCount;
+    public function newlineCount(): Int{ // @memo
+        return preg_match_all(
+            "/(" . SpecData::NEWLINES_REGEX_SEQS. ")/usD",
+            $this->_text
+        );
     }
 
     /** @inheritDoc */

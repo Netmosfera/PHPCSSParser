@@ -26,18 +26,6 @@ class CodePointEscapeToken implements ValidEscapeToken
     private $_terminator;
 
     /**
-     * @var         Int|NULL
-     * `Int|NULL`
-     */
-    private $_intValue;
-
-    /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_intendedValue;
-
-    /**
      * @param       String $hexDigits
      * `String`
      * @TODOC
@@ -55,12 +43,12 @@ class CodePointEscapeToken implements ValidEscapeToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
+    public function __toString(): String{ // @memo
         return "\\" . $this->_hexDigits . $this->_terminator;
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
+    public function newlineCount(): Int{ // @memo
         return $this->_terminator === NULL ? 0 : $this->_terminator->newlineCount();
     }
 
@@ -73,13 +61,8 @@ class CodePointEscapeToken implements ValidEscapeToken
     }
 
     /** @inheritDoc */
-    public function intendedValue(): String{
-        if($this->_intendedValue === NULL){
-            $this->_intendedValue = IntlChar::chr(
-                $this->integerValue()
-            ) ?? SpecData::REPLACEMENT_CHARACTER;
-        }
-        return $this->_intendedValue;
+    public function intendedValue(): String{ // @memo
+        return IntlChar::chr($this->integerValue()) ?? SpecData::REPLACEMENT_CHARACTER;
     }
 
     /**
@@ -94,7 +77,7 @@ class CodePointEscapeToken implements ValidEscapeToken
      * `Bool`
      * Tells whether this code point is valid.
      */
-    public function isValid(): Bool{
+    public function isValid(): Bool{ // @memo
         return $this->integerValue() <= IntlChar::CODEPOINT_MAX;
     }
 
@@ -105,11 +88,8 @@ class CodePointEscapeToken implements ValidEscapeToken
      * `Int`
      * Returns the code point.
      */
-    public function integerValue(): Int{
-        if($this->_intValue === NULL){
-            $this->_intValue = hexdec($this->_hexDigits);
-        }
-        return $this->_intValue;
+    public function integerValue(): Int{ // @memo
+        return hexdec($this->_hexDigits);
     }
 
     /**

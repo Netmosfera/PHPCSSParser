@@ -25,7 +25,7 @@ class PercentageToken implements NumericToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
+    public function __toString(): String{ // @memo
         return $this->_number . "%";
     }
 

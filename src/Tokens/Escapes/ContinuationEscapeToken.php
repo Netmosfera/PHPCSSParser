@@ -37,7 +37,7 @@ class ContinuationEscapeToken implements NullEscapeToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
+    public function __toString(): String{ // @memo
         return "\\" . $this->_codePoint;
     }
 

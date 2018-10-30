@@ -36,7 +36,7 @@ class DelimiterToken implements RootToken
     }
 
     /** @inheritDoc */
-    public function isParseError(): Bool{
+    public function isParseError(): Bool{ // @memo
         return $this->_delimiter === "\\";
     }
 

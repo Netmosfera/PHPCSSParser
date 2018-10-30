@@ -31,18 +31,6 @@ class BadStringToken implements AnyStringToken
     private $_pieces;
 
     /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_intendedValue;
-
-    /**
-     * @var         Int
-     * `Int`
-     */
-    private $_newlineCount;
-
-    /**
      * @param       String $delimiter
      * `String`
      * @TODOC
@@ -57,7 +45,7 @@ class BadStringToken implements AnyStringToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
+    public function __toString(): String{ // @memo
         return $this->_delimiter . implode("", $this->_pieces);
     }
 
@@ -67,15 +55,12 @@ class BadStringToken implements AnyStringToken
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
-        if($this->_newlineCount === NULL){
-            $count = 0;
-            foreach($this->_pieces as $piece){
-                $count += $piece->newlineCount();
-            }
-            $this->_newlineCount = $count;
+    public function newlineCount(): Int{ // @memo
+        $count = 0;
+        foreach($this->_pieces as $piece){
+            $count += $piece->newlineCount();
         }
-        return $this->_newlineCount;
+        return $count;
     }
 
     /** @inheritDoc */
@@ -109,13 +94,11 @@ class BadStringToken implements AnyStringToken
     }
 
     /** @inheritDoc */
-    public function intendedValue(): String{
-        if($this->_intendedValue === NULL){
-            $this->_intendedValue = "";
-            foreach($this->_pieces as $piece){
-                $this->_intendedValue .= $piece->intendedValue();
-            }
+    public function intendedValue(): String{ // @memo
+        $intendedValue = "";
+        foreach($this->_pieces as $piece){
+            $intendedValue .= $piece->intendedValue();
         }
-        return $this->_intendedValue;
+        return $intendedValue;
     }
 }

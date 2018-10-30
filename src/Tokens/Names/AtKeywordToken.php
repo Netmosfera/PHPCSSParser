@@ -26,7 +26,7 @@ class AtKeywordToken implements RootToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
+    public function __toString(): String{ // @memo
         return "@" . $this->_identifier;
     }
 
@@ -36,7 +36,7 @@ class AtKeywordToken implements RootToken
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
+    public function newlineCount(): Int{ // @memo
         return $this->_identifier->newlineCount();
     }
 

@@ -55,18 +55,6 @@ class URLToken implements AnyURLToken
     private $_EOFTerminated;
 
     /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_stringValue;
-
-    /**
-     * @var         Int
-     * `Int`
-     */
-    private $_newlineCount;
-
-    /**
      * @param       IdentifierToken $identifier
      * `IdentifierToken`
      * @TODOC
@@ -102,16 +90,13 @@ class URLToken implements AnyURLToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
-        if($this->_stringValue === NULL){
-            $this->_stringValue =
-                $this->_identifier . "(" .
-                $this->_whitespaceBefore .
-                implode("", $this->_pieces) .
-                $this->_whitespaceAfter .
-                ($this->_EOFTerminated ? "" : ")");
-        }
-        return $this->_stringValue;
+    public function __toString(): String{ // @memo
+        return
+            $this->_identifier . "(" .
+            $this->_whitespaceBefore .
+            implode("", $this->_pieces) .
+            $this->_whitespaceAfter .
+            ($this->_EOFTerminated ? "" : ")");
     }
 
     /** @inheritDoc */
@@ -120,15 +105,12 @@ class URLToken implements AnyURLToken
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
-        if($this->_newlineCount === NULL){
-            $count = 0;
-            foreach($this->_pieces as $piece){
-                $count += $piece->newlineCount();
-            }
-            $this->_newlineCount = $count;
+    public function newlineCount(): Int{ // @memo
+        $count = 0;
+        foreach($this->_pieces as $piece){
+            $count += $piece->newlineCount();
         }
-        return $this->_newlineCount;
+        return $count;
     }
 
     /** @inheritDoc */

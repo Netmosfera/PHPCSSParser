@@ -50,14 +50,11 @@ class NameBitToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    public function intendedValue(): String{
-        if($this->_intendedValue === NULL){
-            $this->_intendedValue = str_replace(
-                "\0",
-                SpecData::REPLACEMENT_CHARACTER,
-                $this->_text
-            );
-        }
-        return $this->_intendedValue;
+    public function intendedValue(): String{ // @memo
+        return str_replace(
+            "\0",
+            SpecData::REPLACEMENT_CHARACTER,
+            $this->_text
+        );
     }
 }

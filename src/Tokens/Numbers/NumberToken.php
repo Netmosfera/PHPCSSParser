@@ -46,24 +46,6 @@ class NumberToken implements NumericToken
     private $_EExponent;
 
     /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_stringValue;
-
-    /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_floatValue;
-
-    /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_numberValue;
-
-    /**
      * @param       String $sign
      * `String`
      * The number's sign; it is `"+"`, `"-"` or `""`.
@@ -105,17 +87,14 @@ class NumberToken implements NumericToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
-        if($this->_stringValue === NULL){
-            $number  = $this->_sign;
-            $number .= $this->_wholes;
-            $number .= $this->_decimals === "" ? "" : "." . $this->_decimals;
-            $number .= $this->_EIndicator;
-            $number .= $this->_ESign;
-            $number .= $this->_EExponent;
-            $this->_stringValue = $number;
-        }
-        return $this->_stringValue;
+    public function __toString(): String{ // @memo
+        $number  = $this->_sign;
+        $number .= $this->_wholes;
+        $number .= $this->_decimals === "" ? "" : "." . $this->_decimals;
+        $number .= $this->_EIndicator;
+        $number .= $this->_ESign;
+        $number .= $this->_EExponent;
+        return $number;
     }
 
     /** @inheritDoc */
@@ -214,11 +193,8 @@ class NumberToken implements NumericToken
      * `Float`
      * Returns the number as {@see Float}
      */
-    public function floatValue(): Float{
-        if($this->_floatValue === NULL){
-            $this->_floatValue = (Float)(String)$this;
-        }
-        return $this->_floatValue;
+    public function floatValue(): Float{ // @memo
+        return (Float)(String)$this;
     }
 
     /**
@@ -228,13 +204,10 @@ class NumberToken implements NumericToken
      * `Int|Float`
      * Returns the number as {@see Int} if possible, otherwise {@see Float}.
      */
-    public function numberValue(){
-        if($this->_numberValue === NULL){
-            $float = $this->floatValue();
-            $floatAsInt = (int)$float;
-            $isInt = (float)$floatAsInt === $float;
-            $this->_numberValue = $isInt ? $floatAsInt : $float;
-        }
-        return $this->_numberValue;
+    public function numberValue(){ // @memo
+        $float = $this->floatValue();
+        $floatAsInt = (int)$float;
+        $isInt = (float)$floatAsInt === $float;
+        return $isInt ? $floatAsInt : $float;
     }
 }

@@ -37,7 +37,7 @@ class DimensionToken implements NumericToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
+    public function __toString(): String{ // @memo
         return $this->_number . $this->_unit;
     }
 
@@ -47,7 +47,7 @@ class DimensionToken implements NumericToken
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
+    public function newlineCount(): Int{ // @memo
         return $this->_unit->newlineCount();
     }
 

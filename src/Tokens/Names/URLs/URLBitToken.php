@@ -18,12 +18,6 @@ class URLBitToken implements EvaluableToken
     private $_text;
 
     /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_value;
-
-    /**
      * @param       String $text
      * `String`
      * @TODOC
@@ -50,14 +44,11 @@ class URLBitToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    public function intendedValue(): String{
-        if($this->_value === NULL){
-            $this->_value = str_replace(
-                "\0",
-                SpecData::REPLACEMENT_CHARACTER,
-                $this->_text
-            );
-        }
-        return $this->_value;
+    public function intendedValue(): String{ // @memo
+        return str_replace(
+            "\0",
+            SpecData::REPLACEMENT_CHARACTER,
+            $this->_text
+        );
     }
 }

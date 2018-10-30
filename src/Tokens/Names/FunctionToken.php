@@ -25,7 +25,7 @@ class FunctionToken implements IdentifierLikeToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
+    public function __toString(): String{ // @memo
         return $this->_identifier . "(";
     }
 
@@ -35,7 +35,7 @@ class FunctionToken implements IdentifierLikeToken
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
+    public function newlineCount(): Int{ // @memo
         return $this->_identifier->newlineCount();
     }
 

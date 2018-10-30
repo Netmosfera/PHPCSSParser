@@ -37,18 +37,6 @@ class BadURLToken implements AnyURLToken
     private $_remnants;
 
     /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_stringValue;
-
-    /**
-     * @var         Int
-     * `Int`
-     */
-    private $_newlineCount;
-
-    /**
      * @param       IdentifierToken $identifier
      * `IdentifierToken`
      * @TODOC
@@ -78,15 +66,12 @@ class BadURLToken implements AnyURLToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
-        if($this->_stringValue === NULL){
-            $this->_stringValue =
-                $this->_identifier . "(" .
-                $this->_whitespaceBefore .
-                implode("", $this->_pieces) .
-                $this->_remnants;
-        }
-        return $this->_stringValue;
+    public function __toString(): String{ // @memo
+        return
+            $this->_identifier . "(" .
+            $this->_whitespaceBefore .
+            implode("", $this->_pieces) .
+            $this->_remnants;
     }
 
     /** @inheritDoc */
@@ -95,15 +80,12 @@ class BadURLToken implements AnyURLToken
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
-        if($this->_newlineCount === NULL){
-            $count = $this->_remnants->newlineCount();
-            foreach($this->_pieces as $piece){
-                $count += $piece->newlineCount();
-            }
-            $this->_newlineCount = $count;
+    public function newlineCount(): Int{ // @memo
+        $count = $this->_remnants->newlineCount();
+        foreach($this->_pieces as $piece){
+            $count += $piece->newlineCount();
         }
-        return $this->_newlineCount;
+        return $count;
     }
 
     /** @inheritDoc */

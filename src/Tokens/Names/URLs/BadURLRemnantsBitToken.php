@@ -18,18 +18,6 @@ class BadURLRemnantsBitToken implements EvaluableToken
     private $_text;
 
     /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_intendedValue;
-
-    /**
-     * @var         Int
-     * `Int`
-     */
-    private $_newlineCount;
-
-    /**
      * @param       String $text
      * `String`
      * @TODOC
@@ -44,14 +32,11 @@ class BadURLRemnantsBitToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
-        if($this->_newlineCount === NULL){
-            $this->_newlineCount = preg_match_all(
-                "/(" . SpecData::NEWLINES_REGEX_SEQS. ")/usD",
-                $this->_text
-            );
-        }
-        return $this->_newlineCount;
+    public function newlineCount(): Int{ // @memo
+        return preg_match_all(
+            "/(" . SpecData::NEWLINES_REGEX_SEQS. ")/usD",
+            $this->_text
+        );
     }
 
     /** @inheritDoc */
@@ -62,14 +47,12 @@ class BadURLRemnantsBitToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    public function intendedValue(): String{ // @TODO i have no idea why i added this
-        if($this->_intendedValue === NULL){
-            $this->_intendedValue = str_replace(
-                "\0",
-                SpecData::REPLACEMENT_CHARACTER,
-                $this->_text
-            );
-        }
-        return $this->_intendedValue;
+    public function intendedValue(): String{  // @memo
+        // @TODO i have no idea why i added this
+        return str_replace(
+            "\0",
+            SpecData::REPLACEMENT_CHARACTER,
+            $this->_text
+        );
     }
 }

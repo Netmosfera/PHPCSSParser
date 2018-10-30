@@ -48,23 +48,17 @@ class NameToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
-        if($this->_stringValue === NULL){
-            $this->_stringValue = implode("", $this->_pieces);
-        }
-        return $this->_stringValue;
+    public function __toString(): String{ // @memo
+        return implode("", $this->_pieces);
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
-        if($this->_newlineCount === NULL){
-            $count = 0;
-            foreach($this->_pieces as $piece){
-                $count += $piece->newlineCount();
-            }
-            $this->_newlineCount = $count;
+    public function newlineCount(): Int{ // @memo
+        $count = 0;
+        foreach($this->_pieces as $piece){
+            $count += $piece->newlineCount();
         }
-        return $this->_newlineCount;
+        return $count;
     }
 
     /** @inheritDoc */
@@ -75,14 +69,12 @@ class NameToken implements EvaluableToken
     }
 
     /** @inheritDoc */
-    public function intendedValue(): String{
-        if($this->_intendedValue === NULL){
-            $this->_intendedValue = "";
-            foreach($this->_pieces as $piece){
-                $this->_intendedValue .= $piece->intendedValue();
-            }
+    public function intendedValue(): String{ // @memo
+        $intendedValue = "";
+        foreach($this->_pieces as $piece){
+            $intendedValue .= $piece->intendedValue();
         }
-        return $this->_intendedValue;
+        return $intendedValue;
     }
 
     /**

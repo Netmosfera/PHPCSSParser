@@ -25,8 +25,8 @@ class Tokens
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
-        return implode("", $this->_tokens); // @TODO memoize
+    public function __toString(): String{ // @memo
+        return implode("", $this->_tokens);
     }
 
     /**

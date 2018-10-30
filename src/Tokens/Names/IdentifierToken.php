@@ -29,7 +29,7 @@ class IdentifierToken implements IdentifierLikeToken
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
+    public function __toString(): String{ // @memo
         return (String)$this->_name;
     }
 
@@ -39,7 +39,7 @@ class IdentifierToken implements IdentifierLikeToken
     }
 
     /** @inheritDoc */
-    public function newlineCount(): Int{
+    public function newlineCount(): Int{ // @memo
         return $this->_name->newlineCount();
     }
 
