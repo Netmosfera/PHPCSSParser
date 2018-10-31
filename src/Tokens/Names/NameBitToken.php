@@ -18,12 +18,6 @@ class NameBitToken implements EvaluableToken
     private $_text;
 
     /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_intendedValue;
-
-    /**
      * @param       String $text
      * `String`
      * @TODOC

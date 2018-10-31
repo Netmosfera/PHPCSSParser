@@ -21,24 +21,6 @@ class NameToken implements EvaluableToken
     private $_pieces;
 
     /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_intendedValue;
-
-    /**
-     * @var         String|NULL
-     * `String|NULL`
-     */
-    private $_stringValue;
-
-    /**
-     * @var         Int
-     * `Int`
-     */
-    private $_newlineCount;
-
-    /**
      * @param       NameBitToken[]|ValidEscapeToken[] $pieces
      * `Array<Int, NameBitToken|ValidEscapeToken>`
      * The {@see NameToken}'s components.
