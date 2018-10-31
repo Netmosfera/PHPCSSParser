@@ -2,10 +2,11 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Numbers;
 
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
  * A {@see NumericToken} is a plain number, a measurement, or a percentage.
  */
-interface NumericToken extends RootToken
+interface NumericToken extends RootToken, ComponentValue
 {}

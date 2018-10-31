@@ -2,9 +2,10 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Operators;
 
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
-class CommaToken implements RootToken
+class CommaToken implements RootToken, ComponentValue
 {
     /** @inheritDoc */
     public function __toString(): String{

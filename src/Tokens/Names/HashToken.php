@@ -3,12 +3,13 @@
 namespace Netmosfera\PHPCSSAST\Tokens\Names;
 
 use function Netmosfera\PHPCSSAST\match;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
  * A {@see HashToken} is an {@see NameToken} preceded by `#`.
  */
-class HashToken implements RootToken
+class HashToken implements RootToken, ComponentValue
 {
     /**
      * @var         NameToken
