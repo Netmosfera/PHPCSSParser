@@ -2,21 +2,21 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
-use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarationsNode;
-use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
+use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarationsNode;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
+use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
 use function Netmosfera\PHPCSSAST\Parser\eatListOfDeclarationsNode;
-use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
-use function Netmosfera\PHPCSSASTTests\makePiecesSample;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTTests\Parser\getToken;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\makePiecesSample;
+use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
 
 class CommentAfterDeclarationBeforeSemicolon extends CommentToken{}
 class WhitespaceAfterDeclarationBeforeSemicolon extends WhitespaceToken{}

@@ -2,20 +2,20 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\DimensionToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\PercentageToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedDimensionToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedPercentageToken;
+use function Netmosfera\PHPCSSAST\Tokenizer\eatNumericToken;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatIdentifierTokenFailingFunction;
 use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatIdentifierTokenFunction;
 use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatNumberTokenFunction;
-use function Netmosfera\PHPCSSAST\Tokenizer\eatNumericToken;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
-use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**
  * Tests in this file:
@@ -50,8 +50,8 @@ class eatNumericTokenTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $rest){
-        $number = new CheckedNumberToken("+", "2398", "42", "e", "+", "66");
-        $numeric = new CheckedPercentageToken($number);
+        $number = new NumberToken("+", "2398", "42", "e", "+", "66");
+        $numeric = new PercentageToken($number);
 
         $traverser = getTraverser($prefix, $numeric . $rest);
         $eatNumber = eatNumberTokenFunction($number);
@@ -68,11 +68,11 @@ class eatNumericTokenTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $rest){
-        $number = new CheckedNumberToken("+", "2398", "42", "e", "+", "4");
-        $nameBit = new CheckedNameBitToken("iau");
-        $name = new CheckedNameToken([$nameBit]);
-        $identifier = new CheckedIdentifierToken($name);
-        $numeric = new CheckedDimensionToken($number, $identifier);
+        $number = new NumberToken("+", "2398", "42", "e", "+", "4");
+        $nameBit = new NameBitToken("iau");
+        $name = new NameToken([$nameBit]);
+        $identifier = new IdentifierToken($name);
+        $numeric = new DimensionToken($number, $identifier);
 
         $traverser = getTraverser($prefix, $numeric . $rest);
         $eatNumber = eatNumberTokenFunction($number);
@@ -89,7 +89,7 @@ class eatNumericTokenTest extends TestCase
 
     /** @dataProvider data4 */
     public function test4(String $prefix, String $rest){
-        $numeric = new CheckedNumberToken("+", "42", "24", "e", "-", "44");
+        $numeric = new NumberToken("+", "42", "24", "e", "-", "44");
 
         $traverser = getTraverser($prefix, $numeric . $rest);
         $eatNumber = eatNumberTokenFunction($numeric);

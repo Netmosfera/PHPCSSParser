@@ -2,16 +2,15 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
-use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsToken;
-use function Netmosfera\PHPCSSASTTests\TokensChecked\makeBadURLRemnantsPieceAfterPieceFunction;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatEscapeTokenFunction;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
+use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatBadURLRemnantsToken;
-use function Netmosfera\PHPCSSASTTests\makePiecesSample;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\makePiecesSample;
+use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatEscapeTokenFunction;
 
 /**
  * Tests in this file:
@@ -31,7 +30,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $prefix, array $pieces, String $rest){
-        $badURLRemnants = new CheckedBadURLRemnantsToken($pieces, FALSE);
+        $badURLRemnants = new BadURLRemnantsToken($pieces, FALSE);
 
         $traverser = getTraverser($prefix, $badURLRemnants . $rest);
         $eatEscape = eatEscapeTokenFunction($pieces);
@@ -51,7 +50,7 @@ class eatBadURLRemnantsTokenTest extends TestCase
     /** @dataProvider data2 */
     public function test2(String $prefix, array $pieces){
         $EOFTerminated = end($pieces) instanceof EOFEscapeToken;
-        $badURLRemnants = new CheckedBadURLRemnantsToken($pieces, $EOFTerminated);
+        $badURLRemnants = new BadURLRemnantsToken($pieces, $EOFTerminated);
 
         $traverser = getTraverser($prefix, $badURLRemnants . "");
         $eatEscape = eatEscapeTokenFunction($pieces);

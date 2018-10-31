@@ -2,18 +2,15 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\ValidEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 
 function eatValidEscapeToken(
     Traverser $traverser,
     String $hexDigitRegexSet,
-    String $whitespaceRegex,
-    String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS,
-    String $CodePointEscapeTokenClass = CheckedCodePointEscapeToken::CLASS,
-    String $EncodedCodePointEscapeTokenClass = CheckedEncodedCodePointEscapeToken::CLASS
+    String $whitespaceRegex
 ): ?ValidEscapeToken{
 
     $beforeBackslash = $traverser->index;
@@ -33,12 +30,12 @@ function eatValidEscapeToken(
         $whitespaceText = $traverser->eatPattern($whitespaceRegex);
 
         if(isset($whitespaceText)){
-            $whitespace = new $WhitespaceTokenClass($whitespaceText);
+            $whitespace = new WhitespaceToken($whitespaceText);
         }else{
             $whitespace = NULL;
         }
 
-        return new $CodePointEscapeTokenClass($hexDigits, $whitespace);
+        return new CodePointEscapeToken($hexDigits, $whitespace);
     }
 
     $beforeNewline = $traverser->createBranch();
@@ -51,7 +48,7 @@ function eatValidEscapeToken(
     }
 
     if(isset($codePoint)){
-        return new $EncodedCodePointEscapeTokenClass($codePoint);
+        return new EncodedCodePointEscapeToken($codePoint);
     }
 
     $traverser->index = $beforeBackslash;

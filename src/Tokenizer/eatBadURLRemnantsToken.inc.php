@@ -2,29 +2,26 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
-use Error;
 use Closure;
+use Error;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLRemnantsToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLRemnantsBitToken;
 
 function eatBadURLRemnantsToken(
     Traverser $traverser,
-    Closure $eatEscapeToken,
-    String $BadURLRemnantsTokenClass = CheckedBadURLRemnantsToken::CLASS,
-    String $BadURLRemnantsBitTokenClass = CheckedBadURLRemnantsBitToken::CLASS
+    Closure $eatEscapeToken
 ): BadURLRemnantsToken{
     $pieces = [];
     while(TRUE){
         if(isset($traverser->data[$traverser->index]));else{
-            return new $BadURLRemnantsTokenClass($pieces, TRUE);
+            return new BadURLRemnantsToken($pieces, TRUE);
         }
         if($traverser->eatString(")") !== NULL){
-            return new $BadURLRemnantsTokenClass($pieces, FALSE);
+            return new BadURLRemnantsToken($pieces, FALSE);
         }
         $bit = $traverser->eatPattern('[^\\)\\\\]+'); // var_export(preg_quote(")\\"));
         if(isset($bit)){
-            $piece = new $BadURLRemnantsBitTokenClass($bit);
+            $piece = new BadURLRemnantsBitToken($bit);
         }else{
             $piece = $eatEscapeToken($traverser);
         }

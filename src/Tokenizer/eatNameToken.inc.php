@@ -3,22 +3,19 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
 
 function eatNameToken(
     Traverser $traverser,
     String $nameRegexSet,
-    Closure $eatEscapeToken,
-    String $NameBitTokenClass = CheckedNameBitToken::CLASS,
-    String $NameTokenClass = CheckedNameToken::CLASS
+    Closure $eatEscapeToken
 ): ?NameToken{
 
     $nameStart = $traverser->eatPattern('[' . $nameRegexSet . ']+');
 
     if(isset($nameStart)){
-        $pieces = [new $NameBitTokenClass($nameStart)];
+        $pieces = [new NameBitToken($nameStart)];
     }else{
         $escape = $eatEscapeToken($traverser);
         if(isset($escape));else{
@@ -30,12 +27,12 @@ function eatNameToken(
     while(TRUE){
         $bit = $traverser->eatPattern('[' . $nameRegexSet . ']+');
         if(isset($bit)){
-            $piece = new $NameBitTokenClass($bit);
+            $piece = new NameBitToken($bit);
         }else{
             $piece = $eatEscapeToken($traverser);
         }
         if(isset($piece));else{
-            return new $NameTokenClass($pieces);
+            return new NameToken($pieces);
         }
         $pieces[] = $piece;
     }

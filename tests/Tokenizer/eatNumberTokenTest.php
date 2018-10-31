@@ -2,15 +2,15 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
-use function Netmosfera\PHPCSSASTDev\Data\cp;
-use function Netmosfera\PHPCSSASTTests\assertMatch;
-use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
-use function Netmosfera\PHPCSSAST\Tokenizer\eatNumberToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
+use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use PHPUnit\Framework\TestCase;
+use function Netmosfera\PHPCSSAST\Tokenizer\eatNumberToken;
+use function Netmosfera\PHPCSSASTDev\Data\cp;
+use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
+use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
 
 /**
  * Tests in this file:
@@ -143,7 +143,7 @@ class eatNumberTokenTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $sign, String $eIndicator, String $eSign, String $rest){
-        $number = new CheckedNumberToken($sign, "555", "555", $eIndicator, $eSign, "555");
+        $number = new NumberToken($sign, "555", "555", $eIndicator, $eSign, "555");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -162,7 +162,7 @@ class eatNumberTokenTest extends TestCase
 
     /** @dataProvider data4 */
     public function test4(String $prefix, String $sign, String $rest){
-        $number = new CheckedNumberToken($sign, "555", "555", "", "", "");
+        $number = new NumberToken($sign, "555", "555", "", "", "");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -183,7 +183,7 @@ class eatNumberTokenTest extends TestCase
 
     /** @dataProvider data5 */
     public function test5(String $prefix, String $sign, String $eIndicator, String $eSign, String $rest){
-        $number = new CheckedNumberToken($sign, "555", "", $eIndicator, $eSign, "555");
+        $number = new NumberToken($sign, "555", "", $eIndicator, $eSign, "555");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -202,7 +202,7 @@ class eatNumberTokenTest extends TestCase
 
     /** @dataProvider data6 */
     public function test6(String $prefix, String $sign, String $rest){
-        $number = new CheckedNumberToken($sign, "555", "", "", "", "");
+        $number = new NumberToken($sign, "555", "", "", "", "");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -223,7 +223,7 @@ class eatNumberTokenTest extends TestCase
 
     /** @dataProvider data7 */
     public function test7(String $prefix, String $sign, String $eIndicator, String $eSign, String $rest){
-        $number = new CheckedNumberToken($sign, "", "555", $eIndicator, $eSign, "555");
+        $number = new NumberToken($sign, "", "555", $eIndicator, $eSign, "555");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");
@@ -242,7 +242,7 @@ class eatNumberTokenTest extends TestCase
 
     /** @dataProvider data8 */
     public function test8(String $prefix, String $sign, String $rest){
-        $number = new CheckedNumberToken($sign, "", "555", "", "", "");
+        $number = new NumberToken($sign, "", "555", "", "", "");
 
         $traverser = getTraverser($prefix, $number . $rest);
         $actualNumber = eatNumberToken($traverser, "5");

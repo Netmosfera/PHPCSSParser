@@ -2,15 +2,15 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Names\HashToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedHashToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatNameTokenFunction;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatHashToken;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatNameTokenFunction;
 
 /**
  * Tests in this file:
@@ -59,9 +59,9 @@ class eatHashTokenTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $rest){
-        $nameBit = new CheckedNameBitToken("hash");
-        $name = new CheckedNameToken([$nameBit]);
-        $hash = new CheckedHashToken($name);
+        $nameBit = new NameBitToken("hash");
+        $name = new NameToken([$nameBit]);
+        $hash = new HashToken($name);
 
         $traverser = getTraverser($prefix, $hash . $rest);
         $eatName = eatNameTokenFunction($name);

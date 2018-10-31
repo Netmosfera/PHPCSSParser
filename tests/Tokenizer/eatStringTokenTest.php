@@ -2,16 +2,15 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Strings\BadStringToken;
+use Netmosfera\PHPCSSAST\Tokens\Strings\StringToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedStringToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Strings\CheckedBadStringToken;
-use function Netmosfera\PHPCSSASTTests\TokensChecked\makeStringPieceAfterPieceFunction;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatEscapeTokenFunction;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatStringToken;
-use function Netmosfera\PHPCSSASTTests\makePiecesSample;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\makePiecesSample;
+use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatEscapeTokenFunction;
 
 /**
  * Tests in this file:
@@ -33,7 +32,7 @@ class eatStringTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $prefix, String $delimiter, array $pieces, String $rest){
-        $string = new CheckedStringToken($delimiter, $pieces, FALSE);
+        $string = new StringToken($delimiter, $pieces, FALSE);
 
         $traverser = getTraverser($prefix, $string . $rest);
         $eatEscape = eatEscapeTokenFunction($pieces);
@@ -53,7 +52,7 @@ class eatStringTokenTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $delimiter, array $pieces){
-        $string = new CheckedStringToken($delimiter, $pieces, TRUE);
+        $string = new StringToken($delimiter, $pieces, TRUE);
 
         $traverser = getTraverser($prefix, $string . "");
         $eatEscape = eatEscapeTokenFunction($pieces);
@@ -74,7 +73,7 @@ class eatStringTokenTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $delimiter, array $pieces, String $rest){
-        $string = new CheckedBadStringToken($delimiter, $pieces);
+        $string = new BadStringToken($delimiter, $pieces);
 
         $traverser = getTraverser($prefix, $string . "\f" . $rest);
         $eatEscape = eatEscapeTokenFunction($pieces);

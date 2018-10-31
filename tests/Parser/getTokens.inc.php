@@ -2,9 +2,9 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
-use Netmosfera\PHPCSSAST\Tokenizer\CheckedTokenizer;
+use Netmosfera\PHPCSSAST\Tokenizer\Tokenizer;
 
 function getTokens(String $css){
-    $tokenizer = new CheckedTokenizer();
+    $tokenizer = new Tokenizer();
     return $tokenizer->tokenize($css);
 }

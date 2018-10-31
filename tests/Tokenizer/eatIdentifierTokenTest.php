@@ -2,16 +2,15 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatValidEscapeTokenFunction;
-use function Netmosfera\PHPCSSASTTests\TokensChecked\makeIdentifierPieceAfterPieceFunction;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatIdentifierToken;
-use function Netmosfera\PHPCSSASTTests\makePiecesSample;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\makePiecesSample;
+use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatValidEscapeTokenFunction;
 
 /**
  * Tests in this file:
@@ -31,8 +30,8 @@ class eatIdentifierTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $prefix, array $pieces, String $rest){
-        $name = new CheckedNameToken($pieces);
-        $identifier = new CheckedIdentifierToken($name);
+        $name = new NameToken($pieces);
+        $identifier = new IdentifierToken($name);
 
         $traverser = getTraverser($prefix, $identifier . $rest);
         $eatEscape = eatValidEscapeTokenFunction($pieces);

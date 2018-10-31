@@ -2,14 +2,10 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
-use function mb_substr;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
+use function mb_substr;
 
-function eatCommentToken(
-    Traverser $traverser,
-    String $CommentTokenClass = CheckedCommentToken::CLASS
-): ?CommentToken{
+function eatCommentToken(Traverser $traverser): ?CommentToken{
     $inCommentTraverser = $traverser->createBranch();
 
     if($inCommentTraverser->eatString("/*") === NULL){
@@ -24,7 +20,7 @@ function eatCommentToken(
         $text = mb_substr($text, 0, -2);
     }
 
-    $comment = new $CommentTokenClass($text, $EOFTerminated);
+    $comment = new CommentToken($text, $EOFTerminated);
 
     $traverser->importBranch($inCommentTraverser);
 

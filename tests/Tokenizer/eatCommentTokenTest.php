@@ -2,12 +2,12 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedCommentToken;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatCommentToken;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 
 /**
  * Tests in this file:
@@ -54,7 +54,7 @@ class eatCommentTokenTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $text){
-        $comment = new CheckedCommentToken($text, TRUE);
+        $comment = new CommentToken($text, TRUE);
 
         $traverser = getTraverser($prefix, $comment . "");
         $actualComment = eatCommentToken($traverser);
@@ -71,7 +71,7 @@ class eatCommentTokenTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $text, String $rest){
-        $comment = new CheckedCommentToken($text, FALSE);
+        $comment = new CommentToken($text, FALSE);
 
         $traverser = getTraverser($prefix, $comment . $rest);
         $actualComment = eatCommentToken($traverser);

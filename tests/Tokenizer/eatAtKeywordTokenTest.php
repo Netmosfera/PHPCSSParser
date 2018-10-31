@@ -2,17 +2,17 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\NameToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedNameBitToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedAtKeywordToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedIdentifierToken;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatIdentifierTokenFailingFunction;
-use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatIdentifierTokenFunction;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatAtKeywordToken;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatIdentifierTokenFailingFunction;
+use function Netmosfera\PHPCSSASTTests\Tokenizer\Fakes\eatIdentifierTokenFunction;
 
 /**
  * Tests in this file:
@@ -61,10 +61,10 @@ class eatAtKeywordTokenTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $rest){
-        $nameBit = new CheckedNameBitToken("the-identifier");
-        $name = new CheckedNameToken([$nameBit]);
-        $identifier = new CheckedIdentifierToken($name);
-        $atKeyword = new CheckedAtKeywordToken($identifier);
+        $nameBit = new NameBitToken("the-identifier");
+        $name = new NameToken([$nameBit]);
+        $identifier = new IdentifierToken($name);
+        $atKeyword = new AtKeywordToken($identifier);
 
         $traverser = getTraverser($prefix, $atKeyword . $rest);
         $eatIdentifier = eatIdentifierTokenFunction($identifier);

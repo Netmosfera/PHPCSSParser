@@ -3,19 +3,19 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
-use Netmosfera\PHPCSSAST\Tokens\Token;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\CommaToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
-use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\LeftSquareBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightCurlyBracketToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\RightParenthesisToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedDelimiterToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
+use Netmosfera\PHPCSSAST\Tokens\Token;
 
 function eatToken(
     Traverser $traverser,
@@ -36,8 +36,7 @@ function eatToken(
     RightSquareBracketToken $rightSquareBracketToken,
     SemicolonToken $semicolonToken,
     CDOToken $CDOToken,
-    CDCToken $CDCToken,
-    String $DelimiterTokenClass = CheckedDelimiterToken::CLASS
+    CDCToken $CDCToken
 ): ?Token{
 
     if(isset($traverser->data[$traverser->index]));else{
@@ -100,5 +99,5 @@ function eatToken(
         return $CDOToken;
     }
 
-    return new $DelimiterTokenClass($traverser->eatPattern("."));
+    return new DelimiterToken($traverser->eatPattern("."));
 }

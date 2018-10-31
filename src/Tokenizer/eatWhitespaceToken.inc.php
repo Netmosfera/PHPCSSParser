@@ -3,16 +3,14 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
 
 function eatWhitespaceToken(
     Traverser $traverser,
-    String $whitespaceRegexSet,
-    String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS
+    String $whitespaceRegexSet
 ): ?WhitespaceToken{
     $whitespaces = $traverser->eatPattern('[' . $whitespaceRegexSet . ']+');
     if(isset($whitespaces)){
-        return new $WhitespaceTokenClass($whitespaces);
+        return new WhitespaceToken($whitespaces);
     }
     return NULL;
 }

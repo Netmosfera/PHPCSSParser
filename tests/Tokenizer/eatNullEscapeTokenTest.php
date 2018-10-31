@@ -2,13 +2,13 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEOFEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatNullEscapeToken;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 
 /**
  * Tests in this file:
@@ -41,7 +41,7 @@ class eatNullEscapeTokenTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(String $prefix){
-        $escape = new CheckedEOFEscapeToken();
+        $escape = new EOFEscapeToken();
 
         $traverser = getTraverser($prefix, "\\");
         $actualEscape = eatNullEscapeToken($traverser, "\f");
@@ -56,7 +56,7 @@ class eatNullEscapeTokenTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $rest){
-        $escape = new CheckedContinuationEscapeToken("\f");
+        $escape = new ContinuationEscapeToken("\f");
 
         $traverser = getTraverser($prefix, "\\\f" . $rest);
         $actualEscape = eatNullEscapeToken($traverser, "\f");

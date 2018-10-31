@@ -16,8 +16,8 @@ class Tokens
     private $_tokens;
 
     /**
-     * @param       String $text         // @TODO fix
-     * `String`
+     * @param       RootToken[] $tokens
+     * `Array<Int, RootToken>`
      * @TODOC
      */
     public function __construct(array $tokens){

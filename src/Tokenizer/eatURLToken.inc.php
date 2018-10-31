@@ -3,12 +3,12 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\URLs\AnyURLToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedBadURLToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\URLs\CheckedURLBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\BadURLToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLBitToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\URLs\URLToken;
 
 function eatURLToken(
     Traverser $traverser,
@@ -16,11 +16,7 @@ function eatURLToken(
     String $whitespaceRegexSet,
     String $blacklistedCodePointsRegexSet,
     Closure $eatEscapeToken,
-    Closure $eatBadURLRemnantsToken,
-    String $WhitespaceTokenClass = CheckedWhitespaceToken::CLASS,
-    String $URLBitTokenClass = CheckedURLBitToken::CLASS,
-    String $URLTokenClass = CheckedURLToken::CLASS,
-    String $BadURLTokenClass = CheckedBadURLToken::CLASS
+    Closure $eatBadURLRemnantsToken
 ): ?AnyURLToken{
 
     // @TODO inject delimiters
@@ -33,7 +29,7 @@ function eatURLToken(
     if($wsBefore === ""){
         $wsBefore = NULL;
     }else{
-        $wsBefore = new $WhitespaceTokenClass($wsBefore);
+        $wsBefore = new WhitespaceToken($wsBefore);
     }
 
     // @TODO assert that $blacklistCPsRegexSet contains \ )
@@ -45,27 +41,27 @@ function eatURLToken(
 
     while(TRUE){
         if(isset($traverser->data[$traverser->index]));else{
-            return new $URLTokenClass($URL, $wsBefore, $pieces, NULL, TRUE);
+            return new URLToken($URL, $wsBefore, $pieces, NULL, TRUE);
         }
 
         if($traverser->eatString(")") !== NULL){
-            return new $URLTokenClass($URL, $wsBefore, $pieces, NULL, FALSE);
+            return new URLToken($URL, $wsBefore, $pieces, NULL, FALSE);
         }
 
         $finishTraverser = $traverser->createBranch();
         $wsAfter = $finishTraverser->eatPattern('[' . $whitespaceRegexSet . ']*');
         if($wsAfter !== ""){
-            $wsAfter = new $WhitespaceTokenClass($wsAfter);
+            $wsAfter = new WhitespaceToken($wsAfter);
             if(isset($finishTraverser->data[$finishTraverser->index]));else{
                 $traverser->importBranch($finishTraverser);
-                return new $URLTokenClass($URL, $wsBefore, $pieces, $wsAfter, TRUE);
+                return new URLToken($URL, $wsBefore, $pieces, $wsAfter, TRUE);
             }
             if($finishTraverser->eatString(")") !== NULL){
                 $traverser->importBranch($finishTraverser);
-                return new $URLTokenClass($URL, $wsBefore, $pieces, $wsAfter, FALSE);
+                return new URLToken($URL, $wsBefore, $pieces, $wsAfter, FALSE);
             }
             $remnants = $eatBadURLRemnantsToken($traverser);
-            return new $BadURLTokenClass($URL, $wsBefore, $pieces, $remnants);
+            return new BadURLToken($URL, $wsBefore, $pieces, $remnants);
         }
 
         if($traverser->createBranch()->eatString("\\") !== NULL){
@@ -75,19 +71,19 @@ function eatURLToken(
                 continue;
             }else{
                 $remnants = $eatBadURLRemnantsToken($traverser);
-                return new $BadURLTokenClass($URL, $wsBefore, $pieces, $remnants);
+                return new BadURLToken($URL, $wsBefore, $pieces, $remnants);
             }
         }
 
         if($traverser->createBranch()->eatPattern('[' . $blacklistedCodePointsRegexSet . ']') !== NULL){
             $remnants = $eatBadURLRemnantsToken($traverser);
-            return new $BadURLTokenClass($URL, $wsBefore, $pieces, $remnants);
+            return new BadURLToken($URL, $wsBefore, $pieces, $remnants);
         }
 
         $piece = $traverser->eatPattern('[^' . $blacklistedCodePointsRegexSet . ']+');
         // This must include everything but the CPs already handled
         // in the previous steps, therefore it can never be empty
         assert(isset($piece));
-        $pieces[] = new $URLBitTokenClass($piece);
+        $pieces[] = new URLBitToken($piece);
     }
 }

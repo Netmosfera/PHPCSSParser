@@ -3,15 +3,14 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Closure;
-use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierLikeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Names\CheckedFunctionToken;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
 function eatIdentifierLikeToken(
     Traverser $traverser,
     Closure $eatIdentifierToken,
-    Closure $eatURLToken,
-    String $FunctionTokenClass = CheckedFunctionToken::CLASS
+    Closure $eatURLToken
 ): ?IdentifierLikeToken{
     $identifier = $eatIdentifierToken($traverser);
     if(isset($identifier));else{
@@ -27,5 +26,5 @@ function eatIdentifierLikeToken(
             return $URLToken;
         }
     }
-    return new $FunctionTokenClass($identifier);
+    return new FunctionToken($identifier);
 }

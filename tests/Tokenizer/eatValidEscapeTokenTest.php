@@ -2,19 +2,18 @@
 
 namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
-use PHPUnit\Framework\TestCase;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\CodePointEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EncodedCodePointEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
-use Netmosfera\PHPCSSAST\TokensChecked\Misc\CheckedWhitespaceToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedCodePointEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEncodedCodePointEscapeToken;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getHexDigitsSet;
+use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Tokenizer\eatValidEscapeToken;
+use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getHexDigitsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getNewlinesSet;
-use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_UTF8;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
 
 /**
  * Tests in this file:
@@ -61,14 +60,14 @@ class eatValidEscapeTokenTest extends TestCase
         return cartesianProduct(
             ANY_UTF8(),
             ["D", "DD", "DDD", "DDDD", "DDDDD", "DDDDDD"],
-            [NULL, new CheckedWhitespaceToken("\t")],
+            [NULL, new WhitespaceToken("\t")],
             ANY_UTF8("not starting with a hex digit")
         );
     }
 
     /** @dataProvider data2 */
     public function test2(String $prefix, String $hexDigits, ?WhitespaceToken $whitespace, String $rest){
-        $escape = new CheckedCodePointEscapeToken($hexDigits, $whitespace);
+        $escape = new CodePointEscapeToken($hexDigits, $whitespace);
 
         $traverser = getTraverser($prefix, $escape . $rest);
         $actualEscape = eatValidEscapeToken($traverser, "D", "\t");
@@ -91,7 +90,7 @@ class eatValidEscapeTokenTest extends TestCase
 
     /** @dataProvider data3 */
     public function test3(String $prefix, String $codePoint, String $rest){
-        $escape = new CheckedEncodedCodePointEscapeToken($codePoint);
+        $escape = new EncodedCodePointEscapeToken($codePoint);
 
         $traverser = getTraverser($prefix, $escape . $rest);
         $actualEscape = eatValidEscapeToken($traverser, "D", "\t");

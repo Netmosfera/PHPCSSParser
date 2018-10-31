@@ -3,13 +3,8 @@
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
 use Netmosfera\PHPCSSAST\Tokens\Numbers\NumberToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Numbers\CheckedNumberToken;
 
-function eatNumberToken(
-    Traverser $traverser,
-    String $digitRegexSet,
-    String $NumberTokenClass = CheckedNumberToken::CLASS
-): ?NumberToken{
+function eatNumberToken(Traverser $traverser, String $digitRegexSet): ?NumberToken{
 
     $matches = $traverser->eatPatterns("
         (?P<sign>[-+]?)
@@ -46,7 +41,7 @@ function eatNumberToken(
         $matches["e_digits"] = "";
     }
 
-    return new $NumberTokenClass(
+    return new NumberToken(
         $matches["sign"],
         $wholes,
         $decimals,

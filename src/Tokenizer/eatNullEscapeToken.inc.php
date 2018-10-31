@@ -2,15 +2,13 @@
 
 namespace Netmosfera\PHPCSSAST\Tokenizer;
 
+use Netmosfera\PHPCSSAST\Tokens\Escapes\ContinuationEscapeToken;
+use Netmosfera\PHPCSSAST\Tokens\Escapes\EOFEscapeToken;
 use Netmosfera\PHPCSSAST\Tokens\Escapes\NullEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedEOFEscapeToken;
-use Netmosfera\PHPCSSAST\TokensChecked\Escapes\CheckedContinuationEscapeToken;
 
 function eatNullEscapeToken(
     Traverser $traverser,
-    String $newlineRegex,
-    String $EOFEscapeTokenClass = CheckedEOFEscapeToken::CLASS,
-    String $ContinuationEscapeTokenClass = CheckedContinuationEscapeToken::CLASS
+    String $newlineRegex
 ): ?NullEscapeToken{
 
     $beforeBackslash = $traverser->index;
@@ -20,12 +18,12 @@ function eatNullEscapeToken(
     }
 
     if(isset($traverser->data[$traverser->index]));else{
-        return new $EOFEscapeTokenClass();
+        return new EOFEscapeToken();
     }
 
     $newline = $traverser->eatPattern($newlineRegex);
     if(isset($newline)){
-        return new $ContinuationEscapeTokenClass($newline);
+        return new ContinuationEscapeToken($newline);
     }
 
     $traverser->index = $beforeBackslash;

@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSASTTests\TokensChecked;
+namespace Netmosfera\PHPCSSASTTests\Tokenizer;
 
 use Netmosfera\PHPCSSAST\Tokens\EvaluableToken;
 

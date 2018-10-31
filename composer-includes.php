@@ -28,3 +28,4 @@ require(__DIR__ . "/src/Tokenizer/eatToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatURLToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatValidEscapeToken.inc.php");
 require(__DIR__ . "/src/Tokenizer/eatWhitespaceToken.inc.php");
+require(__DIR__ . "/src/Tokenizer/verifyTokens.inc.php");

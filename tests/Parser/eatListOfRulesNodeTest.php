@@ -2,22 +2,19 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
-use const FILE_APPEND;
-use function file_put_contents;
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ListOfRulesNode;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
 use function Netmosfera\PHPCSSAST\Parser\eatListOfRulesNode;
-use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\DelimiterToken;
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
-use function Netmosfera\PHPCSSASTTests\makePiecesSample;
-use PHPUnit\Framework\TestCase;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\makePiecesSample;
 
 class CommentAfterInvalidRuleNode extends CommentToken{}
 class WhitespaceAfterInvalidRuleNode extends WhitespaceToken{}
