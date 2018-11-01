@@ -6,17 +6,17 @@ use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatAtRuleNode;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatNotADeclaration;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatDeclarationInDeclarationsNode;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
-use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarationsNode;
+use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarations;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 
-function eatListOfDeclarationsNode(array $nodes): ListOfDeclarationsNode{
+function eatListOfDeclarationsNode(array $nodes): ListOfDeclarations{
     $stream = new NodeStream($nodes);
 
     $list = [];
     while(TRUE){
         if(isset($stream->nodes[$stream->index]));else{
-            return new ListOfDeclarationsNode($list);
+            return new ListOfDeclarations($list);
         }
 
         $token = $stream->nodes[$stream->index];

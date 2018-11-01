@@ -2,11 +2,11 @@
 
 namespace Netmosfera\PHPCSSAST\Parser\Algorithms;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
-use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Parser\NodeStream;
+use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 
 function eatAtRuleNode(NodeStream $stream): ?AtRuleNode{
     // @TODO assert $stream does not start with whitespace or comment tokens
@@ -34,7 +34,7 @@ function eatAtRuleNode(NodeStream $stream): ?AtRuleNode{
             return new AtRuleNode($atKeyword, $preludePieces, $node);
         }
 
-        if($node instanceof SimpleBlockComponentValue && $node->openDelimiter() === "{"){
+        if($node instanceof CurlySimpleBlockComponentValue){
             return new AtRuleNode($atKeyword, $preludePieces, $node);
         }
 

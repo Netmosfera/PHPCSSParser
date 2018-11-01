@@ -5,12 +5,30 @@ namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Tokens\Names\FunctionToken;
 
+/**
+ * @TODOC
+ */
 class FunctionComponentValue implements ComponentValue
 {
-    private $_token;
+    /**
+     * @var         FunctionToken
+     * `FunctionToken`
+     * @TODOC
+     */
+    private $_name;
 
+    /**
+     * @var         ComponentValue[]
+     * `Array<Int, ComponentValue>`
+     * @TODOC
+     */
     private $_components;
 
+    /**
+     * @var         Bool
+     * `Bool`
+     * @TODOC
+     */
     private $_EOFTerminated;
 
     /**
@@ -28,7 +46,7 @@ class FunctionComponentValue implements ComponentValue
         array $components,
         Bool $EOFTerminated
     ){
-        $this->_token = $token;
+        $this->_name = $token;
         $this->_components = $components;
         $this->_EOFTerminated = $EOFTerminated;
     }
@@ -36,7 +54,7 @@ class FunctionComponentValue implements ComponentValue
     /** @inheritDoc */
     public function __toString(): String{ // @memo
         return
-            (String)$this->_token .
+            (String)$this->_name .
             implode("", $this->_components) .
             ($this->_EOFTerminated ? "" : ")");
     }
@@ -45,20 +63,40 @@ class FunctionComponentValue implements ComponentValue
     public function equals($other): Bool{
         return
             $other instanceof self &&
-            match($other->_token, $this->_token) &&
+            match($other->_name, $this->_name) &&
             match($other->_components, $this->_components) &&
-            match($other->_EOFTerminated, $this->_EOFTerminated) &&
-            TRUE;
+            match($other->_EOFTerminated, $this->_EOFTerminated);
     }
 
-    public function token(): FunctionToken{
-        return $this->_token;
+    /**
+     * Returns the function's name.
+     *
+     * @return      FunctionToken
+     * `FunctionToken`
+     * @TODOC
+     */
+    public function name(): FunctionToken{
+        return $this->_name;
     }
 
+    /**
+     * @TODOC
+     *
+     * @return      ComponentValue[]
+     * `Array<Int, ComponentValue>`
+     * @TODOC
+     */
     public function components(): array{
         return $this->_components;
     }
 
+    /**
+     * @TODOC
+     *
+     * @return      Bool
+     * `Bool`
+     * @TODOC
+     */
     public function EOFTerminated(): Bool{
         return $this->_EOFTerminated;
     }

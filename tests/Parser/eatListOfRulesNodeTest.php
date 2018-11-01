@@ -7,7 +7,7 @@ use Netmosfera\PHPCSSAST\Nodes\Components\InvalidRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
-use Netmosfera\PHPCSSAST\Nodes\ListOfRulesNode;
+use Netmosfera\PHPCSSAST\Nodes\ListOfRules;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
@@ -70,7 +70,7 @@ class eatListOfRulesNodeTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(array $pieces){
-        $list = new ListOfRulesNode($pieces, TRUE);
+        $list = new ListOfRules($pieces, TRUE);
 
         $stream = getNodeStream(FALSE, implode("", $pieces));
         $actualList = eatListOfRulesNode($stream, TRUE);

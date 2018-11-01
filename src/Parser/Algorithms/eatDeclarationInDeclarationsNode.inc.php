@@ -2,10 +2,10 @@
 
 namespace Netmosfera\PHPCSSAST\Parser\Algorithms;
 
-use Netmosfera\PHPCSSAST\Parser\NodeStream;
-use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
-use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
+use Netmosfera\PHPCSSAST\Parser\NodeStream;
+use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\ColonToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 
 function eatDeclarationInDeclarationsNode(NodeStream $stream): ?DeclarationNode{

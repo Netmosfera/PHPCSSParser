@@ -8,37 +8,59 @@ use Netmosfera\PHPCSSAST\Tokens\Names\AtKeywordToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use function Netmosfera\PHPCSSAST\match;
 
-class AtRuleNode implements RuleNode
+/**
+ * A {@see AtRuleNode} is an {@see AtKeywordToken} followed by the prelude (a list of
+ * {@see ComponentValue}s), followed by a {@see CurlySimpleBlockComponentValue} or
+ * a {@see SemiColonToken}.
+ */
+class AtRuleNode
 {
+    /**
+     * @var         AtKeywordToken
+     * `AtKeywordToken`
+     * @TODOC
+     */
     private $_token;
 
-    private $_preludePieces;
+    /**
+     * @var         ComponentValue[]
+     * `Array<Int, ComponentValue>`
+     * @TODOC
+     */
+    private $_prelude;
 
+    /**
+     * @var         CurlySimpleBlockComponentValue|SemicolonToken|NULL
+     * `CurlySimpleBlockComponentValue|SemicolonToken|NULL`
+     * @TODOC
+     */
     private $_terminator;
 
     /**
      * @param       AtKeywordToken $token
      * `AtKeywordToken`
+     * @TODOC
      *
-     * @param       ComponentValue[] $preludePieces
+     * @param       ComponentValue[] $prelude
      * `Array<Int, ComponentValue>`
+     * @TODOC
      *
      * @param       CurlySimpleBlockComponentValue|SemicolonToken|NULL $terminator
      * `CurlySimpleBlockComponentValue|SemicolonToken|NULL`
-     * `NULL` is for EOF.
+     * A curly block, a semicolon, or `NULL` is for EOF.
      */
     public function __construct(
         AtKeywordToken $token,
-        array $preludePieces,
+        array $prelude,
         $terminator
     ){
         assert(
             $terminator instanceof CurlySimpleBlockComponentValue ||
             $terminator instanceof SemicolonToken ||
-            $terminator === NULL // EOF terminated
+            $terminator === NULL
         );
         $this->_token = $token;
-        $this->_preludePieces = $preludePieces;
+        $this->_prelude = $prelude;
         $this->_terminator = $terminator;
     }
 
@@ -46,7 +68,7 @@ class AtRuleNode implements RuleNode
     public function __toString(): String{ // @memo
         return
             (String)$this->_token .
-            implode("", $this->_preludePieces) .
+            implode("", $this->_prelude) .
             $this->_terminator;
     }
 
@@ -55,8 +77,7 @@ class AtRuleNode implements RuleNode
         return
             $other instanceof self &&
             match($other->_token, $this->_token) &&
-            match($other->_preludePieces, $this->_preludePieces) &&
-            match($other->_terminator, $this->_terminator) &&
-            TRUE;
+            match($other->_prelude, $this->_prelude) &&
+            match($other->_terminator, $this->_terminator);
     }
 }

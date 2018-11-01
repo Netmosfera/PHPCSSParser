@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSAST\Parser\Algorithms;
 
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Parser\NodeStream;
 
 function eatQualifiedRuleNode(NodeStream $stream){
@@ -28,7 +28,7 @@ function eatQualifiedRuleNode(NodeStream $stream){
         $piece = $stream->nodes[$stream->index];
         $stream->index++;
 
-        if($piece instanceof SimpleBlockComponentValue && $piece->openDelimiter() === "{"){
+        if($piece instanceof CurlySimpleBlockComponentValue){
             return new QualifiedRuleNode($preludePieces, $piece);
         }
 

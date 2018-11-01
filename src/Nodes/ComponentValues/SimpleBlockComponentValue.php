@@ -2,13 +2,26 @@
 
 namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 
+/**
+ * @TODOC
+ */
 interface SimpleBlockComponentValue extends ComponentValue
 {
-    public function openDelimiter(): String;
-
-    public function closeDelimiter(): String;
-
+    /**
+     * @TODOC
+     *
+     * @return      ComponentValue[]
+     * `Array<Int, ComponentValue>`
+     * @TODOC
+     */
     public function components(): array;
 
+    /**
+     * @TODOC
+     *
+     * @return      Bool
+     * `Bool`
+     * @TODOC
+     */
     public function EOFTerminated(): Bool;
 }

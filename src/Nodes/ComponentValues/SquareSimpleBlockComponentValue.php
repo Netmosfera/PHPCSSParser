@@ -4,12 +4,34 @@ namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 
 use function Netmosfera\PHPCSSAST\match;
 
+/**
+ * A {@see SimpleBlockComponentValue} of square brackets.
+ */
 class SquareSimpleBlockComponentValue implements SimpleBlockComponentValue
 {
+    /**
+     * @var         ComponentValue[]
+     * `Array<Int, ComponentValue>`
+     * @TODOC
+     */
     private $_components;
 
+    /**
+     * @var         Bool
+     * `Bool`
+     * @TODOC
+     */
     private $_EOFTerminated;
 
+    /**
+     * @param       ComponentValue[] $components
+     * `Array<Int, ComponentValue>`
+     * @TODOC
+     *
+     * @param       Bool $EOFTerminated
+     * `Bool`
+     * @TODOC
+     */
     public function __construct(array $components, Bool $EOFTerminated){
         $this->_components = $components;
         $this->_EOFTerminated = $EOFTerminated;
@@ -27,22 +49,15 @@ class SquareSimpleBlockComponentValue implements SimpleBlockComponentValue
         return
             $other instanceof self &&
             match($other->_components, $this->_components) &&
-            match($other->_EOFTerminated, $this->_EOFTerminated) &&
-            TRUE;
+            match($other->_EOFTerminated, $this->_EOFTerminated);
     }
 
-    public function openDelimiter(): String{
-        return "[";
-    }
-
-    public function closeDelimiter(): String{
-        return "]";
-    }
-
+    /** @inheritDoc */
     public function components(): array{
         return $this->_components;
     }
 
+    /** @inheritDoc */
     public function EOFTerminated(): Bool{
         return $this->_EOFTerminated;
     }

@@ -2,20 +2,46 @@
 
 namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
-use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
+use function Netmosfera\PHPCSSAST\match;
 
+/**
+ * A {@see DeclarationNode} is a {@see IdentifierToken} followed by a colon and a
+ * list of {@see ComponentValue}s that constitute the definition.
+ *
+ * It is never surrounded by sequences of whitespaces and comments.
+ */
 class DeclarationNode
 {
+    /**
+     * @var         IdentifierToken
+     * `IdentifierToken`
+     * @TODOC
+     */
     private $_identifier;
 
+    /**
+     * @var         CommentToken[]|WhitespaceToken[]
+     * `Array<Int, CommentToken|WhitespaceToken>`
+     * @TODOC
+     */
     private $_whitespaceBeforeColon;
 
+    /**
+     * @var         CommentToken[]|WhitespaceToken[]
+     * `Array<Int, CommentToken|WhitespaceToken>`
+     * @TODOC
+     */
     private $_whitespaceAfterColon;
 
+    /**
+     * @var         ComponentValue[]
+     * `Array<Int, ComponentValue>`
+     * @TODOC
+     */
     private $_definition;
 
     /**
@@ -66,7 +92,6 @@ class DeclarationNode
             match($other->_identifier, $this->_identifier) &&
             match($other->_whitespaceBeforeColon, $this->_whitespaceBeforeColon) &&
             match($other->_whitespaceAfterColon, $this->_whitespaceAfterColon) &&
-            match($other->_definition, $this->_definition) &&
-            TRUE;
+            match($other->_definition, $this->_definition);
     }
 }

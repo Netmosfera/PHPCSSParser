@@ -5,7 +5,7 @@ namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
-use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarationsNode;
+use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarations;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
@@ -77,7 +77,7 @@ class eatListOfDeclarationsNodeTest extends TestCase
 
     /** @dataProvider data1 */
     public function test1(array $pieces){
-        $list = new ListOfDeclarationsNode($pieces);
+        $list = new ListOfDeclarations($pieces);
 
         $nodes = tokensToNodes(getTokens(implode("", $pieces)));
         $actualList = eatListOfDeclarationsNode($nodes);
