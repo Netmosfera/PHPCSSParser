@@ -6,8 +6,6 @@ use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatComponentValue;
-use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
-use function Netmosfera\PHPCSSASTTests\Parser\getTokenStream;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\Parser\getToken;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;

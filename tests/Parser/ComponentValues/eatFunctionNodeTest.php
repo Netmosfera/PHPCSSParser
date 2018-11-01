@@ -10,8 +10,6 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
 use function Netmosfera\PHPCSSASTTests\Parser\getToken;
-use function Netmosfera\PHPCSSASTTests\Parser\getTokenStream;
-use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokens;
 
 /**
  * Tests in this file:
