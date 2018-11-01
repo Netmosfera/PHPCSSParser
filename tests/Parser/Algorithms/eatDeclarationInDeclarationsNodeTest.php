@@ -68,9 +68,9 @@ class eatDeclarationInDeclarationsNodeTest extends TestCase
         $css = "background /* lol */ : red /* lool */ foo /* after */ ";
         $declaration = new DeclarationNode(
             getToken("background"),
-            tokensToNodes(getTokens(" /* lol */ "))->nodes(),
-            tokensToNodes(getTokens(" "))->nodes(),
-            tokensToNodes(getTokens("red /* lool */ foo"))->nodes()
+            tokensToNodes(getTokens(" /* lol */ ")),
+            tokensToNodes(getTokens(" ")),
+            tokensToNodes(getTokens("red /* lool */ foo"))
         );
 
         $stream = getNodeStream(TRUE, $css);
@@ -84,9 +84,9 @@ class eatDeclarationInDeclarationsNodeTest extends TestCase
         $css = "background /* lol */ : red /* lool */ foo /* after */ ; foo bar";
         $declaration = new DeclarationNode(
             getToken("background"),
-            tokensToNodes(getTokens(" /* lol */ "))->nodes(),
-            tokensToNodes(getTokens(" "))->nodes(),
-            tokensToNodes(getTokens("red /* lool */ foo"))->nodes()
+            tokensToNodes(getTokens(" /* lol */ ")),
+            tokensToNodes(getTokens(" ")),
+            tokensToNodes(getTokens("red /* lool */ foo"))
         );
 
         $stream = getNodeStream(TRUE, $css);

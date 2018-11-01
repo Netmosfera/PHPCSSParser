@@ -43,8 +43,8 @@ class eatListOfRulesNodeTest extends TestCase
 
                 $data[] = new AtRuleNode(getToken("@at-rule-semicolon"), [], ";");
 
-                $prelude = tokensToNodes(getTokens("valid > .rule > @not-at-rule"))->nodes();
-                $block = tokensToNodes(getTokens("{ color : purple ; }"))->nodes()[0];
+                $prelude = tokensToNodes(getTokens("valid > .rule > @not-at-rule"));
+                $block = tokensToNodes(getTokens("{ color : purple ; }"))[0];
                 $data[] = new QualifiedRuleNode($prelude, $block);
 
                 $data[] = new CommentToken(" comment1 ", FALSE);
@@ -53,7 +53,7 @@ class eatListOfRulesNodeTest extends TestCase
                     $data[] = new WhitespaceToken("\t\t");
                 }
 
-                $data[] = new InvalidRuleNode(tokensToNodes(getTokens("invalid * rule"))->nodes());
+                $data[] = new InvalidRuleNode(tokensToNodes(getTokens("invalid * rule")));
             }
 
             return $data;

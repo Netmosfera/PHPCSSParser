@@ -2,7 +2,6 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValuesSeq;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use PHPUnit\Framework\TestCase;
@@ -48,11 +47,7 @@ class tokensToNodesTest extends TestCase
             getToken("baz"),
         ], FALSE);
 
-        $nodes = new ComponentValuesSeq($nodes); // @TODO checked nodes
-
-        $actualNodes = tokensToNodes(
-            getTokens((String)$nodes)
-        );
+        $actualNodes = tokensToNodes(getTokens(implode("", $nodes)));
 
         assertMatch($actualNodes, $nodes);
     }

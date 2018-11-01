@@ -2,17 +2,15 @@
 
 namespace Netmosfera\PHPCSSAST\Parser\ComponentValues;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValuesSeq;
 use Netmosfera\PHPCSSAST\Parser\TokenStream;
 
 function tokensToNodes(
-    array $tokens,
-    String $nodesFactory = ComponentValuesSeq::CLASS
-): ComponentValuesSeq{
+    array $tokens
+): array{
     $tokenStream = new TokenStream($tokens);
     $nodes = [];
     while(isset($tokenStream->tokens[$tokenStream->index])){
         $nodes[] = eatComponentValue($tokenStream);
     }
-    return new $nodesFactory($nodes);
+    return $nodes;
 }

@@ -14,11 +14,11 @@ function getNodeStream(Bool $testPrefix, String $css): NodeStream{
     $nodes = tokensToNodes(getTokens($prefix . $css));
 
     assert(match(
-        $prefixNodes->nodes(),
-        array_slice($nodes->nodes(), 0, count($prefixNodes->nodes()))
+        $prefixNodes,
+        array_slice($nodes, 0, count($prefixNodes))
     ));
 
-    $stream = new NodeStream($nodes->nodes());
-    $stream->index = count($prefixNodes->nodes());
+    $stream = new NodeStream($nodes);
+    $stream->index = count($prefixNodes);
     return $stream;
 }

@@ -20,7 +20,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
 class eatNotADeclarationTest extends TestCase
 {
     function test1(){
-        $pieces = tokensToNodes(getTokens("foo bar baz"))->nodes();
+        $pieces = tokensToNodes(getTokens("foo bar baz"));
         $invalidDeclaration = new InvalidDeclarationNode($pieces);
         $rest = "  /* dsf */    ; pooooop";
 
@@ -32,7 +32,7 @@ class eatNotADeclarationTest extends TestCase
     }
 
     function test2(){
-        $pieces = tokensToNodes(getTokens("foo bar baz"))->nodes();
+        $pieces = tokensToNodes(getTokens("foo bar baz"));
         $invalidDeclaration = new InvalidDeclarationNode($pieces);
         $rest = "  /* dsf */    ";
 

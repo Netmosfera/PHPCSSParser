@@ -59,7 +59,7 @@ class eatAtRuleNodeTest extends TestCase
     public function data345(){
         $preludePieces = tokensToNodes(getTokens(
             " foo +123% /* comment */ > .bar [{this is not the block}] * bar -1e-45"
-        ))->nodes();
+        ));
         return cartesianProduct(
             [FALSE, TRUE],
             everySeqFromStart($preludePieces),
@@ -91,7 +91,7 @@ class eatAtRuleNodeTest extends TestCase
 
     /** @dataProvider data345 */
     public function test5(Bool $testPrefix, array $preludePieces, String $rest){
-        $block = tokensToNodes(getTokens("{test block}"))->nodes()[0];
+        $block = tokensToNodes(getTokens("{test block}"))[0];
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, $block);
 
         $stream = getNodeStream($testPrefix, $atRule . $rest);

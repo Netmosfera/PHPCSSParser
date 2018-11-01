@@ -23,9 +23,9 @@ class eatQualifiedRuleNodeTest extends TestCase
     public function test1(){
         $a = tokensToNodes(getTokens("foo +123% /* comment */ foo"));
         $rest = "   /* outside */   /* also outside */   ";
-        $invalidRule = new InvalidRuleNode($a->nodes());
+        $invalidRule = new InvalidRuleNode($a);
 
-        $stream = getNodeStream(FALSE, $a . $rest);
+        $stream = getNodeStream(FALSE, implode("", $a) . $rest);
         $actualInvalidRule = eatQualifiedRuleNode($stream);
 
         assertMatch($actualInvalidRule, $invalidRule);
@@ -35,7 +35,7 @@ class eatQualifiedRuleNodeTest extends TestCase
     public function data2(){
         $preludePieces = tokensToNodes(getTokens(
             "foo +123% /* comment */ > .bar [{this is not the block}] * bar -1e-45"
-        ))->nodes();
+        ));
         return cartesianProduct(
             [FALSE, TRUE],
             everySeqFromStart($preludePieces),
