@@ -11,8 +11,6 @@ class QualifiedRuleNode implements RuleNode
 
     private $_terminator;
 
-    private $_stringified;
-
     public function __construct(
         array $preludePieces,
         SimpleBlockComponentValue $terminator
@@ -22,11 +20,7 @@ class QualifiedRuleNode implements RuleNode
     }
 
     public function __toString(): String{
-        if($this->_stringified === NULL){
-            $this->_stringified = implode("", $this->_preludePieces);
-            $this->_stringified .= $this->_terminator;
-        }
-        return $this->_stringified;
+        return implode("", $this->_preludePieces) . $this->_terminator;
     }
 
     /** @inheritDoc */

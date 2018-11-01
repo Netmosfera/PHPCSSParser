@@ -14,8 +14,11 @@ class AtRuleNode implements RuleNode
 
     private $_terminator;
 
-    private $_stringified;
-
+    /**
+     * @param AtKeywordToken $token
+     * @param array $preludePieces
+     * @param SimpleBlockComponentValue $terminator
+     */
     public function __construct(
         AtKeywordToken $token,
         array $preludePieces,
@@ -27,20 +30,16 @@ class AtRuleNode implements RuleNode
             $terminator === NULL     // EOF terminated
         );
         $this->_token = $token;
-        // @TODO prelude pieces must not start with an identifier or anything
-        // that would be part of the at-keyword-token
         $this->_preludePieces = $preludePieces;
         $this->_terminator = $terminator;
     }
 
-
-    public function __toString(): String{
-        if($this->_stringified === NULL){
-            $this->_stringified = (String)$this->_token;
-            $this->_stringified .= implode("", $this->_preludePieces);
-            $this->_stringified .= $this->_terminator;
-        }
-        return $this->_stringified;
+    /** @inheritDoc */
+    public function __toString(): String{ // @memo
+        return
+            (String)$this->_token .
+            implode("", $this->_preludePieces) .
+            $this->_terminator;
     }
 
     /** @inheritDoc */

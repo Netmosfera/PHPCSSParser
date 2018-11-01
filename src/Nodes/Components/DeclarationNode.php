@@ -4,6 +4,8 @@ namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
 use function Netmosfera\PHPCSSAST\match;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
+use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Names\IdentifierToken;
 
 class DeclarationNode
@@ -16,8 +18,26 @@ class DeclarationNode
 
     private $_definition;
 
-    private $_stringValue;
-
+    /**
+     * @param       IdentifierToken $identifier
+     * `IdentifierToken`
+     * The identifier being defined.
+     *
+     * @param       WhitespaceToken[]|CommentToken[] $whitespaceBeforeColon
+     * `Array<Int, WhitespaceToken|CommentToken>`
+     * The sequence of whitespace and comments that appear after the identifier and before
+     * the colon.
+     *
+     * @param       WhitespaceToken[]|CommentToken[] $whitespaceAfterColon
+     * `Array<Int, WhitespaceToken|CommentToken>`
+     * The sequence of whitespace and comments that appear after the colon and before the
+     * definition.
+     *
+     * @param       ComponentValue[] $definition
+     * `Array<Int, ComponentValue>`
+     * A sequence of {@see ComponentValue}s not surrounded by any {@see WhitespaceToken}
+     * or {@see CommentToken}.
+     */
     public function __construct(
         IdentifierToken $identifier,
         array $whitespaceBeforeColon,
@@ -28,29 +48,15 @@ class DeclarationNode
         $this->_whitespaceBeforeColon = $whitespaceBeforeColon;
         $this->_whitespaceAfterColon = $whitespaceAfterColon;
         $this->_definition = $definition;
-
-        // $whitespaceBeforeColon is a sequence of whitespace and comment tokens
-
-        // $whitespaceAfterColon is a sequence of whitespace and comment tokens
-
-        // $definition can be empty -- that also counts as a valid declaration
-        // when definition is empty, whitespaceAfterDefinition is also empty
-        foreach($definition as $definitionPiece){
-            assert($definitionPiece instanceof ComponentValue);
-        }
-
-        // $whitespaceAfterDefinition is a sequence of whitespace and comment tokens
     }
 
     /** @inheritDoc */
-    public function __toString(): String{
-        if($this->_stringValue === NULL){
-            $this->_stringValue .= $this->_identifier;
-            $this->_stringValue .= implode("", $this->_whitespaceBeforeColon) . ":";
-            $this->_stringValue .= implode("", $this->_whitespaceAfterColon);
-            $this->_stringValue .= implode("", $this->_definition);
-        }
-        return $this->_stringValue;
+    public function __toString(): String{ // @memo
+        return
+            $this->_identifier .
+            implode("", $this->_whitespaceBeforeColon) . ":" .
+            implode("", $this->_whitespaceAfterColon) .
+            implode("", $this->_definition);
     }
 
     /** @inheritDoc */
