@@ -2,7 +2,10 @@
 
 namespace Netmosfera\PHPCSSAST\Parser\ComponentValues;
 
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ParenthesesSimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SquareSimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Parser\TokenStream;
 use Netmosfera\PHPCSSAST\Tokens\Operators\LeftCurlyBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\LeftParenthesisToken;
@@ -30,22 +33,25 @@ function eatSimpleBlockComponentValue(TokenStream $stream): ?SimpleBlockComponen
     $componentValueNodes = [];
 
     if($openDelimiter instanceof LeftParenthesisToken){
+        $class = ParenthesesSimpleBlockComponentValue::CLASS;
         $mirrorClass = RightParenthesisToken::CLASS;
     }elseif($openDelimiter instanceof LeftSquareBracketToken){
+        $class = SquareSimpleBlockComponentValue::CLASS;
         $mirrorClass = RightSquareBracketToken::CLASS;
     }else{
+        $class = CurlySimpleBlockComponentValue::CLASS;
         $mirrorClass = RightCurlyBracketToken::CLASS;
     }
 
     while(TRUE){
         if(isset($stream->tokens[$stream->index]));else{
-            return new SimpleBlockComponentValue((String)$openDelimiter, $componentValueNodes, TRUE);
+            return new $class($componentValueNodes, TRUE);
         }
 
         $closeDelimiter = $stream->tokens[$stream->index];
         if($closeDelimiter instanceof $mirrorClass){
             $stream->index++;
-            return new SimpleBlockComponentValue((String)$openDelimiter, $componentValueNodes, FALSE);
+            return new $class($componentValueNodes, FALSE);
         }
 
         assert(is_int($oldIndex = $stream->index)); // Does nothing - just saves the index

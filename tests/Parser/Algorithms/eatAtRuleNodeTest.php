@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\Algorithms;
 
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
@@ -80,7 +81,7 @@ class eatAtRuleNodeTest extends TestCase
 
     /** @dataProvider data345 */
     public function test4(Bool $testPrefix, array $preludePieces, String $rest){
-        $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, ";");
+        $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, new SemicolonToken());
 
         $stream = getNodeStream($testPrefix, $atRule . $rest);
         $actualAtRule = eatAtRuleNode($stream);

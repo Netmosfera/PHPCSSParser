@@ -45,14 +45,14 @@ class eatListOfDeclarationsNodeTest extends TestCase
                 $afterPiece instanceof CommentToken
             ){
                 $data[] = new DeclarationNode(getToken("background"), [], [], [getToken("red")]);
-                $data[] = new AtRuleNode(getToken("@foo"), [], ";");
+                $data[] = new AtRuleNode(getToken("@foo"), [], new SemicolonToken());
                 $data[] = new SemicolonToken();
                 $data[] = new CommentToken("", FALSE);
                 $data[] = new WhitespaceToken(" ");
                 $data[] = new InvalidDeclarationNode(getTokens("+123"));
             }elseif($afterPiece instanceof WhitespaceToken){
                 $data[] = new DeclarationNode(getToken("background"), [], [], [getToken("red")]);
-                $data[] = new AtRuleNode(getToken("@foo"), [], ";");
+                $data[] = new AtRuleNode(getToken("@foo"), [], new SemicolonToken());
                 $data[] = new SemicolonToken();
                 $data[] = new CommentToken("", FALSE);
             }elseif(

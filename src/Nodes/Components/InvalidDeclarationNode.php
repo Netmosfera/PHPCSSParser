@@ -3,28 +3,18 @@
 namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
 
 class InvalidDeclarationNode
 {
     private $_pieces;
 
-    private $_stringValue;
-
     public function __construct(array $pieces){
         $this->_pieces = $pieces;
-
-        foreach($pieces as $definitionPiece){
-            assert($definitionPiece instanceof ComponentValue);
-        }
     }
 
     /** @inheritDoc */
     public function __toString(): String{
-        if($this->_stringValue === NULL){
-            $this->_stringValue = implode("", $this->_pieces);
-        }
-        return $this->_stringValue;
+        return implode("", $this->_pieces);
     }
 
     /** @inheritDoc */

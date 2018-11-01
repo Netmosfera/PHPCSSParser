@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Nodes\Components;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
 
 class QualifiedRuleNode implements RuleNode
 {
@@ -13,7 +13,7 @@ class QualifiedRuleNode implements RuleNode
 
     public function __construct(
         array $preludePieces,
-        SimpleBlockComponentValue $terminator
+        CurlySimpleBlockComponentValue $terminator
     ){
         $this->_preludePieces = $preludePieces;
         $this->_terminator = $terminator;

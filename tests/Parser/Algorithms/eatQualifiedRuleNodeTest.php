@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
@@ -45,7 +46,7 @@ class eatQualifiedRuleNodeTest extends TestCase
 
     /** @dataProvider data2 */
     public function test2(Bool $testPrefix, array $preludePieces, String $rest){
-        $block = new SimpleBlockComponentValue("{", [], FALSE);
+        $block = new CurlySimpleBlockComponentValue([], FALSE);
         $qualifiedRule = new QualifiedRuleNode($preludePieces, $block);
 
         $stream = getNodeStream($testPrefix, $qualifiedRule . $rest);

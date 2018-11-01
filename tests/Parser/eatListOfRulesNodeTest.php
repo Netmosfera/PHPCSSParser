@@ -5,10 +5,12 @@ namespace Netmosfera\PHPCSSASTTests\Parser;
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ListOfRulesNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
 use function Netmosfera\PHPCSSAST\Parser\eatListOfRulesNode;
@@ -39,9 +41,9 @@ class eatListOfRulesNodeTest extends TestCase
             }elseif($afterPiece instanceof WhitespaceAfterInvalidRuleNode ){
                 $data[] = new CommentAfterInvalidRuleNode(" comment after invalid rule ", FALSE);
             }else{
-                $data[] = new AtRuleNode(getToken("@at-rule-block"), [], new SimpleBlockComponentValue("{", [], FALSE));
+                $data[] = new AtRuleNode(getToken("@at-rule-block"), [], new CurlySimpleBlockComponentValue([], FALSE));
 
-                $data[] = new AtRuleNode(getToken("@at-rule-semicolon"), [], ";");
+                $data[] = new AtRuleNode(getToken("@at-rule-semicolon"), [], new SemicolonToken());
 
                 $prelude = tokensToNodes(getTokens("valid > .rule > @not-at-rule"));
                 $block = tokensToNodes(getTokens("{ color : purple ; }"))[0];

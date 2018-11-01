@@ -2,6 +2,7 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
@@ -43,7 +44,11 @@ class eatComponentValueNodeTest extends TestCase
     /** @dataProvider data2 */
     public function test2(Bool $testPrefix, String $rest){
         $componentValues = [getToken("foo")];
-        $componentValue = new FunctionComponentValue(getToken("foo("), $componentValues, FALSE);
+        $componentValue = new FunctionComponentValue(
+            getToken("foo("),
+            $componentValues,
+            FALSE
+        );
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
         $actualComponentValue = eatComponentValue($stream);
@@ -59,7 +64,7 @@ class eatComponentValueNodeTest extends TestCase
     /** @dataProvider data3 */
     public function test3(Bool $testPrefix, String $rest){
         $componentValues = [getToken("foo")];
-        $componentValue = new SimpleBlockComponentValue("{", $componentValues, FALSE);
+        $componentValue = new CurlySimpleBlockComponentValue($componentValues, FALSE);
 
         $stream = getTokenStream($testPrefix, $componentValue . $rest);
         $actualComponentValue = eatComponentValue($stream);

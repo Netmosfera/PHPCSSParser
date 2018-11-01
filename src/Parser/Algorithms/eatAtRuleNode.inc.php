@@ -31,7 +31,7 @@ function eatAtRuleNode(NodeStream $stream): ?AtRuleNode{
         $stream->index++;
 
         if($node instanceof SemicolonToken){
-            return new AtRuleNode($atKeyword, $preludePieces, ";");
+            return new AtRuleNode($atKeyword, $preludePieces, $node);
         }
 
         if($node instanceof SimpleBlockComponentValue && $node->openDelimiter() === "{"){

@@ -2,8 +2,8 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
@@ -34,11 +34,11 @@ class tokensToNodesTest extends TestCase
             ], FALSE),
             getToken("baz"),
         ], FALSE);
-        $nodes[] = new SimpleBlockComponentValue("{", [
+        $nodes[] = new CurlySimpleBlockComponentValue([
             getToken("bar"),
             getToken(","),
             getToken(" "),
-            new SimpleBlockComponentValue("{", [
+            new CurlySimpleBlockComponentValue([
                 getToken("bar"),
                 getToken(","),
                 getToken(" "),

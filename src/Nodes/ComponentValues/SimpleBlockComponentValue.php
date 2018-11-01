@@ -2,79 +2,13 @@
 
 namespace Netmosfera\PHPCSSAST\Nodes\ComponentValues;
 
-use Error;
-use function Netmosfera\PHPCSSAST\match;
-
-class SimpleBlockComponentValue implements ComponentValue
+interface SimpleBlockComponentValue extends ComponentValue
 {
-    private $_openDelimiter;
+    public function openDelimiter(): String;
 
-    private $_closeDelimiter;
+    public function closeDelimiter(): String;
 
-    private $_components;
+    public function components(): array;
 
-    private $_EOFTerminated;
-
-    private $_stringified;
-
-    public function __construct(
-        String $openDelimiter,
-        array $components,
-        Bool $EOFTerminated
-    ){
-        foreach($components as $component){
-            assert($component instanceof ComponentValue);
-        }
-        $this->_openDelimiter = $openDelimiter;
-        $this->_components = $components;
-        $this->_EOFTerminated = $EOFTerminated;
-    }
-
-    /** @inheritDoc */
-    public function __toString(): String{
-        if($this->_stringified === NULL){
-            $this->_stringified = $this->_openDelimiter;
-            $this->_stringified .= implode("", $this->_components);
-            if($this->_EOFTerminated === FALSE){
-                $this->_stringified .= $this->closeDelimiter();
-            }
-        }
-        return $this->_stringified;
-    }
-
-    /** @inheritDoc */
-    public function equals($other): Bool{
-        return
-            $other instanceof self &&
-            match($other->_openDelimiter, $this->_openDelimiter) &&
-            match($other->_components, $this->_components) &&
-            match($other->_EOFTerminated, $this->_EOFTerminated) &&
-            TRUE;
-    }
-
-    public function openDelimiter(): String{
-        return $this->_openDelimiter;
-    }
-
-    public function closeDelimiter(): String{
-        if($this->_closeDelimiter === NULL){
-            if($this->_openDelimiter === "("){
-                return $this->_closeDelimiter = ")";
-            }elseif($this->_openDelimiter === "["){
-                return $this->_closeDelimiter = "]";
-            }elseif($this->_openDelimiter === "{"){
-                return $this->_closeDelimiter = "}";
-            }
-            throw new Error("Unknown delimiter");
-        }
-        return $this->_closeDelimiter;
-    }
-
-    public function components(): array{
-        return $this->_components;
-    }
-
-    public function EOFTerminated(): Bool{
-        return $this->_EOFTerminated;
-    }
+    public function EOFTerminated(): Bool;
 }
