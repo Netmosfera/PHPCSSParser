@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSASTTests\Parser;
+namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use Netmosfera\PHPCSSAST\Parser\TokenStream;
 

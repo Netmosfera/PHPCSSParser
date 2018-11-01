@@ -29,7 +29,6 @@ use Netmosfera\PHPCSSAST\Tokens\Operators\RightSquareBracketToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 use Netmosfera\PHPCSSAST\Tokens\Strings\AnyStringToken;
-use Netmosfera\PHPCSSAST\Tokens\Tokens;
 
 class Tokenizer
 {
@@ -183,7 +182,7 @@ class Tokenizer
     }
 
     /** @return RootToken[] */
-    public function tokenize(String $CSSCode): Tokens{
+    public function tokenize(String $CSSCode): array{
         $traverser = new Traverser($CSSCode);
 
         $tokens = [];
@@ -224,6 +223,6 @@ class Tokenizer
             );
         }
 
-        return new Tokens($tokens);
+        return $tokens;
     }
 }

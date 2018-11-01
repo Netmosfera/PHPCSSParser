@@ -6,7 +6,7 @@ use function Netmosfera\PHPCSSAST\match;
 
 function verifyTokens(array $tokens){
     $stringified = implode("", $tokens);
-    $controlTokens = (new Tokenizer())->tokenize($stringified)->tokens();
+    $controlTokens = (new Tokenizer())->tokenize($stringified);
     foreach($tokens as $index => $token){
         $controlToken = $controlTokens[$index];
         if(match($token, $controlToken) === FALSE){

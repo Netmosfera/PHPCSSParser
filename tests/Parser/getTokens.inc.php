@@ -3,8 +3,10 @@
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
 use Netmosfera\PHPCSSAST\Tokenizer\Tokenizer;
+use function Netmosfera\PHPCSSAST\Tokenizer\verifyTokens;
 
 function getTokens(String $css){
-    $tokenizer = new Tokenizer();
-    return $tokenizer->tokenize($css);
+    $tokens = (new Tokenizer())->tokenize($css);
+    verifyTokens($tokens);
+    return $tokens;
 }
