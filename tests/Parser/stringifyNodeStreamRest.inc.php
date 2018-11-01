@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSASTTests\Parser;
 
 use Netmosfera\PHPCSSAST\Parser\NodeStream;
 
-function stringifyNodes(NodeStream $stream){
+function stringifyNodeStreamRest(NodeStream $stream){
     $stringified = "";
     for($i = $stream->index; $i < count($stream->nodes); $i++){
         $stringified .= $stream->nodes[$i];

@@ -6,7 +6,7 @@ use Netmosfera\PHPCSSAST\Parser\NodeStream;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
 
-function eatNotADeclaration(NodeStream $stream): InvalidDeclarationNode{
+function eatNotADeclarationNode(NodeStream $stream): InvalidDeclarationNode{
     // @TODO assert this cannot start with a whitespace or comment token
     // as these must be consumed separately before this function is called
 

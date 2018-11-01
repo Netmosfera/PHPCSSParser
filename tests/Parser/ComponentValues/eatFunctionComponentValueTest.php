@@ -3,6 +3,8 @@
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
+use function Netmosfera\PHPCSSASTTests\Parser\getTestTokenStream;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokenStreamRest;
 use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatFunctionComponentValue;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
@@ -19,7 +21,7 @@ use function Netmosfera\PHPCSSASTTests\Parser\getToken;
  * #3 | loop unterminated
  * #4 | loop terminated
  */
-class eatFunctionNodeTest extends TestCase
+class eatFunctionComponentValueTest extends TestCase
 {
     public function data1(){
         return cartesianProduct([FALSE, TRUE]);
@@ -29,11 +31,11 @@ class eatFunctionNodeTest extends TestCase
     public function test1(Bool $testPrefix){
         $function = NULL;
 
-        $stream = getTokenStream($testPrefix, "");
+        $stream = getTestTokenStream($testPrefix, "");
         $actualFunction = eatFunctionComponentValue($stream);
 
         assertMatch($actualFunction, $function);
-        assertMatch(stringifyTokens($stream), "");
+        assertMatch(stringifyTokenStreamRest($stream), "");
     }
 
     public function data2(){
@@ -44,11 +46,11 @@ class eatFunctionNodeTest extends TestCase
     public function test2(Bool $testPrefix, String $rest){
         $function = NULL;
 
-        $stream = getTokenStream($testPrefix, $rest);
+        $stream = getTestTokenStream($testPrefix, $rest);
         $actualFunction = eatFunctionComponentValue($stream);
 
         assertMatch($actualFunction, $function);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch(stringifyTokenStreamRest($stream), $rest);
     }
 
     public function data3(){
@@ -64,11 +66,11 @@ class eatFunctionNodeTest extends TestCase
     public function test3(Bool $testPrefix, array $componentValues){
         $function = new FunctionComponentValue(getToken("foo("), $componentValues, TRUE);
 
-        $stream = getTokenStream($testPrefix, $function . "");
+        $stream = getTestTokenStream($testPrefix, $function . "");
         $actualFunction = eatFunctionComponentValue($stream);
 
         assertMatch($actualFunction, $function);
-        assertMatch(stringifyTokens($stream), "");
+        assertMatch(stringifyTokenStreamRest($stream), "");
     }
 
     public function data4(){
@@ -84,10 +86,10 @@ class eatFunctionNodeTest extends TestCase
     public function test4(Bool $testPrefix, array $componentValues, String $rest){
         $function = new FunctionComponentValue(getToken("foo("), $componentValues, FALSE);
 
-        $stream = getTokenStream($testPrefix, $function . $rest);
+        $stream = getTestTokenStream($testPrefix, $function . $rest);
         $actualFunction = eatFunctionComponentValue($stream);
 
         assertMatch($actualFunction, $function);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch(stringifyTokenStreamRest($stream), $rest);
     }
 }

@@ -567,7 +567,7 @@ final class CodeCoverage
                 $this->data[$file] = [];
 
                 foreach ($lines as $k => $v) {
-                    $this->data[$file][$k] = $v === Driver::LINE_NOT_EXECUTABLE ? null : [];
+                    $this->data[$file][$k] = $v === -2 ? null : [];
                 }
             }
         }
@@ -612,6 +612,17 @@ final class CodeCoverage
             return $this->ignoredLines[$fileName];
         }
 
+        try {
+            return $this->getLinesToBeIgnoredInner($fileName);
+        } catch (\OutOfBoundsException $e) {
+            // This can happen with PHP_Token_Stream if the file is syntactically invalid,
+            // and probably affects a file that wasn't executed.
+            return [];
+        }
+    }
+
+    private function getLinesToBeIgnoredInner(string $fileName): array
+    {
         $this->ignoredLines[$fileName] = [];
 
         $lines = \file($fileName);

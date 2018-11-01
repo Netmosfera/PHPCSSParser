@@ -1,12 +1,12 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
+namespace Netmosfera\PHPCSSASTTests\Parser;
 
 use Netmosfera\PHPCSSAST\Parser\TokenStream;
 use function Netmosfera\PHPCSSAST\match;
 use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
 
-function getTokenStream(Bool $testPrefix, String $css): TokenStream{
+function getTestTokenStream(Bool $testPrefix, String $css): TokenStream{
     $prefix = $testPrefix ? "body{background-color:#BADA55;}" : "";
 
     $prefixTokens = getTokens($prefix);

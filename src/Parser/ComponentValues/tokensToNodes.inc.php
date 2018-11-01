@@ -4,7 +4,7 @@ namespace Netmosfera\PHPCSSAST\Parser\ComponentValues;
 
 use Netmosfera\PHPCSSAST\Parser\TokenStream;
 
-function tokensToNodes(
+function tokensToComponentValues(
     array $tokens
 ): array{
     $tokenStream = new TokenStream($tokens);

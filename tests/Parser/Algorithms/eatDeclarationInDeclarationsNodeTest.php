@@ -5,12 +5,14 @@ namespace Netmosfera\PHPCSSASTTests\Parser\Algorithms;
 use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
 use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatDeclarationInDeclarationsNode;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToComponentValues;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
-use function Netmosfera\PHPCSSASTTests\Parser\getNodeStream;
+use function Netmosfera\PHPCSSASTTests\Parser\getTestNodeStream;
 use function Netmosfera\PHPCSSASTTests\Parser\getToken;
 use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
-use function Netmosfera\PHPCSSASTTests\Parser\stringifyNodes;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyNodeStreamRest;
+
+// @TODO make tests dynamic with data providers
 
 /**
  * Tests in this file:
@@ -27,72 +29,72 @@ class eatDeclarationInDeclarationsNodeTest extends TestCase
     function test1(){
         $declaration = NULL;
 
-        $stream = getNodeStream(TRUE, "");
+        $stream = getTestNodeStream(TRUE, "");
         $actualDeclaration = eatDeclarationInDeclarationsNode($stream);
 
         assertMatch($actualDeclaration, $declaration);
-        assertMatch(stringifyNodes($stream), "");
+        assertMatch(stringifyNodeStreamRest($stream), "");
     }
 
     function test2(){
         $declaration = NULL;
 
-        $stream = getNodeStream(TRUE, "+123 : red");
+        $stream = getTestNodeStream(TRUE, "+123 : red");
         $actualDeclaration = eatDeclarationInDeclarationsNode($stream);
 
         assertMatch($actualDeclaration, $declaration);
-        assertMatch(stringifyNodes($stream), "+123 : red");
+        assertMatch(stringifyNodeStreamRest($stream), "+123 : red");
     }
 
     function test3(){
         $declaration = NULL;
 
-        $stream = getNodeStream(TRUE, "background    /* lol */      /* baz */      ");
+        $stream = getTestNodeStream(TRUE, "background    /* lol */      /* baz */      ");
         $actualDeclaration = eatDeclarationInDeclarationsNode($stream);
 
         assertMatch($actualDeclaration, $declaration);
-        assertMatch(stringifyNodes($stream), "background    /* lol */      /* baz */      ");
+        assertMatch(stringifyNodeStreamRest($stream), "background    /* lol */      /* baz */      ");
     }
 
     function test4(){
         $declaration = NULL;
 
-        $stream = getNodeStream(TRUE, "background    /* lol */      /* baz */      qux");
+        $stream = getTestNodeStream(TRUE, "background    /* lol */      /* baz */      qux");
         $actualDeclaration = eatDeclarationInDeclarationsNode($stream);
 
         assertMatch($actualDeclaration, $declaration);
-        assertMatch(stringifyNodes($stream), "background    /* lol */      /* baz */      qux");
+        assertMatch(stringifyNodeStreamRest($stream), "background    /* lol */      /* baz */      qux");
     }
 
     function test5(){
         $css = "background /* lol */ : red /* lool */ foo /* after */ ";
         $declaration = new DeclarationNode(
             getToken("background"),
-            tokensToNodes(getTokens(" /* lol */ ")),
-            tokensToNodes(getTokens(" ")),
-            tokensToNodes(getTokens("red /* lool */ foo"))
+            tokensToComponentValues(getTokens(" /* lol */ ")),
+            tokensToComponentValues(getTokens(" ")),
+            tokensToComponentValues(getTokens("red /* lool */ foo"))
         );
 
-        $stream = getNodeStream(TRUE, $css);
+        $stream = getTestNodeStream(TRUE, $css);
         $actualDeclaration = eatDeclarationInDeclarationsNode($stream);
 
         assertMatch($actualDeclaration, $declaration);
-        assertMatch(stringifyNodes($stream), " /* after */ ");
+        assertMatch(stringifyNodeStreamRest($stream), " /* after */ ");
     }
 
     function test6(){
         $css = "background /* lol */ : red /* lool */ foo /* after */ ; foo bar";
         $declaration = new DeclarationNode(
             getToken("background"),
-            tokensToNodes(getTokens(" /* lol */ ")),
-            tokensToNodes(getTokens(" ")),
-            tokensToNodes(getTokens("red /* lool */ foo"))
+            tokensToComponentValues(getTokens(" /* lol */ ")),
+            tokensToComponentValues(getTokens(" ")),
+            tokensToComponentValues(getTokens("red /* lool */ foo"))
         );
 
-        $stream = getNodeStream(TRUE, $css);
+        $stream = getTestNodeStream(TRUE, $css);
         $actualDeclaration = eatDeclarationInDeclarationsNode($stream);
 
         assertMatch($actualDeclaration, $declaration);
-        assertMatch(stringifyNodes($stream), " /* after */ ; foo bar");
+        assertMatch(stringifyNodeStreamRest($stream), " /* after */ ; foo bar");
     }
 }

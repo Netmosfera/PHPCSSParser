@@ -1,17 +1,22 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSASTTests\Parser;
+namespace Netmosfera\PHPCSSASTTests\Parser\Algorithms;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
-use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\Components\InvalidRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
+use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatQualifiedRuleNode;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToComponentValues;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
+use function Netmosfera\PHPCSSASTTests\Parser\getTestNodeStream;
+use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyNodeStreamRest;
+
+// @TODO make tests dynamic with data providers
 
 /**
  * Tests in this file:
@@ -21,20 +26,29 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  */
 class eatQualifiedRuleNodeTest extends TestCase
 {
-    public function test1(){
-        $a = tokensToNodes(getTokens("foo +123% /* comment */ foo"));
-        $rest = "   /* outside */   /* also outside */   ";
-        $invalidRule = new InvalidRuleNode($a);
+    public function data1(){
+        $rest[] = "";
+        $rest[] = "    ";
+        $rest[] = "/* outside */";
+        $rest[] = "    /* outside */   /* also outside */   ";
+        $rest[] = "/* outside */      /* also outside */";
+        return cartesianProduct([FALSE, TRUE], $rest);
+    }
 
-        $stream = getNodeStream(FALSE, implode("", $a) . $rest);
+    /** @dataProvider data1 */
+    public function test1(Bool $testPrefix, String $rest){
+        $componentValues = tokensToComponentValues(getTokens("foo +123% /* comment */ foo"));
+        $invalidRule = new InvalidRuleNode($componentValues);
+
+        $stream = getTestNodeStream($testPrefix, implode("", $componentValues) . $rest);
         $actualInvalidRule = eatQualifiedRuleNode($stream);
 
         assertMatch($actualInvalidRule, $invalidRule);
-        assertMatch(stringifyNodes($stream), $rest);
+        assertMatch(stringifyNodeStreamRest($stream), $rest);
     }
 
     public function data2(){
-        $preludePieces = tokensToNodes(getTokens(
+        $preludePieces = tokensToComponentValues(getTokens(
             "foo +123% /* comment */ > .bar [{this is not the block}] * bar -1e-45"
         ));
         return cartesianProduct(
@@ -49,10 +63,10 @@ class eatQualifiedRuleNodeTest extends TestCase
         $block = new CurlySimpleBlockComponentValue([], FALSE);
         $qualifiedRule = new QualifiedRuleNode($preludePieces, $block);
 
-        $stream = getNodeStream($testPrefix, $qualifiedRule . $rest);
+        $stream = getTestNodeStream($testPrefix, $qualifiedRule . $rest);
         $actualQualifiedRule = eatQualifiedRuleNode($stream);
 
         assertMatch($actualQualifiedRule, $qualifiedRule);
-        assertMatch(stringifyNodes($stream), $rest);
+        assertMatch(stringifyNodeStreamRest($stream), $rest);
     }
 }

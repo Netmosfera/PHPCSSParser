@@ -2,19 +2,19 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser\Algorithms;
 
+use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use PHPUnit\Framework\TestCase;
-use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatAtRuleNode;
-use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
-use function Netmosfera\PHPCSSASTTests\Parser\stringifyNodes;
-use function Netmosfera\PHPCSSASTTests\Parser\getNodeStream;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
-use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToComponentValues;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
+use function Netmosfera\PHPCSSASTTests\Parser\getTestNodeStream;
+use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyNodeStreamRest;
 
 /**
  * Tests in this file:
@@ -35,11 +35,11 @@ class eatAtRuleNodeTest extends TestCase
     public function test1(Bool $testPrefix){
         $atRule = NULL;
 
-        $stream = getNodeStream($testPrefix, "");
+        $stream = getTestNodeStream($testPrefix, "");
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyNodes($stream), "");
+        assertMatch(stringifyNodeStreamRest($stream), "");
     }
 
     public function data2(){
@@ -50,15 +50,15 @@ class eatAtRuleNodeTest extends TestCase
     public function test2(Bool $testPrefix, String $rest){
         $atRule = NULL;
 
-        $stream = getNodeStream($testPrefix, $rest);
+        $stream = getTestNodeStream($testPrefix, $rest);
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyNodes($stream), $rest);
+        assertMatch(stringifyNodeStreamRest($stream), $rest);
     }
 
     public function data345(){
-        $preludePieces = tokensToNodes(getTokens(
+        $preludePieces = tokensToComponentValues(getTokens(
             " foo +123% /* comment */ > .bar [{this is not the block}] * bar -1e-45"
         ));
         return cartesianProduct(
@@ -72,33 +72,33 @@ class eatAtRuleNodeTest extends TestCase
     public function test3(Bool $testPrefix, array $preludePieces){
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, NULL);
 
-        $stream = getNodeStream($testPrefix, $atRule . "");
+        $stream = getTestNodeStream($testPrefix, $atRule . "");
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyNodes($stream), "");
+        assertMatch(stringifyNodeStreamRest($stream), "");
     }
 
     /** @dataProvider data345 */
     public function test4(Bool $testPrefix, array $preludePieces, String $rest){
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, new SemicolonToken());
 
-        $stream = getNodeStream($testPrefix, $atRule . $rest);
+        $stream = getTestNodeStream($testPrefix, $atRule . $rest);
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyNodes($stream), $rest);
+        assertMatch(stringifyNodeStreamRest($stream), $rest);
     }
 
     /** @dataProvider data345 */
     public function test5(Bool $testPrefix, array $preludePieces, String $rest){
-        $block = tokensToNodes(getTokens("{test block}"))[0];
+        $block = tokensToComponentValues(getTokens("{test block}"))[0];
         $atRule = new AtRuleNode(getToken("@foo"), $preludePieces, $block);
 
-        $stream = getNodeStream($testPrefix, $atRule . $rest);
+        $stream = getTestNodeStream($testPrefix, $atRule . $rest);
         $actualAtRule = eatAtRuleNode($stream);
 
         assertMatch($actualAtRule, $atRule);
-        assertMatch(stringifyNodes($stream), $rest);
+        assertMatch(stringifyNodeStreamRest($stream), $rest);
     }
 }

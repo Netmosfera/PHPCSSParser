@@ -6,7 +6,7 @@ require(__DIR__ . "/src/Parser/eatListOfDeclarationsNode.inc.php");
 require(__DIR__ . "/src/Parser/eatListOfRulesNode.inc.php");
 require(__DIR__ . "/src/Parser/Algorithms/eatAtRuleNode.inc.php");
 require(__DIR__ . "/src/Parser/Algorithms/eatDeclarationInDeclarationsNode.inc.php");
-require(__DIR__ . "/src/Parser/Algorithms/eatNotADeclaration.inc.php");
+require(__DIR__ . "/src/Parser/Algorithms/eatNotADeclarationNode.inc.php");
 require(__DIR__ . "/src/Parser/Algorithms/eatOptionalWhitespaceSequence.inc.php");
 require(__DIR__ . "/src/Parser/Algorithms/eatQualifiedRuleNode.inc.php");
 require(__DIR__ . "/src/Parser/ComponentValues/eatComponentValue.inc.php");

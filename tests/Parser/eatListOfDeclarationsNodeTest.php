@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
+namespace Netmosfera\PHPCSSASTTests\Parser;
 
 use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
 use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
@@ -10,7 +10,7 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use PHPUnit\Framework\TestCase;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToComponentValues;
 use function Netmosfera\PHPCSSAST\Parser\eatListOfDeclarationsNode;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -79,7 +79,7 @@ class eatListOfDeclarationsNodeTest extends TestCase
     public function test1(array $pieces){
         $list = new ListOfDeclarations($pieces);
 
-        $nodes = tokensToNodes(getTokens(implode("", $pieces)));
+        $nodes = tokensToComponentValues(getTokens(implode("", $pieces)));
         $actualList = eatListOfDeclarationsNode($nodes);
 
         assertMatch($actualList, $list);

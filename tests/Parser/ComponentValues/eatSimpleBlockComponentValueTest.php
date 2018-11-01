@@ -3,14 +3,15 @@
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ParenthesesSimpleBlockComponentValue;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
 use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatSimpleBlockComponentValue;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\Parser\everySeqFromStart;
+use function Netmosfera\PHPCSSASTTests\Parser\getTestTokenStream;
 use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokenStreamRest;
 
 /**
  * Tests in this file:
@@ -20,7 +21,7 @@ use function Netmosfera\PHPCSSASTTests\Parser\getToken;
  * #3 | loop unterminated
  * #4 | loop terminated
  */
-class eatSimpleBlockNodeTest extends TestCase
+class eatSimpleBlockComponentValueTest extends TestCase
 {
     public function data1(){
         return cartesianProduct([FALSE, TRUE]);
@@ -30,11 +31,11 @@ class eatSimpleBlockNodeTest extends TestCase
     public function test1(Bool $testPrefix){
         $block = NULL;
 
-        $stream = getTokenStream($testPrefix, "");
+        $stream = getTestTokenStream($testPrefix, "");
         $actualBlock = eatSimpleBlockComponentValue($stream);
 
         assertMatch($actualBlock, $block);
-        assertMatch(stringifyTokens($stream), "");
+        assertMatch(stringifyTokenStreamRest($stream), "");
     }
 
     public function data2(){
@@ -49,11 +50,11 @@ class eatSimpleBlockNodeTest extends TestCase
     public function test2(Bool $testPrefix, String $notDelimiter, String $rest){
         $block = NULL;
 
-        $stream = getTokenStream($testPrefix, $notDelimiter . $rest);
+        $stream = getTestTokenStream($testPrefix, $notDelimiter . $rest);
         $actualBlock = eatSimpleBlockComponentValue($stream);
 
         assertMatch($actualBlock, $block);
-        assertMatch(stringifyTokens($stream), $notDelimiter . $rest);
+        assertMatch(stringifyTokenStreamRest($stream), $notDelimiter . $rest);
     }
 
     public function data3(){
@@ -69,11 +70,11 @@ class eatSimpleBlockNodeTest extends TestCase
     public function test3(Bool $testPrefix, array $componentValues){
         $block = new ParenthesesSimpleBlockComponentValue($componentValues, TRUE);
 
-        $stream = getTokenStream($testPrefix, $block . "");
+        $stream = getTestTokenStream($testPrefix, $block . "");
         $actualBlock = eatSimpleBlockComponentValue($stream);
 
         assertMatch($actualBlock, $block);
-        assertMatch(stringifyTokens($stream), "");
+        assertMatch(stringifyTokenStreamRest($stream), "");
     }
 
     public function data4(){
@@ -89,10 +90,10 @@ class eatSimpleBlockNodeTest extends TestCase
     public function test4(Bool $testPrefix, array $componentValues, String $rest){
         $block = new ParenthesesSimpleBlockComponentValue($componentValues, FALSE);
 
-        $stream = getTokenStream($testPrefix, $block . $rest);
+        $stream = getTestTokenStream($testPrefix, $block . $rest);
         $actualBlock = eatSimpleBlockComponentValue($stream);
 
         assertMatch($actualBlock, $block);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch(stringifyTokenStreamRest($stream), $rest);
     }
 }

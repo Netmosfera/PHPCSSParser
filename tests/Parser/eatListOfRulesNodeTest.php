@@ -12,7 +12,7 @@ use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use PHPUnit\Framework\TestCase;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToNodes;
+use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToComponentValues;
 use function Netmosfera\PHPCSSAST\Parser\eatListOfRulesNode;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -45,8 +45,8 @@ class eatListOfRulesNodeTest extends TestCase
 
                 $data[] = new AtRuleNode(getToken("@at-rule-semicolon"), [], new SemicolonToken());
 
-                $prelude = tokensToNodes(getTokens("valid > .rule > @not-at-rule"));
-                $block = tokensToNodes(getTokens("{ color : purple ; }"))[0];
+                $prelude = tokensToComponentValues(getTokens("valid > .rule > @not-at-rule"));
+                $block = tokensToComponentValues(getTokens("{ color : purple ; }"))[0];
                 $data[] = new QualifiedRuleNode($prelude, $block);
 
                 $data[] = new CommentToken(" comment1 ", FALSE);
@@ -55,7 +55,7 @@ class eatListOfRulesNodeTest extends TestCase
                     $data[] = new WhitespaceToken("\t\t");
                 }
 
-                $data[] = new InvalidRuleNode(tokensToNodes(getTokens("invalid * rule")));
+                $data[] = new InvalidRuleNode(tokensToComponentValues(getTokens("invalid * rule")));
             }
 
             return $data;
@@ -72,7 +72,7 @@ class eatListOfRulesNodeTest extends TestCase
     public function test1(array $pieces){
         $list = new ListOfRules($pieces, TRUE);
 
-        $stream = getNodeStream(FALSE, implode("", $pieces));
+        $stream = getTestNodeStream(FALSE, implode("", $pieces));
         $actualList = eatListOfRulesNode($stream, TRUE);
 
         assertMatch($actualList, $list);

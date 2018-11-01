@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Parser;
 
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatAtRuleNode;
-use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatNotADeclaration;
+use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatNotADeclarationNode;
 use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatDeclarationInDeclarationsNode;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarations;
@@ -42,7 +42,7 @@ function eatListOfDeclarationsNode(array $nodes): ListOfDeclarations{
             continue;
         }
 
-        $list[] = eatNotADeclaration($stream);
+        $list[] = eatNotADeclarationNode($stream);
         continue;
     }
 }

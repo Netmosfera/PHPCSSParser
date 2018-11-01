@@ -3,14 +3,15 @@
 namespace Netmosfera\PHPCSSASTTests\Parser\ComponentValues;
 
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
-use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\Nodes\ComponentValues\FunctionComponentValue;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
+use PHPUnit\Framework\TestCase;
 use function Netmosfera\PHPCSSAST\Parser\ComponentValues\eatComponentValue;
-use function Netmosfera\PHPCSSASTTests\cartesianProduct;
-use function Netmosfera\PHPCSSASTTests\Parser\getToken;
 use function Netmosfera\PHPCSSASTDev\Examples\ANY_CSS;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
+use function Netmosfera\PHPCSSASTTests\cartesianProduct;
+use function Netmosfera\PHPCSSASTTests\Parser\getToken;
+use function Netmosfera\PHPCSSASTTests\Parser\getTestTokenStream;
+use function Netmosfera\PHPCSSASTTests\Parser\stringifyTokenStreamRest;
 
 /**
  * Tests in this file:
@@ -20,7 +21,7 @@ use function Netmosfera\PHPCSSASTTests\assertMatch;
  * #3 | block
  * #4 | anything else
  */
-class eatComponentValueNodeTest extends TestCase
+class eatComponentValueTest extends TestCase
 {
     public function data1(){
         return cartesianProduct([FALSE, TRUE]);
@@ -30,11 +31,11 @@ class eatComponentValueNodeTest extends TestCase
     public function test1(Bool $testPrefix){
         $componentValue = NULL;
 
-        $stream = getTokenStream($testPrefix, "");
+        $stream = getTestTokenStream($testPrefix, "");
         $actualComponentValue = eatComponentValue($stream);
 
         assertMatch($actualComponentValue, $componentValue);
-        assertMatch(stringifyTokens($stream), "");
+        assertMatch(stringifyTokenStreamRest($stream), "");
     }
 
     public function data2(){
@@ -50,11 +51,11 @@ class eatComponentValueNodeTest extends TestCase
             FALSE
         );
 
-        $stream = getTokenStream($testPrefix, $componentValue . $rest);
+        $stream = getTestTokenStream($testPrefix, $componentValue . $rest);
         $actualComponentValue = eatComponentValue($stream);
 
         assertMatch($actualComponentValue, $componentValue);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch(stringifyTokenStreamRest($stream), $rest);
     }
 
     public function data3(){
@@ -66,11 +67,11 @@ class eatComponentValueNodeTest extends TestCase
         $componentValues = [getToken("foo")];
         $componentValue = new CurlySimpleBlockComponentValue($componentValues, FALSE);
 
-        $stream = getTokenStream($testPrefix, $componentValue . $rest);
+        $stream = getTestTokenStream($testPrefix, $componentValue . $rest);
         $actualComponentValue = eatComponentValue($stream);
 
         assertMatch($actualComponentValue, $componentValue);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch(stringifyTokenStreamRest($stream), $rest);
     }
 
     public function data4(){
@@ -81,10 +82,10 @@ class eatComponentValueNodeTest extends TestCase
     public function test4(Bool $testPrefix, String $rest){
         $componentValue = getToken("123deg");
 
-        $stream = getTokenStream($testPrefix, $componentValue . $rest);
+        $stream = getTestTokenStream($testPrefix, $componentValue . $rest);
         $actualComponentValue = eatComponentValue($stream);
 
         assertMatch($actualComponentValue, $componentValue);
-        assertMatch(stringifyTokens($stream), $rest);
+        assertMatch(stringifyTokenStreamRest($stream), $rest);
     }
 }
