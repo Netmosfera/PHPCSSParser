@@ -2,7 +2,7 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\Components\Component;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
@@ -16,7 +16,7 @@ use Netmosfera\PHPCSSAST\Tokens\RootToken;
  * body { color: darkblue; }
  * --></style>
  */
-class CDOToken implements RootToken, ComponentValue
+class CDOToken implements RootToken, Component
 {
     /** @inheritDoc */
     public function __toString(): String{

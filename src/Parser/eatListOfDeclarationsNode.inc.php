@@ -2,24 +2,24 @@
 
 namespace Netmosfera\PHPCSSAST\Parser;
 
-use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatAtRuleNode;
-use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatNotADeclarationNode;
-use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatDeclarationInDeclarationsNode;
-use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarations;
-use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
+use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
+use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
+use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatAtRuleNode;
+use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatDeclarationNode;
+use function Netmosfera\PHPCSSAST\Parser\Algorithms\eatInvalidDeclarationNode;
 
 function eatListOfDeclarationsNode(array $nodes): ListOfDeclarations{
-    $stream = new NodeStream($nodes);
+    $stream = new ComponentStream($nodes);
 
     $list = [];
     while(TRUE){
-        if(isset($stream->nodes[$stream->index]));else{
+        if(isset($stream->components[$stream->index]));else{
             return new ListOfDeclarations($list);
         }
 
-        $token = $stream->nodes[$stream->index];
+        $token = $stream->components[$stream->index];
         if(
             $token instanceof WhitespaceToken ||
             $token instanceof CommentToken ||
@@ -36,13 +36,13 @@ function eatListOfDeclarationsNode(array $nodes): ListOfDeclarations{
             continue;
         }
 
-        $declaration = eatDeclarationInDeclarationsNode($stream);
+        $declaration = eatDeclarationNode($stream);
         if(isset($declaration)){
             $list[] = $declaration;
             continue;
         }
 
-        $list[] = eatNotADeclarationNode($stream);
+        $list[] = eatInvalidDeclarationNode($stream);
         continue;
     }
 }

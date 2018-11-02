@@ -4,13 +4,9 @@ namespace Netmosfera\PHPCSSASTTests\Tokens\Misc;
 
 use PHPUnit\Framework\TestCase;
 use Netmosfera\PHPCSSAST\SpecData;
-use Netmosfera\PHPCSSASTDev\Data\CompressedCodePointSet;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getWhitespaceSeqsSet;
 use function Netmosfera\PHPCSSASTDev\Data\CodePointSeqsSets\getNewlineSeqsSet;
-use function Netmosfera\PHPCSSASTDev\Data\CodePointSets\getWhitespacesSet;
-use function Netmosfera\PHPCSSASTTests\getSampleCodePointsFromRanges;
-use function Netmosfera\PHPCSSASTTests\assertThrowsType;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 
 /**

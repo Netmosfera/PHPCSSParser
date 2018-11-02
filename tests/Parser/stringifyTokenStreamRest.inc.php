@@ -2,12 +2,12 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
-use Netmosfera\PHPCSSAST\Parser\TokenStream;
+use Netmosfera\PHPCSSAST\Parser\Components\TokenStream;
 
 function stringifyTokenStreamRest(TokenStream $stream){
-    $stringified = "";
+    $string = "";
     for($i = $stream->index; $i < count($stream->tokens); $i++){
-        $stringified .= $stream->tokens[$i];
+        $string .= $stream->tokens[$i];
     }
-    return $stringified;
+    return $string;
 }

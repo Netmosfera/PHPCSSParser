@@ -2,13 +2,13 @@
 
 namespace Netmosfera\PHPCSSAST\Nodes;
 
-use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
-use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\AtRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\DeclarationNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\InvalidDeclarationNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
+use function Netmosfera\PHPCSSAST\match;
 
 /**
  * @TODOC

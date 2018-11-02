@@ -2,12 +2,12 @@
 
 namespace Netmosfera\PHPCSSAST\Parser\Algorithms;
 
-use Netmosfera\PHPCSSAST\Nodes\Components\InvalidRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
-use Netmosfera\PHPCSSAST\Parser\NodeStream;
+use Netmosfera\PHPCSSAST\Nodes\Components\CurlySimpleBlockComponent;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\InvalidRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\QualifiedRuleNode;
+use Netmosfera\PHPCSSAST\Parser\ComponentStream;
 
-function eatQualifiedRuleNode(NodeStream $stream){
+function eatQualifiedRuleNode(ComponentStream $stream){
     // @TODO assert this cannot start with a whitespace or comment token
     // as these must be consumed separately before this function is called
 
@@ -16,7 +16,7 @@ function eatQualifiedRuleNode(NodeStream $stream){
         $indexBeforeWhitespace = $stream->index;
         $whitespaceAmidstPieces = eatOptionalWhitespaceSequence($stream);
 
-        if(isset($stream->nodes[$stream->index]));else{
+        if(isset($stream->components[$stream->index]));else{
             $stream->index = $indexBeforeWhitespace;
             return new InvalidRuleNode($preludePieces);
         }
@@ -25,10 +25,10 @@ function eatQualifiedRuleNode(NodeStream $stream){
             $preludePieces[] = $whitespacePiece;
         }
 
-        $piece = $stream->nodes[$stream->index];
+        $piece = $stream->components[$stream->index];
         $stream->index++;
 
-        if($piece instanceof CurlySimpleBlockComponentValue){
+        if($piece instanceof CurlySimpleBlockComponent){
             return new QualifiedRuleNode($preludePieces, $piece);
         }
 

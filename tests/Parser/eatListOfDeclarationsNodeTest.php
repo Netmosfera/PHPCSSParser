@@ -2,21 +2,19 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
-use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\Components\DeclarationNode;
-use Netmosfera\PHPCSSAST\Nodes\Components\InvalidDeclarationNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\AtRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\DeclarationNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\InvalidDeclarationNode;
 use Netmosfera\PHPCSSAST\Nodes\ListOfDeclarations;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use PHPUnit\Framework\TestCase;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToComponentValues;
+use function Netmosfera\PHPCSSAST\Parser\Components\tokensToComponents;
 use function Netmosfera\PHPCSSAST\Parser\eatListOfDeclarationsNode;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
 use function Netmosfera\PHPCSSASTTests\makePiecesSample;
-use function Netmosfera\PHPCSSASTTests\Parser\getToken;
-use function Netmosfera\PHPCSSASTTests\Parser\getTokens;
 
 class CommentAfterDeclarationBeforeSemicolon extends CommentToken{}
 class WhitespaceAfterDeclarationBeforeSemicolon extends WhitespaceToken{}
@@ -44,15 +42,15 @@ class eatListOfDeclarationsNodeTest extends TestCase
                 $afterPiece instanceof SemicolonToken ||
                 $afterPiece instanceof CommentToken
             ){
-                $data[] = new DeclarationNode(getToken("background"), [], [], [getToken("red")]);
-                $data[] = new AtRuleNode(getToken("@foo"), [], new SemicolonToken());
+                $data[] = new DeclarationNode(getTestToken("background"), [], [], [getTestToken("red")]);
+                $data[] = new AtRuleNode(getTestToken("@foo"), [], new SemicolonToken());
                 $data[] = new SemicolonToken();
                 $data[] = new CommentToken("", FALSE);
                 $data[] = new WhitespaceToken(" ");
-                $data[] = new InvalidDeclarationNode(getTokens("+123"));
+                $data[] = new InvalidDeclarationNode(getTestTokens("+123"));
             }elseif($afterPiece instanceof WhitespaceToken){
-                $data[] = new DeclarationNode(getToken("background"), [], [], [getToken("red")]);
-                $data[] = new AtRuleNode(getToken("@foo"), [], new SemicolonToken());
+                $data[] = new DeclarationNode(getTestToken("background"), [], [], [getTestToken("red")]);
+                $data[] = new AtRuleNode(getTestToken("@foo"), [], new SemicolonToken());
                 $data[] = new SemicolonToken();
                 $data[] = new CommentToken("", FALSE);
             }elseif(
@@ -79,7 +77,7 @@ class eatListOfDeclarationsNodeTest extends TestCase
     public function test1(array $pieces){
         $list = new ListOfDeclarations($pieces);
 
-        $nodes = tokensToComponentValues(getTokens(implode("", $pieces)));
+        $nodes = tokensToComponents(getTestTokens(implode("", $pieces)));
         $actualList = eatListOfDeclarationsNode($nodes);
 
         assertMatch($actualList, $list);

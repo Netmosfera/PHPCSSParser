@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Tokens\Names;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\Components\Component;
 
 /**
  * An {@see IdentifierToken} is a root {@see NameToken}.
@@ -12,7 +12,7 @@ use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
  * {@see NumberToken}; that is, it cannot start with a digit and it cannot start with `-`
  * followed by a digit.
  */
-class IdentifierToken implements IdentifierLikeToken, ComponentValue
+class IdentifierToken implements IdentifierLikeToken, Component
 {
     /**
      * @var         NameToken

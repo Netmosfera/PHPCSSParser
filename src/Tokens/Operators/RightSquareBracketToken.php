@@ -2,10 +2,10 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Operators;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\Components\Component;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
-class RightSquareBracketToken implements RootToken, ComponentValue
+class RightSquareBracketToken implements RootToken, Component
 {
     /** @inheritDoc */
     public function __toString(): String{

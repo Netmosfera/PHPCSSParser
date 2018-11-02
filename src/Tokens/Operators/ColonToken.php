@@ -2,10 +2,10 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Operators;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\Components\Component;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
-class ColonToken implements RootToken, ComponentValue
+class ColonToken implements RootToken, Component
 {
     /** @inheritDoc */
     public function __toString(): String{

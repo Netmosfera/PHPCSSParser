@@ -3,7 +3,7 @@
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
 use function Netmosfera\PHPCSSAST\match;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\Components\Component;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 
 /**
@@ -14,7 +14,7 @@ use Netmosfera\PHPCSSAST\Tokens\RootToken;
  *
  * N.B. a delimiter token of value `\` represents a parse-error.
  */
-class DelimiterToken implements RootToken, ComponentValue
+class DelimiterToken implements RootToken, Component
 {
     /**
      * @var         String

@@ -2,17 +2,16 @@
 
 namespace Netmosfera\PHPCSSASTTests\Parser;
 
-use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\Components\InvalidRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\CurlySimpleBlockComponentValue;
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\SimpleBlockComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\AtRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\InvalidRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\QualifiedRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\Components\CurlySimpleBlockComponent;
 use Netmosfera\PHPCSSAST\Nodes\ListOfRules;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\WhitespaceToken;
 use Netmosfera\PHPCSSAST\Tokens\Operators\SemicolonToken;
 use PHPUnit\Framework\TestCase;
-use function Netmosfera\PHPCSSAST\Parser\ComponentValues\tokensToComponentValues;
+use function Netmosfera\PHPCSSAST\Parser\Components\tokensToComponents;
 use function Netmosfera\PHPCSSAST\Parser\eatListOfRulesNode;
 use function Netmosfera\PHPCSSASTTests\assertMatch;
 use function Netmosfera\PHPCSSASTTests\cartesianProduct;
@@ -41,12 +40,12 @@ class eatListOfRulesNodeTest extends TestCase
             }elseif($afterPiece instanceof WhitespaceAfterInvalidRuleNode ){
                 $data[] = new CommentAfterInvalidRuleNode(" comment after invalid rule ", FALSE);
             }else{
-                $data[] = new AtRuleNode(getToken("@at-rule-block"), [], new CurlySimpleBlockComponentValue([], FALSE));
+                $data[] = new AtRuleNode(getTestToken("@at-rule-block"), [], new CurlySimpleBlockComponent([], FALSE));
 
-                $data[] = new AtRuleNode(getToken("@at-rule-semicolon"), [], new SemicolonToken());
+                $data[] = new AtRuleNode(getTestToken("@at-rule-semicolon"), [], new SemicolonToken());
 
-                $prelude = tokensToComponentValues(getTokens("valid > .rule > @not-at-rule"));
-                $block = tokensToComponentValues(getTokens("{ color : purple ; }"))[0];
+                $prelude = tokensToComponents(getTestTokens("valid > .rule > @not-at-rule"));
+                $block = tokensToComponents(getTestTokens("{ color : purple ; }"))[0];
                 $data[] = new QualifiedRuleNode($prelude, $block);
 
                 $data[] = new CommentToken(" comment1 ", FALSE);
@@ -55,7 +54,7 @@ class eatListOfRulesNodeTest extends TestCase
                     $data[] = new WhitespaceToken("\t\t");
                 }
 
-                $data[] = new InvalidRuleNode(tokensToComponentValues(getTokens("invalid * rule")));
+                $data[] = new InvalidRuleNode(tokensToComponents(getTestTokens("invalid * rule")));
             }
 
             return $data;
@@ -72,7 +71,7 @@ class eatListOfRulesNodeTest extends TestCase
     public function test1(array $pieces){
         $list = new ListOfRules($pieces, TRUE);
 
-        $stream = getTestNodeStream(FALSE, implode("", $pieces));
+        $stream = getTestComponentStream(FALSE, implode("", $pieces));
         $actualList = eatListOfRulesNode($stream, TRUE);
 
         assertMatch($actualList, $list);

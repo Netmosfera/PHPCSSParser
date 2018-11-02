@@ -2,8 +2,8 @@
 
 namespace Netmosfera\PHPCSSAST\Nodes;
 
-use Netmosfera\PHPCSSAST\Nodes\Components\AtRuleNode;
-use Netmosfera\PHPCSSAST\Nodes\Components\QualifiedRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\AtRuleNode;
+use Netmosfera\PHPCSSAST\Nodes\MainNodes\QualifiedRuleNode;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CDCToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CDOToken;
 use Netmosfera\PHPCSSAST\Tokens\Misc\CommentToken;

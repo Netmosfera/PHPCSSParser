@@ -2,7 +2,7 @@
 
 namespace Netmosfera\PHPCSSAST\Tokens\Misc;
 
-use Netmosfera\PHPCSSAST\Nodes\ComponentValues\ComponentValue;
+use Netmosfera\PHPCSSAST\Nodes\Components\Component;
 use Netmosfera\PHPCSSAST\SpecData;
 use Netmosfera\PHPCSSAST\Tokens\RootToken;
 use function Netmosfera\PHPCSSAST\match;
@@ -12,7 +12,7 @@ use function Netmosfera\PHPCSSAST\match;
  *
  * It can contain any text, except the character `*` followed by `/`.
  */
-class CommentToken implements RootToken, ComponentValue
+class CommentToken implements RootToken, Component
 {
     /**
      * @var         String
